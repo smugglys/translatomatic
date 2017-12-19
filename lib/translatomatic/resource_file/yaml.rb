@@ -3,12 +3,28 @@ require 'yaml'
 module Translatomatic::ResourceFile
   class YAML < Base
 
-    def initialize(path)
+    def self.extensions
+      %w{yml yaml}
+    end
+
+    def initialize(path, locale = nil)
       super(path)
       @format = :yaml
-      @language, @region = parse_language_region(path)
       @valid = true
-      @properties = read
+      @data = {}
+      @properties = @path.exist? ? read : {}
+    end
+
+    # localization files in rails use the following file name convention:
+    # config/locales/en.yml
+    def locale_path(locale)
+      if path.match(/config\/locales\/\w+.yml$/)
+        # rails style
+        filename = locale.to_s + path.extname
+        path.dirname + filename
+      else
+        super(locale)
+      end
     end
 
     def valid?
@@ -28,7 +44,7 @@ module Translatomatic::ResourceFile
     def save
       out = @data.to_yaml
       out.sub!(/^---\n/m, '')
-      File.open(@path, 'w') { |f| f.puts out }
+      path.write(out)
     end
 
     private

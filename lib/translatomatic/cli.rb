@@ -6,12 +6,12 @@ class Translatomatic::CLI < Thor
   option :translator
   option :source_language
   def translate(file = nil)
-    Translation.new(options).translate(file)
+    Translatomatic::Translation.new(options).translate(file)
   end
 
-  desc "hello NAME", "say hello to NAME"
-  def hello(name = nil)
-    puts "Hello #{name}"
+  desc "translators", "list available translation backends"
+  def translators
+    puts Translatomatic::Translator.modules
   end
 
 end

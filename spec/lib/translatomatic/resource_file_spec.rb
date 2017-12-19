@@ -21,7 +21,7 @@ EOM
 en:
   hello_world: Goodbye
 EOM
-      path = write_file('en.yml', contents)
+      path = create_tempfile('en.yml', contents)
       file = Translatomatic::ResourceFile.load(path)
       expect(file.format).to eq(:yaml)
       file.set("en.hello_world", "Goodbye")
@@ -41,7 +41,7 @@ EOM
 
     it "saves a property file" do
       contents = "key = value\n"
-      path = write_file('test.properties', contents)
+      path = create_tempfile('test.properties', contents)
       file = Translatomatic::ResourceFile.load(path)
       expect(file.format).to eq(:properties)
       file.set("key", "new value")
@@ -50,12 +50,24 @@ EOM
     end
   end
 
+  context "Locale detection" do
+    it "detects locale from en.yml" do
+      file = Translatomatic::ResourceFile.load("en.yml")
+      expect(file.locale.language).to eq("en")
+    end
+
+    it "detects locale from strings_en-US.properties" do
+      file = Translatomatic::ResourceFile.load("strings_en-US.properties")
+      expect(file.locale.language).to eq("en")
+    end
+
+    it "detects locale from Project/zh-Hant.lproj/Project.plist" do
+      path = "Project/zh-Hant.lproj/Project.plist"
+      file = Translatomatic::ResourceFile.load(path)
+      expect(file.locale.to_s).to eq("zh-Hant")
+    end
+  end
+
   private
 
-  def write_file(name, contents)
-    tempfile = Tempfile.new('en.yml')
-    tempfile.write(contents)
-    tempfile.close
-    tempfile.path
-  end
 end

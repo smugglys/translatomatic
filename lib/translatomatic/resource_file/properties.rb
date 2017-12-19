@@ -1,12 +1,16 @@
 module Translatomatic::ResourceFile
   class Properties < Base
 
-    def initialize(path)
+    def self.extensions
+      %w{properties}
+    end
+
+    def initialize(path, locale = nil)
       super(path)
-      @language, @region = parse_language_region(path)
       @valid = true
       @format = :properties
-      @properties = read(path)
+      @properties = @path.exist? ? read(@path) : {}
+      @extension = ".properties"
     end
 
     def valid?
@@ -20,24 +24,17 @@ module Translatomatic::ResourceFile
         out += "#{key} = #{value}\n"
       end
       # escape unicode characters
-      out = EscapedUnicode.escape(out)
-      File.open(path, "w") { |file| file.puts(out) }
+      out = Translatomatic::EscapedUnicode.escape(out)
+      path.write(out)
     end
 
     private
 
-    # detect language/region from filename
-    def parse_language_region(path)
-      basename = File.basename(path, ".properties")
-      m = /strings_(\w+)(:?_(\w+))?/.match(basename)
-      m ? m.captures : []
-    end
-
     # parse key = value property file
     def read(path)
-      contents = File.read(path)
+      contents = path.read
       # convert escaped unicode characters into unicode
-      contents = EscapedUnicode.unescape(contents)
+      contents = Translatomatic::EscapedUnicode.unescape(contents)
       result = {}
       contents.gsub!(/\\\s*\n\s*/m, '')  # put multi line strings on one line
       lines = contents.split("\n")

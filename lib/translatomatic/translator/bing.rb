@@ -3,17 +3,16 @@ require 'bing_translator'
 module Translatomatic
   module Translator
 
-    class Bing
+    class Bing < Base
 
-      def initialize(config)
-        key = config.bing_api_key
+      def initialize(options = {})
+        key = options[:bing_api_key] || ENV["BING_API_KEY"]
         raise "bing api key required" if key.nil?
         @impl = BingTranslator.new(key)
       end
 
-      def translate(strings, from, to)
-        return strings if from == to
-        @impl.translate_array(strings, from: from.to_sym, to: to.to_sym)
+      def perform_translate(strings, from, to)
+        @impl.translate_array(strings, from: from.language, to: to.language)
       end
 
     end

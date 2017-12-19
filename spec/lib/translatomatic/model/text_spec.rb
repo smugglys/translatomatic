@@ -21,11 +21,11 @@ RSpec.describe Translatomatic::Model::Text do
     translated = described_class.new
     translated.value = "la la la french"
     translated.locale = @locale_fr
-    translated.translated_from = text
+    translated.from_text = text
     expect(translated.save).to be_truthy
 
     text.reload
-    expect(text.translated_to).to include(translated)
+    expect(text.translations).to include(translated)
   end
 
   it "requires a locale" do

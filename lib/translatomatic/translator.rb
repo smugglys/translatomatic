@@ -1,6 +1,9 @@
-require 'translatomatic/translator/yandex.rb'
-require 'translatomatic/translator/google.rb'
-require 'translatomatic/translator/epworth.rb'
+require 'translatomatic/translator/base'
+require 'translatomatic/translator/yandex'
+require 'translatomatic/translator/google'
+require 'translatomatic/translator/epworth'
+require 'translatomatic/translator/bing'
+require 'translatomatic/translator/frengly'
 
 module Translatomatic::Translator
 

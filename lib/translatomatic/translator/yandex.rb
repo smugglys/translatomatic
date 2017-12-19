@@ -1,23 +1,24 @@
+require 'yandex-translator'
+
 module Translatomatic
   module Translator
 
-    class Yandex
+    class Yandex < Base
 
-      def initialize(config)
-        key = config.yandex_api_key
-        raise "YANDEX_API_KEY required" if key.nil?
-        @impl = Yandex::Translator.new(key)
+      def initialize(options = {})
+        key = options[:yandex_api_key] || ENV["YANDEX_API_KEY"]
+        raise "yandex_api_key required" if key.nil?
+        @impl = ::Yandex::Translator.new(key)
       end
 
-      def translate(strings, from, to)
-        return strings if from == to
+      def languages
+        @languages ||= @impl.langs.collect { |i| i[0, 2] }.uniq
+      end
 
+      def perform_translate(strings, from, to)
         translated = []
         strings.each do |string|
-          value = value.gsub("\\n", "\n")      # convert \n to newlines first
-          result = @impl.translate(string, from: from, to: to) || ""
-          # convert newlines back to \n, with \ at end of lines
-          result = result.gsub("\n", "\\n\\\n")
+          result = @impl.translate(string, from: from.language, to: to.language) || ""
           translated.push(result)
         end
         translated

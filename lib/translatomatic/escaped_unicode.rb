@@ -3,7 +3,7 @@
 # @see https://github.com/jnbt/java-properties
 # @see https://github.com/flori/json/
 
-module EscapedUnicode
+module Translatomatic::EscapedUnicode
   # @private
   MAP = {
     "\x0" => '\u0000',

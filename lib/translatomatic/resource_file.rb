@@ -2,9 +2,9 @@
 module Translatomatic
   module ResourceFile
 
-    def self.load(path)
+    def self.load(path, locale = nil)
       modules.each do |mod|
-        file = mod.new(path)
+        file = mod.new(path, locale)
         return file if file.valid?
       end
       nil

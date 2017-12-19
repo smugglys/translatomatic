@@ -1,4 +1,5 @@
 module Helpers
+
   def fixture_read(path)
     File.read(fixture_path(path))
   end
@@ -8,11 +9,16 @@ module Helpers
   end
 
   def create_test_database
-    config = Translatomatic::Config.new(database_env: "test")
-    db = Translatomatic::Database.new(config)
-    config.logger.debug "Setting up test database"
+    db = Translatomatic::Database.new(env: "test")
+    #config.logger.debug "Setting up test database"
     db.drop
     db.migrate
   end
 
+  def create_tempfile(name, contents)
+    tempfile = Tempfile.new(name)
+    tempfile.write(contents)
+    tempfile.close
+    tempfile.path
+  end
 end

@@ -1,14 +1,13 @@
 module Translatomatic
   module Translator
 
-    class Epworth
+    class Epworth < Base
 
-      def initialize(config)
+      def initialize(options = {})
         @random = Random.new
       end
 
-      def translate(strings, from, to)
-        return strings if from == to
+      def perform_translate(strings, from, to)
         strings.map { |i| epworth(i) }
       end
 
