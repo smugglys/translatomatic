@@ -14,6 +14,7 @@ require 'translatomatic/model'
 require 'translatomatic/resource_bundle'
 require 'translatomatic/resource_file'
 require 'translatomatic/translator'
+require 'translatomatic/translation_result'
 require 'translatomatic/translation'
 
 begin

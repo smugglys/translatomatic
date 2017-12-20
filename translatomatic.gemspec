@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activerecord", "~> 5.0"
   spec.add_dependency "i18n"
   spec.add_dependency "i18n_data"
+  spec.add_dependency "bigdecimal"
 end
