@@ -14,8 +14,10 @@ class Translatomatic::Translation
   def initialize(options = {})
     @translator = options[:translator]
     if @translator.kind_of?(String) || @translator.kind_of?(Symbol)
-      @translator = Translatomatic::Translator.find(@translator)
+      klass = Translatomatic::Translator.find(@translator)
+      @translator = klass.new(options)
     end
+    raise "translator required" unless @translator
   end
 
   # translate contents of source_file to the target locale
@@ -24,6 +26,8 @@ class Translatomatic::Translation
   def translate(source_file, to_locale)
     to_locale = parse_locale(to_locale)
     source = Translatomatic::ResourceFile.load(source_file)
+    raise "unsupported file type #{source_file}" unless source
+
     log.debug("translating source: #{source}")
     target_file = source.locale_path(to_locale)
     if target_file.exist?

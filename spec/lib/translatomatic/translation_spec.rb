@@ -1,7 +1,8 @@
 RSpec.describe Translatomatic::Translation do
 
   it "creates a translation object" do
-    t = Translatomatic::Translation.new
+    translator = double(:translator)
+    t = Translatomatic::Translation.new(translator: translator)
     expect(t).to be
   end
 

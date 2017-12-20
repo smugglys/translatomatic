@@ -18,17 +18,13 @@ module Translatomatic::ResourceFile
     # localization files in rails use the following file name convention:
     # config/locales/en.yml
     def locale_path(locale)
-      if path.match(/config\/locales\/\w+.yml$/)
+      if path.to_s.match(/config\/locales\/[-\w]+.yml$/)
         # rails style
         filename = locale.to_s + path.extname
         path.dirname + filename
       else
         super(locale)
       end
-    end
-
-    def valid?
-      @valid
     end
 
     def set(key, value)
@@ -50,8 +46,13 @@ module Translatomatic::ResourceFile
     private
 
     def read
-      @data = ::YAML.load_file(@path)
-      flatten_data(@data)
+      begin
+        @data = ::YAML.load_file(@path)
+        flatten_data(@data)
+      rescue Exception => e
+        @valid = false
+        {}
+      end
     end
 
     def flatten_data(data)

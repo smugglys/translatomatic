@@ -3,6 +3,11 @@ module Translatomatic
 
     class Google < Base
 
+      define_options({ name: :google_api_key,
+            description: "Google API key",
+            required: true, use_env: true
+          })
+
       def initialize(options = {})
         key = options[:google_api_key] || ENV["GOOGLE_API_KEY"]
         raise "google_api_key required" if key.nil?

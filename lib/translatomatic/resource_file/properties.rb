@@ -10,11 +10,6 @@ module Translatomatic::ResourceFile
       @valid = true
       @format = :properties
       @properties = @path.exist? ? read(@path) : {}
-      @extension = ".properties"
-    end
-
-    def valid?
-      @valid
     end
 
     def save
@@ -41,7 +36,7 @@ module Translatomatic::ResourceFile
       lines.each do |line|
         line.strip!
         next if line.length == 0
-        unless line.index('=') > 0
+        unless line.index('=')
           @valid = false
           return {}
         end

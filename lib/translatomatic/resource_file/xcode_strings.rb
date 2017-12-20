@@ -1,22 +1,24 @@
 module Translatomatic::ResourceFile
-  class Plist < Base
+
+  # XCode strings file
+  class XcodeStrings < Base
 
     def self.extensions
-      %w{plist}
+      %w{strings}
     end
 
     def initialize(path, locale = nil)
       super(path)
+      @format = :strings
       @valid = true
-      @format = :plist
-      @properties = {} #@path.exist? ? read(@path) : {}
+      @text = @path.exist? ? @path.read : nil
+      @properties = { text: @text }
     end
 
     # localization files in XCode use the following file name convention:
     # Project/locale.lproj/filename
-    # TODO: refactor this and xcode_strings.rb to use the same code
     def locale_path(locale)
-      if path.to_s.match(/\/([-\w]+).lproj\/.+.plist$/)
+      if path.to_s.match(/\/([-\w]+).lproj\/.+.strings$/)
         # xcode style
         filename = path.basename
         path.parent.parent + (locale.to_s + ".lproj") + filename

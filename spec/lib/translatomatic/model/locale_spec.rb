@@ -2,8 +2,10 @@ RSpec.describe Translatomatic::Model::Locale do
   include Translatomatic::Util
 
   it "creates a locale record" do
+    described_class.delete_all
     locale = described_class.new
     locale.language = "en"
+    expect(locale).to be_valid
     expect(locale.save).to be_truthy
   end
 

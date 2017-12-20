@@ -7,7 +7,6 @@ end
 require 'translatomatic/util'
 require 'translatomatic/version'
 require 'translatomatic/config'
-require 'translatomatic/cli'
 require 'translatomatic/database'
 require 'translatomatic/escaped_unicode'
 require 'translatomatic/model'
@@ -16,6 +15,7 @@ require 'translatomatic/resource_file'
 require 'translatomatic/translator'
 require 'translatomatic/translation_result'
 require 'translatomatic/translation'
+require 'translatomatic/cli'
 
 begin
   I18n::Locale::Tag.implementation = I18n::Locale::Tag::Rfc4646

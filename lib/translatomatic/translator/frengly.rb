@@ -7,10 +7,26 @@ module Translatomatic
 
       URL = 'http://frengly.com/frengly/data/translateREST'
 
+      define_options({
+        name: :frengly_api_key,
+        description: "Frengly API key",
+        required: false, use_env: true
+      },
+      { name: :frengly_email,
+        description: "Email address",
+        required: true, use_env: false
+      },
+      { name: :frengly_password,
+        description: "Password",
+        required: true, use_env: false
+        })
+
       def initialize(options = {})
         @key = options[:frengly_api_key] || ENV["FRENGLY_API_KEY"] # optional
         @email = options[:frengly_email]
         @password = options[:frengly_password]
+        raise "email address required" unless @email
+        raise "password required" unless @password
       end
 
       def languages

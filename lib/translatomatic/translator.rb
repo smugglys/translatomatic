@@ -7,22 +7,31 @@ require 'translatomatic/translator/frengly'
 module Translatomatic::Translator
 
   def self.find(name)
-    instances = all
-    instances.find { |i| i.class_name.to_s.downcase.to_sym == name.to_sym }
+    self.const_get(name)
   end
 
   def self.modules
-    self.constants.select { |c| self.const_get(c).is_a? Class }
+    self.constants.collect { |c| self.const_get(c) }.select do |klass|
+      klass.is_a?(Class) && klass != Translatomatic::Translator::Base
+    end
   end
 
-  def self.all
-    instances = []
+  def self.names
+    modules.collect { |i| i.name.demodulize }
+  end
+
+  def self.list
+    out = "Translators available:\n"
     modules.each do |mod|
-      begin
-        instances << mod.new(config)
-      rescue Exception => e
+      out += "\n" + mod.name.demodulize + ":\n"
+      opts = mod.options
+      opts.each do |opt|
+        out += "  --%-18s  %15s  %10s  %15s\n" % [opt.name, opt.description,
+          opt.required ? "(required)" : "",
+          opt.use_env ? "ENV[#{opt.name.upcase}]" : ""]
       end
     end
-    instances
+    out + "\n"
   end
+
 end

@@ -1,5 +1,4 @@
 require 'pathname'
-require 'i18n_data'
 
 class Translatomatic::ResourceFile::Base
   include Translatomatic::Util
@@ -11,12 +10,11 @@ class Translatomatic::ResourceFile::Base
   attr_reader :format
   attr_reader :properties
 
-  VALID_LANGUAGES = I18nData.languages.keys.collect { |i| i.downcase }.sort
-
   def initialize(path, locale = nil)
     @path = Pathname.new(path)
     @locale = locale || detect_locale || parse_locale(I18n.default_locale)
     raise "unable to determine locale" unless @locale && @locale.language
+    @valid = false
     @properties = {}
   end
 
@@ -36,7 +34,7 @@ class Translatomatic::ResourceFile::Base
   end
 
   def valid?
-    false
+    @valid
   end
 
   def save
@@ -54,29 +52,30 @@ class Translatomatic::ResourceFile::Base
     tag = nil
     basename = path.sub_ext('').basename.to_s
     directory = path.dirname.basename.to_s
+    extlist = extension_list(path)
 
     if basename.match(/_([-\w]{2,})$/i)
       # locale after underscore in filename
       tag = $1
-    elsif basename.match(/(^\w{2})$/i)
+    elsif basename.match(/^(\w{2})$/i) && valid_locale?($1)
       # match on entire basename, two letter country code
       # (support for rails en.yml)
       tag = $1
     elsif directory.match(/^([-\w]+)\.lproj$/)
       # xcode localized strings
       tag = $1
+    elsif extlist.length >= 2 && valid_locale?(extlist[-1])
+      # multiple parts to extension, e.g. index.html.en
+      tag = extlist[-1]
     end
 
-    if tag
-      locale = parse_locale(tag)
-      return locale if valid_language?(locale.language)
-    end
-
-    nil
+    tag ? parse_locale(tag, true) : nil
   end
 
-  # test if lang is a valid ISO 639-1 language
-  def valid_language?(lang)
-    lang.length == 2 && VALID_LANGUAGES.include?(lang.downcase)
+  # for index.html.de, returns ['html', 'de']
+  def extension_list
+    idx = path.basename.to_s.index('.')
+    idx ? path.basename.to_s[idx..-1].split('.') : []
   end
+
 end

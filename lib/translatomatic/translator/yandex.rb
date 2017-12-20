@@ -5,6 +5,12 @@ module Translatomatic
 
     class Yandex < Base
 
+      define_options({
+        name: :yandex_api_key,
+        description: "Yandex API key",
+        required: true, use_env: true
+        })
+
       def initialize(options = {})
         key = options[:yandex_api_key] || ENV["YANDEX_API_KEY"]
         raise "yandex_api_key required" if key.nil?
