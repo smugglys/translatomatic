@@ -35,4 +35,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "i18n"
   spec.add_dependency "i18n_data"
   spec.add_dependency "bigdecimal"
+
+  # TODO: i want to use mysql in my .translatomatic/database.yml but
+  # other people shouldn't have to install it, how to make it optional?
+  spec.add_dependency "mysql2"
 end

@@ -2,6 +2,7 @@ module Translatomatic
   module Model
     class Locale < ActiveRecord::Base
       has_many :texts, class_name: "Translatomatic::Model::Text"
+      validates_presence_of :language
       validates_uniqueness_of :language, scope: [:script, :region]
 
       class << self

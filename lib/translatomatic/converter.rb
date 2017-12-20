@@ -1,4 +1,4 @@
-class Translatomatic::Translation
+class Translatomatic::Converter
   include Translatomatic::Util
 
 =begin
@@ -17,6 +17,7 @@ class Translatomatic::Translation
       klass = Translatomatic::Translator.find(@translator)
       @translator = klass.new(options)
     end
+    @translator ||= Translatomatic::Translator.default
     raise "translator required" unless @translator
   end
 
@@ -28,7 +29,7 @@ class Translatomatic::Translation
     source = Translatomatic::ResourceFile.load(source_file)
     raise "unsupported file type #{source_file}" unless source
 
-    log.debug("translating source: #{source}")
+    log.debug("source: #{source}")
     target_file = source.locale_path(to_locale)
     if target_file.exist?
       # open existing target file
@@ -69,10 +70,13 @@ class Translatomatic::Translation
 
     # send remaining unknown strings to translator
     if result.has_untranslated_strings?
-      translated = @translator.translate(result.original_strings)
+      translated = @translator.translate(result.original_strings, from_locale, to_locale)
       result.update_strings(translated)
       save_database_translations(result, translated)
     end
+
+    log.debug("translation: from db: #{texts.length}, translator: #{result.original_strings.length}")
+
     result.properties
   end
 

@@ -1,18 +1,20 @@
 class Initial < ActiveRecord::Migration[4.2]
   def change
     create_table :locales do |t|
-      t.string :language    # e.g. "en"   ISO 639-1
-      t.string :script      # e.g. "Hans" ISO 15924
-      t.string :region      # e.g. "US"   ISO 3166-1 alpha-2
+      t.string :language, null: false  # e.g. "en"   ISO 639-1
+      t.string :script                 # e.g. "Hans" ISO 15924
+      t.string :region                 # e.g. "US"   ISO 3166-1 alpha-2
       t.timestamps
     end
 
     add_index :locales, [:language, :script, :region]
 
     create_table :texts do |t|
-      t.belongs_to :locale, index: true
-      t.belongs_to :from_text, index: true, foreign_key: { to_table: :texts }
-      t.text       :value
+      t.belongs_to :locale, index: true, null: false
+      t.belongs_to :from_text, index: true, foreign_key: {
+        to_table: :texts, on_delete: :cascade
+      }
+      t.text       :value, null: false
       t.string     :translator
       t.timestamps
     end

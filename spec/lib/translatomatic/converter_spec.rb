@@ -1,17 +1,26 @@
-RSpec.describe Translatomatic::Translation do
+RSpec.describe Translatomatic::Converter do
+
+  class TestTranslator < Translatomatic::Translator::Base
+    def initialize(result)
+      @result = result
+    end
+
+    def perform_translate(strings, from, to)
+      strings.collect { |i| @result }
+    end
+  end
 
   it "creates a translation object" do
     translator = double(:translator)
-    t = Translatomatic::Translation.new(translator: translator)
+    t = described_class.new(translator: translator)
     expect(t).to be
   end
 
   it "translates a properties file to a target language" do
-    translator = double(:translator)
-    expect(translator).to receive(:translate).and_return(["Bier"])
+    translator = TestTranslator.new("Bier")
     contents = "key = Beer"
     path = create_tempfile("test.properties", contents)
-    t = Translatomatic::Translation.new(translator: translator)
+    t = described_class.new(translator: translator)
     target = t.translate(path, "de-DE")
     expect(target.path.basename.sub_ext('').to_s).to match(/_de-DE$/)
     expect(target.path.read).to eq("key = Bier\n")
@@ -41,11 +50,10 @@ RSpec.describe Translatomatic::Translation do
   end
 
   it "saves translations to the database" do
-    translator = double(:translator)
-    expect(translator).to receive(:translate).and_return(["Bier"])
+    translator = TestTranslator.new("Bier")
     t = described_class.new(translator: translator)
     properties = { key: "Beer" }
-    Translatomatic::Model::Text.delete_all
+    Translatomatic::Model::Text.destroy_all
     expect {
       result = t.translate_properties(properties, "en", "de")
       # should add original and translated text to database (2 records)

@@ -7,14 +7,14 @@ end
 require 'translatomatic/util'
 require 'translatomatic/version'
 require 'translatomatic/config'
+require 'translatomatic/converter'
 require 'translatomatic/database'
 require 'translatomatic/escaped_unicode'
 require 'translatomatic/model'
-require 'translatomatic/resource_bundle'
 require 'translatomatic/resource_file'
+require 'translatomatic/resource_bundle'
 require 'translatomatic/translator'
 require 'translatomatic/translation_result'
-require 'translatomatic/translation'
 require 'translatomatic/cli'
 
 begin

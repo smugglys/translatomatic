@@ -6,6 +6,10 @@ require 'translatomatic/translator/frengly'
 
 module Translatomatic::Translator
 
+  class << self
+    include Translatomatic::Util
+  end
+
   def self.find(name)
     self.const_get(name)
   end
@@ -18,6 +22,22 @@ module Translatomatic::Translator
 
   def self.names
     modules.collect { |i| i.name.demodulize }
+  end
+
+  # find the first translator that instantiates successfully
+  def self.default
+    @default ||= begin
+      modules.each do |mod|
+        begin
+          translator = mod.new
+          log.debug("using translator #{mod.name.demodulize}")
+          return translator
+        rescue Exception => e
+          log.debug("translator #{mod.name.demodulize} is unavailable")
+        end
+      end
+      nil
+    end
   end
 
   def self.list

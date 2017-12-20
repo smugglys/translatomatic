@@ -11,6 +11,7 @@ RSpec.describe Translatomatic::CLI do
 =end
 
   it "translates a file" do
+    Translatomatic::Model::Text.destroy_all
     path = create_tempfile("test.properties", "key = Beer")
     translator = double(:translator)
     expect(translator).to receive(:translate).and_return(["Bier"])
