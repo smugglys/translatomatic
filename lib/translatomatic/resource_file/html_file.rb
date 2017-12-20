@@ -15,12 +15,22 @@ module Translatomatic::ResourceFile
 
     # index.html -> index.html.fr
     def locale_path(locale)
-      extlist = extension_list(path)
+      extlist = extension_list
       if extlist.length >= 2
+        # two or more parts to extension
+        tag = extlist.find { |i| valid_locale?(i) }
+        if tag
+          # part of the extension is the locale
+          # replace that part with the new locale
+          idx = extlist.index(tag)
+          extlist[idx] = locale.to_s
+          new_extension = extlist.join(".")
+          return strip_extensions.sub_ext("." + new_extension)
+        end
+      end
 
-      filename = path.basename.sub_ext('').sub(/_.*?$/, '').to_s
-      filename += "_" + locale.to_s + path.extname
-      path.dirname + filename
+      # fall back to base functionality
+      super(locale)
     end
 
     def get(name)

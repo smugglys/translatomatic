@@ -52,7 +52,7 @@ class Translatomatic::ResourceFile::Base
     tag = nil
     basename = path.sub_ext('').basename.to_s
     directory = path.dirname.basename.to_s
-    extlist = extension_list(path)
+    extlist = extension_list
 
     if basename.match(/_([-\w]{2,})$/i)
       # locale after underscore in filename
@@ -72,10 +72,18 @@ class Translatomatic::ResourceFile::Base
     tag ? parse_locale(tag, true) : nil
   end
 
+  # ext_sub() only removes the last extension
+  def strip_extensions
+    filename = path.basename.to_s
+    filename.sub!(/\..*$/, '')
+    path.parent + filename
+  end
+
   # for index.html.de, returns ['html', 'de']
   def extension_list
-    idx = path.basename.to_s.index('.')
-    idx ? path.basename.to_s[idx..-1].split('.') : []
+    filename = path.basename.to_s
+    idx = filename.index('.')
+    idx && idx < filename.length - 1 ? filename[idx + 1..-1].split('.') : []
   end
 
 end
