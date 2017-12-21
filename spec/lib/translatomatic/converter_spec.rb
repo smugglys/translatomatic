@@ -26,6 +26,15 @@ RSpec.describe Translatomatic::Converter do
     expect(target.path.read).to eq("key = Bier\n")
   end
 
+  it "doesn't write files or translate strings when using dry run" do
+    translator = double(:translator)
+    expect(translator).to_not receive(:translate)
+    path = create_tempfile("test.properties", "key = Beer")
+    t = described_class.new(translator: translator, dry_run: true)
+    target = t.translate(path, "de-DE")
+    expect(target.path).to_not exist
+  end
+
   it "works with equal source and target languages" do
     translator = double(:translator)
     expect(translator).to_not receive(:translate)
@@ -38,7 +47,7 @@ RSpec.describe Translatomatic::Converter do
   it "uses existing translations from the database" do
     # add a translation to the database
     en_text = create_text(value: "yoghurt", locale: "en")
-    fr_text = create_text(value: "yoplait", locale: "fr", from_text: en_text)
+    create_text(value: "yoplait", locale: "fr", from_text: en_text)
 
     translator = double(:translator)
     expect(translator).to_not receive(:translate)
@@ -55,7 +64,7 @@ RSpec.describe Translatomatic::Converter do
     properties = { key: "Beer" }
     Translatomatic::Model::Text.destroy_all
     expect {
-      result = t.translate_properties(properties, "en", "de")
+      t.translate_properties(properties, "en", "de")
       # should add original and translated text to database (2 records)
     }.to change(Translatomatic::Model::Text, :count).by(2)
   end

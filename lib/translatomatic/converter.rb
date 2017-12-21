@@ -1,10 +1,28 @@
 class Translatomatic::Converter
   include Translatomatic::Util
 
+  class << self
+    attr_reader :options
+    private
+    include Translatomatic::DefineOptions
+  end
+
+  define_options(
+    { name: :translator, type: :string, aliases: "-t",
+      desc: "The translator implementation",
+      enum: Translatomatic::Translator.names },
+    { name: :dry_run, type: :boolean, aliases: "-n", desc:
+      "Print actions without performing translations or writing files" }
+  )
+
+  # @return [Translatomatic::ConverterStats] translation statistics
+  attr_reader :stats
+
   # Create a converter to translate files
   #
   # @param options A hash of converter and/or translator options.
   def initialize(options = {})
+    @dry_run = options[:dry_run]
     @translator = options[:translator]
     if @translator.kind_of?(String) || @translator.kind_of?(Symbol)
       klass = Translatomatic::Translator.find(@translator)
@@ -12,6 +30,13 @@ class Translatomatic::Converter
     end
     @translator ||= Translatomatic::Translator.default
     raise "translator required" unless @translator
+    @from_db = 0
+    @from_translator = 0
+  end
+
+  # @return [Translatomatic::ConverterStats] Translation statistics
+  def stats
+    Translatomatic::ConverterStats.new(@from_db, @from_translator)
   end
 
   # Translate contents of source_file to the target locale.
@@ -28,17 +53,10 @@ class Translatomatic::Converter
       raise "unsupported file type #{source_file}" unless source
     end
 
-    log.debug("source: #{source}")
     to_locale = parse_locale(to_locale)
     target_file = source.locale_path(to_locale)
-    if target_file.exist?
-      # open existing target file
-      target = Translatomatic::ResourceFile.load(target_file, to_locale)
-    else
-      # create a target file of the same type as the source
-      target = source.class.new(target_file, to_locale)
-    end
-    log.debug("target: #{target}")
+    target = source.class.new(target_file, to_locale)
+    raise "unable to determine target for source #{source}" unless target
     translate_to_target(source, target)
   end
 
@@ -51,11 +69,12 @@ class Translatomatic::Converter
     # perform translation
     # TODO: should untranslated properties be removed?
     # TODO: should existing translations be imported to the database?
+    log.info "translating #{source} to #{target}"
     properties = translate_properties(source.properties, source.locale, target.locale)
     properties.each do |key, value|
       target.set(key, value)
     end
-    target.save
+    target.save unless @dry_run
     target
   end
 
@@ -79,47 +98,55 @@ class Translatomatic::Converter
     # find translations in database first
     texts = find_database_translations(result)
     result.update_db_strings(texts)
+    @from_db += texts.length
 
     # send remaining unknown strings to translator
-    if result.has_untranslated_strings?
-      translated = @translator.translate(result.original_strings, from_locale, to_locale)
-      result.update_strings(translated)
-      save_database_translations(result, translated)
+    untranslated = result.untranslated.to_a  # copy set
+    if !untranslated.empty? && !@dry_run
+      translated = @translator.translate(untranslated, from_locale, to_locale)
+      result.update_strings(untranslated, translated)
+      save_database_translations(result, untranslated, translated)
     end
 
-    log.debug("translation: from db: #{texts.length}, translator: #{result.original_strings.length}")
+    @from_translator += untranslated.length
+    log.debug("translation: from db: #{texts.length}, translator: #{untranslated.length}")
 
     result.properties
   end
 
   private
 
-  def save_database_translations(result, translated_list)
-    translated_list = translated_list.dup
-
-    from = db_locale(result.from_locale)
-    to = db_locale(result.to_locale)
-    result.original_strings.each do |original|
-      translated = translated_list.shift
-      original_text = Translatomatic::Model::Text.find_or_create_by!({
-        locale: from,
-        value: original
-        })
-      result_text = Translatomatic::Model::Text.find_or_create_by!({
-        locale: to,
-        value: translated,
-        from_text: original_text,
-        translator: @translator.class.name.demodulize,
-        })
+  def save_database_translations(result, untranslated, translated)
+    ActiveRecord::Base.transaction do
+      from = db_locale(result.from_locale)
+      to = db_locale(result.to_locale)
+      untranslated.zip(translated).each do |t1, t2|
+        save_database_translation(from, to, t1, t2)
+      end
     end
+  end
+
+  def save_database_translation(from_locale, to_locale, t1, t2)
+    original_text = Translatomatic::Model::Text.find_or_create_by!(
+      locale: from_locale,
+      value: t1
+    )
+
+    Translatomatic::Model::Text.find_or_create_by!(
+      locale: to_locale,
+      value: t2,
+      from_text: original_text,
+      translator: @translator.class.name.demodulize
+    )
   end
 
   def find_database_translations(result)
     from = db_locale(result.from_locale)
     to = db_locale(result.to_locale)
-    translations = Translatomatic::Model::Text.where({
+
+    Translatomatic::Model::Text.where({
       locale: to,
-      from_texts_texts: { locale_id: from, value: result.original_strings }
+      from_texts_texts: { locale_id: from, value: result.untranslated.to_a }
     }).joins(:from_text)
   end
 
