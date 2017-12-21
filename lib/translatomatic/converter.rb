@@ -1,16 +1,9 @@
 class Translatomatic::Converter
   include Translatomatic::Util
 
-=begin
-  Method:
-  - find input file(s) to translate, and associated output file(s)
-  - get translator to use, specified in options or one that can work
-  - read input files and find all strings to translate
-  - get existing translations from database
-  - translate translations not in database
-  - write translated target files
-=end
-
+  # Create a converter to translate files
+  #
+  # @param options A hash of converter and/or translator options.
   def initialize(options = {})
     @translator = options[:translator]
     if @translator.kind_of?(String) || @translator.kind_of?(Symbol)
@@ -21,9 +14,12 @@ class Translatomatic::Converter
     raise "translator required" unless @translator
   end
 
-  # translate contents of source_file to the target locale
-  # writes output files corresponding the target locale
-  # returns the translated resource file
+  # Translate contents of source_file to the target locale.
+  # Automatically determines the target filename based on target locale.
+  #
+  # @param [String] source_file Path to source file, e.g. path/to/example.properties
+  # @param [String] to_locale The target locale, e.g. "fr"
+  # @return [Translatomatic::ResourceFile] The translated resource file
   def translate(source_file, to_locale)
     to_locale = parse_locale(to_locale)
     source = Translatomatic::ResourceFile.load(source_file)
@@ -39,7 +35,15 @@ class Translatomatic::Converter
       target = source.class.new(target_file, to_locale)
     end
     log.debug("target: #{target}")
+    translate_to_target(source, target)
+  end
 
+  # Translates a resource file and writes results to a target resource file
+  #
+  # @param source [Translatomatic::ResourceFile] The source
+  # @param target [Translatomatic::ResourceFile] The file to write
+  # @return [Translatomatic::ResourceFile] The translated resource file
+  def translate_to_target(source, target)
     # perform translation
     # TODO: should untranslated properties be removed?
     # TODO: should existing translations be imported to the database?
@@ -51,9 +55,13 @@ class Translatomatic::Converter
     target
   end
 
-  # translate the hash of properties.
-  # returns translated properties.
-  # uses existing translations from the database if available
+  # Translate values in the hash of properties.
+  # Uses existing translations from the database if available.
+  #
+  # @param [Hash] properties Text to translate
+  # @param [String, Locale] from_locale The locale of the given properties
+  # @param [String, Locale] to_locale The target locale for translations
+  # @return [Hash] Translated properties
   def translate_properties(properties, from_locale, to_locale)
     from_locale = parse_locale(from_locale)
     to_locale = parse_locale(to_locale)

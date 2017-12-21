@@ -4,7 +4,7 @@ class Translatomatic::Database
 
   include Translatomatic::Util
 
-  DB_PATH = File.join(File.dirname(__FILE__), "db")
+  DB_PATH = File.join(File.dirname(__FILE__), "..", "..", "db")
   DEFAULT_DB_CONFIG = File.join(DB_PATH, "database.yml")
   CUSTOM_DB_CONFIG = File.join(Dir.home, ".translatomatic", "database.yml")
   MIGRATIONS_PATH = File.join(DB_PATH, "migrate")

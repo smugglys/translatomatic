@@ -1,4 +1,5 @@
-class Initial < ActiveRecord::Migration[4.2]
+# @!visibility private
+class Initial < ActiveRecord::Migration[4.2] # :nodoc:
   def change
     create_table :locales do |t|
       t.string :language, null: false  # e.g. "en"   ISO 639-1
