@@ -32,7 +32,7 @@ module Translatomatic::Translator
           translator = mod.new
           log.debug("using translator #{mod.name.demodulize}")
           return translator
-        rescue Exception => e
+        rescue Exception
           log.debug("translator #{mod.name.demodulize} is unavailable")
         end
       end

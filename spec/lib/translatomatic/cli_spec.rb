@@ -4,12 +4,6 @@ RSpec.describe Translatomatic::CLI do
     @cli = described_class.new
   end
 
-=begin
-  it "translates all files" do
-    @cli.translate
-  end
-=end
-
   it "translates a file" do
     Translatomatic::Model::Text.destroy_all
     path = create_tempfile("test.properties", "key = Beer")

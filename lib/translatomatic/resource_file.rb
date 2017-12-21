@@ -27,11 +27,19 @@ module Translatomatic
     # Find all resource files under the given directory. Follows symlinks.
     # @param [String, Pathname] path The path to search from
     # @return [Array<Translatomatic::ResourceFile>] Resource files found
-    def self.find(path)
+    def self.find(path, options = {})
+      files = []
+      include_dot_directories = options[:include_dot_directories]
       path = Pathname.new(path) unless path.kind_of?(Pathname)
       path.find do |file|
-        puts file
+        if !include_dot_directories && file.basename.to_s[0] == ?.
+          Find.prune
+        else
+          resource = load(file)
+          files << resource if resource
+        end
       end
+      files
     end
 
     # Find all configured resource file classes

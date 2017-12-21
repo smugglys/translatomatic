@@ -29,20 +29,6 @@ class Translatomatic::CLI < Thor
     end
   end
 
-  desc "autotranslate", "translates all translatable files"
-  method_option :source_locale, desc: "The locale of the source files, default is autodetermined"
-  method_option :locales, type: :array, desc:
-  def autotranslate
-    # Method:
-    # - find all source resource files under current directory
-    # - find existing translations corresponding to the source file to
-    #   create a list of target locales, or prompt user for locales,
-    #   or use locales from --locales option.
-    # - TODO: how to determine which file to use as source?
-    # - perform translations
-    sources = Translatomatic::ResourceFile.find(Dir.pwd)
-  end
-
   desc "translators", "list available translation backends"
   def translators
     puts Translatomatic::Translator.list
