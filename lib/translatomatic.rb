@@ -4,6 +4,8 @@ module Translatomatic
   end
 end
 
+require 'pathname'
+
 require 'translatomatic/util'
 require 'translatomatic/version'
 require 'translatomatic/config'

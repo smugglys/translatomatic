@@ -1,14 +1,11 @@
-require 'pathname'
-
 class Translatomatic::ResourceFile::Base
   include Translatomatic::Util
 
-  attr_reader :data  # hash of key -> value
+  attr_accessor :locale
   attr_reader :path
-  attr_reader :locale
   attr_reader :contents
   attr_reader :format
-  attr_reader :properties
+  attr_reader :properties  # hash of key -> value
 
   def initialize(path, locale = nil)
     @path = Pathname.new(path)

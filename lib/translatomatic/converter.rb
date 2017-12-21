@@ -17,15 +17,19 @@ class Translatomatic::Converter
   # Translate contents of source_file to the target locale.
   # Automatically determines the target filename based on target locale.
   #
-  # @param [String] source_file Path to source file, e.g. path/to/example.properties
+  # @param [String, Translatomatic::ResourceFile] source_file File to translate
   # @param [String] to_locale The target locale, e.g. "fr"
   # @return [Translatomatic::ResourceFile] The translated resource file
   def translate(source_file, to_locale)
-    to_locale = parse_locale(to_locale)
-    source = Translatomatic::ResourceFile.load(source_file)
-    raise "unsupported file type #{source_file}" unless source
+    if source_file.kind_of?(Translatomatic::ResourceFile::Base)
+      source = source_file
+    else
+      source = Translatomatic::ResourceFile.load(source_file)
+      raise "unsupported file type #{source_file}" unless source
+    end
 
     log.debug("source: #{source}")
+    to_locale = parse_locale(to_locale)
     target_file = source.locale_path(to_locale)
     if target_file.exist?
       # open existing target file

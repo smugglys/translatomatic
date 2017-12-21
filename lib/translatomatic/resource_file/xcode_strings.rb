@@ -1,7 +1,7 @@
 module Translatomatic::ResourceFile
 
   # XCode strings file
-  class XcodeStrings < Base
+  class XCodeStrings < Base
 
     def self.extensions
       %w{strings}
