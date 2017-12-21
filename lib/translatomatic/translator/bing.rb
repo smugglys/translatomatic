@@ -6,9 +6,7 @@ module Translatomatic
     class Bing < Base
 
       define_options({
-        name: :bing_api_key,
-        description: "Bing API key",
-        required: true, use_env: true
+        name: :bing_api_key, desc: "Bing API key", use_env: true
         })
 
       def initialize(options = {})

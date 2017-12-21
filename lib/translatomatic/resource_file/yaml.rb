@@ -7,6 +7,7 @@ module Translatomatic::ResourceFile
       %w{yml yaml}
     end
 
+    # (see Translatomatic::ResourceFile::Base#initialize)
     def initialize(path, locale = nil)
       super(path)
       @format = :yaml
@@ -15,8 +16,9 @@ module Translatomatic::ResourceFile
       @properties = @path.exist? ? read : {}
     end
 
-    # localization files in rails use the following file name convention:
-    # config/locales/en.yml
+    # (see Translatomatic::ResourceFile::Base#locale_path)
+    # @note localization files in rails use the following file name
+    #   convention: config/locales/en.yml.
     def locale_path(locale)
       if path.to_s.match(/config\/locales\/[-\w]+.yml$/)
         # rails style
@@ -27,6 +29,7 @@ module Translatomatic::ResourceFile
       end
     end
 
+    # (see Translatomatic::ResourceFile::Base#set)
     def set(key, value)
       super(key, value)
 
@@ -37,6 +40,7 @@ module Translatomatic::ResourceFile
       hash[last_key] = value
     end
 
+    # (see Translatomatic::ResourceFile::Base#save)
     def save
       out = @data.to_yaml
       out.sub!(/^---\n/m, '')

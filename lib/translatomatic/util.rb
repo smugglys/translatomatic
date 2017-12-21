@@ -1,6 +1,7 @@
 require 'i18n_data'
 
 module Translatomatic::Util
+  private
 
   def parse_locale(tag, validate = true)
     locale = tag.kind_of?(I18n::Locale::Tag) ? tag : I18n::Locale::Tag.tag(tag)
@@ -17,8 +18,6 @@ module Translatomatic::Util
   def log
     Translatomatic::Config.instance.logger
   end
-
-  private
 
   # list of 2 letter country codes
   VALID_LANGUAGES = I18nData.languages.keys.collect { |i| i.downcase }.sort

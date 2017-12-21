@@ -7,6 +7,7 @@ module Translatomatic::ResourceFile
       %w{strings}
     end
 
+    # (see Translatomatic::ResourceFile::Base#initialize)
     def initialize(path, locale = nil)
       super(path)
       @format = :strings
@@ -15,8 +16,9 @@ module Translatomatic::ResourceFile
       @properties = { text: @text }
     end
 
-    # localization files in XCode use the following file name convention:
-    # Project/locale.lproj/filename
+    # (see Translatomatic::ResourceFile::Base#locale_path)
+    # @note localization files in XCode use the following file name
+    #   convention: Project/locale.lproj/filename
     def locale_path(locale)
       if path.to_s.match(/\/([-\w]+).lproj\/.+.strings$/)
         # xcode style

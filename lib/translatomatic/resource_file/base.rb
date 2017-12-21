@@ -1,12 +1,20 @@
+# @abstract Subclasses implement different types of resource files
 class Translatomatic::ResourceFile::Base
-  include Translatomatic::Util
 
   attr_accessor :locale
   attr_reader :path
   attr_reader :contents
   attr_reader :format
-  attr_reader :properties  # hash of key -> value
 
+  # @return [Hash<String,String>] key -> value properties
+  attr_reader :properties
+
+  # Create a new resource file.
+  # If locale is unspecified, attempts to determine the locale of the file
+  # automatically, and if that fails, uses the default locale.
+  # @param [String] path Path to the file
+  # @param [String] locale Locale of the file contents
+  # @return [Translatomatic::ResourceFile::Base] the resource file.
   def initialize(path, locale = nil)
     @path = Pathname.new(path)
     @locale = locale || detect_locale || parse_locale(I18n.default_locale)
@@ -15,34 +23,50 @@ class Translatomatic::ResourceFile::Base
     @properties = {}
   end
 
-  # return path for the current resource file with a given locale
+  # Create a path for the current resource file with a given locale
+  # @param [String] locale for the path
+  # @return [Pathname] The path of this resource file modified for the given locale
   def locale_path(locale)
     filename = path.basename.sub_ext('').sub(/_.*?$/, '').to_s
     filename += "_" + locale.to_s + path.extname
     path.dirname + filename
   end
 
+  # Get the value of a property
+  # @param [String] name The name of the property
+  # @return [String] The value of the property
   def get(name)
     @properties[name]
   end
 
-  def set(key, value)
-    @properties[key] = value
+  # Set a property
+  # @param [String] key The name of the property
+  # @param [String] value The new value of the property
+  # @return [String] The new value of the property
+  def set(name, value)
+    @properties[name] = value
   end
 
+  # Test if the current file is valid
+  # @return true if the current file is valid
   def valid?
     @valid
   end
 
+  # Save properties to the file
+  # @return [void]
   def save
     raise "save must be implemented by subclass"
   end
 
+  # @return [String] String representation of this file
   def to_s
-    "path #{path}, format: #{format}, locale: #{locale}"
+    "#{path.basename.to_s} (#{locale})"
   end
 
   private
+
+  include Translatomatic::Util
 
   # detect locale from filename
   def detect_locale

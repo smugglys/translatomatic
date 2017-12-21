@@ -5,6 +5,7 @@ module Translatomatic::ResourceFile
       %w{html htm shtml}
     end
 
+    # (see Translatomatic::ResourceFile::Base#initialize)
     def initialize(path, locale = nil)
       super(path)
       @format = :html
@@ -13,7 +14,7 @@ module Translatomatic::ResourceFile
       @properties = { text: @text }
     end
 
-    # index.html -> index.html.fr
+    # (see Translatomatic::ResourceFile::Base#locale_path)
     def locale_path(locale)
       extlist = extension_list
       if extlist.length >= 2
@@ -33,15 +34,18 @@ module Translatomatic::ResourceFile
       super(locale)
     end
 
+    # (see Translatomatic::ResourceFile::Base#get)
     def get(name)
       @text
     end
 
+    # (see Translatomatic::ResourceFile::Base#set)
     def set(key, value)
       @text = value
       @properties[:text] = @text
     end
 
+    # (see Translatomatic::ResourceFile::Base#save)
     def save
       path.write(@text)
     end

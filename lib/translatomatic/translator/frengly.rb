@@ -8,17 +8,11 @@ module Translatomatic
       URL = 'http://frengly.com/frengly/data/translateREST'
 
       define_options({
-        name: :frengly_api_key,
-        description: "Frengly API key",
-        required: false, use_env: true
+        name: :frengly_api_key, desc: "Frengly API key", use_env: true
       },
-      { name: :frengly_email,
-        description: "Email address",
-        required: true, use_env: false
+      { name: :frengly_email, desc: "Email address", use_env: true
       },
-      { name: :frengly_password,
-        description: "Password",
-        required: true, use_env: false
+      { name: :frengly_password, desc: "Password", use_env: true
         })
 
       def initialize(options = {})

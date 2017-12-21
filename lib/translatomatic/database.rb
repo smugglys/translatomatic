@@ -4,12 +4,18 @@ class Translatomatic::Database
 
   include Translatomatic::Util
 
+  class << self
+    attr_reader :options
+    private
+    include Translatomatic::DefineOptions
+  end
+
   def initialize(options = {})
     db_config_path = db_config_path(options)
     dbconfig = File.read(db_config_path)
     dbconfig.gsub!(/\$HOME/, Dir.home)
     dbconfig.gsub!(/\$GEM_ROOT/, GEM_ROOT)
-    @env = options[:env] || DEFAULT_ENV
+    @env = options[:database_env] || DEFAULT_ENV
     @db_config = YAML::load(dbconfig) || {}
     @env_config = @db_config
     raise "no environment '#{@env}' in #{db_config_path}" unless @env_config[@env]
@@ -19,7 +25,6 @@ class Translatomatic::Database
     ActiveRecord::Tasks::DatabaseTasks.db_dir = DB_PATH
     ActiveRecord::Tasks::DatabaseTasks.root = DB_PATH
     ActiveRecord::Tasks::DatabaseTasks.database_configuration = @db_config
-
     create unless exists?
     migrate
   end
@@ -75,19 +80,24 @@ class Translatomatic::Database
   private
 
   DB_PATH = File.join(File.dirname(__FILE__), "..", "..", "db")
-  DEFAULT_DB_CONFIG = File.join(DB_PATH, "database.yml")
+  INTERNAL_DB_CONFIG = File.join(DB_PATH, "database.yml")
   CUSTOM_DB_CONFIG = File.join(Dir.home, ".translatomatic", "database.yml")
+  DEFAULT_DB_CONFIG = File.exist?(CUSTOM_DB_CONFIG) ? CUSTOM_DB_CONFIG : INTERNAL_DB_CONFIG
   MIGRATIONS_PATH = File.join(DB_PATH, "migrate")
   GEM_ROOT = File.join(File.dirname(__FILE__), "..", "..")
-  DEFAULT_ENV = "default"
+  DEFAULT_ENV = "production"
+
+  define_options(
+    { name: :database_config, description: "Database config file",
+      default: DEFAULT_DB_CONFIG },
+    { name: :database_env, description: "Database environment",
+      default: DEFAULT_ENV })
 
   def db_config_path(options)
-    if options[:env] == "test"
-      DEFAULT_DB_CONFIG  # rspec
+    if options[:database_env] == "test"
+      INTERNAL_DB_CONFIG  # rspec
     elsif options[:database_config]
       return options[:database_config]
-    elsif File.exist?(CUSTOM_DB_CONFIG)
-      CUSTOM_DB_CONFIG
     else
       DEFAULT_DB_CONFIG
     end

@@ -11,14 +11,14 @@ module Helpers
 
   def create_test_database
     log.debug "Setting up test database"
-    db = Translatomatic::Database.new(env: "test")
+    db = Translatomatic::Database.new(database_env: "test")
     db.drop
     db.migrate
   end
 
-  def create_tempfile(name, contents)
+  def create_tempfile(name, contents = nil)
     tempfile = Tempfile.new(name)
-    tempfile.write(contents)
+    tempfile.write(contents) if contents
     tempfile.close
     tempfile.path
   end

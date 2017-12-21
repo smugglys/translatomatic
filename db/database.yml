@@ -1,5 +1,4 @@
-# default database if no other configuration is specified
-default:
+production:
   adapter: sqlite3
   encoding: utf-8
   database: $HOME/.translatomatic/translatomatic.sqlite3

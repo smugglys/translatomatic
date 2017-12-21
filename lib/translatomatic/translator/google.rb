@@ -3,9 +3,8 @@ module Translatomatic
 
     class Google < Base
 
-      define_options({ name: :google_api_key,
-            description: "Google API key",
-            required: true, use_env: true
+      define_options({ name: :google_api_key, desc: "Google API key",
+            use_env: true
           })
 
       def initialize(options = {})
