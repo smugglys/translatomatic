@@ -97,20 +97,26 @@ class Translatomatic::Converter
     @from_db += texts.length
 
     # send remaining unknown strings to translator
-    untranslated = result.untranslated.to_a  # copy set
+    # (copy untranslated set from result)
+    untranslated = result.untranslated.to_a.select { |i| translatable?(i) }
+    @from_translator += untranslated.length
     if !untranslated.empty? && !@dry_run
       translated = @translator.translate(untranslated, from_locale, to_locale)
       result.update_strings(untranslated, translated)
       save_database_translations(result, untranslated, translated)
     end
 
-    @from_translator += untranslated.length
-    log.debug("translation: from db: #{texts.length}, translator: #{untranslated.length}")
-
+    log.debug("translations from db: %d translator: %d untranslated: %d" %
+      [texts.length, untranslated.length, result.untranslated.length])
     result.properties
   end
 
   private
+
+  def translatable?(string)
+    # don't translate numbers
+    !string.empty? && !string.match(/^[\d,]+$/)
+  end
 
   def save_database_translations(result, untranslated, translated)
     ActiveRecord::Base.transaction do

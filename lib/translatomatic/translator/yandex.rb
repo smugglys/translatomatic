@@ -11,7 +11,7 @@ module Translatomatic
 
       def initialize(options = {})
         key = options[:yandex_api_key] || ENV["YANDEX_API_KEY"]
-        raise "yandex_api_key required" if key.nil?
+        raise "yandex api key required" if key.nil?
         @impl = ::Yandex::Translator.new(key)
       end
 

@@ -5,6 +5,8 @@ end
 
 require "bundler/setup"
 require "translatomatic"
+require 'webmock/rspec'
+include WebMock
 
 SPEC_DIR = File.dirname(__FILE__)
 Dir[File.join(SPEC_DIR, "support/**/*.rb")].sort.each { |f| require f }

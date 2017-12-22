@@ -3,17 +3,21 @@ require 'bing_translator'
 module Translatomatic
   module Translator
 
-    class Bing < Base
+    class Microsoft < Base
 
       define_options({
-        name: :bing_api_key, desc: "Bing API key", use_env: true
+        name: :microsoft_api_key, desc: "Microsoft API key", use_env: true
         })
 
       def initialize(options = {})
-        key = options[:bing_api_key] || ENV["BING_API_KEY"]
-        raise "bing api key required" if key.nil?
+        key = options[:microsoft_api_key] || ENV["MICROSOFT_API_KEY"]
+        raise "microsoft api key required" if key.nil?
         @impl = BingTranslator.new(key)
       end
+
+      # TODO: implement language list
+      #def languages
+      #end
 
       def perform_translate(strings, from, to)
         @impl.translate_array(strings, from: from.language, to: to.language)

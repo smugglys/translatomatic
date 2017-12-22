@@ -1,0 +1,13 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:v2="http://api.microsofttranslator.com/V2">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <v2:TranslateArrayResponse>
+      <v2:TranslateArrayResult>
+        <v2:TranslateArrayResponse>
+          <v2:TranslatedText>Bier</v2:TranslatedText>
+        </v2:TranslateArrayResponse>
+      </v2:TranslateArrayResult>
+    </v2:TranslateArrayResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

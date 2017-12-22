@@ -1,8 +1,9 @@
 require 'translatomatic/translator/base'
 require 'translatomatic/translator/yandex'
 require 'translatomatic/translator/google'
-require 'translatomatic/translator/bing'
+require 'translatomatic/translator/microsoft'
 require 'translatomatic/translator/frengly'
+require 'translatomatic/translator/my_memory'
 
 module Translatomatic::Translator
 

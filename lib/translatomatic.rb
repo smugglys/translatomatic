@@ -6,6 +6,7 @@ end
 
 require 'pathname'
 require 'active_support/core_ext/hash'
+require 'easy_translate'
 
 require 'translatomatic/option'
 require 'translatomatic/util'

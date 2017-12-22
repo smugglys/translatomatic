@@ -87,15 +87,4 @@ module Translatomatic::EscapedUnicode
   EMPTY_8BIT_STRING = ''
   EMPTY_8BIT_STRING.force_encoding(::Encoding::ASCII_8BIT)
 
-  def self.unicode(code)
-    code.chr(::Encoding::UTF_8)
-  end
-
-  def self.hex(codepoint)
-    hex  = codepoint.to_s(16)
-    size = [4, hex.size].max
-    target_size = size.even? ? size : size+1
-    hex.rjust(target_size, '0')
-  end
-
 end
