@@ -5,8 +5,6 @@ module Translatomatic
 
     class Frengly < Base
 
-      URL = 'http://frengly.com/frengly/data/translateREST'
-
       define_options({
         name: :frengly_api_key, desc: "Frengly API key", use_env: true
       },
@@ -15,6 +13,7 @@ module Translatomatic
       { name: :frengly_password, desc: "Password", use_env: true
         })
 
+        # Create a new Frengly translator instance
       def initialize(options = {})
         @key = options[:frengly_api_key] || ENV["FRENGLY_API_KEY"] # optional
         @email = options[:frengly_email]
@@ -23,9 +22,14 @@ module Translatomatic
         raise "password required" unless @password
       end
 
+      # (see Translatomatic::Translator::Base#languages)
       def languages
         ['en','fr','de','es','pt','it','nl','tl','fi','el','iw','pl','ru','sv']
       end
+
+      private
+
+      URL = 'http://frengly.com/frengly/data/translateREST'
 
       def perform_translate(strings, from, to)
         translated = []
