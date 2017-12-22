@@ -1,16 +1,8 @@
 module Translatomatic::ResourceFile
-  class Plist < Base
+  class Plist < XML
 
     def self.extensions
       %w{plist}
-    end
-
-    # (see Translatomatic::ResourceFile::Base#initialize)
-    def initialize(path, locale = nil)
-      super(path)
-      @valid = true
-      @format = :plist
-      @properties = {} #@path.exist? ? read(@path) : {}
     end
 
     # (see Translatomatic::ResourceFile::Base#locale_path)
@@ -27,5 +19,11 @@ module Translatomatic::ResourceFile
       end
     end
 
-  end
-end
+    private
+
+    def text_nodes_xpath
+      '//*[not(self::key)]/text()'
+    end
+
+  end # class
+end   # module

@@ -6,7 +6,7 @@ module Helpers
   end
 
   def fixture_path(path)
-    File.join(File.dirname(__FILE__), 'fixtures', path)
+    File.join(File.dirname(__FILE__), '..', 'fixtures', path)
   end
 
   def create_test_database
@@ -20,6 +20,6 @@ module Helpers
     tempfile = Tempfile.new(name)
     tempfile.write(contents) if contents
     tempfile.close
-    tempfile.path
+    Pathname.new(tempfile.path)
   end
 end

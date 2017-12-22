@@ -9,8 +9,7 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#initialize)
     def initialize(path, locale = nil)
-      super(path)
-      @format = :yaml
+      super(path, locale)
       @valid = true
       @data = {}
       @properties = @path.exist? ? read : {}
@@ -33,25 +32,25 @@ module Translatomatic::ResourceFile
     def set(key, value)
       super(key, value)
 
+      hash = @data
       path = key.split(/\./)
       last_key = path.pop
-      hash = @data
       path.each { |i| hash = (hash[i] ||= {}) }
       hash[last_key] = value
     end
 
-    # (see Translatomatic::ResourceFile::Base#save)
-    def save
+    # (see Translatomatic::ResourceFile::Base#save(target))
+    def save(target = path)
       out = @data.to_yaml
       out.sub!(/^---\n/m, '')
-      path.write(out)
+      target.write(out)
     end
 
     private
 
     def read
       begin
-        @data = ::YAML.load_file(@path)
+        @data = ::YAML.load_file(@path) || {}
         flatten_data(@data)
       rescue Exception
         @valid = false

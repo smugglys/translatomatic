@@ -31,8 +31,8 @@ RSpec.describe Translatomatic::Model::Text do
 
   it "deletes dependent translations" do
     t1 = described_class.create(value: 'ra', locale: @locale_en)
-    t2 = described_class.create(value: 'ra ra', locale: @locale_fr, from_text: t1)
-    t3 = described_class.create(value: 'ra ra ra', locale: @locale_de, from_text: t1)
+    described_class.create(value: 'ra ra', locale: @locale_fr, from_text: t1)
+    described_class.create(value: 'ra ra ra', locale: @locale_de, from_text: t1)
     expect {
       t1.destroy
     }.to change(described_class, :count).by(-3)

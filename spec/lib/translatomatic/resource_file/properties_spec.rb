@@ -1,6 +1,13 @@
 RSpec.describe Translatomatic::ResourceFile::Properties do
-  it "Converts \\n to newline and back" do
-    path = fixture_path("test.properties")
+  include_examples "a resource file", {
+    locale_path_conversions: [
+      PathConversion.new("path/to/file.$EXT", "path/to/file_$LOC.$EXT"),
+      PathConversion.new("path/to/file_$LOC.$EXT", "path/to/file_$LOC.$EXT"),
+    ]
+  }
+
+  it "converts \\n to newline and back" do
+    path = fixture_path("test_multiline.properties")
     source = Translatomatic::ResourceFile.load(path)
     expect(source).to be  # valid properties file
 
@@ -14,7 +21,8 @@ RSpec.describe Translatomatic::ResourceFile::Properties do
 
     # TODO: currently comments are stripped
     # ideally they would be translated or kept
-    expected_contents = fixture_read("expected_result.properties")
+    expected_contents = fixture_read("test_multiline_save.properties")
     expect(target.path.read).to eq(expected_contents)
   end
+
 end

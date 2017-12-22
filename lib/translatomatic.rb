@@ -5,6 +5,7 @@ module Translatomatic
 end
 
 require 'pathname'
+require 'active_support/core_ext/hash'
 
 require 'translatomatic/option'
 require 'translatomatic/util'

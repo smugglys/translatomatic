@@ -1,6 +1,7 @@
 module Translatomatic::ResourceFile
 
   # XCode strings file
+  # @see https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html
   class XCodeStrings < Base
 
     def self.extensions
@@ -9,11 +10,9 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#initialize)
     def initialize(path, locale = nil)
-      super(path)
-      @format = :strings
+      super(path, locale)
       @valid = true
-      @text = @path.exist? ? @path.read : nil
-      @properties = { text: @text }
+      @properties = @path.exist? ? read(@path) : {}
     end
 
     # (see Translatomatic::ResourceFile::Base#locale_path)
@@ -27,6 +26,39 @@ module Translatomatic::ResourceFile
       else
         super(locale)
       end
+    end
+
+    # (see Translatomatic::ResourceFile::Base#save(target))
+    def save(target = path)
+      out = ""
+      properties.each do |key, value|
+        key = escape(key)
+        value = escape(value)
+        out += %Q{"#{key}" = "#{value}";\n}
+      end
+      target.write(out)
+    end
+
+    private
+
+    def read(path)
+      result = {}
+      content = path.read
+      uncommented = content.gsub(/\/\*.*?\*\//, '')
+      key_values = uncommented.scan(/"(.*?[^\\])"\s*=\s*"(.*?[^\\])"\s*;/m)
+      key_values.each do |entry|
+        key, value = entry
+        result[unescape(key)] = unescape(value)
+      end
+      result
+    end
+
+    def unescape(string)
+      string ? string.gsub(/\\(["'])/) { |i| i } : ''
+    end
+
+    def escape(string)
+      string ? string.gsub(/["']/) { |i| "\\#{i}" } : ''
     end
 
   end

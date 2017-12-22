@@ -31,12 +31,13 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor", "~> 0.20"
   spec.add_dependency "yandex-translator"
   spec.add_dependency "easy_translate"
-  spec.add_dependency "bing_translator"
+  spec.add_dependency "bing_translator", "~> 5.1.0"
   spec.add_dependency "sqlite3", "~> 1.3"
   spec.add_dependency "activerecord", "~> 5.0"
   spec.add_dependency "i18n"
   spec.add_dependency "i18n_data"
   spec.add_dependency "bigdecimal"
+  spec.add_dependency "nokogiri"
 
   # TODO: i want to use mysql in my .translatomatic/database.yml but
   # other people shouldn't have to install it, how to make it optional?

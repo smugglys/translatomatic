@@ -4,7 +4,6 @@ class Translatomatic::ResourceFile::Base
   attr_accessor :locale
   attr_reader :path
   attr_reader :contents
-  attr_reader :format
 
   # @return [Hash<String,String>] key -> value properties
   attr_reader :properties
@@ -23,13 +22,35 @@ class Translatomatic::ResourceFile::Base
     @properties = {}
   end
 
+  def format
+    self.class.name.demodulize.downcase.to_sym
+  end
+
   # Create a path for the current resource file with a given locale
   # @param [String] locale for the path
   # @return [Pathname] The path of this resource file modified for the given locale
   def locale_path(locale)
-    filename = path.basename.sub_ext('').sub(/_.*?$/, '').to_s
-    filename += "_" + locale.to_s + path.extname
-    path.dirname + filename
+    basename = path.sub_ext('').basename.to_s
+
+    extlist = extension_list
+    if extlist.length >= 2 && loc_idx = find_locale(extlist)
+      extlist[loc_idx] = locale.to_s
+    elsif valid_locale?(basename)
+      path.dirname + (locale.to_s + path.extname)
+    else
+      deunderscored = basename.sub(/_.*?$/, '')
+      filename = deunderscored + "_" + locale.to_s + path.extname
+      path.dirname + filename
+    end
+  end
+
+  # Set all properties
+  # @param [Hash<String,String>] properties New properties
+  def properties=(properties)
+    # use set rather that set @properties directly as subclasses override set()
+    properties.each do |key, value|
+      set(key, value)
+    end
   end
 
   # Get the value of a property
@@ -47,16 +68,17 @@ class Translatomatic::ResourceFile::Base
     @properties[name] = value
   end
 
-  # Test if the current file is valid
+  # Test if the current resource file is valid
   # @return true if the current file is valid
   def valid?
     @valid
   end
 
-  # Save properties to the file
+  # Save the resource file.
+  # @param [Pathname] target The destination path
   # @return [void]
-  def save
-    raise "save must be implemented by subclass"
+  def save(target = path)
+    raise "save(path) must be implemented by subclass"
   end
 
   # @return [String] String representation of this file
@@ -78,19 +100,25 @@ class Translatomatic::ResourceFile::Base
     if basename.match(/_([-\w]{2,})$/i)
       # locale after underscore in filename
       tag = $1
-    elsif basename.match(/^(\w{2})$/i) && valid_locale?($1)
-      # match on entire basename, two letter country code
-      # (support for rails en.yml)
-      tag = $1
     elsif directory.match(/^([-\w]+)\.lproj$/)
       # xcode localized strings
       tag = $1
-    elsif extlist.length >= 2 && valid_locale?(extlist[-1])
+    elsif extlist.length >= 2 && loc_idx = find_locale(extlist)
       # multiple parts to extension, e.g. index.html.en
-      tag = extlist[-1]
+      tag = extlist[loc_idx]
+    elsif valid_locale?(basename)
+      # try to match on entire basename
+      # (support for rails en.yml)
+      tag = basename
     end
 
     tag ? parse_locale(tag, true) : nil
+  end
+
+  # test if the list of strings contains a valid locale
+  # return the index to the locale, or nil if no locales found
+  def find_locale(list)
+    list.find_index { |i| valid_locale?(i) }
   end
 
   # ext_sub() only removes the last extension

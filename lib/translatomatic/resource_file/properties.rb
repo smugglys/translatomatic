@@ -7,14 +7,13 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#initialize)
     def initialize(path, locale = nil)
-      super(path)
+      super(path, locale)
       @valid = true
-      @format = :properties
       @properties = @path.exist? ? read(@path) : {}
     end
 
-    # (see Translatomatic::ResourceFile::Base#save)
-    def save
+    # (see Translatomatic::ResourceFile::Base#save(target))
+    def save(target = path)
       out = ""
       properties.each do |key, value|
         # TODO: maintain original line ending format?
@@ -23,7 +22,7 @@ module Translatomatic::ResourceFile
       end
       # escape unicode characters
       out = Translatomatic::EscapedUnicode.escape(out)
-      path.write(out)
+      target.write(out)
     end
 
     private

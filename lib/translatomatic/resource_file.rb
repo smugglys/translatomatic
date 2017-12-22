@@ -64,8 +64,9 @@ end
 
 require 'translatomatic/resource_file/base'
 require 'translatomatic/resource_file/yaml'
-require 'translatomatic/resource_file/plist'
 require 'translatomatic/resource_file/properties'
-require 'translatomatic/resource_file/text_file'
-require 'translatomatic/resource_file/html_file'
+require 'translatomatic/resource_file/text'
+require 'translatomatic/resource_file/xml'
+require 'translatomatic/resource_file/html'
+require 'translatomatic/resource_file/plist'
 require 'translatomatic/resource_file/xcode_strings'
