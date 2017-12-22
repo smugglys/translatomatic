@@ -28,19 +28,14 @@ class Translatomatic::CLI < Thor
       Translatomatic::Config.instance.debug = options[:debug] if options[:debug]
       Translatomatic::Database.new(options)
 
-      translator = options[:translator]
-      unless options[:translator]
-        # find a translator
-        available = Translatomatic::Translator.available(options)
-        translator = select_translator(available)
-      end
-      log.debug("using translator #{translator}")
+      translator = select_translator
+      log.info("Using translator #{translator.name}")
 
       converter_options = options.merge(translator: translator)
       converter = Translatomatic::Converter.new(converter_options)
       source = Translatomatic::ResourceFile.load(file, options[:source_locale])
 
-      raise "unsupported file type #{file}" unless source
+      raise "Unsupported file type #{file}" unless source
       target_locales = [locale]
       target_locales += locales
       target_locales.each { |i| converter.translate(source, i) }
@@ -51,7 +46,7 @@ class Translatomatic::CLI < Thor
       puts "\nAborted"
       false
     rescue Exception => e
-      log.error("error translating #{file}")
+      log.error("Error translating #{file}")
       log.error(e.message)
       log.debug(e.backtrace.join("\n"))
       false
@@ -70,11 +65,22 @@ class Translatomatic::CLI < Thor
 
   private
 
-  def select_translator(available)
+  def select_translator
+    # use options translator if specified
+    if options[:translator]
+      klass = Translatomatic::Translator.find(options[:translator])
+      return klass.new(options)
+    end
+
+    # find all available translators that work with the given options
+    available = Translatomatic::Translator.available(options)
     if available.empty?
       raise "No translators configured. Use the translators command to see options"
     end
+
     return available[0] if available.length == 1
+
+    # prompt user for which translator to use
     say("Multiple translators available:")
     available.each_with_index { |mod, i| say(" #{i + 1}) #{mod.name}") }
     loop do

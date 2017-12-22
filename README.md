@@ -34,6 +34,10 @@ The command line interface for translation functionality is **translatomatic**. 
 
 ## Example Usage
 
+To list available translation backends and options:
+
+    $ translatomatic translators
+
 To translate a java properties file to German and French:
 
     $ translatomatic src/main/resources/strings.properties de fr
