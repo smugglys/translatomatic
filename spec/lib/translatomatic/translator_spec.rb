@@ -1,8 +1,8 @@
 RSpec.describe Translatomatic::Translator do
-  describe :default do
-    it "should find a working translator" do
-      t = Translatomatic::Translator.default
-      expect(t).to be
+  describe :available do
+    it "should find all available translators" do
+      list = Translatomatic::Translator.available
+      expect(list).to be
     end
   end
 end

@@ -27,7 +27,17 @@ class Translatomatic::CLI < Thor
 
       Translatomatic::Config.instance.debug = options[:debug] if options[:debug]
       Translatomatic::Database.new(options)
-      converter = Translatomatic::Converter.new(options)
+
+      translator = options[:translator]
+      unless options[:translator]
+        # find a translator
+        available = Translatomatic::Translator.available(options)
+        translator = select_translator(available)
+      end
+      log.debug("using translator #{translator}")
+
+      converter_options = options.merge(translator: translator)
+      converter = Translatomatic::Converter.new(converter_options)
       source = Translatomatic::ResourceFile.load(file, options[:source_locale])
 
       raise "unsupported file type #{file}" unless source
@@ -37,6 +47,9 @@ class Translatomatic::CLI < Thor
 
       log.info converter.stats
       true
+    rescue Interrupt
+      puts "\nAborted"
+      false
     rescue Exception => e
       log.error("error translating #{file}")
       log.error(e.message)
@@ -53,5 +66,21 @@ class Translatomatic::CLI < Thor
   desc 'version', 'Display version'
   def version
     puts "Translatomatic version #{Translatomatic::VERSION}"
+  end
+
+  private
+
+  def select_translator(available)
+    if available.empty?
+      raise "No translators configured. Use the translators command to see options"
+    end
+    return available[0] if available.length == 1
+    say("Multiple translators available:")
+    available.each_with_index { |mod, i| say(" #{i + 1}) #{mod.name}") }
+    loop do
+      idx = ask("Select translator (1-#{available.length}): ")
+      idx = idx.to_i
+      return available[idx - 1] if (1..available.length).include?(idx)
+    end
   end
 end

@@ -28,7 +28,6 @@ class Translatomatic::Converter
       klass = Translatomatic::Translator.find(@translator)
       @translator = klass.new(options)
     end
-    @translator ||= Translatomatic::Translator.default
     raise "translator required" unless @translator
     @from_db = 0
     @from_translator = 0

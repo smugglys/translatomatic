@@ -16,6 +16,7 @@ module Translatomatic
   end
 
   module DefineOptions
+    private
     def define_options(*options)
       @options = options.collect { |i| Translatomatic::Option.new(i) }
     end

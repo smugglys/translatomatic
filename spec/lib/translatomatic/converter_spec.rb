@@ -10,10 +10,16 @@ RSpec.describe Translatomatic::Converter do
     end
   end
 
-  it "creates a translation object" do
+  it "creates a new instance" do
     translator = double(:translator)
     t = described_class.new(translator: translator)
     expect(t).to be
+  end
+
+  it "requires a translator" do
+    expect {
+      t = described_class.new
+    }.to raise_error(/translator required/)
   end
 
   it "translates a properties file to a target language" do

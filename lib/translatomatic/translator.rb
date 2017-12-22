@@ -11,43 +11,48 @@ module Translatomatic::Translator
     include Translatomatic::Util
   end
 
+  # @return [Class] The translator class corresponding to the given name
   def self.find(name)
     self.const_get(name)
   end
 
+  # @return [List<Class>] A list of all translator classes
   def self.modules
     self.constants.collect { |c| self.const_get(c) }.select do |klass|
       klass.is_a?(Class) && klass != Translatomatic::Translator::Base
     end
   end
 
+  # @return [List<String>] A list of all translators
   def self.names
     modules.collect { |i| i.name.demodulize }
   end
 
-  # find the first translator that instantiates successfully
-  def self.default
-    @default ||= begin
-      modules.each do |mod|
-        begin
-          translator = mod.new
-          log.debug("using translator #{mod.name.demodulize}")
-          return translator
-        rescue Exception
-          log.debug("translator #{mod.name.demodulize} is unavailable")
-        end
+  # Find all configured translators
+  # @param [Hash<String,String>] options Translator options
+  # @return [Array<#translate>] A list of translator instances
+  def self.available(options = {})
+    available = []
+    modules.each do |mod|
+      begin
+        translator = mod.new(options)
+        available << translator
+      rescue Exception
+        log.debug("translator #{mod.name.demodulize} is unavailable")
       end
-      nil
     end
+    available
   end
 
+  # @return [String] A description of all translators and options
   def self.list
-    out = "Translators available:\n"
+    out = "Translators:\n"
     modules.each do |mod|
       out += "\n" + mod.name.demodulize + ":\n"
       opts = mod.options
       opts.each do |opt|
-        out += "  --%-18s  %15s  %10s  %15s\n" % [opt.name, opt.description,
+        optname = opt.name.to_s.gsub("_", "-")
+        out += "  --%-18s  %18s  %10s  %15s\n" % [optname, opt.description,
           opt.required ? "(required)" : "",
           opt.use_env ? "ENV[#{opt.name.upcase}]" : ""]
       end
