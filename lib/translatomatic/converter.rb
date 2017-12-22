@@ -54,9 +54,9 @@ class Translatomatic::Converter
     end
 
     to_locale = parse_locale(to_locale)
-    target_file = source.locale_path(to_locale)
-    target = source.class.new(target_file, to_locale)
-    raise "unable to determine target for source #{source}" unless target
+    target = Translatomatic::ResourceFile.load(source.path)
+    target.path = source.locale_path(to_locale)
+    target.locale = to_locale
     translate_to_target(source, target)
   end
 
@@ -67,13 +67,9 @@ class Translatomatic::Converter
   # @return [Translatomatic::ResourceFile] The translated resource file
   def translate_to_target(source, target)
     # perform translation
-    # TODO: should untranslated properties be removed?
-    # TODO: should existing translations be imported to the database?
     log.info "translating #{source} to #{target}"
     properties = translate_properties(source.properties, source.locale, target.locale)
-    properties.each do |key, value|
-      target.set(key, value)
-    end
+    target.properties = properties
     target.save unless @dry_run
     target
   end

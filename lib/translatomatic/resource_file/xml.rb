@@ -25,6 +25,15 @@ module Translatomatic::ResourceFile
 
     private
 
+    # initialize nodemap from nokogiri document
+    # returns property hash
+    def init_nodemap(doc)
+      # map of key1 => node, key2 => node, ...
+      @nodemap = flatten_xml(doc)
+      # map of key => node content
+      @nodemap.transform_values { |v| v.content }
+    end
+
     # parse key = value property file
     def read(path)
       begin
@@ -32,10 +41,7 @@ module Translatomatic::ResourceFile
         @doc = Nokogiri::XML(path.open) do |config|
           config.noblanks
         end
-        # map of key1 => node, key2 => node, ...
-        @nodemap = flatten_xml(@doc)
-        # map of key => node content
-        @nodemap.transform_values { |v| v.content }
+        init_nodemap(@doc)
       rescue Exception
         @valid = false
         {}

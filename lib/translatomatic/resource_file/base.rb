@@ -2,8 +2,7 @@
 class Translatomatic::ResourceFile::Base
 
   attr_accessor :locale
-  attr_reader :path
-  attr_reader :contents
+  attr_accessor :path
 
   # @return [Hash<String,String>] key -> value properties
   attr_reader :properties
@@ -15,7 +14,7 @@ class Translatomatic::ResourceFile::Base
   # @param [String] locale Locale of the file contents
   # @return [Translatomatic::ResourceFile::Base] the resource file.
   def initialize(path, locale = nil)
-    @path = Pathname.new(path)
+    @path = path.kind_of?(Pathname) ? path : Pathname.new(path)
     @locale = locale || detect_locale || parse_locale(I18n.default_locale)
     raise "unable to determine locale" unless @locale && @locale.language
     @valid = false

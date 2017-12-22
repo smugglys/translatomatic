@@ -11,7 +11,15 @@ RSpec.describe Translatomatic::CLI do
     translator = double(:translator)
     expect(translator).to receive(:translate).and_return(["Bier"])
     @cli.options = @cli.options.merge(translator: translator)
-    @cli.translate(path, "de")
+    @cli.translate(path.to_s, "de")
+  end
+
+  it "does not translate unsupported files" do
+    path = create_tempfile("test.exe")
+    translator = double(:translator)
+    expect(translator).to_not receive(:translate)
+    @cli.options = @cli.options.merge(translator: translator)
+    @cli.translate(path.to_s, "de")
   end
 
   it "lists available translators" do

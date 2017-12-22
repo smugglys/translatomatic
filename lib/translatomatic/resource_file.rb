@@ -13,10 +13,11 @@ module Translatomatic
     # @return [Translatomatic::ResourceFile::Base] The resource file, or nil
     #   if the file type is unsupported.
     def self.load(path, locale = nil)
+      path = path.kind_of?(Pathname) ? path : Pathname.new(path)
       modules.each do |mod|
         # match on entire filename to support extensions containing locales
         if extension_match(mod, path)
-          log.debug("attempting to load #{path} using #{mod.name.demodulize}")
+          log.debug("attempting to load #{path.to_s} using #{mod.name.demodulize}")
           file = mod.new(path, locale)
           return file if file.valid?
         end
@@ -53,8 +54,9 @@ module Translatomatic
     private
 
     def self.extension_match(mod, path)
-      filename = Pathname.new(path).basename.to_s.downcase
+      filename = path.basename.to_s.downcase
       mod.extensions.each do |extension|
+        # don't match end of line in case file has locale extension
         return true if filename.match(/\.#{extension}/)
       end
       false

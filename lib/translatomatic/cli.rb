@@ -25,12 +25,12 @@ class Translatomatic::CLI < Thor
     begin
       log.info("dry run: files will not be translated or written") if options[:dry_run]
 
-      Translatomatic::Config.instance.debug = options[:debug]
+      Translatomatic::Config.instance.debug = options[:debug] if options[:debug]
       Translatomatic::Database.new(options)
       converter = Translatomatic::Converter.new(options)
       source = Translatomatic::ResourceFile.load(file, options[:source_locale])
 
-      raise "unsupported file type #{source_file}" unless source
+      raise "unsupported file type #{file}" unless source
       target_locales = [locale]
       target_locales += locales
       target_locales.each { |i| converter.translate(source, i) }
