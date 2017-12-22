@@ -1,26 +1,63 @@
-require 'translatomatic/translator/yandex.rb'
-require 'translatomatic/translator/google.rb'
-require 'translatomatic/translator/epworth.rb'
+require 'translatomatic/translator/base'
+require 'translatomatic/translator/yandex'
+require 'translatomatic/translator/google'
+require 'translatomatic/translator/microsoft'
+require 'translatomatic/translator/frengly'
+require 'translatomatic/translator/my_memory'
 
 module Translatomatic::Translator
 
+  class << self
+    include Translatomatic::Util
+  end
+
+  # @return [Class] The translator class corresponding to the given name
   def self.find(name)
-    instances = all
-    instances.find { |i| i.class_name.to_s.downcase.to_sym == name.to_sym }
+    name ? self.const_get(name) : nil
   end
 
+  # @return [List<Class>] A list of all translator classes
   def self.modules
-    self.constants.select { |c| self.const_get(c).is_a? Class }
+    self.constants.collect { |c| self.const_get(c) }.select do |klass|
+      klass.is_a?(Class) && klass != Translatomatic::Translator::Base
+    end
   end
 
-  def self.all
-    instances = []
+  # @return [List<String>] A list of all translators
+  def self.names
+    modules.collect { |i| i.name.demodulize }
+  end
+
+  # Find all configured translators
+  # @param [Hash<String,String>] options Translator options
+  # @return [Array<#translate>] A list of translator instances
+  def self.available(options = {})
+    available = []
     modules.each do |mod|
       begin
-        instances << mod.new(config)
-      rescue Exception => e
+        translator = mod.new(options)
+        available << translator
+      rescue Exception
+        log.debug("translator #{mod.name.demodulize} is unavailable")
       end
     end
-    instances
+    available
   end
+
+  # @return [String] A description of all translators and options
+  def self.list
+    out = "Translators:\n"
+    modules.each do |mod|
+      out += "\n" + mod.name.demodulize + ":\n"
+      opts = mod.options
+      opts.each do |opt|
+        optname = opt.name.to_s.gsub("_", "-")
+        out += "  --%-18s  %18s  %10s  %15s\n" % [optname, opt.description,
+          opt.required ? "(required)" : "",
+          opt.use_env ? "ENV[#{opt.name.upcase}]" : ""]
+      end
+    end
+    out + "\n"
+  end
+
 end

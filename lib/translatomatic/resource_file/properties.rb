@@ -1,50 +1,51 @@
 module Translatomatic::ResourceFile
   class Properties < Base
 
-    def initialize(path)
-      super(path)
-      @language, @region = parse_language_region(path)
+    def self.extensions
+      %w{properties}
+    end
+
+    # (see Translatomatic::ResourceFile::Base#initialize)
+    def initialize(path, locale = nil)
+      super(path, locale)
       @valid = true
-      @format = :properties
-      @properties = read(path)
+      @properties = @path.exist? ? read(@path) : {}
     end
 
-    def valid?
-      @valid
-    end
-
-    def save
+    # (see Translatomatic::ResourceFile::Base#save(target))
+    def save(target = path)
       out = ""
       properties.each do |key, value|
-        value.gsub("\n", "\\n")  # convert newlines to \n
+        # TODO: maintain original line ending format?
+        value = value.gsub("\n", "\\n")  # convert newlines to \n
         out += "#{key} = #{value}\n"
       end
       # escape unicode characters
-      out = EscapedUnicode.escape(out)
-      File.open(path, "w") { |file| file.puts(out) }
+      out = Translatomatic::EscapedUnicode.escape(out)
+      target.write(out)
     end
 
     private
 
-    # detect language/region from filename
-    def parse_language_region(path)
-      basename = File.basename(path, ".properties")
-      m = /strings_(\w+)(:?_(\w+))?/.match(basename)
-      m ? m.captures : []
-    end
-
     # parse key = value property file
     def read(path)
-      contents = File.read(path)
+      contents = path.read
       # convert escaped unicode characters into unicode
-      contents = EscapedUnicode.unescape(contents)
+      contents = Translatomatic::EscapedUnicode.unescape(contents)
       result = {}
       contents.gsub!(/\\\s*\n\s*/m, '')  # put multi line strings on one line
       lines = contents.split("\n")
+
       lines.each do |line|
         line.strip!
         next if line.length == 0
-        unless line.index('=') > 0
+        equal_idx = line.index("=")
+
+        if line[0] == ?! || line[0] == ?#
+          # comment
+          # TODO: translate comments or keep originals?
+          next
+        elsif equal_idx.nil?
           @valid = false
           return {}
         end

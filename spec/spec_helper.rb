@@ -1,9 +1,15 @@
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'spec'
+end
 
 require "bundler/setup"
 require "translatomatic"
-require "helpers"
+require 'webmock/rspec'
+include WebMock
+
+SPEC_DIR = File.dirname(__FILE__)
+Dir[File.join(SPEC_DIR, "support/**/*.rb")].sort.each { |f| require f }
 
 RSpec.configure do |config|
   include Helpers

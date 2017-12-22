@@ -3,39 +3,59 @@ require 'yaml'
 module Translatomatic::ResourceFile
   class YAML < Base
 
-    def initialize(path)
-      super(path)
-      @format = :yaml
-      @language, @region = parse_language_region(path)
+    def self.extensions
+      %w{yml yaml}
+    end
+
+    # (see Translatomatic::ResourceFile::Base#initialize)
+    def initialize(path, locale = nil)
+      super(path, locale)
       @valid = true
-      @properties = read
+      @data = {}
+      @properties = @path.exist? ? read : {}
     end
 
-    def valid?
-      @valid
+    # (see Translatomatic::ResourceFile::Base#locale_path)
+    # @note localization files in rails use the following file name
+    #   convention: config/locales/en.yml.
+    def locale_path(locale)
+      if path.to_s.match(/config\/locales\/[-\w]+.yml$/)
+        # rails style
+        filename = locale.to_s + path.extname
+        path.dirname + filename
+      else
+        super(locale)
+      end
     end
 
+    # (see Translatomatic::ResourceFile::Base#set)
     def set(key, value)
       super(key, value)
 
+      hash = @data
       path = key.split(/\./)
       last_key = path.pop
-      hash = @data
       path.each { |i| hash = (hash[i] ||= {}) }
       hash[last_key] = value
     end
 
-    def save
+    # (see Translatomatic::ResourceFile::Base#save(target))
+    def save(target = path)
       out = @data.to_yaml
       out.sub!(/^---\n/m, '')
-      File.open(@path, 'w') { |f| f.puts out }
+      target.write(out)
     end
 
     private
 
     def read
-      @data = ::YAML.load_file(@path)
-      flatten_data(@data)
+      begin
+        @data = ::YAML.load_file(@path) || {}
+        flatten_data(@data)
+      rescue Exception
+        @valid = false
+        {}
+      end
     end
 
     def flatten_data(data)

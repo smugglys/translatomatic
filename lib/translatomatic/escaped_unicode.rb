@@ -1,43 +1,9 @@
-# Module to encode and decode unicode chars
+# Module to encode and decode unicode chars.
 # This code is highly influced by Florian Frank's JSON gem
 # @see https://github.com/jnbt/java-properties
 # @see https://github.com/flori/json/
 
-module EscapedUnicode
-  # @private
-  MAP = {
-    "\x0" => '\u0000',
-    "\x1" => '\u0001',
-    "\x2" => '\u0002',
-    "\x3" => '\u0003',
-    "\x4" => '\u0004',
-    "\x5" => '\u0005',
-    "\x6" => '\u0006',
-    "\x7" => '\u0007',
-    "\xb" => '\u000b',
-    "\xe" => '\u000e',
-    "\xf" => '\u000f',
-    "\x10" => '\u0010',
-    "\x11" => '\u0011',
-    "\x12" => '\u0012',
-    "\x13" => '\u0013',
-    "\x14" => '\u0014',
-    "\x15" => '\u0015',
-    "\x16" => '\u0016',
-    "\x17" => '\u0017',
-    "\x18" => '\u0018',
-    "\x19" => '\u0019',
-    "\x1a" => '\u001a',
-    "\x1b" => '\u001b',
-    "\x1c" => '\u001c',
-    "\x1d" => '\u001d',
-    "\x1e" => '\u001e',
-    "\x1f" => '\u001f',
-  }
-
-  # @private
-  EMPTY_8BIT_STRING = ''
-  EMPTY_8BIT_STRING.force_encoding(::Encoding::ASCII_8BIT)
+module Translatomatic::EscapedUnicode
 
   # Decodes all unicode chars from escape sequences
   # @param text [String]
@@ -88,15 +54,37 @@ module EscapedUnicode
 
   private
 
-  def self.unicode(code)
-    code.chr(::Encoding::UTF_8)
-  end
+  MAP = {
+    "\x0" => '\u0000',
+    "\x1" => '\u0001',
+    "\x2" => '\u0002',
+    "\x3" => '\u0003',
+    "\x4" => '\u0004',
+    "\x5" => '\u0005',
+    "\x6" => '\u0006',
+    "\x7" => '\u0007',
+    "\xb" => '\u000b',
+    "\xe" => '\u000e',
+    "\xf" => '\u000f',
+    "\x10" => '\u0010',
+    "\x11" => '\u0011',
+    "\x12" => '\u0012',
+    "\x13" => '\u0013',
+    "\x14" => '\u0014',
+    "\x15" => '\u0015',
+    "\x16" => '\u0016',
+    "\x17" => '\u0017',
+    "\x18" => '\u0018',
+    "\x19" => '\u0019',
+    "\x1a" => '\u001a',
+    "\x1b" => '\u001b',
+    "\x1c" => '\u001c',
+    "\x1d" => '\u001d',
+    "\x1e" => '\u001e',
+    "\x1f" => '\u001f',
+  }
 
-  def self.hex(codepoint)
-    hex  = codepoint.to_s(16)
-    size = [4, hex.size].max
-    target_size = size.even? ? size : size+1
-    hex.rjust(target_size, '0')
-  end
+  EMPTY_8BIT_STRING = ''
+  EMPTY_8BIT_STRING.force_encoding(::Encoding::ASCII_8BIT)
 
 end

@@ -3,4 +3,4 @@
 require "bundler/setup"
 require "translatomatic"
 
-Translatomatic::CLI.start(ARGV)
+Translatomatic::CLI.start
