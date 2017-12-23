@@ -118,7 +118,6 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
-    win32console (1.3.2)
     yandex-translator (0.3.2)
       httparty (>= 0.13.4)
 
@@ -133,7 +132,6 @@ DEPENDENCIES
   simplecov
   translatomatic!
   webmock
-  win32console
 
 BUNDLED WITH
    1.16.0
