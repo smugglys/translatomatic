@@ -3,9 +3,9 @@
 <plist version="1.0">
   <array>
     <dict>
-      <key>key1</key>
+      <key>property1</key>
       <string>value 1</string>
-      <key>key2</key>
+      <key>property2</key>
       <string>value 2</string>
     </dict>
   </array>

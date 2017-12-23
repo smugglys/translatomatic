@@ -26,8 +26,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rspec-mocks", "~> 3.0"
+  spec.add_development_dependency "guard-rspec"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "webmock"
+  spec.add_development_dependency "win32console"
+  #spec.add_development_dependency "spork", '~> 1.0rc'
+  #spec.add_development_dependency "guard-spork"
 
   spec.add_dependency "thor", "~> 0.20"
   spec.add_dependency "yandex-translator"

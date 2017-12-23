@@ -3,17 +3,18 @@ SimpleCov.start do
   add_filter 'spec'
 end
 
+require 'rubygems'
 require "bundler/setup"
-require "translatomatic"
 require 'webmock/rspec'
-include WebMock
+include WebMock::API
+
+require "translatomatic"
 
 SPEC_DIR = File.dirname(__FILE__)
 Dir[File.join(SPEC_DIR, "support/**/*.rb")].sort.each { |f| require f }
+include Helpers
 
 RSpec.configure do |config|
-  include Helpers
-
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
 

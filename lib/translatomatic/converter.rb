@@ -69,7 +69,10 @@ class Translatomatic::Converter
     log.info "translating #{source} to #{target}"
     properties = translate_properties(source.properties, source.locale, target.locale)
     target.properties = properties
-    target.save unless @dry_run
+    unless @dry_run
+      target.path.parent.mkpath
+      target.save
+    end
     target
   end
 

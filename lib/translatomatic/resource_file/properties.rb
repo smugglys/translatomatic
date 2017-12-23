@@ -1,6 +1,7 @@
 module Translatomatic::ResourceFile
   class Properties < Base
 
+    # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
       %w{properties}
     end
@@ -12,7 +13,7 @@ module Translatomatic::ResourceFile
       @properties = @path.exist? ? read(@path) : {}
     end
 
-    # (see Translatomatic::ResourceFile::Base#save(target))
+    # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path)
       out = ""
       properties.each do |key, value|

@@ -4,11 +4,19 @@
 
 # Translatomatic
 
-Translates text files from one language to another.
+Translates text files from one language to another.  The following file formats
+are currently supported:
 
-Features:
-- Translated strings are saved in a database and reused.
-- Understands how to translate different types of files, e.g. java properties, xcode strings, YAML, text, markdown.
+* [Properties](https://en.wikipedia.org/wiki/.properties)
+* RESW (Windows resources file)
+* [Property lists](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
+* HTML
+* XML
+* [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
+* [YAML](http://yaml.org/)
+* Text files
+
+Translated strings are saved in a database and reused.
 
 ## Installation
 
@@ -40,12 +48,9 @@ To list available translation backends and options:
 
 To translate a java properties file to German and French:
 
-    $ translatomatic src/main/resources/strings.properties de fr
+    $ translatomatic translate src/main/resources/strings.properties de fr
 
-This would create the following files.
-
-    src/main/resources/strings_de.properties
-    src/main/resources/strings_fr.properties
+This would create (or overwrite) *strings_de.properties* and *strings_fr.properties*.
 
 ## Configuration
 

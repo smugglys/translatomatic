@@ -1,6 +1,7 @@
 module Translatomatic::ResourceFile
   class HTML < XML
 
+    # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
       %w{html htm shtml}
     end
@@ -24,7 +25,7 @@ module Translatomatic::ResourceFile
       #super(locale)
     end
 
-    # (see Translatomatic::ResourceFile::Base#save(path))
+    # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path)
       target.write(@doc.to_html) if @doc
     end

@@ -7,6 +7,11 @@ class Translatomatic::ResourceFile::Base
   # @return [Hash<String,String>] key -> value properties
   attr_reader :properties
 
+  # @return [Array<String>] File extensions supported by this resource file
+  def self.extensions
+    raise "extensions must be implemented by subclass"
+  end
+
   # Create a new resource file.
   # If locale is unspecified, attempts to determine the locale of the file
   # automatically, and if that fails, uses the default locale.
@@ -21,6 +26,7 @@ class Translatomatic::ResourceFile::Base
     @properties = {}
   end
 
+  # @return [String] The format of this resource file, e.g. "Properties"
   def format
     self.class.name.demodulize.downcase.to_sym
   end
@@ -109,6 +115,9 @@ class Translatomatic::ResourceFile::Base
       # try to match on entire basename
       # (support for rails en.yml)
       tag = basename
+    elsif valid_locale?(path.parent.basename)
+      # try to match on parent directory, e.g. strings/en-US/text.resw
+      tag = path.parent.basename
     end
 
     tag ? parse_locale(tag, true) : nil

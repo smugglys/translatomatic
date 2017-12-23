@@ -1,6 +1,7 @@
 module Translatomatic::ResourceFile
   class XML < Base
 
+    # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
       %w{xml}
     end
@@ -18,7 +19,7 @@ module Translatomatic::ResourceFile
       @nodemap[key].content = value if @nodemap.include?(key)
     end
 
-    # (see Translatomatic::ResourceFile::Base#save(target))
+    # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path)
       target.write(@doc.to_xml) if @doc
     end
@@ -29,7 +30,7 @@ module Translatomatic::ResourceFile
     # returns property hash
     def init_nodemap(doc)
       # map of key1 => node, key2 => node, ...
-      @nodemap = flatten_xml(doc)
+      @nodemap = create_nodemap(doc)
       # map of key => node content
       @nodemap.transform_values { |v| v.content }
     end
@@ -48,7 +49,7 @@ module Translatomatic::ResourceFile
       end
     end
 
-    def flatten_xml(doc)
+    def create_nodemap(doc)
       result = {}
       text_nodes = doc.search(text_nodes_xpath)
       text_nodes.each_with_index do |node, i|

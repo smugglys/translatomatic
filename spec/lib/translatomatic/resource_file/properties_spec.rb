@@ -23,4 +23,6 @@ RSpec.describe Translatomatic::ResourceFile::Properties do
     expect(target.path.read).to eq(expected_contents)
   end
 
+  # TODO: add support for propertyName: value
+
 end
