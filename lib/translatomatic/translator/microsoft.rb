@@ -11,6 +11,7 @@ module Translatomatic
 
       # Create a new Microsoft translator instance
       def initialize(options = {})
+        super(options)
         key = options[:microsoft_api_key] || ENV["MICROSOFT_API_KEY"]
         raise "microsoft api key required" if key.nil?
         @impl = BingTranslator.new(key)

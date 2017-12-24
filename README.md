@@ -40,7 +40,7 @@ The command line interface for translation functionality is **translatomatic**. 
 
     $ translatomatic help
 
-## Example Usage
+### Translating files
 
 To list available translation backends and options:
 
@@ -48,9 +48,22 @@ To list available translation backends and options:
 
 To translate a java properties file to German and French:
 
-    $ translatomatic translate src/main/resources/strings.properties de fr
+    $ translatomatic translate resources/strings.properties de fr
 
 This would create (or overwrite) *strings_de.properties* and *strings_fr.properties*.
+
+### Extracting strings from source files
+
+To extract strings from some source files, use the extract command, e.g.
+
+    $ translatomatic extract file.rb
+
+### Displaying strings from a resource bundle
+
+To display the *store.description* and *store.name* properties in English, German, and French:
+
+    $ translatomatic display --locales=en,de,fr \
+        resources/strings.properties store.description store.name
 
 ## Configuration
 

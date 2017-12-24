@@ -12,6 +12,7 @@ module Translatomatic
 
       # Create a new MyMemory translator instance
       def initialize(options = {})
+        super(options)
         @key = options[:mymemory_api_key] || ENV["MYMEMORY_API_KEY"]
         @email = options[:mymemory_email] || ENV["MYMEMORY_EMAIL"]
       end
@@ -44,7 +45,9 @@ module Translatomatic
             response = http.request(req)
             raise response.body unless response.kind_of? Net::HTTPSuccess
             data = JSON.parse(response.body)
-            translated << data['responseData']['translatedText']
+            result = data['responseData']['translatedText']
+            translated << result
+            update_translated([result])
           end
           translated
         end

@@ -1,5 +1,4 @@
 class Translatomatic::Converter
-  include Translatomatic::Util
 
   class << self
     attr_reader :options
@@ -24,11 +23,13 @@ class Translatomatic::Converter
   def initialize(options = {})
     @dry_run = options[:dry_run]
     @translator = options[:translator]
+    @listener = options[:listener]
     if @translator.kind_of?(String) || @translator.kind_of?(Symbol)
       klass = Translatomatic::Translator.find(@translator)
       @translator = klass.new(options)
     end
     raise "translator required" unless @translator
+    @translator.listener = @listener if @listener
     @from_db = 0
     @from_translator = 0
   end
@@ -66,7 +67,7 @@ class Translatomatic::Converter
   # @return [Translatomatic::ResourceFile] The translated resource file
   def translate_to_target(source, target)
     # perform translation
-    log.info "translating #{source} to #{target}"
+    log.info("translating #{source} to #{target}")
     properties = translate_properties(source.properties, source.locale, target.locale)
     target.properties = properties
     unless @dry_run
@@ -97,6 +98,7 @@ class Translatomatic::Converter
     texts = find_database_translations(result)
     result.update_db_strings(texts)
     @from_db += texts.length
+    @listener.translated_texts(texts) if @listener
 
     # send remaining unknown strings to translator
     # (copy untranslated set from result)
@@ -110,10 +112,22 @@ class Translatomatic::Converter
 
     log.debug("translations from db: %d translator: %d untranslated: %d" %
       [texts.length, untranslated.length, result.untranslated.length])
+    @listener.untranslated_texts(result.untranslated) if @listener
+
     result.properties
   end
 
   private
+
+  include Translatomatic::Util
+
+=begin
+  def log(level, *args)
+    @progressbar.clear if @progressbar
+    Translatomatic::Config.instance.logger.send(level, *args)
+    @progressbar.refresh if @progressbar
+  end
+=end
 
   def parse_locale(locale)
     Translatomatic::Locale.parse(locale)

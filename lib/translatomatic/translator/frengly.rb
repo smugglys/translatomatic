@@ -15,6 +15,7 @@ module Translatomatic
 
         # Create a new Frengly translator instance
       def initialize(options = {})
+        super(options)
         @key = options[:frengly_api_key] || ENV["FRENGLY_API_KEY"] # optional
         @email = options[:frengly_email]
         @password = options[:frengly_password]
@@ -46,14 +47,16 @@ module Translatomatic
               premiumkey: @key
             }.to_json
 
-            # TODO: work out what the response looks like
             req = Net::HTTP::Post.new(uri)
             req.body = body
             req.content_type = 'application/json'
             response = http.request(req)
             raise response.body unless response.kind_of? Net::HTTPSuccess
+            # TODO: work out what the response looks like
             data = JSON.parse(response.body)
-            translated << data['text']
+            result = data['text']
+            translated << result
+            update_translated([result])
           end
           translated
         end

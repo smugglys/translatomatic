@@ -2,13 +2,20 @@ require 'bing_translator'
 
 module Translatomatic
   module Translator
-    @abstract
+    # @abstract
     class Base
 
       class << self
         attr_reader :options
         private
         include Translatomatic::DefineOptions
+      end
+
+      # @private
+      attr_accessor :listener
+
+      def initialize(options = {})
+        @listener = options[:listener]
       end
 
       # @return [String] The name of this translator.
@@ -31,12 +38,19 @@ module Translatomatic
         from = Translatomatic::Locale.parse(from)
         to = Translatomatic::Locale.parse(to)
         return strings if from.language == to.language
-        perform_translate(strings, from, to)
+        translated = perform_translate(strings, from, to)
+        update_translated(translated) unless @updated_listener
+        translated
       end
 
       private
 
       include Translatomatic::Util
+
+      def update_translated(texts)
+        @updated_listener = true
+        @listener.translated_texts(texts) if @listener
+      end
 
       def perform_translate(strings, from, to)
         raise "subclasses must implement perform_translate"
