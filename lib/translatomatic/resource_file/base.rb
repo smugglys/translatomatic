@@ -20,7 +20,7 @@ class Translatomatic::ResourceFile::Base
   # @return [Translatomatic::ResourceFile::Base] the resource file.
   def initialize(path, locale = nil)
     @path = path.kind_of?(Pathname) ? path : Pathname.new(path)
-    @locale = locale || detect_locale || parse_locale(I18n.default_locale)
+    @locale = locale || detect_locale || Translatomatic::Locale.default
     raise "unable to determine locale" unless @locale && @locale.language
     @valid = false
     @properties = {}
@@ -93,8 +93,6 @@ class Translatomatic::ResourceFile::Base
 
   private
 
-  include Translatomatic::Util
-
   # detect locale from filename
   def detect_locale
     tag = nil
@@ -120,7 +118,11 @@ class Translatomatic::ResourceFile::Base
       tag = path.parent.basename
     end
 
-    tag ? parse_locale(tag, true) : nil
+    tag ? Translatomatic::Locale.parse(tag, true) : nil
+  end
+
+  def valid_locale?(tag)
+    Translatomatic::Locale.new(tag).valid?
   end
 
   # test if the list of strings contains a valid locale

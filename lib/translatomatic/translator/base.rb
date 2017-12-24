@@ -23,13 +23,13 @@ module Translatomatic
 
       # Translate strings from one locale to another
       # @param [Array<String>] strings A list of strings to translate.
-      # @param [String, Locale] from The locale of the given strings.
-      # @param [String, Locale] to The locale to translate to.
+      # @param [String, Translatomatic::Locale] from The locale of the given strings.
+      # @param [String, Translatomatic::Locale] to The locale to translate to.
       # @return [Array<String>] Translated strings
       def translate(strings, from, to)
         strings = [strings] unless strings.kind_of?(Array)
-        from = parse_locale(from) if from.kind_of?(String)
-        to = parse_locale(to) if to.kind_of?(String)
+        from = Translatomatic::Locale.parse(from)
+        to = Translatomatic::Locale.parse(to)
         return strings if from.language == to.language
         perform_translate(strings, from, to)
       end

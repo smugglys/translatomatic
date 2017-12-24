@@ -7,8 +7,10 @@ end
 require 'pathname'
 require 'active_support/core_ext/hash'
 require 'easy_translate'
+require 'i18n_data'
 
 require 'translatomatic/option'
+require 'translatomatic/locale'
 require 'translatomatic/util'
 require 'translatomatic/version'
 require 'translatomatic/config'
@@ -20,8 +22,5 @@ require 'translatomatic/translator'
 require 'translatomatic/translation_result'
 require 'translatomatic/converter_stats'
 require 'translatomatic/converter'
+require 'translatomatic/extractor'
 require 'translatomatic/cli'
-
-begin
-  I18n::Locale::Tag.implementation = I18n::Locale::Tag::Rfc4646
-end

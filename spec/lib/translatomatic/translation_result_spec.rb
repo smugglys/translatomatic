@@ -2,8 +2,8 @@ RSpec.describe Translatomatic::TranslationResult do
   include Translatomatic::Util
 
   before(:all) do
-    @locale_en = parse_locale("en")
-    @locale_fr = parse_locale("fr")
+    @locale_en = Translatomatic::Locale.parse("en")
+    @locale_fr = Translatomatic::Locale.parse("fr")
   end
 
   it "creates a result object" do

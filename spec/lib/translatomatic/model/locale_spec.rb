@@ -1,5 +1,4 @@
 RSpec.describe Translatomatic::Model::Locale do
-  include Translatomatic::Util
 
   it "creates a locale record" do
     described_class.delete_all
@@ -17,7 +16,7 @@ RSpec.describe Translatomatic::Model::Locale do
   end
 
   it "creates a locale record from a tag" do
-    tag = parse_locale("en-US")
+    tag = Translatomatic::Locale.parse("en-US")
     locale = described_class.from_tag(tag)
     expect(locale).to be
     expect(locale.language).to eq("en")

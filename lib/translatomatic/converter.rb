@@ -9,7 +9,7 @@ class Translatomatic::Converter
 
   define_options(
     { name: :translator, type: :string, aliases: "-t",
-      desc: "The translator implementation",
+      desc: "Translator implementation to use",
       enum: Translatomatic::Translator.names },
     { name: :dry_run, type: :boolean, aliases: "-n", desc:
       "Print actions without performing translations or writing files" }
@@ -114,6 +114,10 @@ class Translatomatic::Converter
   end
 
   private
+
+  def parse_locale(locale)
+    Translatomatic::Locale.parse(locale)
+  end
 
   def translatable?(string)
     # don't translate numbers

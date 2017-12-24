@@ -79,27 +79,32 @@ class Translatomatic::Database
 
   private
 
-  DB_PATH = File.join(File.dirname(__FILE__), "..", "..", "db")
-  INTERNAL_DB_CONFIG = File.join(DB_PATH, "database.yml")
-  CUSTOM_DB_CONFIG = File.join(Dir.home, ".translatomatic", "database.yml")
-  DEFAULT_DB_CONFIG = File.exist?(CUSTOM_DB_CONFIG) ? CUSTOM_DB_CONFIG : INTERNAL_DB_CONFIG
+  def self.join_path(*parts)
+    File.realpath(File.join(*parts))
+  end
+  
+  DB_PATH = join_path(File.dirname(__FILE__), "..", "..", "db")
+  INTERNAL_CONFIG = File.join(DB_PATH, "database.yml")
+  CUSTOM_CONFIG = File.join(Dir.home, ".translatomatic", "database.yml")
+  DEFAULT_CONFIG = File.exist?(CUSTOM_CONFIG) ? CUSTOM_CONFIG : INTERNAL_CONFIG
   MIGRATIONS_PATH = File.join(DB_PATH, "migrate")
-  GEM_ROOT = File.join(File.dirname(__FILE__), "..", "..")
+  GEM_ROOT = join_path(File.dirname(__FILE__), "..", "..")
   DEFAULT_ENV = "production"
 
   define_options(
     { name: :database_config, description: "Database config file",
-      default: DEFAULT_DB_CONFIG },
+      default: DEFAULT_CONFIG },
     { name: :database_env, description: "Database environment",
       default: DEFAULT_ENV })
 
   def db_config_path(options)
     if options[:database_env] == "test"
-      INTERNAL_DB_CONFIG  # rspec
+      INTERNAL_CONFIG  # rspec
     elsif options[:database_config]
       return options[:database_config]
     else
-      DEFAULT_DB_CONFIG
+      DEFAULT_CONFIG
     end
   end
+
 end
