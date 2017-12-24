@@ -16,8 +16,20 @@ rvm:
 #  - 1.9       # incompatible with activesupport 5
 #  - jruby     # incompatible with c extensions
 
+env:
+  global:
+    - CC_TEST_REPORTER_ID=3c907b2e0a343abfe219925db045ff59f2088392a11cd324554dc11a4d8ca025
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
 # Define how to run your tests (defaults to `bundle exec rake` or `rake` depending on whether you have a `Gemfile`)
 script: "bundle exec rspec"
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 # Specify an ENV variable to run before: 'bundle install' and 'rake' (or your defined 'script')
 env:
