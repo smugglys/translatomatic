@@ -47,13 +47,35 @@ module Translatomatic
 
       include Translatomatic::Util
 
+      # fetch translations for the given strings, one at a time, by
+      # opening a http connection to the given url and calling
+      # fetch_translation() on each string.
+      # (subclass must implement fetch_translation if this method is used)
+      def perform_fetch_translations(url, strings, from, to)
+        translated = []
+        request = Translatomatic::HTTPRequest.new(url)
+        request.start do |http|
+          strings.each do |string|
+            result = fetch_translation(request, string, from, to)
+            translated << result
+            update_translated(result)
+          end
+        end
+        translated
+      end
+
+      def fetch_translation(request, strings, from, to)
+        raise "subclass must implement fetch_translation"
+      end
+
       def update_translated(texts)
+        texts = [texts] unless texts.kind_of?(Array)
         @updated_listener = true
         @listener.translated_texts(texts) if @listener
       end
 
       def perform_translate(strings, from, to)
-        raise "subclasses must implement perform_translate"
+        raise "subclass must implement perform_translate"
       end
 
     end

@@ -33,33 +33,23 @@ module Translatomatic
       URL = 'http://frengly.com/frengly/data/translateREST'
 
       def perform_translate(strings, from, to)
-        translated = []
-        uri = URI.parse(URL)
+        perform_fetch_translations(URL, strings, from, to)
+      end
 
-        Net::HTTP.start(uri.host, uri.port) do |http|
-          strings.each do |string|
-            body = {
-              src: from.language,
-              dest: to.language,
-              text: string,
-              email: @email,
-              password: @password,
-              premiumkey: @key
-            }.to_json
+      def fetch_translation(request, string, from, to)
+        body = {
+          src: from.language,
+          dest: to.language,
+          text: string,
+          email: @email,
+          password: @password,
+          premiumkey: @key
+        }.to_json
 
-            req = Net::HTTP::Post.new(uri)
-            req.body = body
-            req.content_type = 'application/json'
-            response = http.request(req)
-            raise response.body unless response.kind_of? Net::HTTPSuccess
-            # TODO: work out what the response looks like
-            data = JSON.parse(response.body)
-            result = data['text']
-            translated << result
-            update_translated([result])
-          end
-          translated
-        end
+        # TODO: work out what the response looks like
+        response = request.post(body, content_type: 'application/json')
+        data = JSON.parse(response.body)
+        result = data['text']
       end
 
     end # class

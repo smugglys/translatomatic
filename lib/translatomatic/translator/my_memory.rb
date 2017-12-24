@@ -15,6 +15,9 @@ module Translatomatic
         super(options)
         @key = options[:mymemory_api_key] || ENV["MYMEMORY_API_KEY"]
         @email = options[:mymemory_email] || ENV["MYMEMORY_EMAIL"]
+        @query_options = {}
+        @query_options.merge!(de: @email) if @email
+        @query_options.merge!(key: @key) if @key
       end
 
       # TODO: implement language list
@@ -22,37 +25,33 @@ module Translatomatic
       #def languages
       #end
 
-      private
-
-      URL = 'https://api.mymemory.translated.net/get'
-
-      def perform_translate(strings, from, to)
-        translated = []
-        uri = URI.parse(URL)
-
-        http_options = { use_ssl: uri.scheme == "https" }
-        Net::HTTP.start(uri.host, uri.port, http_options) do |http|
-          strings.each do |string|
-            query = {
-              langpair: from.to_s + "|" + to.to_s,
-              q: string
-            }
-            query.merge!(de: @email) if @email
-            query.merge!(key: @key) if @key
-            uri.query = URI.encode_www_form(query)
-
-            req = Net::HTTP::Get.new(uri)
-            response = http.request(req)
-            raise response.body unless response.kind_of? Net::HTTPSuccess
-            data = JSON.parse(response.body)
-            result = data['responseData']['translatedText']
-            translated << result
-            update_translated([result])
-          end
-          translated
-        end
+      # Upload a set of translations to MyMemory
+      # @param [Array<String>] strings Original strings
+      # @param [Array<String>] translated Translated strings
+      # @param [Array<String>] from Locale of original strings
+      # @param [Array<String>] to Locale of translated strings
+      def upload(strings, translated, from, to)
+        # TODO
       end
 
+      private
+
+      GET_URL = 'https://api.mymemory.translated.net/get'
+      UPLOAD_URL = 'https://api.mymemory.translated.net/tmx/import'
+
+      def perform_translate(strings, from, to)
+        perform_fetch_translations(GET_URL, strings, from, to)
+      end
+
+      def fetch_translation(request, string, from, to)
+        response = request.get({
+            langpair: from.to_s + "|" + to.to_s,
+            q: string
+          }.merge(@query_options)
+        )
+        data = JSON.parse(response.body)
+        result = data['responseData']['translatedText']
+      end
     end
   end
 end

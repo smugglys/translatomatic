@@ -29,7 +29,7 @@ module Translatomatic
         strings.each do |string|
           result = @impl.translate(string, from: from.language, to: to.language) || ""
           translated.push(result)
-          update_translated([result])
+          update_translated(result)
         end
         translated
       end
