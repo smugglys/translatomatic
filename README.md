@@ -56,11 +56,11 @@ This would create (or overwrite) *strings_de.properties* and *strings_fr.propert
 
 To extract strings from some source files, use the extract command, e.g.
 
-    $ translatomatic extract file.rb
+    $ translatomatic strings file.rb
 
 ### Displaying strings from a resource bundle
 
-To display the *store.description* and *store.name* properties in English, German, and French:
+To read and display the *store.description* and *store.name* properties from local resource files in English, German, and French:
 
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
@@ -89,4 +89,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Translatomatic project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting with the Translatomatic project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).

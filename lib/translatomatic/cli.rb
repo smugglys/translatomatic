@@ -6,7 +6,7 @@ class Translatomatic::CLI < Thor
   map %W[-v --version] => :version
   map %W[-L --list] => :translators
 
-  desc "translate file locale...", "Translate files to target locale(s)"
+  desc "translate file locale...", "Translate files to target locales"
   method_option :translator, enum: Translatomatic::Translator.names
   method_option :source_locale, desc: "The locale of the source file"
   method_option :debug, type: :boolean, desc: "Enable debugging output"
@@ -89,11 +89,14 @@ class Translatomatic::CLI < Thor
     end
   end
 
-  desc "extract file", "Extract strings from a file"
-  def extract(file)
+  desc "strings file [file...]", "Extract strings from files"
+  def strings(*files)
     run do
-      extractor = Translatomatic::Extractor::Base.new(file)
-      strings = extractor.extract
+      strings = []
+      files.each do |file|
+        extractor = Translatomatic::Extractor::Base.new(file)
+        strings << extractor.extract
+      end
       puts strings.join("\n")
     end
   end
