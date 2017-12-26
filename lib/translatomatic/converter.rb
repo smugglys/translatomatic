@@ -26,8 +26,8 @@ class Translatomatic::Converter
     @dry_run = options[:dry_run]
     @translator = options[:translator]
     @listener = options[:listener]
-    @use_db = options[:database] && Translatomatic::Database.enabled?(options)
-    log.debug("database is disabled") unless @use_db
+    @disable_db = options[:no_database] || !Translatomatic::Database.enabled?(options)
+    log.debug("database is disabled") if @disable_db
     if @translator.kind_of?(String) || @translator.kind_of?(Symbol)
       klass = Translatomatic::Translator.find(@translator)
       @translator = klass.new(options)
@@ -99,7 +99,7 @@ class Translatomatic::Converter
       from_locale, to_locale)
 
     db_texts = []
-    if @use_db
+    unless database_disabled?
       # find translations in database first
       db_texts = find_database_translations(result)
       result.update_db_strings(db_texts)
@@ -114,7 +114,9 @@ class Translatomatic::Converter
     if !untranslated.empty? && !@dry_run
       translated = @translator.translate(untranslated, from_locale, to_locale)
       result.update_strings(untranslated, translated)
-      save_database_translations(result, untranslated, translated) if @use_db
+      unless database_disabled?
+        save_database_translations(result, untranslated, translated)
+      end
     end
 
     log.debug("translations from db: %d translator: %d untranslated: %d" %
@@ -127,6 +129,10 @@ class Translatomatic::Converter
   private
 
   include Translatomatic::Util
+
+  def database_disabled?
+    @disable_db
+  end
 
   def parse_locale(locale)
     Translatomatic::Locale.parse(locale)
