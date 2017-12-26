@@ -6,7 +6,15 @@ class Translatomatic::Database
 
   class << self
     attr_reader :options
+
+    # @param [Hash<Symbol,Object>] options Database options
+    # @return True if we can connect to the database
+    def enabled?(options = {})
+      new(options).connect
+    end
+
     private
+
     include Translatomatic::DefineOptions
   end
 
@@ -19,20 +27,25 @@ class Translatomatic::Database
     @db_config = YAML::load(dbconfig) || {}
     @env_config = @db_config
     raise "no environment '#{@env}' in #{db_config_path}" unless @env_config[@env]
-    @env_config = @env_config[@env]
+    @env_config = @env_config[@env] || {}
     ActiveRecord::Base.configurations = @db_config
     ActiveRecord::Tasks::DatabaseTasks.env = @env
     ActiveRecord::Tasks::DatabaseTasks.db_dir = DB_PATH
     ActiveRecord::Tasks::DatabaseTasks.root = DB_PATH
     ActiveRecord::Tasks::DatabaseTasks.database_configuration = @db_config
-    create unless exists?
+    create
     migrate
   end
 
   # Connect to the database
-  # @return [void]
+  # @return [boolean] True if the connection was established
   def connect
-    ActiveRecord::Base.establish_connection(@env_config)
+    begin
+      ActiveRecord::Base.establish_connection(@env_config)
+      true
+    rescue LoadError
+      false
+    end
   end
 
   # Disconnect from the database
@@ -45,7 +58,8 @@ class Translatomatic::Database
   # @return [Boolean] true if the database exists
   def exists?
     begin
-      connect
+      return true if sqlite_database_exists?
+      return false unless connect
       ActiveRecord::Base.connection.tables
     rescue
       return false
@@ -56,17 +70,24 @@ class Translatomatic::Database
   # Run outstanding migrations against the database
   # @return [void]
   def migrate
-    connect
+    return false unless connect
     ActiveRecord::Migrator.migrate(MIGRATIONS_PATH)
     ActiveRecord::Base.clear_cache!
     log.debug "Database migrated."
   end
 
   # Create the database
-  # @return [void]
+  # @return [boolean] True if the database was created
   def create
-    ActiveRecord::Tasks::DatabaseTasks.create(@env_config)
-    log.debug "Database created."
+    return true if exists?
+    begin
+      ActiveRecord::Tasks::DatabaseTasks.create(@env_config)
+      log.debug "Database created."
+      true
+    rescue LoadError => e
+      log.debug "Database could not be created: " + e.message
+      false
+    end
   end
 
   # Drop the database
@@ -79,10 +100,14 @@ class Translatomatic::Database
 
   private
 
+  def sqlite_database_exists?
+    @env_config['adapter'] == 'sqlite3' && File.exist?(@env_config['database'])
+  end
+
   def self.join_path(*parts)
     File.realpath(File.join(*parts))
   end
-  
+
   DB_PATH = join_path(File.dirname(__FILE__), "..", "..", "db")
   INTERNAL_CONFIG = File.join(DB_PATH, "database.yml")
   CUSTOM_CONFIG = File.join(Dir.home, ".translatomatic", "database.yml")

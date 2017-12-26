@@ -49,7 +49,7 @@ module Translatomatic
         # TODO: work out what the response looks like
         response = request.post(body, content_type: 'application/json')
         data = JSON.parse(response.body)
-        result = data['text']
+        data['text']
       end
 
     end # class

@@ -18,7 +18,7 @@ RSpec.describe Translatomatic::Converter do
 
   it "requires a translator" do
     expect {
-      t = described_class.new
+      described_class.new
     }.to raise_error(/translator required/)
   end
 
@@ -51,6 +51,8 @@ RSpec.describe Translatomatic::Converter do
   end
 
   it "uses existing translations from the database" do
+    skip if database_disabled?
+
     # add a translation to the database
     en_text = create_text(value: "yoghurt", locale: "en")
     create_text(value: "yoplait", locale: "fr", from_text: en_text)
@@ -65,6 +67,8 @@ RSpec.describe Translatomatic::Converter do
   end
 
   it "saves translations to the database" do
+    skip if database_disabled?
+
     translator = TestTranslator.new("Bier")
     t = described_class.new(translator: translator)
     properties = { key: "Beer" }

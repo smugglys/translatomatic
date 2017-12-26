@@ -12,8 +12,4 @@ class Translatomatic::ProgressUpdater
     @progressbar.total -= texts.length
   end
 
-  def clear
-    @progressbar.clear
-  end
-
 end

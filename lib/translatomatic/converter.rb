@@ -11,7 +11,9 @@ class Translatomatic::Converter
       desc: "Translator implementation to use",
       enum: Translatomatic::Translator.names },
     { name: :dry_run, type: :boolean, aliases: "-n", desc:
-      "Print actions without performing translations or writing files" }
+      "Print actions without performing translations or writing files" },
+    { name: :database, type: :boolean, default: true, desc:
+      "Save translations to the database" }
   )
 
   # @return [Translatomatic::ConverterStats] translation statistics
@@ -24,6 +26,8 @@ class Translatomatic::Converter
     @dry_run = options[:dry_run]
     @translator = options[:translator]
     @listener = options[:listener]
+    @use_db = options[:database] && Translatomatic::Database.enabled?(options)
+    log.debug("database is disabled") unless @use_db
     if @translator.kind_of?(String) || @translator.kind_of?(Symbol)
       klass = Translatomatic::Translator.find(@translator)
       @translator = klass.new(options)
@@ -94,11 +98,14 @@ class Translatomatic::Converter
     result = Translatomatic::TranslationResult.new(properties,
       from_locale, to_locale)
 
-    # find translations in database first
-    texts = find_database_translations(result)
-    result.update_db_strings(texts)
-    @from_db += texts.length
-    @listener.translated_texts(texts) if @listener
+    db_texts = []
+    if @use_db
+      # find translations in database first
+      db_texts = find_database_translations(result)
+      result.update_db_strings(db_texts)
+      @from_db += db_texts.length
+      @listener.translated_texts(db_texts) if @listener
+    end
 
     # send remaining unknown strings to translator
     # (copy untranslated set from result)
@@ -107,11 +114,11 @@ class Translatomatic::Converter
     if !untranslated.empty? && !@dry_run
       translated = @translator.translate(untranslated, from_locale, to_locale)
       result.update_strings(untranslated, translated)
-      save_database_translations(result, untranslated, translated)
+      save_database_translations(result, untranslated, translated) if @use_db
     end
 
     log.debug("translations from db: %d translator: %d untranslated: %d" %
-      [texts.length, untranslated.length, result.untranslated.length])
+      [db_texts.length, untranslated.length, result.untranslated.length])
     @listener.untranslated_texts(result.untranslated) if @listener
 
     result.properties
@@ -120,14 +127,6 @@ class Translatomatic::Converter
   private
 
   include Translatomatic::Util
-
-=begin
-  def log(level, *args)
-    @progressbar.clear if @progressbar
-    Translatomatic::Config.instance.logger.send(level, *args)
-    @progressbar.refresh if @progressbar
-  end
-=end
 
   def parse_locale(locale)
     Translatomatic::Locale.parse(locale)

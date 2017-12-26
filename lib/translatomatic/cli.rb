@@ -2,6 +2,7 @@ require "thor"
 
 class Translatomatic::CLI < Thor
   include Translatomatic::Util
+
   package_name "Translatomatic"
   map %W[-v --version] => :version
   map %W[-L --list] => :translators
@@ -22,9 +23,10 @@ class Translatomatic::CLI < Thor
       method_option option.name, option.to_hash
     end
   end
-  def translate(file, locale, *locales)
+  def translate(file, *locales)
     run do
       log.info("Dry run: files will not be translated or written") if options[:dry_run]
+      raise "One or more locales required" if locales.empty?
 
       config.logger.level = Logger::DEBUG if options[:debug]
 
@@ -39,26 +41,20 @@ class Translatomatic::CLI < Thor
       # select translator
       translator = select_translator(options)
       log.info("Using translator #{translator.name}")
+      log.debug("Locales: #{locales}, Properties: #{source.properties.length}")
 
       # set up converter
-      converter_options = options.merge(translator: translator)
-      if options[:wank]
-        # set up progress bar
-        progressbar = config.logger.progressbar
-        progressbar.total = source.properties.length * locales.length
-        progressbar.start
-        progress_updater = Translatomatic::ProgressUpdater.new(progressbar)
-        converter_options.merge!(listener: progress_updater)
-      end
+      translation_count = source.properties.length * locales.length
+      converter_options = options.merge(
+        translator: translator, listener: progress_updater(translation_count)
+      )
       converter = Translatomatic::Converter.new(converter_options)
 
       # convert source to locale(s)
-      target_locales = [locale]
-      target_locales += locales
-      target_locales.each { |i| converter.translate(source, i) }
+      locales.each { |i| converter.translate(source, i) }
 
       log.info converter.stats
-      progress_updater.clear if progress_updater
+      config.logger.finish
     end
   end
 
@@ -101,8 +97,8 @@ class Translatomatic::CLI < Thor
     end
   end
 
-  desc "translators", "List available translation backends"
-  def translators
+  desc "list", "List available translation backends"
+  def list
     run { puts Translatomatic::Translator.list }
   end
 
@@ -112,6 +108,20 @@ class Translatomatic::CLI < Thor
   end
 
   private
+
+  # create a progress bar and progress updater
+  def progress_updater(translation_count)
+    return nil unless options[:wank]
+    # set up progress bar
+    progressbar = ProgressBar.create(
+      title: "Translating",
+      format: "%t: |%B| %E ",
+      autofinish: false,
+      total: translation_count
+    )
+    config.logger.progressbar = progressbar
+    Translatomatic::ProgressUpdater.new(progressbar)
+  end
 
   # run the give code block, display exceptions.
   # return true if the code ran without exceptions

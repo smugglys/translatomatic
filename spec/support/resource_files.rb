@@ -36,8 +36,17 @@ RSpec.shared_examples "a resource file" do |config|
 
     file.properties = properties
     file.save(save_path)
-    expected_result = fixture_path("test_save.#{ext}")
-    expect(save_path.read).to eql(File.read(expected_result))
+    expected_result = File.read(fixture_path("test_save.#{ext}"))
+    actual_result = save_path.read
+
+    if RUBY_PLATFORM == "java" &&
+      described_class <= Translatomatic::ResourceFile::XML
+      # ignore whitespace in xml output
+      actual_result = remove_xml_whitespace(actual_result)
+      expected_result = remove_xml_whitespace(expected_result)
+    end
+
+    expect(actual_result).to eql(expected_result)
   end
 
   config[:locale_path_conversions].each do |conversion|

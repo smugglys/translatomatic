@@ -30,5 +30,14 @@ module Translatomatic::ResourceFile
       target.write(@doc.to_html) if @doc
     end
 
+    private
+
+=begin
+    def read_doc(path)
+      Nokogiri::HTML(path.open) do |config|
+        config.noblanks
+      end
+    end
+=end
   end
 end

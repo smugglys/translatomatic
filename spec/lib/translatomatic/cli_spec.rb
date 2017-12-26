@@ -6,7 +6,7 @@ RSpec.describe Translatomatic::CLI do
   end
 
   it "translates a file" do
-    Translatomatic::Model::Text.destroy_all
+    Translatomatic::Model::Text.destroy_all unless database_disabled?
     path = create_tempfile("test.properties", "key = Beer")
     translator = test_translator
     expect(translator).to receive(:translate).and_return(["Bier"])
@@ -21,7 +21,7 @@ RSpec.describe Translatomatic::CLI do
   end
 
   it "lists available translators" do
-    @cli.translators
+    @cli.list
   end
 
   private

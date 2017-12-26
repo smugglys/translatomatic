@@ -39,13 +39,17 @@ module Translatomatic::ResourceFile
     def read(path)
       begin
         # parse xml with nokogiri
-        @doc = Nokogiri::XML(path.open) do |config|
-          config.noblanks
-        end
+        @doc = read_doc(path)
         init_nodemap(@doc)
       rescue Exception
         @valid = false
         {}
+      end
+    end
+
+    def read_doc(path)
+      Nokogiri::XML(path.open) do |config|
+        config.noblanks
       end
     end
 

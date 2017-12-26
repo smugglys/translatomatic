@@ -1,5 +1,5 @@
 class Translatomatic::Logger
-  attr_reader :progressbar
+  attr_accessor :progressbar
 
   def initialize
     @logger = Logger.new(STDOUT)
@@ -7,24 +7,18 @@ class Translatomatic::Logger
     @logger.formatter = proc do |severity, datetime, progname, msg|
       "#{msg}\n"
     end
-
-    @progressbar = ProgressBar.create({
-      title: "Translating",
-      format: PROGRESS_BAR_FORMAT,
-      autostart: false
-    })
   end
 
   def method_missing(name, *args)
     if @logger.respond_to?(name)
-      showing_progress = @progressbar.started? && !@progressbar.finished?
-      @progressbar.clear #if showing_progress
+      @progressbar.clear if @progressbar
       @logger.send(name, *args)
-      @progressbar.refresh if showing_progress
+      @progressbar.refresh(force: true) if @progressbar && !@progressbar.stopped?
     end
   end
 
-  private
+  def finish
+    @progressbar.finish if @progressbar
+  end
 
-  PROGRESS_BAR_FORMAT =  "%t: |%B| %E"
 end
