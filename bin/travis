@@ -12,9 +12,9 @@ function remote_size {
 }
 
 if [ "$1" == "before" ]; then
-  local_size=$(wc -c < $REPORTER_CMD)
+  local_size=$(wc -c < $REPORTER_CMD 2>/dev/null)
   remote_size=$(remote_size $REPORTER_URL)
-  if [ $local_size != $remote_size ]; then
+  if [ "$local_size" != "$remote_size" ]; then
     curl -L $REPORTER_URL -o $REPORTER_CMD
     chmod +x $REPORTER_CMD
   fi
