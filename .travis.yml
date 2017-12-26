@@ -1,6 +1,9 @@
 # Build for Ruby
 language: ruby
-cache: bundler
+cache:
+  bundler: true
+  directories:
+    - tmp/cache/codeclimate
 
 os:
   - linux
@@ -11,7 +14,7 @@ rvm:
   - 2.2
   - 2.3
   - 2.4
-  - jruby
+#  - jruby     # Unknown ruby string (do not know how to handle): jruby-9.1.15.0200
 #  - ruby-head # cannot load such file -- bundler/dep_proxy (?)
 #  - 1.9       # incompatible with activesupport 5
 
@@ -21,12 +24,10 @@ env:
     - CI=1
 
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+  - bin/travis before
 
 # Define how to run your tests (defaults to `bundle exec rake` or `rake` depending on whether you have a `Gemfile`)
 script: "bundle exec rspec"
 
 after_script:
-  - bin/travis_after_script
+  - bin/travis after
