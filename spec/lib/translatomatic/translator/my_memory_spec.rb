@@ -13,10 +13,7 @@ RSpec.describe Translatomatic::Translator::MyMemory do
     expected_response = { "responseData": { "translatedText": "Bier" } }
     puts expected_response.to_json
     stub_request(:get, api_endpoint).
-      with(headers: {
-        'Accept'=>'*/*',
-        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'Host'=>'api.mymemory.translated.net', 'User-Agent'=>'Ruby'}).
+      with(headers: test_http_headers('Host'=>'api.mymemory.translated.net')).
       to_return(status: 200, body: expected_response.to_json, headers: {})
 
     t = described_class.new

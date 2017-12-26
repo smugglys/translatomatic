@@ -21,17 +21,21 @@ module Translatomatic
         uri.query = URI.encode_www_form(query)
       end
       request = Net::HTTP::Get.new(uri)
+      request['User-Agent'] = USER_AGENT
       send_request(request)
     end
 
     def post(body, options = {})
       request = Net::HTTP::Post.new(@uri)
+      request['User-Agent'] = USER_AGENT
       request.body = body
       request.content_type = options[:content_type] if options[:content_type]
       send_request(request)
     end
 
     private
+
+    USER_AGENT = "Translatomatic #{VERSION} (+#{URL})"
 
     def send_request(req)
       response = @http.request(req)

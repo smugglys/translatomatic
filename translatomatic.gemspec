@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["contact@smugglys.com"]
 
   spec.summary       = %q{Strings translation utility}
-  spec.homepage      = "http://github.com/smugglys/translatomatic"
+  spec.homepage      = Translatomatic::URL
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

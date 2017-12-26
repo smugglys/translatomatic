@@ -26,6 +26,10 @@ module Helpers
     TestConfig.instance.database_disabled
   end
 
+  def test_http_headers(options = {})
+    TestConfig::DEFAULT_HTTP_HEADERS.merge(options)
+  end
+
   def create_tempfile(name, contents = nil)
     tempfile = Tempfile.new(name)
     tempfile.write(contents) if contents
