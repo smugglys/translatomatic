@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+[ "$TRAVIS_OS_NAME" == "linux" ] && ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+

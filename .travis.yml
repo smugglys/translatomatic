@@ -11,9 +11,9 @@ rvm:
   - 2.2
   - 2.3
   - 2.4
-  - ruby-head
+  - jruby
+#  - ruby-head # cannot load such file -- bundler/dep_proxy (?)
 #  - 1.9       # incompatible with activesupport 5
-#  - jruby     # incompatible with c extensions
 
 env:
   global:
@@ -29,4 +29,4 @@ before_script:
 script: "bundle exec rspec"
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - bin/travis_after_script

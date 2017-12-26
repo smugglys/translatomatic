@@ -17,6 +17,9 @@ optional_gem 'sqlite3', '~> 1.3'
 optional_gem 'mysql2'
 optional_gem 'postgresql'
 
+# bigdecimal required by crack-0.4.3 on cygwin
+optional_gem 'bigdecimal'
+
 # jruby
 optional_gem 'activerecord-jdbc-adapter', platform: :jruby
 optional_gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby

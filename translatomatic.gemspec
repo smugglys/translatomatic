@@ -38,6 +38,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "i18n_data"
   spec.add_dependency "nokogiri"
   spec.add_dependency "ruby-progressbar"
-  spec.add_dependency "bigdecimal"  # required on cygwin ruby
 
 end
