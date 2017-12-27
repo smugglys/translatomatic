@@ -12,12 +12,15 @@ class Translatomatic::Converter
       enum: Translatomatic::Translator.names },
     { name: :dry_run, type: :boolean, aliases: "-n", desc:
       "Print actions without performing translations or writing files" },
-    { name: :database, type: :boolean, default: true, desc:
-      "Save translations to the database" }
+    { name: :use_database, type: :boolean, default: true, desc:
+      "Store and retrieve translations in the database" }
   )
 
   # @return [Translatomatic::ConverterStats] translation statistics
   attr_reader :stats
+
+  # @return [Array<Translatomatic::Model::Text>] A list of translations saved to the database
+  attr_reader :db_translations
 
   # Create a converter to translate files
   #
@@ -26,7 +29,9 @@ class Translatomatic::Converter
     @dry_run = options[:dry_run]
     @translator = options[:translator]
     @listener = options[:listener]
-    @disable_db = options[:no_database] || !Translatomatic::Database.enabled?(options)
+    @disable_db = options.include?(:use_database) && !options[:use_database] ||
+      !Translatomatic::Database.enabled?(options)
+
     log.debug("database is disabled") if @disable_db
     if @translator.kind_of?(String) || @translator.kind_of?(Symbol)
       klass = Translatomatic::Translator.find(@translator)
@@ -36,6 +41,7 @@ class Translatomatic::Converter
     @translator.listener = @listener if @listener
     @from_db = 0
     @from_translator = 0
+    @db_translations = []
   end
 
   # @return [Translatomatic::ConverterStats] Translation statistics
@@ -159,12 +165,14 @@ class Translatomatic::Converter
       value: t1
     )
 
-    Translatomatic::Model::Text.find_or_create_by!(
+    text = Translatomatic::Model::Text.find_or_create_by!(
       locale: to_locale,
       value: t2,
       from_text: original_text,
-      translator: @translator.class.name.demodulize
+      translator: @translator.name
     )
+    @db_translations += [original_text, text]
+    text
   end
 
   def find_database_translations(result)

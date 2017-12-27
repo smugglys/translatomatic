@@ -28,8 +28,13 @@ module Translatomatic
     def post(body, options = {})
       request = Net::HTTP::Post.new(@uri)
       request['User-Agent'] = USER_AGENT
-      request.body = body
-      request.content_type = options[:content_type] if options[:content_type]
+
+      if options[:multipart]
+        request.set_form body, 'multipart/form-data'
+      else
+        request.body = body
+        request.content_type = options[:content_type] if options[:content_type]
+      end
       send_request(request)
     end
 

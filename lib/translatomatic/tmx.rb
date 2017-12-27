@@ -1,5 +1,5 @@
-module Translatomatic
-  class TMX
-    # TODO: add create/parse tmx file functionality here
-  end
-end
+module Translatomatic::TMX; end
+
+require 'translatomatic/tmx/locale_string'
+require 'translatomatic/tmx/translation_unit'
+require 'translatomatic/tmx/document'

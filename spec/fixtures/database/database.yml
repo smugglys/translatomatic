@@ -1,0 +1,4 @@
+production:
+  adapter: sqlite3
+  encoding: utf-8
+  database: $TMP_FILE

@@ -5,6 +5,7 @@ end
 
 require 'rubygems'
 require "bundler/setup"
+require 'factory_bot'
 require 'webmock/rspec'
 include WebMock::API
 
@@ -15,6 +16,8 @@ Dir[File.join(SPEC_DIR, "support/**/*.rb")].sort.each { |f| require f }
 include Helpers
 
 RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
 
@@ -26,6 +29,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
+    FactoryBot.find_definitions
     create_test_database
   end
 end

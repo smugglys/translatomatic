@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE tmx SYSTEM "http://www.ttt.org/oscarstandards/tmx/tmx14.dtd">
+<tmx version="1.4">
+  <header creationtool="Translatomatic" creationtoolversion="0.1.0" datatype="PlainText" segtype="sentence" adminlang="en" srclang="en" o-tmx="Test"/>
+  <body>
+    <tu>
+      <tuv xml:lang="en">
+        <seg>Yoghurt</seg>
+      </tuv>
+      <tuv xml:lang="fr">
+        <seg>Yoplait</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>

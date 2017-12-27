@@ -26,12 +26,17 @@ module Translatomatic
       #end
 
       # Upload a set of translations to MyMemory
-      # @param [Array<String>] strings Original strings
-      # @param [Array<String>] translated Translated strings
-      # @param [Array<String>] from Locale of original strings
-      # @param [Array<String>] to Locale of translated strings
-      def upload(strings, translated, from, to)
-        # TODO
+      # @param [Translatomatic::TMX::Document] TMX document
+      def upload(tmx)
+        request = Translatomatic::HTTPRequest.new(UPLOAD_URL)
+        request.start do |http|
+          form_data = [
+            ["tmx", tmx.to_xml],
+            ["private", 0]
+          ]
+          response = request.post(form_data, multipart: true)
+          log.debug("share response: #{response.body}")
+        end
       end
 
       private
@@ -50,7 +55,7 @@ module Translatomatic
           }.merge(@query_options)
         )
         data = JSON.parse(response.body)
-        result = data['responseData']['translatedText']
+        data['responseData']['translatedText']
       end
     end
   end

@@ -12,6 +12,8 @@ class Translatomatic::CLI < Thor
   method_option :source_locale, desc: "The locale of the source file"
   method_option :debug, type: :boolean, desc: "Enable debugging output"
   method_option :wank, type: :boolean, default: true, desc: "Enable Progress bar"
+  method_option :share, type: :boolean, default: false, desc:
+    "Share translations with translators that support upload"
   Translatomatic::Converter.options.each do |option|
     method_option option.name, option.to_hash
   end
@@ -55,10 +57,12 @@ class Translatomatic::CLI < Thor
 
       log.info converter.stats
       config.logger.finish
+
+      share_translations(converter) if options[:share]
     end
   end
 
-  desc "display file [key...]", "Display keys from a resource bundle"
+  desc "display file [key...]", "Display values from a resource bundle"
   method_option :locales, type: :string, desc: "Locales to display"
   def display(file, *keys)
     run do
@@ -108,6 +112,25 @@ class Translatomatic::CLI < Thor
   end
 
   private
+
+  def share_translations(converter)
+    return if converter.db_translations.empty?
+
+    tmx = Translatomatic::TMX::Document.from_texts(converter.db_translations)
+    available = Translatomatic::Translator.available(options)
+    available.each do |translator|
+      if translator.respond_to?(:upload)
+        log.debug("Uploading tmx to #{translator.name}")
+        translator.upload(tmx)
+      end
+    end
+
+    ActiveModel::Base.transaction do
+      converter.db_translations.each do |text|
+        text.update(shared: true) if text.is_translated?
+      end
+    end
+  end
 
   # create a progress bar and progress updater
   def progress_updater(translation_count)

@@ -19,21 +19,18 @@ class Translatomatic::Database
   end
 
   def initialize(options = {})
-    db_config_path = db_config_path(options)
-    dbconfig = File.read(db_config_path)
-    dbconfig.gsub!(/\$HOME/, Dir.home)
-    dbconfig.gsub!(/\$GEM_ROOT/, GEM_ROOT)
     @env = options[:database_env] || DEFAULT_ENV
-    @db_config = YAML::load(dbconfig) || {}
+    @db_config = database_config(@env, options)
     @env_config = @db_config
     raise "no environment '#{@env}' in #{db_config_path}" unless @env_config[@env]
     @env_config = @env_config[@env] || {}
+
     ActiveRecord::Base.configurations = @db_config
     ActiveRecord::Tasks::DatabaseTasks.env = @env
     ActiveRecord::Tasks::DatabaseTasks.db_dir = DB_PATH
     ActiveRecord::Tasks::DatabaseTasks.root = DB_PATH
     ActiveRecord::Tasks::DatabaseTasks.database_configuration = @db_config
-    create
+    create unless exists?
     migrate
   end
 
@@ -79,7 +76,6 @@ class Translatomatic::Database
   # Create the database
   # @return [boolean] True if the database was created
   def create
-    return true if exists?
     begin
       ActiveRecord::Tasks::DatabaseTasks.create(@env_config)
       log.debug "Database created."
@@ -122,14 +118,28 @@ class Translatomatic::Database
     { name: :database_env, description: "Database environment",
       default: DEFAULT_ENV })
 
-  def db_config_path(options)
+  # return path to database config
+  def database_config_path(options)
     if options[:database_env] == "test"
       INTERNAL_CONFIG  # rspec
-    elsif options[:database_config]
-      return options[:database_config]
+    elsif options[:database_config_path]
+      return options[:database_config_path]
     else
       DEFAULT_CONFIG
     end
+  end
+
+  # return database config as a hash
+  def database_config(env, options)
+    if options[:database_config]
+      return { env => options[:database_config] }
+    end
+
+    db_config_path = database_config_path(options)
+    dbconfig = File.read(db_config_path)
+    dbconfig.gsub!(/\$HOME/, Dir.home)
+    dbconfig.gsub!(/\$GEM_ROOT/, GEM_ROOT)
+    YAML::load(dbconfig) || {}
   end
 
 end

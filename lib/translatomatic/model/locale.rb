@@ -13,6 +13,9 @@ module Translatomatic
         })
       end
 
+      def to_s
+        [language, script, region].compact.join("-")
+      end
     end
   end
 end
