@@ -20,11 +20,22 @@ module Translatomatic::ResourceFile
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
-    def save(target = path)
-      target.write(@doc.to_xml) if @doc
+    def save(target = path, options = {})
+      if @doc
+        add_created_by unless options[:no_created_by]
+        target.write(@doc.to_xml)
+      end
     end
 
     private
+
+    def add_created_by
+      @created_by ||= @doc.root.add_previous_sibling(comment(created_by))
+    end
+
+    def comment(text)
+      @doc.create_comment(text)
+    end
 
     # initialize nodemap from nokogiri document
     # returns property hash
@@ -56,14 +67,21 @@ module Translatomatic::ResourceFile
     def create_nodemap(doc)
       result = {}
       text_nodes = doc.search(text_nodes_xpath)
-      text_nodes.each_with_index do |node, i|
-        result["key#{i + 1}"] = node
+      idx = 1
+      text_nodes.each do |node|
+        next if whitespace?(node.content)
+        result["key#{idx}"] = node
+        idx += 1
       end
       result
     end
 
     def text_nodes_xpath
       '//text()'
+    end
+
+    def whitespace?(text)
+      text == nil || text.strip.length == 0
     end
   end # class
 end   # module

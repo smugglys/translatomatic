@@ -1,3 +1,5 @@
+require 'date'
+
 module Translatomatic::ResourceFile
   class Properties < Base
 
@@ -14,8 +16,9 @@ module Translatomatic::ResourceFile
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
-    def save(target = path)
+    def save(target = path, options = {})
       out = ""
+      out += add_created_by unless options[:no_created_by]
       properties.each do |key, value|
         # TODO: maintain original line ending format?
         value = value.gsub("\n", "\\n")  # convert newlines to \n
@@ -27,6 +30,14 @@ module Translatomatic::ResourceFile
     end
 
     private
+
+    def add_created_by
+      comment(created_by)
+    end
+
+    def comment(text)
+      "# #{text}\n"
+    end
 
     # parse key = value property file
     def read(path)

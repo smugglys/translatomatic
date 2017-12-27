@@ -26,18 +26,19 @@ module Translatomatic::ResourceFile
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
-    def save(target = path)
-      target.write(@doc.to_html) if @doc
+    def save(target = path, options = {})
+      if @doc
+        add_created_by unless options[:no_created_by]
+        target.write(@doc.to_html)
+      end
     end
 
     private
 
-=begin
     def read_doc(path)
       Nokogiri::HTML(path.open) do |config|
         config.noblanks
       end
     end
-=end
   end
 end

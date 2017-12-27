@@ -41,7 +41,7 @@ module Translatomatic::ResourceFile
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
-    def save(target = path)
+    def save(target = path, options = {})
       out = @data.to_yaml
       out.sub!(/^---\n/m, '')
       target.write(out)

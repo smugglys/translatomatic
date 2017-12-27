@@ -29,7 +29,7 @@ RSpec.describe Translatomatic::Converter do
     t = described_class.new(translator: translator)
     target = t.translate(path, "de-DE")
     expect(target.path.basename.sub_ext('').to_s).to match(/_de-DE$/)
-    expect(target.path.read).to eq("key = Bier\n")
+    expect(strip_comments(target.path.read)).to eq("key = Bier\n")
   end
 
   it "doesn't write files or translate strings when using dry run" do
@@ -80,6 +80,10 @@ RSpec.describe Translatomatic::Converter do
   end
 
   private
+
+  def strip_comments(text)
+    text.gsub(/^#.*\n/, '')
+  end
 
   def create_text(attributes)
     if attributes[:locale].kind_of?(String)

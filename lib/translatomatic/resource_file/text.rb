@@ -14,7 +14,7 @@ module Translatomatic::ResourceFile
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
-    def save(target = path)
+    def save(target = path, options = {})
       values = @properties.values.collect { |i| i.strip + "\n" }
       target.write(values.join)
     end

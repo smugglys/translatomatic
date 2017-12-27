@@ -43,6 +43,8 @@ RSpec.describe Translatomatic::CLI do
     end
 
     it "shares translations" do
+      skip if database_disabled?
+
       path = create_tempfile("test.properties", "key = Beer")
       translator = test_translator
       expect(translator).to receive(:translate).and_return(["Bier"])

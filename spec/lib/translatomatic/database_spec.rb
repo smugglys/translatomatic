@@ -1,5 +1,7 @@
 RSpec.describe Translatomatic::Database do
   it "should create a database" do
+    skip if database_disabled?
+
     db_file = create_tempfile("db.sqlite3")
     db_file.delete
 

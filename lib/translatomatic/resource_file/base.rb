@@ -81,8 +81,9 @@ class Translatomatic::ResourceFile::Base
 
   # Save the resource file.
   # @param [Pathname] target The destination path
+  # @param [Hash<Symbol, Object>] options Output format options
   # @return [void]
-  def save(target = path)
+  def save(target = path, options = {})
     raise "save(path) must be implemented by subclass"
   end
 
@@ -92,6 +93,11 @@ class Translatomatic::ResourceFile::Base
   end
 
   private
+
+  def created_by
+    date = DateTime.now.strftime("%Y-%m-%d %H:%M")
+    "Created by Translatomatic #{Translatomatic::VERSION} #{date}"
+  end
 
   # detect locale from filename
   def detect_locale

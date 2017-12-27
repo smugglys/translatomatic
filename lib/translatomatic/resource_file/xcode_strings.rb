@@ -30,8 +30,9 @@ module Translatomatic::ResourceFile
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
-    def save(target = path)
+    def save(target = path, options = {})
       out = ""
+      out += comment(created_by) unless options[:no_created_by]
       properties.each do |key, value|
         key = escape(key)
         value = escape(value)
@@ -41,6 +42,10 @@ module Translatomatic::ResourceFile
     end
 
     private
+
+    def comment(text)
+      "/* #{text} */\n"
+    end
 
     def read(path)
       result = {}

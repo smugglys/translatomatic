@@ -15,7 +15,7 @@ RSpec.describe Translatomatic::ResourceFile::Properties do
     target_path = create_tempfile('output.properties')
     target = Translatomatic::ResourceFile.load(target_path)
     target.properties = source.properties
-    target.save
+    target.save(target_path, no_created_by: true)
 
     # TODO: currently comments are stripped
     # ideally they would be translated or kept
