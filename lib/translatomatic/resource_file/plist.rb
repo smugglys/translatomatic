@@ -1,6 +1,7 @@
 module Translatomatic::ResourceFile
   class Plist < XML
 
+    # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
       %w{plist}
     end

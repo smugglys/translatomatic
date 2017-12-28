@@ -3,6 +3,7 @@ require 'yaml'
 module Translatomatic::ResourceFile
   class YAML < Base
 
+    # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
       %w{yml yaml}
     end
@@ -39,8 +40,8 @@ module Translatomatic::ResourceFile
       hash[last_key] = value
     end
 
-    # (see Translatomatic::ResourceFile::Base#save(target))
-    def save(target = path)
+    # (see Translatomatic::ResourceFile::Base#save)
+    def save(target = path, options = {})
       out = @data.to_yaml
       out.sub!(/^---\n/m, '')
       target.write(out)
@@ -52,7 +53,8 @@ module Translatomatic::ResourceFile
       begin
         @data = ::YAML.load_file(@path) || {}
         flatten_data(@data)
-      rescue Exception
+      rescue Exception => e
+        log.error(e.message)
         @valid = false
         {}
       end

@@ -11,6 +11,7 @@ module Translatomatic
 
       # Create a new Yandex translator instance
       def initialize(options = {})
+        super(options)
         key = options[:yandex_api_key] || ENV["YANDEX_API_KEY"]
         raise "yandex api key required" if key.nil?
         @impl = ::Yandex::Translator.new(key)
@@ -28,6 +29,7 @@ module Translatomatic
         strings.each do |string|
           result = @impl.translate(string, from: from.language, to: to.language) || ""
           translated.push(result)
+          update_translated(result)
         end
         translated
       end

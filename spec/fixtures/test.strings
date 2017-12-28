@@ -1,5 +1,5 @@
 /* Class = "IBUIViewController"; title = "Detail"; ObjectID = "Ah7-4n-0Wa"; */
-"key1" = "value 1";
+"property1" = "value 1";
 
 /* Class = "IBUINavigationItem"; title = "Detail"; ObjectID = "cra-N8-TIN"; */
-"key2" = "value 2";
+"property2" = "value 2";

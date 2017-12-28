@@ -8,6 +8,10 @@ module Translatomatic
 
       validates_presence_of :value
       validates_presence_of :locale
+
+      def is_translated?
+        !from_text_id.nil?
+      end
     end
   end
 end

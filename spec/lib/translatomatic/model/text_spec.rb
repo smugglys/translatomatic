@@ -1,12 +1,14 @@
 RSpec.describe Translatomatic::Model::Text do
 
   before(:all) do
+    skip if database_disabled?
     @locale_en = Translatomatic::Model::Locale.find_or_create_by!(language: :en)
     @locale_fr = Translatomatic::Model::Locale.find_or_create_by!(language: :fr)
     @locale_de = Translatomatic::Model::Locale.find_or_create_by!(language: :de)
   end
 
   it "creates a text record" do
+    skip if database_disabled?
     text = described_class.new
     text.value = "this is some text"
     text.locale = @locale_en
@@ -14,6 +16,7 @@ RSpec.describe Translatomatic::Model::Text do
   end
 
   it "creates a text record translated from another record" do
+    skip if database_disabled?
     text = described_class.new
     text.value = "this is some text"
     text.locale = @locale_en
@@ -30,6 +33,7 @@ RSpec.describe Translatomatic::Model::Text do
   end
 
   it "deletes dependent translations" do
+    skip if database_disabled?
     t1 = described_class.create(value: 'ra', locale: @locale_en)
     described_class.create(value: 'ra ra', locale: @locale_fr, from_text: t1)
     described_class.create(value: 'ra ra ra', locale: @locale_de, from_text: t1)

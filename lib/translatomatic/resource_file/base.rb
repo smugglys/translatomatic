@@ -7,6 +7,11 @@ class Translatomatic::ResourceFile::Base
   # @return [Hash<String,String>] key -> value properties
   attr_reader :properties
 
+  # @return [Array<String>] File extensions supported by this resource file
+  def self.extensions
+    raise "extensions must be implemented by subclass"
+  end
+
   # Create a new resource file.
   # If locale is unspecified, attempts to determine the locale of the file
   # automatically, and if that fails, uses the default locale.
@@ -15,12 +20,13 @@ class Translatomatic::ResourceFile::Base
   # @return [Translatomatic::ResourceFile::Base] the resource file.
   def initialize(path, locale = nil)
     @path = path.kind_of?(Pathname) ? path : Pathname.new(path)
-    @locale = locale || detect_locale || parse_locale(I18n.default_locale)
+    @locale = locale || detect_locale || Translatomatic::Locale.default
     raise "unable to determine locale" unless @locale && @locale.language
     @valid = false
     @properties = {}
   end
 
+  # @return [String] The format of this resource file, e.g. "Properties"
   def format
     self.class.name.demodulize.downcase.to_sym
   end
@@ -33,11 +39,15 @@ class Translatomatic::ResourceFile::Base
 
     extlist = extension_list
     if extlist.length >= 2 && loc_idx = find_locale(extlist)
+      # extension(s) contains locale, replace it
       extlist[loc_idx] = locale.to_s
     elsif valid_locale?(basename)
+      # basename is a locale name, replace it
       path.dirname + (locale.to_s + path.extname)
     else
+      # remove any underscore and trailing text from basename
       deunderscored = basename.sub(/_.*?$/, '')
+      # add _locale.ext
       filename = deunderscored + "_" + locale.to_s + path.extname
       path.dirname + filename
     end
@@ -75,8 +85,9 @@ class Translatomatic::ResourceFile::Base
 
   # Save the resource file.
   # @param [Pathname] target The destination path
+  # @param [Hash<Symbol, Object>] options Output format options
   # @return [void]
-  def save(target = path)
+  def save(target = path, options = {})
     raise "save(path) must be implemented by subclass"
   end
 
@@ -85,9 +96,23 @@ class Translatomatic::ResourceFile::Base
     "#{path.basename.to_s} (#{locale})"
   end
 
+  def sentences
+    sentences = []
+    properties.values.each do |value|
+      string = Translatomatic::String.new(value, locale)
+      sentences += string.sentences
+    end
+    sentences
+  end
+
   private
 
   include Translatomatic::Util
+
+  def created_by
+    date = DateTime.now.strftime("%Y-%m-%d %H:%M")
+    "Created by Translatomatic #{Translatomatic::VERSION} #{date}"
+  end
 
   # detect locale from filename
   def detect_locale
@@ -109,9 +134,16 @@ class Translatomatic::ResourceFile::Base
       # try to match on entire basename
       # (support for rails en.yml)
       tag = basename
+    elsif valid_locale?(path.parent.basename)
+      # try to match on parent directory, e.g. strings/en-US/text.resw
+      tag = path.parent.basename
     end
 
-    tag ? parse_locale(tag, true) : nil
+    tag ? Translatomatic::Locale.parse(tag, true) : nil
+  end
+
+  def valid_locale?(tag)
+    Translatomatic::Locale.new(tag).valid?
   end
 
   # test if the list of strings contains a valid locale

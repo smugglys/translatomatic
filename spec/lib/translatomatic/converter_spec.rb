@@ -1,4 +1,8 @@
 RSpec.describe Translatomatic::Converter do
+  include Translatomatic::Util
+
+  let(:locale_en) { locale("en") }
+  let(:locale_de) { locale("de") }
 
   class TestTranslator < Translatomatic::Translator::Base
     def initialize(result)
@@ -11,14 +15,14 @@ RSpec.describe Translatomatic::Converter do
   end
 
   it "creates a new instance" do
-    translator = double(:translator)
+    translator = TestTranslator.new("test")
     t = described_class.new(translator: translator)
     expect(t).to be
   end
 
   it "requires a translator" do
     expect {
-      t = described_class.new
+      described_class.new
     }.to raise_error(/translator required/)
   end
 
@@ -29,11 +33,11 @@ RSpec.describe Translatomatic::Converter do
     t = described_class.new(translator: translator)
     target = t.translate(path, "de-DE")
     expect(target.path.basename.sub_ext('').to_s).to match(/_de-DE$/)
-    expect(target.path.read).to eq("key = Bier\n")
+    expect(strip_comments(target.path.read)).to eq("key = Bier\n")
   end
 
   it "doesn't write files or translate strings when using dry run" do
-    translator = double(:translator)
+    translator = mock_translator
     expect(translator).to_not receive(:translate)
     path = create_tempfile("test.properties", "key = Beer")
     t = described_class.new(translator: translator, dry_run: true)
@@ -42,7 +46,7 @@ RSpec.describe Translatomatic::Converter do
   end
 
   it "works with equal source and target languages" do
-    translator = double(:translator)
+    translator = mock_translator
     expect(translator).to_not receive(:translate)
     t = described_class.new(translator: translator)
     properties = { key: "yoghurt" }
@@ -50,12 +54,26 @@ RSpec.describe Translatomatic::Converter do
     expect(result[:key]).to eq("yoghurt")
   end
 
+  it "translates multiple sentences separately" do
+    translator = mock_translator
+    expect(translator).to receive(:translate).
+      with(["Sentence one.", "Sentence two."], locale_en, locale_de).
+      and_return(["Satz eins.", "Satz zwei."])
+
+    t = described_class.new(translator: translator)
+    properties = { key: "Sentence one. Sentence two." }
+    result = t.translate_properties(properties, "en", "de")
+    expect(result[:key]).to eq("Satz eins. Satz zwei.")
+  end
+
   it "uses existing translations from the database" do
+    skip if database_disabled?
+
     # add a translation to the database
     en_text = create_text(value: "yoghurt", locale: "en")
     create_text(value: "yoplait", locale: "fr", from_text: en_text)
 
-    translator = double(:translator)
+    translator = mock_translator
     expect(translator).to_not receive(:translate)
     t = described_class.new(translator: translator)
     properties = { key: "yoghurt" }
@@ -65,6 +83,8 @@ RSpec.describe Translatomatic::Converter do
   end
 
   it "saves translations to the database" do
+    skip if database_disabled?
+
     translator = TestTranslator.new("Bier")
     t = described_class.new(translator: translator)
     properties = { key: "Beer" }
@@ -76,6 +96,16 @@ RSpec.describe Translatomatic::Converter do
   end
 
   private
+
+  def strip_comments(text)
+    text.gsub(/^#.*\n/, '')
+  end
+
+  def mock_translator
+    translator = double(:translator)
+    allow(translator).to receive(:name).and_return("MockTranslator")
+    translator
+  end
 
   def create_text(attributes)
     if attributes[:locale].kind_of?(String)

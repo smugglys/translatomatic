@@ -1,51 +1,33 @@
-# Enables Travis to use their new container-based infrastructure
-sudo: false
-
 # Build for Ruby
 language: ruby
+cache:
+  bundler: true
+  directories:
+    - tmp/cache/codeclimate
 
-# Enables caching for bundler
-cache: bundler
-
-# Passes arguments to bundle install (http://gembundler.com/man/bundle-install.1.html)
-# bundler_args:
+os:
+  - linux
+  - osx
 
 # Specify which ruby versions you wish to run your tests on, each version will be used
 rvm:
-  - 1.9
   - 2.2
   - 2.3
   - 2.4
-  - ruby-head
-  - jruby
+#  - jruby     # Unknown ruby string (do not know how to handle): jruby-9.1.15.0200
+#  - ruby-head # cannot load such file -- bundler/dep_proxy (?)
+#  - 1.9       # incompatible with activesupport 5
+
+env:
+  global:
+    - CC_TEST_REPORTER_ID=3c907b2e0a343abfe219925db045ff59f2088392a11cd324554dc11a4d8ca025
+    - CI=1
+
+before_script:
+  - bin/travis before
 
 # Define how to run your tests (defaults to `bundle exec rake` or `rake` depending on whether you have a `Gemfile`)
-script: "bundle exec rake"
+script: "bundle exec rspec"
 
-# Define tasks to be completed before and after tests run . Will allow folding of content on frontend
-#before_script:
-#  - command_1
-#  - command_2
-#
-#after_script:
-#  - command_1
-#  - command_2
-
-# Specify an ENV variable to run before: 'bundle install' and 'rake' (or your defined 'script')
-env:
-  - CI=1
-
-# Specify the recipients for email notification
-#notifications:
-#  recipients:
-#    - email-address-1
-#    - email-address-2
-
-# Disable email notifications
-#notifications:
-#  disabled: true
-
-# notifications:
-#   webhooks:
-#     urls:
-#       - https://webhooks.gitter.im/e/c6dbb9323007dfcf81df
+after_script:
+  - bin/travis after

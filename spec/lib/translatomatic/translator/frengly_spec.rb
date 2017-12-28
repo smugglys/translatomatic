@@ -20,11 +20,7 @@ RSpec.describe Translatomatic::Translator::Frengly do
     expected_response = { text: "Bier" }
     stub_request(:post, api_endpoint).
       with(body: "{\"src\":\"en\",\"dest\":\"de\",\"text\":\"Beer\",\"email\":\"dummy\",\"password\":\"dummy\",\"premiumkey\":null}",
-           headers: {
-             'Accept'=>'*/*',
-             'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-             'Content-Type'=>'application/json',
-             'Host'=>'frengly.com', 'User-Agent'=>'Ruby'}).
+        headers: test_http_headers('Host'=>'frengly.com')).
       to_return(status: 200, body: expected_response.to_json, headers: {})
 
     t = described_class.new(frengly_email: "dummy", frengly_password: "dummy")

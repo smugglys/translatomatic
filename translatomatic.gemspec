@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["contact@smugglys.com"]
 
   spec.summary       = %q{Strings translation utility}
-  spec.homepage      = "http://github.com/smugglys/translatomatic"
+  spec.homepage      = Translatomatic::URL
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
@@ -28,19 +28,17 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-mocks", "~> 3.0"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "webmock"
+  spec.add_development_dependency "factory_bot"  # RIP girl
 
   spec.add_dependency "thor", "~> 0.20"
   spec.add_dependency "yandex-translator"
   spec.add_dependency "easy_translate"
   spec.add_dependency "bing_translator", "~> 5.1.0"
-  spec.add_dependency "sqlite3", "~> 1.3"
   spec.add_dependency "activerecord", "~> 5.0"
   spec.add_dependency "i18n"
   spec.add_dependency "i18n_data"
-  spec.add_dependency "bigdecimal"
   spec.add_dependency "nokogiri"
-
-  # TODO: i want to use mysql in my .translatomatic/database.yml but
-  # other people shouldn't have to install it, how to make it optional?
-  spec.add_dependency "mysql2"
+  spec.add_dependency "ruby-progressbar"
+  spec.add_dependency "kramdown"           # markdown -> html
+  spec.add_dependency "reverse_markdown"   # html -> markdown
 end

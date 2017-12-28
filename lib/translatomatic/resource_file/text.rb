@@ -1,8 +1,9 @@
 module Translatomatic::ResourceFile
   class Text < Base
 
+    # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{txt md text}
+      %w{txt text}
     end
 
     # (see Translatomatic::ResourceFile::Base#initialize)
@@ -12,8 +13,8 @@ module Translatomatic::ResourceFile
       @properties = @path.exist? ? read(@path) : {}
     end
 
-    # (see Translatomatic::ResourceFile::Base#save(target))
-    def save(target = path)
+    # (see Translatomatic::ResourceFile::Base#save)
+    def save(target = path, options = {})
       values = @properties.values.collect { |i| i.strip + "\n" }
       target.write(values.join)
     end

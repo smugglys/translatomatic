@@ -1,18 +1,27 @@
-[![Build Status](https://travis-ci.org/smugglys/translatomatic.svg?branch=master)](https://travis-ci.org/smugglys/translatomatic)
-[![Gem Version](https://badge.fury.io/rb/translatomatic.svg)](https://badge.fury.io/rb/translatomatic)
 [![Documentation](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/gems/translatomatic)
+[![Gem Version](https://badge.fury.io/rb/translatomatic.svg)](https://badge.fury.io/rb/translatomatic)
+[![Build Status](https://travis-ci.org/smugglys/translatomatic.svg?branch=master)](https://travis-ci.org/smugglys/translatomatic)
+[![Code Climate](https://codeclimate.com/github/smugglys/translatomatic.svg)](https://codeclimate.com/github/smugglys/translatomatic)
 
 # Translatomatic
 
-Translates text files from one language to another.
+Translates text files from one language to another.  The following file formats
+are currently supported:
 
-Features:
-- Translated strings are saved in a database and reused.
-- Understands how to translate different types of files, e.g. java properties, xcode strings, YAML, text, markdown.
+* [Properties](https://en.wikipedia.org/wiki/.properties)
+* RESW (Windows resources file)
+* [Property lists](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
+* HTML
+* XML
+* [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
+* [YAML](http://yaml.org/)
+* Text files
+
+Translated strings are saved in a database and reused.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's `Gemfile`:
 
 ```ruby
 gem 'translatomatic'
@@ -28,29 +37,42 @@ Or install it yourself as:
 
 ## Usage
 
-The command line interface for translation functionality is **translatomatic**. For help on available options, execute:
+The command line interface for translation functionality is `translatomatic`. For help on available options, execute:
 
     $ translatomatic help
 
-## Example Usage
+### Translating files
 
-To list available translation backends and options:
+`translatomatic` translates text one sentence or phrase at a time.
+If a file is re-translated, only sentences that have changed are sent to the translator, and the rest are sourced from the local database.
+
+To list available translation services and options:
 
     $ translatomatic translators
 
-To translate a java properties file to German and French:
+To translate a Java properties file to German and French:
 
-    $ translatomatic src/main/resources/strings.properties de fr
+    $ translatomatic translate resources/strings.properties de fr
 
-This would create the following files.
+This would create (or overwrite) `strings_de.properties` and `strings_fr.properties`.
 
-    src/main/resources/strings_de.properties
-    src/main/resources/strings_fr.properties
+### Extracting strings from source files
+
+To extract strings from some source files, use the extract command, e.g.
+
+    $ translatomatic strings file.rb
+
+### Displaying strings from a resource bundle
+
+To read and display the `store.description` and `store.name` properties from local resource files in English, German, and French:
+
+    $ translatomatic display --locales=en,de,fr \
+        resources/strings.properties store.description store.name
 
 ## Configuration
 
-By default, translatomatic uses an sqlite3 database in *$HOME/.translatomatic/translatomatic.sqlite3* to store translated strings.
-The database can be changed by creating a *database.yml* file under *$HOME/.translatomatic/database.yml* for the **production** environment, e.g.
+By default, `translatomatic` uses an sqlite3 database in `$HOME/.translatomatic/translatomatic.sqlite3` to store translated strings.
+The database can be changed by creating a `database.yml` file under `$HOME/.translatomatic/database.yml` for the `production` environment, e.g.
 
     production:
       adapter: mysql2
@@ -71,4 +93,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Translatomatic project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting with the Translatomatic project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).

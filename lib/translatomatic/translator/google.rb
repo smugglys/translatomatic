@@ -9,6 +9,7 @@ module Translatomatic
 
       # Create a new Google translator instance
       def initialize(options = {})
+        super(options)
         key = options[:google_api_key] || ENV["GOOGLE_API_KEY"]
         raise "google api key required" if key.nil?
         EasyTranslate.api_key = key

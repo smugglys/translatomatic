@@ -4,6 +4,7 @@ module Translatomatic::ResourceFile
   # @see https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html
   class XCodeStrings < Base
 
+    # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
       %w{strings}
     end
@@ -28,9 +29,10 @@ module Translatomatic::ResourceFile
       end
     end
 
-    # (see Translatomatic::ResourceFile::Base#save(target))
-    def save(target = path)
+    # (see Translatomatic::ResourceFile::Base#save)
+    def save(target = path, options = {})
       out = ""
+      out += comment(created_by) unless options[:no_created_by]
       properties.each do |key, value|
         key = escape(key)
         value = escape(value)
@@ -40,6 +42,10 @@ module Translatomatic::ResourceFile
     end
 
     private
+
+    def comment(text)
+      "/* #{text} */\n"
+    end
 
     def read(path)
       result = {}

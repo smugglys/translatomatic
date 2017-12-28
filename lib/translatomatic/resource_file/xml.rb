@@ -1,6 +1,7 @@
 module Translatomatic::ResourceFile
   class XML < Base
 
+    # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
       %w{xml}
     end
@@ -18,47 +19,66 @@ module Translatomatic::ResourceFile
       @nodemap[key].content = value if @nodemap.include?(key)
     end
 
-    # (see Translatomatic::ResourceFile::Base#save(target))
-    def save(target = path)
-      target.write(@doc.to_xml) if @doc
+    # (see Translatomatic::ResourceFile::Base#save)
+    def save(target = path, options = {})
+      if @doc
+        add_created_by unless options[:no_created_by]
+        target.write(@doc.to_xml)
+      end
     end
 
     private
+
+    def comment(text)
+      @doc.create_comment(text)
+    end
 
     # initialize nodemap from nokogiri document
     # returns property hash
     def init_nodemap(doc)
       # map of key1 => node, key2 => node, ...
-      @nodemap = flatten_xml(doc)
+      @nodemap = create_nodemap(doc)
       # map of key => node content
       @nodemap.transform_values { |v| v.content }
     end
 
-    # parse key = value property file
+    # parse xml
     def read(path)
       begin
         # parse xml with nokogiri
-        @doc = Nokogiri::XML(path.open) do |config|
-          config.noblanks
-        end
+        @doc = read_doc(path)
         init_nodemap(@doc)
-      rescue Exception
+      rescue Exception => e
+        log.error(e.message)
         @valid = false
         {}
       end
     end
 
-    def flatten_xml(doc)
+    def read_doc(path)
+      Nokogiri::XML(path.open) do |config|
+        config.noblanks
+      end
+    end
+
+    def create_nodemap(doc)
       result = {}
       text_nodes = doc.search(text_nodes_xpath)
-      text_nodes.each_with_index do |node, i|
-        result["key#{i + 1}"] = node
+      idx = 1
+      text_nodes.each do |node|
+        next if whitespace?(node.content)
+        result["key#{idx}"] = node
+        idx += 1
       end
       result
     end
 
     def text_nodes_xpath
       '//text()'
+    end
+
+    def whitespace?(text)
+      text == nil || text.strip.length == 0
     end
   end # class
 end   # module

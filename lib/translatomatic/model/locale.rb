@@ -5,18 +5,17 @@ module Translatomatic
       validates_presence_of :language
       validates_uniqueness_of :language, scope: [:script, :region]
 
-      class << self
-        include Translatomatic::Util
-      end
-
       # create a locale record from an I18n::Locale::Tag object or string
       def self.from_tag(tag)
-        tag = parse_locale(tag) if tag.kind_of?(String)
+        tag = Translatomatic::Locale.parse(tag)
         find_or_create_by!({
           language: tag.language, script: tag.script, region: tag.region
         })
       end
 
+      def to_s
+        [language, script, region].compact.join("-")
+      end
     end
   end
 end

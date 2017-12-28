@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="property1">
+    <value>saved value 1</value>
+  </data>
+  <data name="property2">
+    <value>saved value 2</value>
+  </data>
+</root>

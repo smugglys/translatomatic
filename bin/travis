@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+[ "$TRAVIS_OS_NAME" == "linux" ] || exit 0
+
+REPORTER_PATH=tmp/cache/codeclimate
+REPORTER_CMD=$REPORTER_PATH/cc-test-reporter
+REPORTER_URL=https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+mkdir -p $REPORTER_PATH
+
+function remote_size {
+  curl -sIL "$1" | awk '/Content-Length/ {sub("\r",""); print $2}' | tail -1
+}
+
+if [ "$1" == "before" ]; then
+  gem install sqlite3  # enable database tests
+  
+  local_size=$(wc -c < $REPORTER_CMD 2>/dev/null)
+  remote_size=$(remote_size $REPORTER_URL)
+  if [ "$local_size" != "$remote_size" ]; then
+    curl -L $REPORTER_URL -o $REPORTER_CMD
+    chmod +x $REPORTER_CMD
+  fi
+  $REPORTER_CMD before-build
+elif [ "$1" == "after" ]; then
+  $REPORTER_CMD after-build --exit-code $TRAVIS_TEST_RESULT
+fi
