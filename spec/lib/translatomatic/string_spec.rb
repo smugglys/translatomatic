@@ -19,6 +19,14 @@ RSpec.describe Translatomatic::String do
     # sentence with full stop missing from last sentence
     ["en", :paragraph, "sentence one. sentence two",
       ["sentence one.", "sentence two"]],
+    # sentence starting with full stop
+    # this can happen with markdown to text conversion, e.g.
+    #  "<b>sentence one</b>. sentence two" converts to two separate text nodes.
+    ["en", :paragraph, ". sentence two.",
+      [".", "sentence two."]],
+    # sentence starting with full stop and missing end full stop
+    ["en", :paragraph, ". sentence two",
+      [".", "sentence two"]],
 
     # test with leading and trailling spaces
     ["en", :paragraph, "   sentence one.   sentence two.  ",

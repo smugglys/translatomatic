@@ -29,10 +29,6 @@ module Translatomatic::ResourceFile
 
     private
 
-    def add_created_by
-      @created_by ||= @doc.root.add_previous_sibling(comment(created_by))
-    end
-
     def comment(text)
       @doc.create_comment(text)
     end
@@ -46,13 +42,14 @@ module Translatomatic::ResourceFile
       @nodemap.transform_values { |v| v.content }
     end
 
-    # parse key = value property file
+    # parse xml
     def read(path)
       begin
         # parse xml with nokogiri
         @doc = read_doc(path)
         init_nodemap(@doc)
-      rescue Exception
+      rescue Exception => e
+        log.error(e.message)
         @valid = false
         {}
       end

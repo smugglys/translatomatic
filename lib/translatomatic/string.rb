@@ -63,6 +63,8 @@ module Translatomatic
       offset = 0
       sentences.each do |sentence|
         # find leading and trailing whitespace
+        next if sentence.length == 0
+
         parts = sentence.match(/^(\s*)(.*?)(\s*)$/).to_a
         value = parts[2]
         offset += parts[1].length  # leading whitespace
@@ -142,10 +144,10 @@ module Translatomatic
     def sentence_regex
       script = script_data
       if script.trailing_space
-        regex = /.+?(?:#{script.delimiter}\s+|$)/
+        regex = /.*?(?:#{script.delimiter}\s+|$)/
       else
         # no trailing space after delimiter
-        regex = /.+?(?:#{script.delimiter}|$)/
+        regex = /.*?(?:#{script.delimiter}|$)/
       end
     end
 

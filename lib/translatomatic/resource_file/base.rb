@@ -39,11 +39,15 @@ class Translatomatic::ResourceFile::Base
 
     extlist = extension_list
     if extlist.length >= 2 && loc_idx = find_locale(extlist)
+      # extension(s) contains locale, replace it
       extlist[loc_idx] = locale.to_s
     elsif valid_locale?(basename)
+      # basename is a locale name, replace it
       path.dirname + (locale.to_s + path.extname)
     else
+      # remove any underscore and trailing text from basename
       deunderscored = basename.sub(/_.*?$/, '')
+      # add _locale.ext
       filename = deunderscored + "_" + locale.to_s + path.extname
       path.dirname + filename
     end
@@ -102,6 +106,8 @@ class Translatomatic::ResourceFile::Base
   end
 
   private
+
+  include Translatomatic::Util
 
   def created_by
     date = DateTime.now.strftime("%Y-%m-%d %H:%M")

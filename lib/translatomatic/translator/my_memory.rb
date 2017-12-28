@@ -30,11 +30,13 @@ module Translatomatic
       def upload(tmx)
         request = Translatomatic::HTTPRequest.new(UPLOAD_URL)
         request.start do |http|
-          form_data = [
-            ["tmx", tmx.to_xml],
-            ["private", 0]
+          body = [
+            request.file(key: :tmx, filename: "import.tmx",
+              content: tmx.to_xml, mime_type: "application/xml"
+            ),
+            request.param(key: :private, value: 0)
           ]
-          response = request.post(form_data, multipart: true)
+          response = request.post(body, multipart: true)
           log.debug("share response: #{response.body}")
         end
       end

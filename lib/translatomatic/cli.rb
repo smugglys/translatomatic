@@ -121,7 +121,7 @@ class Translatomatic::CLI < Thor
       end
     end
 
-    ActiveModel::Base.transaction do
+    ActiveRecord::Base.transaction do
       converter.db_translations.each do |text|
         text.update(shared: true) if text.is_translated?
       end
@@ -168,17 +168,20 @@ class Translatomatic::CLI < Thor
 
   def display_keys(source, keys)
     puts "File: #{source}"
+    table = []
     keys.each do |key|
       value = source.get(key)
-      puts "#{key}: #{value}"
-      if options[:sentences]
-        sentences = source.sentences
-        if sentences.length > 1
-          puts "sentences:"
-          sentences.each { |i| puts i }
-        end
+      table << [key + ":", value]
+    end
+    print_table(table, indent: 2)
+
+    if options[:sentences]
+      puts "Sentences:"
+      source.sentences.each do |sentence|
+        puts "- " + sentence.to_s
       end
     end
+
     puts
   end
 

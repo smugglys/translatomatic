@@ -3,7 +3,7 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{txt md text}
+      %w{txt text}
     end
 
     # (see Translatomatic::ResourceFile::Base#initialize)

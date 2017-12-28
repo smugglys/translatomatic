@@ -21,7 +21,7 @@ Translated strings are saved in a database and reused.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's `Gemfile`:
 
 ```ruby
 gem 'translatomatic'
@@ -37,24 +37,24 @@ Or install it yourself as:
 
 ## Usage
 
-The command line interface for translation functionality is **translatomatic**. For help on available options, execute:
+The command line interface for translation functionality is `translatomatic`. For help on available options, execute:
 
     $ translatomatic help
 
 ### Translating files
 
-Translatomatic translates text one sentence or phrase at a time.
+`translatomatic` translates text one sentence or phrase at a time.
 If a file is re-translated, only sentences that have changed are sent to the translator, and the rest are sourced from the local database.
 
-To list available translation backends and options:
+To list available translation services and options:
 
     $ translatomatic translators
 
-To translate a java properties file to German and French:
+To translate a Java properties file to German and French:
 
     $ translatomatic translate resources/strings.properties de fr
 
-This would create (or overwrite) *strings_de.properties* and *strings_fr.properties*.
+This would create (or overwrite) `strings_de.properties` and `strings_fr.properties`.
 
 ### Extracting strings from source files
 
@@ -64,15 +64,15 @@ To extract strings from some source files, use the extract command, e.g.
 
 ### Displaying strings from a resource bundle
 
-To read and display the *store.description* and *store.name* properties from local resource files in English, German, and French:
+To read and display the `store.description` and `store.name` properties from local resource files in English, German, and French:
 
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
 ## Configuration
 
-By default, translatomatic uses an sqlite3 database in *$HOME/.translatomatic/translatomatic.sqlite3* to store translated strings.
-The database can be changed by creating a *database.yml* file under *$HOME/.translatomatic/database.yml* for the **production** environment, e.g.
+By default, `translatomatic` uses an sqlite3 database in `$HOME/.translatomatic/translatomatic.sqlite3` to store translated strings.
+The database can be changed by creating a `database.yml` file under `$HOME/.translatomatic/database.yml` for the `production` environment, e.g.
 
     production:
       adapter: mysql2

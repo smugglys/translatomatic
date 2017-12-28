@@ -53,7 +53,8 @@ module Translatomatic::ResourceFile
       begin
         @data = ::YAML.load_file(@path) || {}
         flatten_data(@data)
-      rescue Exception
+      rescue Exception => e
+        log.error(e.message)
         @valid = false
         {}
       end

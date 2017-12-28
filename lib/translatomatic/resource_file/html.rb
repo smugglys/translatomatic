@@ -18,11 +18,10 @@ module Translatomatic::ResourceFile
       else
         # add locale extension
         ext = path.extname
-        path.sub_ext("#{ext}." + locale.to_s)
+        # TODO: need configurable order for locale & ext here?
+        #path.sub_ext("#{ext}." + locale.to_s)
+        path.sub_ext("." + locale.to_s + ext)
       end
-
-      # fall back to base functionality
-      #super(locale)
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
@@ -34,6 +33,14 @@ module Translatomatic::ResourceFile
     end
 
     private
+
+    def text_nodes_xpath
+      '//*[not(self::code)]/text()'
+    end
+
+    def add_created_by
+      @created_by ||= @doc.root.add_previous_sibling(comment(created_by))
+    end
 
     def read_doc(path)
       Nokogiri::HTML(path.open) do |config|
