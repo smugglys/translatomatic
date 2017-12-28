@@ -8,7 +8,7 @@ RSpec.describe Translatomatic::HTTPRequest do
       request.file(key: "tmx", filename: "upload.xml", content: content, mime_type: "application/xml"),
       request.param(key: "private", value: 0)
     ])
-    expected_body = fixture_read("http_request/multipart_body.txt")
+    expected_body = fixture_read("http_request/multipart_body.txt", true)
     expect(body).to eq(expected_body)
   end
 

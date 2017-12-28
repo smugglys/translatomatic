@@ -36,7 +36,7 @@ RSpec.shared_examples "a resource file" do |config|
 
     file.properties = properties
     file.save(save_path, no_created_by: true)
-    expected_result = File.read(fixture_path("test_save.#{ext}"))
+    expected_result = fixture_read("test_save.#{ext}")
     actual_result = save_path.read
 
     if RUBY_PLATFORM == "java" &&
@@ -80,7 +80,8 @@ RSpec.shared_examples "a resource file" do |config|
 
   def load_test_file
     ext = described_class.extensions.first
-    path = fixture_path("test.#{ext}")
+    contents = fixture_read("test.#{ext}")  # convert crlf to lf
+    path = create_tempfile("test.#{ext}", contents)
     described_class.new(path)
   end
 end  # end shared examples

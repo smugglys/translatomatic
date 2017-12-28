@@ -1,8 +1,11 @@
 module Helpers
   include Translatomatic::Util
 
-  def fixture_read(path)
-    File.read(fixture_path(path))
+  def fixture_read(path, crlf = false)
+    contents = File.read(fixture_path(path))
+    contents.gsub!(/\r\n/, "\n")
+    contents.gsub!(/\n/, "\r\n") if crlf
+    contents
   end
 
   def fixture_path(path)
