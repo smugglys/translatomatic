@@ -12,6 +12,7 @@ require 'ruby-progressbar'
 
 require 'translatomatic/option'
 require 'translatomatic/locale'
+require 'translatomatic/string'
 require 'translatomatic/util'
 require 'translatomatic/version'
 require 'translatomatic/logger'

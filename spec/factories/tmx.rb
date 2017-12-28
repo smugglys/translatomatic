@@ -12,11 +12,11 @@ FactoryBot.define do
     initialize_with { new([build(:tmx_unit)], build(:locale), "Test") }
   end
 
-  factory :tmx_locale_string, class: Translatomatic::TMX::LocaleString do
+  factory :tmx_locale_string, class: Translatomatic::String do
     value "Yoghurt"
-    tag "en"
+    locale "en"
     skip_create
-    initialize_with { new(value, build(:locale, tag: tag)) }
+    initialize_with { new(value, tag) }
   end
 
 end

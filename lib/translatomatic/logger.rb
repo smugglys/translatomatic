@@ -10,15 +10,19 @@ class Translatomatic::Logger
   end
 
   def method_missing(name, *args)
-    if @logger.respond_to?(name)
-      @progressbar.clear if @progressbar
-      @logger.send(name, *args)
-      @progressbar.refresh(force: true) if @progressbar && !@progressbar.stopped?
-    end
+    handle_logger_method(name, args) if @logger.respond_to?(name)
   end
 
   def finish
     @progressbar.finish if @progressbar
+  end
+
+  private
+
+  def handle_logger_method(name, args)
+    @progressbar.clear if @progressbar
+    @logger.send(name, *args)
+    @progressbar.refresh(force: true) if @progressbar && !@progressbar.stopped?
   end
 
 end

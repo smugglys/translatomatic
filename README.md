@@ -43,6 +43,9 @@ The command line interface for translation functionality is **translatomatic**. 
 
 ### Translating files
 
+Translatomatic translates text one sentence or phrase at a time.
+If a file is re-translated, only sentences that have changed are sent to the translator, and the rest are sourced from the local database.
+
 To list available translation backends and options:
 
     $ translatomatic translators

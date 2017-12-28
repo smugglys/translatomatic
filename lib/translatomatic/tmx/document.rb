@@ -22,22 +22,12 @@ module Translatomatic::TMX
           xml.header(creationtool: "Translatomatic",
             creationtoolversion: Translatomatic::VERSION,
             datatype: "PlainText",
-            segtype: "sentence",  # TODO: or "phrase"
+            segtype: "phrase",  # default segtype
             adminlang: @source_locale.to_s,
             srclang: @source_locale.to_s,
             "o-tmx": @origin
           )
-          xml.body do
-            @units.each do |unit|
-              xml.tu do
-                unit.locale_strings.each do |locale_string|
-                  xml.tuv("xml:lang" => locale_string.locale.to_s) do
-                    xml.seg locale_string.value
-                  end
-                end
-              end
-            end
-          end
+          xml.body { tmx_body(xml) }
         end
       end
       builder.to_xml
@@ -68,7 +58,23 @@ module Translatomatic::TMX
 
     private
 
+    class << self
+      include Translatomatic::Util
+    end
+
     TMX_DTD = "http://www.ttt.org/oscarstandards/tmx/tmx14.dtd"
+
+    def tmx_body(xml)
+      @units.each do |unit|
+        xml.tu("segtype": unit.strings[0].type) do
+          unit.strings.each do |string|
+            xml.tuv("xml:lang": string.locale.to_s) do
+              xml.seg string.value
+            end
+          end
+        end
+      end
+    end
 
     # @return [Array<Translatomatic::TMX::TranslationUnit] translation unit list
     def self.units_from_texts(texts)
@@ -82,16 +88,12 @@ module Translatomatic::TMX
 
       # create list of Translation Units
       texts_by_from_id.values.collect do |list|
-        tmx_unit(list.uniq.collect { |i| locale_string(i) })
+        tmx_unit(list.uniq.collect { |i| string(i.value, i.locale) })
       end
     end
 
-    def self.tmx_unit(locale_strings)
-      Translatomatic::TMX::TranslationUnit.new(locale_strings)
-    end
-
-    def self.locale_string(text)
-      Translatomatic::TMX::LocaleString.new(text.value, text.locale)
+    def self.tmx_unit(strings)
+      Translatomatic::TMX::TranslationUnit.new(strings)
     end
 
   end # class

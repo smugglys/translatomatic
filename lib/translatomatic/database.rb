@@ -122,8 +122,8 @@ class Translatomatic::Database
   def database_config_path(options)
     if options[:database_env] == "test"
       INTERNAL_CONFIG  # rspec
-    elsif options[:database_config_path]
-      return options[:database_config_path]
+    elsif options[:database_config]
+      return options[:database_config]
     else
       DEFAULT_CONFIG
     end
@@ -131,7 +131,7 @@ class Translatomatic::Database
 
   # return database config as a hash
   def database_config(env, options)
-    if options[:database_config]
+    if options[:database_config].kind_of?(Hash)
       return { env => options[:database_config] }
     end
 

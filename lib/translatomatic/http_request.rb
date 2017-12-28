@@ -2,7 +2,7 @@ module Translatomatic
   class HTTPRequest
 
     def initialize(url)
-      @uri = url.kind_of?(String) ? URI.parse(url) : url
+      @uri = url.respond_to?(:host) ? url : URI.parse(url)
     end
 
     def start(options = {})

@@ -35,8 +35,8 @@ module Translatomatic
       # @return [Array<String>] Translated strings
       def translate(strings, from, to)
         strings = [strings] unless strings.kind_of?(Array)
-        from = Translatomatic::Locale.parse(from)
-        to = Translatomatic::Locale.parse(to)
+        from = locale(from)
+        to = locale(to)
         return strings if from.language == to.language
         translated = perform_translate(strings, from, to)
         update_translated(translated) unless @updated_listener

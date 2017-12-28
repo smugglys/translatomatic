@@ -46,7 +46,7 @@ class Translatomatic::CLI < Thor
       log.debug("Locales: #{locales}, Properties: #{source.properties.length}")
 
       # set up converter
-      translation_count = source.properties.length * locales.length
+      translation_count = calculate_translation_count(source, locales)
       converter_options = options.merge(
         translator: translator, listener: progress_updater(translation_count)
       )
@@ -64,32 +64,24 @@ class Translatomatic::CLI < Thor
 
   desc "display file [key...]", "Display values from a resource bundle"
   method_option :locales, type: :string, desc: "Locales to display"
+  method_option :sentences, type: :boolean, desc: "Display sentences"
   def display(file, *keys)
     run do
       source = Translatomatic::ResourceFile.load(file)
       keys = source.properties.keys if keys.empty?
       display_keys(source, keys)
 
-      locales = (options[:locales] || "").split(',').flatten.compact
-      locales << Translatomatic::Locale.default.to_s if locales.empty?
-
       # TODO: if locales not specified, determine the list of locales from
       # all the files in the resource bundle.
-      unless locales.empty?
-        locales.each do |locale|
-          next if source.locale == locale
-          path = source.locale_path(locale)
-          if path.exist?
-            resource = Translatomatic::ResourceFile.load(path)
-            display_keys(resource, keys)
-          end
-        end
-      else
+      locales = (options[:locales] || "").split(',').flatten.compact
+      locales << Translatomatic::Locale.default.to_s if locales.empty?
+      locales.each do |locale|
+        display_properties(source, locale)
       end
     end
   end
 
-  desc "strings file [file...]", "Extract strings from files"
+  desc "strings file [file...]", "Extract strings from non-resource files"
   def strings(*files)
     run do
       strings = []
@@ -112,6 +104,10 @@ class Translatomatic::CLI < Thor
   end
 
   private
+
+  def calculate_translation_count(source, locales)
+    source.sentences.length * locales.length
+  end
 
   def share_translations(converter)
     return if converter.db_translations.empty?
@@ -162,9 +158,27 @@ class Translatomatic::CLI < Thor
     end
   end
 
+  def display_properties(source, locale)
+    path = source.locale_path(locale)
+    if path.exist?
+      resource = Translatomatic::ResourceFile.load(path)
+      display_keys(resource, keys)
+    end
+  end
+
   def display_keys(source, keys)
     puts "File: #{source}"
-    keys.each { |key| puts "#{key}: #{source.get(key)}" }
+    keys.each do |key|
+      value = source.get(key)
+      puts "#{key}: #{value}"
+      if options[:sentences]
+        sentences = source.sentences
+        if sentences.length > 1
+          puts "sentences:"
+          sentences.each { |i| puts i }
+        end
+      end
+    end
     puts
   end
 

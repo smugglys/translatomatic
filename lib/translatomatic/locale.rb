@@ -5,7 +5,7 @@ class Translatomatic::Locale
   attr_reader :region
 
   def self.parse(tag, validate = true)
-    locale = new(tag)
+    locale = tag.kind_of?(Translatomatic::Locale) ? tag : new(tag)
     validate && !locale.valid? ? nil : locale
   end
 
@@ -14,25 +14,21 @@ class Translatomatic::Locale
   end
 
   def initialize(tag)
-    @impl = I18n::Locale::Tag::Rfc4646.tag(tag)
-    if @impl
-      @language = @impl.language
-      @script = @impl.script
-      @region = @impl.region
+    data = I18n::Locale::Tag::Rfc4646.tag(tag)
+    if data
+      @language = data.language
+      @script = data.script
+      @region = data.region
     end
-  end
-
-  def language
-    @impl ? @impl.language : nil
   end
 
   def valid?
     # test if lang is a valid ISO 639-1 language
-    @impl && VALID_LANGUAGES.include?(@impl.language) ? true : false
+    VALID_LANGUAGES.include?(language)
   end
 
   def to_s
-    @impl ? @impl.to_s : ""
+    [language, script, region].compact.join("-")
   end
 
   def eql?(other)
@@ -44,7 +40,7 @@ class Translatomatic::Locale
   end
 
   def hash
-    @impl ? @impl.members.hash : super
+    [language, script, region].hash
   end
 
   private

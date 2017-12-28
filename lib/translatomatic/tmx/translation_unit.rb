@@ -1,19 +1,19 @@
 module Translatomatic::TMX
   class TranslationUnit
 
-    # @return [Array<LocaleString>] Locale strings in this translation unit
-    attr_reader :locale_strings
+    # @return [Array<Translatomatic::String>] Strings in this translation unit
+    attr_reader :strings
 
-    # @param [Array<LocaleString>] list of locale strings
-    def initialize(locale_strings)
-      @locale_strings = locale_strings || []
+    # @param [Array<Translatomatic::String>] list of strings
+    def initialize(strings)
+      @strings = strings || []
     end
 
     # Test translation unit validity.
-    # A translation unit must contain at least two locale strings.
+    # A translation unit must contain at least two strings.
     # @return [boolean] true if this translation unit is valid
     def valid?
-      @locale_strings.length >= 2
+      @strings.length >= 2
     end
   end
 end

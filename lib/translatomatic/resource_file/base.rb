@@ -92,6 +92,15 @@ class Translatomatic::ResourceFile::Base
     "#{path.basename.to_s} (#{locale})"
   end
 
+  def sentences
+    sentences = []
+    properties.values.each do |value|
+      string = Translatomatic::String.new(value, locale)
+      sentences += string.sentences
+    end
+    sentences
+  end
+
   private
 
   def created_by
