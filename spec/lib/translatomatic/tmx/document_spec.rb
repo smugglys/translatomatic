@@ -8,7 +8,7 @@ RSpec.describe Translatomatic::TMX::Document do
   it "converts document to xml" do
     xml = create_doc.to_xml
     expect(xml).to be
-    expected_result = fixture_read("tmx/document.xml")
+    expected_result = read_tmx_document("tmx/document.xml")
     expect(xml).to eq(expected_result)
   end
 
@@ -28,11 +28,16 @@ RSpec.describe Translatomatic::TMX::Document do
       from_text: text1, translator: "Test")
     tmx = described_class.from_texts([text1, text2])
     xml = tmx.to_xml
-    expected_result = fixture_read("tmx/document.xml")
+    expected_result = read_tmx_document("tmx/document.xml")
     expect(xml).to eq(expected_result)
   end
 
   private
+
+  def read_tmx_document(path)
+    doc = fixture_read(path)
+    doc.sub(/creationtoolversion=".*?"/, %Q(creationtoolversion="#{Translatomatic::VERSION}"))
+  end
 
   def create_locale(lang)
     Translatomatic::Model::Locale.find_or_create_by!(language: lang)
