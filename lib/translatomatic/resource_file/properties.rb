@@ -64,16 +64,17 @@ module Translatomatic::ResourceFile
         line.strip!
         next if line.length == 0
         equal_idx = line.index("=")
+        colon_idx = line.index(":")
 
         if line[0] == ?! || line[0] == ?#
           # comment
           # TODO: translate comments or keep originals?
           next
-        elsif equal_idx.nil?
+        elsif equal_idx.nil? && colon_idx.nil?
           @valid = false
           return {}
         end
-        name, value = line.split(/\s*=\s*/, 2)
+        name, value = line.split(/\s*[=:]\s*/, 2)
         value = value.gsub("\\n", "\n")      # convert \n to newlines
         result[name] = value
       end
