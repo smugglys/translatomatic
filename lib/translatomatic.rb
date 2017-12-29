@@ -1,4 +1,5 @@
 require 'i18n'
+require 'rails-i18n'
 
 # Module containing all of the translation goodness
 module Translatomatic

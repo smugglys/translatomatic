@@ -4,6 +4,10 @@ require "thor"
 class Translatomatic::CLI < Thor
   include Translatomatic::Util
 
+  begin
+    I18n.default_locale = Translatomatic::Config.instance.default_locale
+  end
+
   package_name "Translatomatic"
   map %W[-v --version] => :version
   map %W[-L --list] => :translators
@@ -132,7 +136,7 @@ class Translatomatic::CLI < Thor
     available = Translatomatic::Translator.available(options)
     available.each do |translator|
       if translator.respond_to?(:upload)
-        log.debug(t("cli.uploading_tmx"))
+        log.debug(t("cli.uploading_tmx", name: translator.name))
         translator.upload(tmx)
       end
     end
@@ -168,6 +172,7 @@ class Translatomatic::CLI < Thor
       puts "\n" + t("cli.aborted")
       false
     rescue Exception => e
+      config.logger.finish
       log.error(e.message)
       log.debug(e.backtrace.join("\n"))
       false

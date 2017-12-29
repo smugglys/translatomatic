@@ -16,13 +16,20 @@ class Translatomatic::Locale
   # @param [boolean] validate If true, return nil if the locale is invalid
   # @return [Locale] A locale object
   def self.parse(tag, validate = true)
-    locale = tag.kind_of?(Translatomatic::Locale) ? tag : new(tag)
-    validate && !locale.valid? ? nil : locale
+    unless tag.nil?
+      if tag.kind_of?(Translatomatic::Locale)
+        locale = tag
+      else
+        tag = tag.to_s.gsub(/_/, '-')
+        locale = new(tag)
+      end
+      validate && !locale.valid? ? nil : locale
+    end
   end
 
   # @return [Locale] the default locale
   def self.default
-    DEFAULT_LOCALE
+    parse(Translatomatic::Config.instance.default_locale)
   end
 
   # @return [Locale] create a new locale object
@@ -66,6 +73,5 @@ class Translatomatic::Locale
 
   # list of 2 letter country codes
   VALID_LANGUAGES = ::I18nData.languages.keys.collect { |i| i.downcase }.sort
-  DEFAULT_LOCALE = parse(I18n.default_locale)
 
 end
