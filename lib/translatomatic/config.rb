@@ -15,6 +15,6 @@ class Translatomatic::Config
   def initialize
     @logger = Translatomatic::Logger.new
     lang = (ENV['LANG'] || '').split(/\./)[0]
-    @default_locale = Translatomatic::Locale.parse(lang).language || :en
+    @default_locale = Translatomatic::Locale.parse(lang).language || "en"
   end
 end

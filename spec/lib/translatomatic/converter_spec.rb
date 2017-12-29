@@ -6,11 +6,15 @@ RSpec.describe Translatomatic::Converter do
 
   class TestTranslator < Translatomatic::Translator::Base
     def initialize(result)
-      @result = result
+      @mapping = result
     end
 
     def perform_translate(strings, from, to)
-      strings.collect { |i| @result }
+      if @mapping.kind_of?(Hash)
+        strings.collect { |i| @mapping[i] }
+      else
+        strings.collect { |i| @mapping }
+      end
     end
   end
 
@@ -31,7 +35,7 @@ RSpec.describe Translatomatic::Converter do
     contents = "key = Beer"
     path = create_tempfile("test.properties", contents)
     t = described_class.new(translator: translator)
-    target = t.translate(path, "de-DE")
+    target = t.translate_to_file(path, "de-DE")
     expect(target.path.basename.sub_ext('').to_s).to match(/_de-DE$/)
     expect(strip_comments(target.path.read)).to eq("key = Bier\n")
   end
@@ -41,7 +45,7 @@ RSpec.describe Translatomatic::Converter do
     expect(translator).to_not receive(:translate)
     path = create_tempfile("test.properties", "key = Beer")
     t = described_class.new(translator: translator, dry_run: true)
-    target = t.translate(path, "de-DE")
+    target = t.translate_to_file(path, "de-DE")
     expect(target.path).to_not exist
   end
 
@@ -93,6 +97,26 @@ RSpec.describe Translatomatic::Converter do
       t.translate_properties(properties, "en", "de")
       # should add original and translated text to database (2 records)
     }.to change(Translatomatic::Model::Text, :count).by(2)
+  end
+
+  # test preservation of interpolation variable names
+  Translatomatic::ResourceFile.modules.each do |mod|
+    file = mod.new("dummy_path", "en")
+    if file.supports_variable_interpolation?
+      it "preserves interpolation variable names with #{file.format} files" do
+        original_variable = file.variable("var1")
+        translated_variable = file.variable("translated_var1")
+        file.properties = {
+          key1: "rah #{original_variable} rah"
+        }
+        translated_text = "zomg #{translated_variable} zomg"
+        translator = TestTranslator.new(translated_text)
+        t = described_class.new(translator: translator, use_database: false)
+        t.translate(file, "de")
+        expected_result = "zomg #{original_variable} zomg"
+        expect(file.properties[:key1]).to eq(expected_result)
+      end
+    end
   end
 
   private

@@ -36,7 +36,7 @@ module Translatomatic::ResourceFile
       super(key, value)
 
       hash = @data
-      path = key.split(/\./)
+      path = key.to_s.split(/\./)
       last_key = path.pop
       path.each { |i| hash = (hash[i] ||= {}) }
       hash[last_key] = value
@@ -52,6 +52,16 @@ module Translatomatic::ResourceFile
         out = comment(created_by) + "\n" + out unless options[:no_created_by]
         target.write(out)
       end
+    end
+
+    # (see Translatomatic::ResourceFile::Base#supports_variable_interpolation?)
+    def supports_variable_interpolation?
+      true
+    end
+
+    # (see Translatomatic::ResourceFile::Base#variable)
+    def variable(name)
+      return "%{#{name}}"
     end
 
     private

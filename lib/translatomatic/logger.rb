@@ -15,7 +15,10 @@ class Translatomatic::Logger
 
   # Called at the end of translatomatic to clear the progress bar.
   def finish
-    @progressbar.finish if @progressbar
+    @finished ||= begin
+      @progressbar.finish if @progressbar
+      true
+    end
   end
 
   private

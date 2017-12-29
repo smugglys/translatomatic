@@ -31,6 +31,16 @@ module Translatomatic::ResourceFile
       target.write(out)
     end
 
+    # (see Translatomatic::ResourceFile::Base#supports_variable_interpolation?)
+    def supports_variable_interpolation?
+      true
+    end
+
+    # (see Translatomatic::ResourceFile::Base#variable)
+    def variable(name)
+      return "{#{name}}"
+    end
+
     private
 
     def add_created_by

@@ -21,7 +21,7 @@ class Translatomatic::ResourceFile::Base
   # @return [Translatomatic::ResourceFile::Base] the resource file.
   def initialize(path, locale = nil)
     @path = path.kind_of?(Pathname) ? path : Pathname.new(path)
-    @locale = locale || detect_locale || Translatomatic::Locale.default
+    @locale = Translatomatic::Locale.parse(locale || detect_locale || Translatomatic::Locale.default)
     raise t("resource.unknown_locale") unless @locale && @locale.language
     @valid = false
     @properties = {}
@@ -105,6 +105,19 @@ class Translatomatic::ResourceFile::Base
       sentences += string.sentences
     end
     sentences
+  end
+
+  # @return [boolean] true if this resource file supports variable interpolation
+  def supports_variable_interpolation?
+    false
+  end
+
+  # Create an interpolated variable string.
+  # @return [String] A string representing the interpolated variable, or
+  #   nil if this resource file doesn't support variable interpolation.
+  def variable(name)
+    return nil unless supports_variable_interpolation?
+    raise "variable(name) must be implemented by subclass"
   end
 
   private

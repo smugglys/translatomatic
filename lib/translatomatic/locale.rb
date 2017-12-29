@@ -16,15 +16,14 @@ class Translatomatic::Locale
   # @param [boolean] validate If true, return nil if the locale is invalid
   # @return [Locale] A locale object
   def self.parse(tag, validate = true)
-    unless tag.nil?
-      if tag.kind_of?(Translatomatic::Locale)
-        locale = tag
-      else
-        tag = tag.to_s.gsub(/_/, '-')
-        locale = new(tag)
-      end
-      validate && !locale.valid? ? nil : locale
+    return nil if tag.nil?
+
+    locale = tag
+    unless tag.kind_of?(Translatomatic::Locale)
+      tag = tag.to_s.gsub(/_/, '-')
+      locale = new(tag)
     end
+    validate && !locale.valid? ? nil : locale
   end
 
   # @return [Locale] the default locale
