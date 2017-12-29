@@ -5,7 +5,8 @@ class Translatomatic::CLI < Thor
   include Translatomatic::Util
 
   begin
-    I18n.default_locale = Translatomatic::Config.instance.default_locale
+    config = Translatomatic::Config.instance
+    I18n.default_locale = config.default_locale
   end
 
   package_name "Translatomatic"
@@ -61,8 +62,8 @@ class Translatomatic::CLI < Thor
       )
       converter = Translatomatic::Converter.new(converter_options)
 
-      # convert source to locale(s)
-      locales.each { |i| converter.translate(source, i) }
+      # convert source to locale(s) and write files
+      locales.each { |i| converter.translate_to_file(source, i) }
 
       log.info converter.stats
       config.logger.finish

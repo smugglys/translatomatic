@@ -54,37 +54,35 @@ class Translatomatic::Converter
     Translatomatic::ConverterStats.new(@from_db, @from_translator)
   end
 
-  # Translate contents of source_file to the target locale.
-  # Automatically determines the target filename based on target locale.
+  # Translate properties of source_file to the target locale.
+  # Does not write changes to disk.
   #
-  # @param [String, Translatomatic::ResourceFile] source_file File to translate
+  # @param [String, Translatomatic::ResourceFile] file File to translate
   # @param [String] to_locale The target locale, e.g. "fr"
   # @return [Translatomatic::ResourceFile] The translated resource file
-  def translate(source_file, to_locale)
-    if source_file.kind_of?(Translatomatic::ResourceFile::Base)
-      source = source_file
-    else
-      source = Translatomatic::ResourceFile.load(source_file)
-      raise t("converter.file_unsupported", file: source_file) unless source
-    end
-
+  def translate(file, to_locale)
+    file = resource_file(file)
     to_locale = parse_locale(to_locale)
-    target = Translatomatic::ResourceFile.load(source.path)
-    target.path = source.locale_path(to_locale)
-    target.locale = to_locale
-    translate_to_target(source, target)
+
+    properties = translate_properties(file.properties, file.locale, to_locale)
+    file.properties = properties
+    file.locale = to_locale
+    file
   end
 
   # Translates a resource file and writes results to a target resource file
   #
   # @param source [Translatomatic::ResourceFile] The source
-  # @param target [Translatomatic::ResourceFile] The file to write
+  # @param [String] to_locale The target locale, e.g. "fr"
   # @return [Translatomatic::ResourceFile] The translated resource file
-  def translate_to_target(source, target)
-    # perform translation
+  def translate_to_file(source, to_locale)
+    # Automatically determines the target filename based on target locale.
+    source = resource_file(source)
+    target = Translatomatic::ResourceFile.load(source.path)
+    target.path = source.locale_path(to_locale)
+
     log.info(t("converter.translating", source: source, target: target))
-    properties = translate_properties(source.properties, source.locale, target.locale)
-    target.properties = properties
+    translate(target, to_locale)
     unless @dry_run
       target.path.parent.mkpath
       target.save
@@ -126,6 +124,16 @@ class Translatomatic::Converter
   private
 
   include Translatomatic::Util
+
+  def resource_file(path)
+    if path.kind_of?(Translatomatic::ResourceFile::Base)
+      path
+    else
+      file = Translatomatic::ResourceFile.load(path)
+      raise t("converter.file_unsupported", file: path) unless file
+      file
+    end
+  end
 
   # update result with translations from the database.
   # returns a list of text records from the database.
