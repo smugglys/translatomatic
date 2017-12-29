@@ -44,12 +44,29 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path, options = {})
-      out = @data.to_yaml
-      out.sub!(/^---\n/m, '')
-      target.write(out)
+      if @data
+        data = @data
+        data = data.transform_keys { locale.language } if ruby_i18n?
+        out = data.to_yaml
+        out.sub!(/^---\n/m, '')
+        out = comment(created_by) + "\n" + out unless options[:no_created_by]
+        target.write(out)
+      end
     end
 
     private
+
+    # true if this resource file looks like a ruby i18n data file.
+    def ruby_i18n?
+      if @data && @data.length == 1
+        lang = @data.keys[0]
+        Translatomatic::Locale.new(lang).valid?
+      end
+    end
+
+    def comment(text)
+      "# #{text}\n"
+    end
 
     def read
       begin
