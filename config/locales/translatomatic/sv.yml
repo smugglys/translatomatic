@@ -1,0 +1,76 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+sv:
+  translatomatic:
+    cli:
+      translate: Översätta filer till målet språk
+      source_locale: Lokalen av källfilen
+      debug: Aktivera felsökning utgång
+      wank: Aktivera förloppsindikator
+      share: Dela översättningar med översättare som har stöd för att ladda upp
+      dry_run: 'Dry run: filer kommer inte att översättas eller skriftlig'
+      locales_required: En eller flera lokaler som krävs
+      file_not_found: 'File not found: %{file}'
+      file_unsupported: 'Unsupported file type: %{file}'
+      using_translator: 'Med hjälp av översättare: %{name}'
+      locales_properties: 'Språk: %{locales}, Egenskaper: %{properties}'
+      display_values: Visar värden från en resurs bunt
+      locales_to_display: Locales för att visa
+      display_sentences: Visa meningar
+      extract_strings: Utdrag strängar från icke-resurs filer
+      list_backends: Listan tillgängliga översättningar
+      display_version: Visa version
+      uploading_tmx: Ladda upp TMX till %{name}
+      translating: Översätta
+      aborted: Avbruten
+      file_source: 'Fil: %{file}'
+      sentences: 'Meningar:'
+      no_translators: Ingen översättare konfigurerad. Använd översättare kommando
+        för att se alternativ
+      multiple_translators: 'Flera översättare tillgängliga:'
+      select_translator: 'Välj översättare (1-%{available}): '
+    resource:
+      unknown_locale: Det går inte att fastställa locale
+      created_by: Skapad av %{app} %{version} %{date}
+      error: 'Fel: %{message}'
+      loading: Du försöker ladda %{file} med %{name}
+    tmx:
+      multiple_origins: Flera ursprung i texter.
+      multiple_locales: Flera källor språk i texterna.
+    translator:
+      email_required: E-postadress krävs.
+      password_required: Lösenord krävs.
+      google_key_required: Google API-nyckel som krävs.
+      google_api_key: Google API-nyckel
+      microsoft_api_key: Microsoft API-nyckel
+      microsoft_key_required: Microsoft API-nyckel som krävs.
+      mymemory_api_key: MyMemory API-nyckel
+      email_address: E-postadress
+      share_response: 'Andelen svar: %{response}'
+      yandex_api_key: Yandex API-nyckel
+      yandex_key_required: Yandex API-nyckel som krävs
+      required_option: "(krävs)"
+      translators: 'Översättare:'
+      unavailable: Översättare %{name} är inte tillgänglig.
+    converter:
+      total_translations: 'Totalt översättningar: %{total} (%{from_db} från databasen,
+        %{from_translator} från översättare)'
+      translator: Översättare genomförandet att använda.
+      dry_run: Skriv ut handlingar utan att utföra översättningar eller skriva filer.
+      use_database: Lagra och hämta översättningar från databasen.
+      database_disabled: Databasen är inaktiverat.
+      translator_required: Översättare behövs.
+      file_unsupported: 'Unsupported file type: %{file}'
+      translating: Att översätta %{source} %{target}
+      stats: 'Översättningar från databas: %{from_db}, översättare: %{from_translator},
+        oöversatt: %{untranslated}'
+    database:
+      no_environment: Ingen miljö "%{env} " i %{file}
+      migrated: Databasen migreras.
+      created: Databasen skapas.
+      deleted: Databasen raderas.
+      could_not_create: Databasen kunde inte skapas.
+      config_file: Sökvägen till den databas konfiguration fil
+      env: Databasen miljö
+    unicode:
+      invalid_byte: 'Ogiltiga UTF8 byte till: "%{byte}'''

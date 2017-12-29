@@ -1,0 +1,76 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+pt:
+  translatomatic:
+    cli:
+      translate: Converter ficheiros de destino as localidades de
+      source_locale: A localidade do arquivo de origem
+      debug: Activar a saída de depuração
+      wank: Ativar a barra de Progresso
+      share: Compartilhar as traduções com tradutores que suporte o upload
+      dry_run: 'Dry run: arquivos não serão traduzido ou escrito'
+      locales_required: Um ou mais idiomas necessários
+      file_not_found: 'Arquivo não encontrado: %{file}'
+      file_unsupported: 'Tipo de arquivo sem suporte: %{file}'
+      using_translator: 'Usando o tradutor: %{name}'
+      locales_properties: 'Localidades: %{locales}, Propriedades: %{properties}'
+      display_values: Exibir valores a partir de um pacote de recursos
+      locales_to_display: Localidades para exibir
+      display_sentences: Exibir frases
+      extract_strings: Extrato de cadeias de caracteres não-arquivos de recursos
+      list_backends: Lista de serviços de tradução disponíveis
+      display_version: Mostra a versão da aplicação
+      uploading_tmx: Carregando TMX para %{name}
+      translating: Traduzir
+      aborted: Anulada
+      file_source: 'Arquivo: %{file}'
+      sentences: 'Frases:'
+      no_translators: Sem tradutores configurado. Utilize os tradutores de comando
+        para ver opções
+      multiple_translators: 'Vários tradutores disponíveis:'
+      select_translator: 'Selecione tradutor (1-%{available}): '
+    resource:
+      unknown_locale: Não é possível determinar localidade
+      created_by: Criado por %{app} %{version} %{date}
+      error: 'Erro: %{message}'
+      loading: Tentar carregar o %{file} com %{name}
+    tmx:
+      multiple_origins: Múltiplas origens em textos.
+      multiple_locales: Várias localidades de origem em textos.
+    translator:
+      email_required: Endereço de e-mail necessário.
+      password_required: Palavra-passe necessária.
+      google_key_required: API do Google chave necessária.
+      google_api_key: API do Google chave
+      microsoft_api_key: Microsoft chave da API
+      microsoft_key_required: Microsoft chave de API necessária.
+      mymemory_api_key: MyMemory chave da API
+      email_address: Endereço de e-mail
+      share_response: 'Compartilhar resposta: %{response}'
+      yandex_api_key: Yandex chave da API
+      yandex_key_required: Yandex chave de API necessária
+      required_option: "(requerido)"
+      translators: 'Tradutores:'
+      unavailable: Tradutor %{name} não está disponível.
+    converter:
+      total_translations: 'Total de traduções: %{total} (%{from_db} a partir do banco
+        de dados, %{from_translator} do tradutor)'
+      translator: Tradutor de implementação para o uso.
+      dry_run: Impressão de ações sem a realização de traduções ou escrita de arquivos.
+      use_database: Armazenar e recuperar as traduções a partir do banco de dados.
+      database_disabled: Banco de dados está desactivado.
+      translator_required: Tradutor necessário.
+      file_unsupported: 'Tipo de arquivo sem suporte: %{file}'
+      translating: Tradução de %{source} para %{target}
+      stats: 'Traduções de banco de dados: %{from_db}, tradutor (a): %{from_translator},
+        não traduzido: %{untranslated}'
+    database:
+      no_environment: Nenhum ambiente '%{env}' %{file}
+      migrated: Banco de dados migrados.
+      created: Banco de dados criado.
+      deleted: Banco de dados excluídos.
+      could_not_create: Banco de dados não pôde ser criado.
+      config_file: Caminho para o banco de dados de arquivo de configuração
+      env: Ambiente de banco de dados
+    unicode:
+      invalid_byte: 'Inválido UTF8 bytes: ''%{byte}'''

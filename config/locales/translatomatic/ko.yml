@@ -1,0 +1,73 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+ko:
+  translatomatic:
+    cli:
+      translate: 번역 파일을 대상에 적
+      source_locale: 로케일의 소스 파일
+      debug: 디버깅 출력
+      wank: 정이 진행됩
+      share: 공유와 함께 번역 번역을 지원하는 업로드
+      dry_run: 드라이 실행 파일이 번역되지 않거나 작성된
+      locales_required: 하나 이상의 필요한 곳
+      file_not_found: 파일을 찾을 수 없습니다:%{file}
+      file_unsupported: 지원하지 않는 파일 형식:%{file}
+      using_translator: 를 사용하여 번역가:%{name}
+      locales_properties: 입:%{locales},속성:%{properties}
+      display_values: 값을 표시하는 리소스에 번들
+      locales_to_display: 입시
+      display_sentences: 표시 문장
+      extract_strings: 추출물에서 문자열이 아닌 자원 파일
+      list_backends: 목록을 사용할 수 있도록 번역 서비스
+      display_version: 표시 버전
+      uploading_tmx: 업로드 TMX%{name}
+      translating: 번역
+      aborted: 중단
+      file_source: 파일:%{file}
+      sentences: '형:'
+      no_translators: 아 번역가 구성되어 있습니다. 사용역을 명령하는 옵션을 참조하십시오
+      multiple_translators: '여러 번역할 수 있:'
+      select_translator: '번역기를 선택(1-%{available}): '
+    resource:
+      unknown_locale: 를 확인할 수 없는 locale
+      created_by: 에 의해 만들어%{app}%{version}%{date}
+      error: 오류:%{message}
+      loading: 을 로드하%{file}사용하여%{name}
+    tmx:
+      multiple_origins: 에서 여러 원본 텍스트입니다.
+      multiple_locales: 여러 소스 입에서 텍스트입니다.
+    translator:
+      email_required: 이메일 주소가 필요합니다.
+      password_required: 비밀번호가 필요합니다.
+      google_key_required: Google API 키 필요합니다.
+      google_api_key: Google API 열쇠
+      microsoft_api_key: Microsoft API 열쇠
+      microsoft_key_required: Microsoft API 키 필요합니다.
+      mymemory_api_key: 내 API 열쇠
+      email_address: 이메일 주소
+      share_response: 공유 response:%{response}
+      yandex_api_key: Yandex API 열쇠
+      yandex_key_required: Yandex API 필요한 열쇠
+      required_option: "(필수)"
+      translators: '번역:'
+      unavailable: 번역%{name}사용할 수 없습니다.
+    converter:
+      total_translations: 총 번역:%{total}(%{from_db}데이터베이스에서,%{from_translator}에서 번역기)
+      translator: 번역기 구현을 사용합니다.
+      dry_run: 인쇄 작업을 수행하지 않고 번역하거나 쓰는 파일이 있습니다.
+      use_database: 저장하고 검색하는 번역에서 데이터베이스입니다.
+      database_disabled: 데이터베이스는 사용할 수 없습니다.
+      translator_required: 번역가 필요합니다.
+      file_unsupported: 지원하지 않는 파일 형식:%{file}
+      translating: 번역%{source}%{target}
+      stats: 번역에서 데이터베이스:%{from_db},번역가:%{from_translator},맞:%{untranslated}
+    database:
+      no_environment: 환경'%{env}%{file}
+      migrated: 데이터베이스를 마이그레이션됩니다.
+      created: 데이터베이스에 생성됩니다.
+      deleted: 데이터베이스 삭제됩니다.
+      could_not_create: 데이터베이스를 만들 수 없습니다.
+      config_file: 경로를 데이터베이스 구성 파일
+      env: 환경 데이터베이스
+    unicode:
+      invalid_byte: 잘못된 UTF8 바이트:'%{byte}'

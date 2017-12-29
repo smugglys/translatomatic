@@ -1,0 +1,73 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+zh:
+  translatomatic:
+    cli:
+      translate: 翻译的文件的目标选择
+      source_locale: 该区域的源文件
+      debug: 启用调试输出
+      wank: 使进展吧
+      share: 分享翻译与笔译人员，支持上传
+      dry_run: 干：文件将不会被翻译或书面
+      locales_required: 一个或多个选择需要
+      file_not_found: 找不到文件:%{file}
+      file_unsupported: 不支持的文件类型：%{file}
+      using_translator: 使用翻译:%{name}
+      locales_properties: 选择:%{locales}、性质:%{properties}
+      display_values: 值显示从一个资源束
+      locales_to_display: 选择显示
+      display_sentences: 显示的句子
+      extract_strings: 提取串从非资源文件
+      list_backends: 清单提供的翻译服务
+      display_version: 显示的版本
+      uploading_tmx: 上传不同的输入模型可以由不同的来%{name}
+      translating: 翻译
+      aborted: 中止
+      file_source: 文件：%{file}
+      sentences: 句子：
+      no_translators: 没有翻译人员配置。 使用译员的命令来看到的选择
+      multiple_translators: 多笔译员提供：
+      select_translator: '选择的翻译(1-%{available}): '
+    resource:
+      unknown_locale: 无法确定区域
+      created_by: 创建%{app}%{version}%{date}
+      error: Error:%{message}
+      loading: 试图载%{file}使用%{name}
+    tmx:
+      multiple_origins: 多个来源的案文。
+      multiple_locales: 多个来源选择在文本。
+    translator:
+      email_required: 电子邮件地址的需要。
+      password_required: 需要密码。
+      google_key_required: 谷歌API关键需要。
+      google_api_key: 谷歌API关键
+      microsoft_api_key: Microsoft API关键
+      microsoft_key_required: Microsoft API关键需要。
+      mymemory_api_key: 存储器我API关键
+      email_address: 电子邮件地址
+      share_response: 分享应:%{response}
+      yandex_api_key: 该应用
+      yandex_key_required: 该应用需要
+      required_option: "(所需要的)"
+      translators: 翻译：
+      unavailable: 翻译%{name}不可用。
+    converter:
+      total_translations: 总的翻译:%{total}(%{from_db}从数据库，%{from_translator}从翻译)
+      translator: 翻译实施使用。
+      dry_run: 打印的行动没有执行翻译或书面文件。
+      use_database: 存储和检索的翻译数据库。
+      database_disabled: 数据库是残疾人。
+      translator_required: 翻译所需要的。
+      file_unsupported: 不支持的文件类型：%{file}
+      translating: 翻译%{source}%{target}
+      stats: 翻译数据库：%{from_db}翻译:%{from_translator}、未翻译:%{untranslated}
+    database:
+      no_environment: 没有环境'%{env}'%{file}
+      migrated: 数据库迁移。
+      created: 数据库创建的。
+      deleted: 数据库中删除。
+      could_not_create: 数据库可能不会被创建。
+      config_file: 路数据库的配置文件
+      env: 数据库环境
+    unicode:
+      invalid_byte: 无效UTF8字节：'%{byte}'

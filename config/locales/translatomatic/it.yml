@@ -1,0 +1,76 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+it:
+  translatomatic:
+    cli:
+      translate: Convertire il file di destinazione locales
+      source_locale: Il locale del file di origine
+      debug: Attivare l'output di debug
+      wank: Attivare la barra di Avanzamento
+      share: Condividere le traduzioni traduttori che supportano il caricamento
+      dry_run: 'Il funzionamento a secco: i file non verranno tradotti o scritto'
+      locales_required: Uno o più linguaggi richiesti
+      file_not_found: 'File non trovato: %{file}'
+      file_unsupported: 'Tipo di file non supportato: %{file}'
+      using_translator: 'Utilizzando traduttore: %{name}'
+      locales_properties: 'Impostazioni locali: %{locales}, Proprietà: %{properties}'
+      display_values: Visualizzare i valori da un pacchetto di risorse
+      locales_to_display: Impostazioni locali di visualizzazione
+      display_sentences: Display frasi
+      extract_strings: Estrarre le stringhe non i file di risorse
+      list_backends: Elenco di servizi di traduzione disponibili
+      display_version: Visualizza la versione
+      uploading_tmx: Il caricamento di TMX a %{name}
+      translating: Tradurre
+      aborted: Abortito
+      file_source: 'File: %{file}'
+      sentences: 'Frasi:'
+      no_translators: No traduttori configurato. Utilizzare i traduttori comando per
+        vedere le opzioni
+      multiple_translators: 'Più traduttori disponibili:'
+      select_translator: 'Seleziona traduttore (1-%{available}): '
+    resource:
+      unknown_locale: In grado di determinare locale
+      created_by: Creato da %{app} %{version} %{date}
+      error: 'Errore: %{message}'
+      loading: Il tentativo di caricare %{file} utilizzo di %{name}
+    tmx:
+      multiple_origins: Molteplici origini nei testi.
+      multiple_locales: Di origine più locali in testi.
+    translator:
+      email_required: Indirizzo e-mail richiesti.
+      password_required: Richiesta la Password.
+      google_key_required: Google API key richiesto.
+      google_api_key: Chiave API di Google
+      microsoft_api_key: Microsoft chiave API
+      microsoft_key_required: Microsoft chiave API necessarie.
+      mymemory_api_key: MyMemory chiave API
+      email_address: Indirizzo e-mail
+      share_response: 'Condividi risposta: %{response}'
+      yandex_api_key: Yandex chiave API
+      yandex_key_required: Yandex chiave API necessarie
+      required_option: "(richiesto)"
+      translators: 'Traduttori:'
+      unavailable: Traduttore %{name} non è disponibile.
+    converter:
+      total_translations: 'Totale delle traduzioni: %{total} (%{from_db} dal database,
+        %{from_translator} dal traduttore)'
+      translator: Traduttore di attuazione per l'uso.
+      dry_run: Stampa azioni senza l'esecuzione di traduzioni o scrittura di file.
+      use_database: Memorizzare e recuperare le traduzioni dal database.
+      database_disabled: Il Database è disattivato.
+      translator_required: Traduttore richiesto.
+      file_unsupported: 'Tipo di file non supportato: %{file}'
+      translating: Traduzione di %{source} %{target}
+      stats: 'Traduzioni dal database: %{from_db}, traduttore: %{from_translator},
+        tradotto: %{untranslated}'
+    database:
+      no_environment: Nessun ambiente '%{env}' %{file}
+      migrated: Database di migrazione.
+      created: Database creato.
+      deleted: Database eliminati.
+      could_not_create: Il Database non può essere creata.
+      config_file: Percorso per il file di configurazione del database
+      env: Ambiente di Database
+    unicode:
+      invalid_byte: 'Non valido UTF8 byte: ''%{byte}'''

@@ -1,0 +1,73 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+ja:
+  translatomatic:
+    cli:
+      translate: 翻訳ファイルを対象ロケール
+      source_locale: ロケールのソースファイル
+      debug: するデバッグ出力
+      wank: を進捗バー
+      share: シェア翻訳の翻訳者を支援するアップロード
+      dry_run: ドライ走行:ファイルは使用しないで下さい翻訳書
+      locales_required: 一つ以上のロケールに必要な
+      file_not_found: ファイルが見つかりません:%{file}
+      file_unsupported: 未サポートファイルのタイプ:%{file}
+      using_translator: を翻訳:%{name}
+      locales_properties: ロケール:%{locales},物:%{properties}
+      display_values: 表示値からのリソースバンドル
+      locales_to_display: ロケールを表示
+      display_sentences: 文章を表示
+      extract_strings: エキスから文字列を非資源ファイル
+      list_backends: シリコーンコーティング翻訳サービス
+      display_version: バージョンを表示します。
+      uploading_tmx: アップロードＴMXに%{name}
+      translating: 翻訳
+      aborted: 中止
+      file_source: ファイル:%{file}
+      sentences: '文:'
+      no_translators: な翻訳者を設定します。 利用の翻訳者をコマンドを参照オプション
+      multiple_translators: 複数の翻訳者：
+      select_translator: '選択翻訳(1-%{available}): '
+    resource:
+      unknown_locale: きるロケール
+      created_by: 作成に%{app}%{version}%{date}
+      error: エラー:%{message}
+      loading: を試みているときに%{file}を使%{name}
+    tmx:
+      multiple_origins: 複数の起源をテキストです。
+      multiple_locales: 複数のソースロケールにテキストです。
+    translator:
+      email_required: メールアドレスが必要です。
+      password_required: パスワードが必要です。
+      google_key_required: Google APIキーが必要です。
+      google_api_key: Google APIキー
+      microsoft_api_key: Microsoft APIキー
+      microsoft_key_required: Microsoft APIキーが必要です。
+      mymemory_api_key: MyMemory APIキー
+      email_address: メールアドレス
+      share_response: 株式応答:%{response}
+      yandex_api_key: Yandex APIキー
+      yandex_key_required: Yandex APIに必要なキー
+      required_option: "(必須)"
+      translators: '翻訳者:'
+      unavailable: 翻訳者%{name}はご利用いただけません。
+    converter:
+      total_translations: 総翻訳:%{total}(%{from_db}からのデータベース、%{from_translator}から翻訳)
+      translator: 翻訳者の実装を使用します。
+      dry_run: 印字行為を行うことなく、翻訳は文書ファイルです。
+      use_database: 保管したり、検索したりする翻訳データベースからです。
+      database_disabled: データベースが無効になっています。
+      translator_required: 通訳が必要です。
+      file_unsupported: 未サポートファイルのタイプ:%{file}
+      translating: 翻訳%{source}%{target}
+      stats: 翻訳からデータベース:%{from_db},翻訳:%{from_translator},翻:%{untranslated}
+    database:
+      no_environment: 環境'%{env}'%{file}
+      migrated: データベースに移行します。
+      created: データベースを作成します。
+      deleted: データベースを削除します。
+      could_not_create: データベースを作成できませんでした。
+      config_file: パスのデータベース設定ファイル
+      env: データベース環境
+    unicode:
+      invalid_byte: 無効UTF8byte:'%{byte}'

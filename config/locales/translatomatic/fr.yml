@@ -1,0 +1,79 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+fr:
+  translatomatic:
+    cli:
+      translate: Traduire les fichiers de lieux cible
+      source_locale: Les paramètres régionaux du fichier source
+      debug: Activer le débogage de sortie
+      wank: Activer la barre de Progression
+      share: Partager des traductions à des traducteurs qui prennent en charge les
+        télécharger
+      dry_run: 'Fonctionnement à sec: les fichiers ne seront pas traduits ou écrits'
+      locales_required: Un ou plusieurs paramètres régionaux requis
+      file_not_found: 'Fichier non trouvé: %{file}'
+      file_unsupported: 'Non pris en charge type de fichier: %{file}'
+      using_translator: 'À l''aide de traducteur: %{name}'
+      locales_properties: 'Paramètres régionaux: %{locales}, Propriétés: %{properties}'
+      display_values: Affichage des valeurs à partir d'un regroupement de ressources
+      locales_to_display: Pour afficher les paramètres régionaux
+      display_sentences: Afficher les phrases
+      extract_strings: Extraire les chaînes de non-fichiers de ressources
+      list_backends: Liste des services de traduction
+      display_version: Affichage de la version
+      uploading_tmx: Le téléchargement de TMX à %{name}
+      translating: Traduire
+      aborted: Avorté
+      file_source: 'Fichier: %{file}'
+      sentences: 'Phrases:'
+      no_translators: Pas de traducteurs configuré. Utiliser les traducteurs de commande
+        pour voir les options
+      multiple_translators: 'Plusieurs traducteurs disponibles:'
+      select_translator: 'Sélectionnez traducteur (1-%{available}): '
+    resource:
+      unknown_locale: Impossible de déterminer les paramètres régionaux
+      created_by: Créé par %{app} %{version} %{date}
+      error: 'Erreur: %{message}'
+      loading: Tentative de chargement de %{file} à l'aide de %{name}
+    tmx:
+      multiple_origins: De multiples origines dans les textes.
+      multiple_locales: Plusieurs sources locales dans les textes.
+    translator:
+      email_required: Adresse Email requis.
+      password_required: Mot de passe requis.
+      google_key_required: Clé API Google requis.
+      google_api_key: Clé API Google
+      microsoft_api_key: Microsoft clé de l'API
+      microsoft_key_required: Microsoft clé de l'API nécessaires.
+      mymemory_api_key: MyMemory clé API
+      email_address: Adresse Email
+      share_response: 'Partager réponse: %{response}'
+      yandex_api_key: Yandex clé API
+      yandex_key_required: Yandex clé API requis
+      required_option: "(requis)"
+      translators: 'Traducteurs:'
+      unavailable: Traducteur %{name} n'est pas disponible.
+    converter:
+      total_translations: 'Total des traductions: %{total} (%{from_db} à partir de
+        la base de données, %{from_translator} du traducteur)'
+      translator: Traducteur de mise en œuvre de l'utiliser.
+      dry_run: Imprimer les actions sans effectuer de traductions ou d'écrire des
+        fichiers.
+      use_database: De stocker et de récupérer des traductions à partir de la base
+        de données.
+      database_disabled: La base de données est désactivé.
+      translator_required: Traducteur nécessaire.
+      file_unsupported: 'Non pris en charge type de fichier: %{file}'
+      translating: La traduction de %{source} %{target}
+      stats: 'Traductions à partir de la base de données: %{from_db}, traducteur:
+        %{from_translator}, non traduite: %{untranslated}'
+    database:
+      no_environment: Aucun environnement " %{env}' %{file}
+      migrated: Base de données migrées.
+      created: Base de données créée.
+      deleted: Base de données supprimées.
+      could_not_create: La base de données n'a pas pu être créé.
+      config_file: Chemin d'accès au fichier de configuration de la base de données
+      env: Environnement de base de données
+    unicode:
+      invalid_byte: 'Non valide UTF8 octet: ''%{byte}'''

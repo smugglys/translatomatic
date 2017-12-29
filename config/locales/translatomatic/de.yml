@@ -1,0 +1,77 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+de:
+  translatomatic:
+    cli:
+      translate: Übersetzen von Dateien auf Ziel-locales
+      source_locale: Das Gebietsschema der Quell-Datei
+      debug: Aktivieren Sie die debugging-Ausgabe
+      wank: Aktivieren der Statusleiste
+      share: Teilen Sie übersetzungen mit den übersetzern, support-upload
+      dry_run: 'Testlauf: Dateien werden nicht übersetzt oder geschrieben'
+      locales_required: Ein oder mehrere Gebietsschemas erforderlich
+      file_not_found: 'Datei nicht gefunden: %{file}'
+      file_unsupported: 'Unsupported file type: %{file}'
+      using_translator: 'Mit translator: %{name}'
+      locales_properties: 'Gebietsschemas: %{locales}, Properties: %{properties}'
+      display_values: Anzeigen von Werten aus einer resource-bundle
+      locales_to_display: Locales anzeigen
+      display_sentences: Display-Sätze
+      extract_strings: Extrahieren von Zeichenfolgen aus nicht-Ressource-Dateien
+      list_backends: Eine Liste der verfügbaren übersetzungsdienste
+      display_version: Display-version
+      uploading_tmx: TMX hochladen zu %{name}
+      translating: Übersetzen
+      aborted: Abgebrochen
+      file_source: 'Datei: %{file}'
+      sentences: 'Sätze:'
+      no_translators: Keine übersetzer konfiguriert. Verwenden der übersetzer-Befehl,
+        um die Optionen
+      multiple_translators: 'Mehrere übersetzer zur Verfügung:'
+      select_translator: 'Übersetzer auszuwählen (1-%{available}): '
+    resource:
+      unknown_locale: Nicht in der Lage, um zu bestimmen, locale
+      created_by: Erstellt von %{app} %{version} %{date}
+      error: 'Fehlermeldung: %{message}'
+      loading: Versuch zum laden von %{file} %{name}
+    tmx:
+      multiple_origins: Mehrere Ursprünge in den Texten.
+      multiple_locales: Mehrere Quell-Gebietsschemas in Texten.
+    translator:
+      email_required: E-Mail-Adresse erforderlich.
+      password_required: Kennwort erforderlich.
+      google_key_required: Google-API-Schlüssel erforderlich.
+      google_api_key: Google-API-Schlüssel
+      microsoft_api_key: Microsoft-API-Schlüssel
+      microsoft_key_required: Microsoft-API-Schlüssel erforderlich.
+      mymemory_api_key: MyMemory-API-Schlüssel
+      email_address: E-Mail-Adresse
+      share_response: 'Aktie Antwort: %{response}'
+      yandex_api_key: Yandex-API-Schlüssel
+      yandex_key_required: Yandex-API-Schlüssel erforderlich
+      required_option: "(erforderlich)"
+      translators: 'Übersetzer:'
+      unavailable: Übersetzer %{name} ist nicht verfügbar.
+    converter:
+      total_translations: 'Total translations: %{total} (%{from_db} aus der Datenbank,
+        %{from_translator} vom übersetzer)'
+      translator: Übersetzer Umsetzung zu verwenden.
+      dry_run: Drucken Handlungen ohne Durchführung von übersetzungen und schreiben
+        von Dateien.
+      use_database: Speichern und abrufen von übersetzungen aus der Datenbank.
+      database_disabled: Datenbank deaktiviert ist.
+      translator_required: Übersetzer erforderlich.
+      file_unsupported: 'Unsupported file type: %{file}'
+      translating: Übersetzung %{source} , %{target}
+      stats: 'Übersetzungen aus der Datenbank: %{from_db}, translator: %{from_translator},
+        un: %{untranslated}'
+    database:
+      no_environment: Keine Umwelt '%{env}' %{file}
+      migrated: Datenbank migriert.
+      created: Datenbank erstellt.
+      deleted: Datenbank gelöscht.
+      could_not_create: Datenbank konnte nicht erstellt werden.
+      config_file: Pfad zu der Datenbank-Konfigurationsdatei
+      env: Datenbank-Umgebung
+    unicode:
+      invalid_byte: 'Ungültige byte-UTF8: ''%{byte}'''

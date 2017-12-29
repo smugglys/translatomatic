@@ -1,0 +1,76 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+ru:
+  translatomatic:
+    cli:
+      translate: Перевести файлы в целевой районов
+      source_locale: Язык исходный файл
+      debug: Включить отладочный вывод
+      wank: Включение Прогресс-бар
+      share: Доля переводов с переводчиками, которые поддерживают загрузки
+      dry_run: 'Сухого хода: файлы не будут переведены или написаны'
+      locales_required: Один или несколько районов требуется
+      file_not_found: 'Файл не найден: %{file}'
+      file_unsupported: 'Неподдерживаемый Тип файла: %{file}'
+      using_translator: 'Используя переводчик: %{name}'
+      locales_properties: 'Районов: %{locales}, свойства: %{properties}'
+      display_values: Отображение значений из комплекта ресурсов
+      locales_to_display: Районов для отображения
+      display_sentences: Отображение предложений
+      extract_strings: Извлекать строки из несырьевых файлов
+      list_backends: Список доступных услуг по переводу
+      display_version: Дисплей версия
+      uploading_tmx: Загрузка ТМХ на %{name}
+      translating: Перевод
+      aborted: Прервана
+      file_source: 'Файл: %{file}'
+      sentences: 'Предложения:'
+      no_translators: Переводчиков никто не настроен. Используйте команду переводчиков,
+        чтобы увидеть варианты
+      multiple_translators: 'Несколько переводчиков:'
+      select_translator: 'Выберите переводчик (1-%{available}): '
+    resource:
+      unknown_locale: Не удалось определить язык
+      created_by: Созданная %{app} %{version} %{date}
+      error: 'Ошибка: %{message}'
+      loading: Пытаясь загрузить %{file} с помощью %{name}
+    tmx:
+      multiple_origins: Разного происхождения в текстах.
+      multiple_locales: Несколько исходных районов в текстах.
+    translator:
+      email_required: Адрес электронной почты требуется.
+      password_required: Пароль требуется.
+      google_key_required: Ключ API Google для требуется.
+      google_api_key: Ключ API от Google
+      microsoft_api_key: Ключ Майкрософт API
+      microsoft_key_required: Ключ Microsoft API, необходимые.
+      mymemory_api_key: Ключ API сайт mymemory
+      email_address: Адрес электронной почты
+      share_response: 'Ответ доля: %{response}'
+      yandex_api_key: Ключ API Яндекс
+      yandex_key_required: Ключ API Яндекс требуется
+      required_option: "(обязательно)"
+      translators: 'Переводчики:'
+      unavailable: Переводчик %{name} недоступен.
+    converter:
+      total_translations: 'Общий перевод: %{total} (%{from_db} из базы данных, %{from_translator}
+        от переводчика)'
+      translator: Реализация переводчик использовать.
+      dry_run: Печатать действия, не выполняя перевод или записи файлов.
+      use_database: Хранить и получать переводы из базы данных.
+      database_disabled: База данных отключена.
+      translator_required: Переводчик требуется.
+      file_unsupported: 'Неподдерживаемый Тип файла: %{file}'
+      translating: Переводя %{source} и %{target}
+      stats: 'Переводы из базы данных: %{from_db}, переводчик: %{from_translator},
+        непереведенные: %{untranslated}'
+    database:
+      no_environment: Нет среды '%{env}' в %{file}
+      migrated: Базы данных перенесенных.
+      created: Созданную базу данных.
+      deleted: Удаленная база данных.
+      could_not_create: База данных не может быть создан.
+      config_file: Путь к конфигурационному файлу базы данных
+      env: Среды базы данных
+    unicode:
+      invalid_byte: 'Неверный байт в UTF8: ''%{byte}'''

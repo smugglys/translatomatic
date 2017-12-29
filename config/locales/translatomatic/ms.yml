@@ -1,0 +1,76 @@
+# Created by Translatomatic 0.1.1 30 Dec 09:58
+
+ms:
+  translatomatic:
+    cli:
+      translate: Menterjemahkan fail ke sasaran locales
+      source_locale: Lokal sumber file
+      debug: Aktifkan debug output
+      wank: Aktifkan Kemajuan bar
+      share: Berkongsi terjemahan dengan bahasa yang menyokong muat naik
+      dry_run: 'Jangka kering: fail tidak akan diterjemahkan atau ditulis'
+      locales_required: Satu atau lebih locales diperlukan
+      file_not_found: 'File tidak menemukan: %{file}'
+      file_unsupported: 'Tidak disokong file jenis: %{file}'
+      using_translator: 'Menggunakan penerjemah: %{name}'
+      locales_properties: 'Locales: %{locales}, Sifat: %{properties}'
+      display_values: Paparan nilai-nilai dari sumber ikatan
+      locales_to_display: Locales untuk memaparkan
+      display_sentences: Ayat paparan
+      extract_strings: Mendapatkan tali dari non-sumber fail
+      list_backends: Senarai yang ada terjemahan perkhidmatan
+      display_version: Paparan versi
+      uploading_tmx: Naik TMX untuk %{name}
+      translating: Menterjemahkan
+      aborted: Digugurkan
+      file_source: 'File: %{file}'
+      sentences: 'Hukuman:'
+      no_translators: Tidak penterjemah dikonfigurasi. Menggunakan bahasa perintah
+        untuk melihat pilihan
+      multiple_translators: 'Beberapa penterjemah ada:'
+      select_translator: 'Pilih penterjemah (1-%{available}): '
+    resource:
+      unknown_locale: Tidak dapat menentukan tempat-tempat kejadian
+      created_by: Dicipta oleh %{app} %{version} %{date}
+      error: 'Ralat: %{message}'
+      loading: Cuba untuk beban %{file} menggunakan %{name}
+    tmx:
+      multiple_origins: Beberapa asal-usul yang dalam teks-teks.
+      multiple_locales: Beberapa sumber lokal dalam teks-teks.
+    translator:
+      email_required: Alamat e-mel yang diperlukan.
+      password_required: Kata laluan yang diperlukan.
+      google_key_required: Google kunci API yang diperlukan.
+      google_api_key: Kunci API Google
+      microsoft_api_key: Microsoft kunci API
+      microsoft_key_required: Microsoft kunci API yang diperlukan.
+      mymemory_api_key: MyMemory kunci API
+      email_address: Alamat e-mel
+      share_response: 'Berkongsi respon: %{response}'
+      yandex_api_key: Teman, API utama
+      yandex_key_required: Teman, API utama yang diperlukan
+      required_option: "(diperlukan)"
+      translators: 'Penterjemah:'
+      unavailable: Penterjemah %{name} adalah tidak ada.
+    converter:
+      total_translations: 'Jumlah terjemahan: %{total} (%{from_db} dari pangkalan
+        data, %{from_translator} dari penterjemah)'
+      translator: Penterjemah pelaksanaan untuk digunakan.
+      dry_run: Cetak tindakan tanpa melakukan terjemahan atau menulis fail.
+      use_database: Toko dan mendapatkan terjemahan dari pangkalan data.
+      database_disabled: Pangkalan data dilumpuhkan.
+      translator_required: Penterjemah diperlukan.
+      file_unsupported: 'Tidak disokong file jenis: %{file}'
+      translating: Menterjemahkan %{source} untuk %{target}
+      stats: 'Terjemahan dari pangkalan data: %{from_db}, translator: %{from_translator},
+        tidak diterjemahkan: %{untranslated}'
+    database:
+      no_environment: Tidak lingkungan '%{env}' dalam %{file}
+      migrated: Pangkalan data yang dipindahkan.
+      created: Pangkalan data dicipta.
+      deleted: Pangkalan data terhapus.
+      could_not_create: Pangkalan data yang tidak dapat dibuat.
+      config_file: Jalan ke pangkalan data fail konfigurasi
+      env: Pangkalan data persekitaran
+    unicode:
+      invalid_byte: 'Tidak sah UTF8 byte: ''%{byte}'''
