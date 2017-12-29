@@ -31,7 +31,7 @@ module Translatomatic::Translator
   end
 
   # Find all configured translators
-  # @param [Hash<String,String>] options Translator options
+  # @param options [Hash<String,String>] Translator options
   # @return [Array<#translate>] A list of translator instances
   def self.available(options = {})
     available = []

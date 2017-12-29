@@ -97,7 +97,7 @@ class Translatomatic::Converter
   # Uses existing translations from the database if available.
   #
   # @param properties [Hash<String,String>] Properties
-  # @param to_locale [String, Locale] The locale of the properties
+  # @param from_locale [String, Locale] The locale of the properties
   # @param to_locale [String, Locale] The target locale for translations
   # @return [Translatomatic::TranslationResult] Translated properties
   def translate_properties(properties, from_locale, to_locale)

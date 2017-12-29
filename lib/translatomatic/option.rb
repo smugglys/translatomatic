@@ -15,7 +15,7 @@ module Translatomatic
     attr_reader :description
 
     # Create a new option
-    # @param [Hash<Symbol,Object>] data Attributes as above
+    # @param data [Hash<Symbol,Object>] Attributes as above
     # @return [Translatomatic::Option] A new option instance
     def initialize(data = {})
       @name = data[:name]

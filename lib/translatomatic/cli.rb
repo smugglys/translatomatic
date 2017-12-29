@@ -31,8 +31,8 @@ class Translatomatic::CLI < Thor
     end
   end
   # Translate files to target locales
-  # @param [String] file Resource file to translate
-  # @param [Array<String>] locales List of target locales
+  # @param file [String] Resource file to translate
+  # @param locales [Array<String>] List of target locales
   # @return [void]
   def translate(file, *locales)
     run do
@@ -76,8 +76,8 @@ class Translatomatic::CLI < Thor
   method_option :locales, type: :string, desc: t("cli.locales_to_display")
   method_option :sentences, type: :boolean, desc: t("cli.display_sentences")
   # Display values from a resource bundle
-  # @param [String] file Path to resource file
-  # @param [Array<String>] keys Optional list of locales
+  # @param file [String] Path to resource file
+  # @param keys [Array<String>] Optional list of locales
   # @return [void]
   def display(file, *keys)
     run do
@@ -97,7 +97,7 @@ class Translatomatic::CLI < Thor
 
   desc "strings file [file...]", t("cli.extract_strings")
   # Extract strings from non-resource files
-  # @param [Array<String>] files List of paths to files
+  # @param files [Array<String>] List of paths to files
   # @return [void]
   def strings(*files)
     run do

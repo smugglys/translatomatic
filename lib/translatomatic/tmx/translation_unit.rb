@@ -8,7 +8,7 @@ module Translatomatic::TMX
     # @return [Array<Translatomatic::String>] Strings in this translation unit
     attr_reader :strings
 
-    # @param [Array<Translatomatic::String>] strings List of strings
+    # @param strings [Array<Translatomatic::String>] List of strings
     def initialize(strings)
       @strings = strings || []
     end

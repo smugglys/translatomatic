@@ -31,9 +31,9 @@ module Translatomatic
       end
 
       # Translate strings from one locale to another
-      # @param [Array<String>] strings A list of strings to translate.
-      # @param [String, Translatomatic::Locale] from The locale of the given strings.
-      # @param [String, Translatomatic::Locale] to The locale to translate to.
+      # @param strings [Array<String>] A list of strings to translate.
+      # @param from [String, Translatomatic::Locale] The locale of the given strings.
+      # @param to [String, Translatomatic::Locale] The locale to translate to.
       # @return [Array<String>] Translated strings
       def translate(strings, from, to)
         strings = [strings] unless strings.kind_of?(Array)
@@ -113,7 +113,7 @@ module Translatomatic
 
       # Attempt to run a block of code up to retries times.
       # Reraises the exception if the block fails retries times.
-      # @param [Number] retries The maximum number of times to run
+      # @param retries [Number] The maximum number of times to run
       # @return [Object] the return value of the block
       def attempt_with_retries(retries)
         fail_count = 0

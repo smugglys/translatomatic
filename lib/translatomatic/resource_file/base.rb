@@ -16,10 +16,10 @@ class Translatomatic::ResourceFile::Base
   # Create a new resource file.
   # If locale is unspecified, attempts to determine the locale of the file
   # automatically, and if that fails, uses the default locale.
-  # @param [String] path Path to the file
-  # @param [String] locale Locale of the file contents
+  # @param path [String] Path to the file
+  # @param locale [String] Locale of the file contents
   # @return [Translatomatic::ResourceFile::Base] the resource file.
-  def initialize(path = nil, locale = nil)
+  def initialize(path, locale = nil)
     @path = path.kind_of?(Pathname) ? path : Pathname.new(path)
     @locale = Translatomatic::Locale.parse(locale || detect_locale || Translatomatic::Locale.default)
     raise t("resource.unknown_locale") unless @locale && @locale.language
@@ -33,7 +33,7 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Create a path for the current resource file with a given locale
-  # @param [String] locale for the path
+  # @param locale [String] The target locale
   # @return [Pathname] The path of this resource file modified for the given locale
   def locale_path(locale)
     basename = path.sub_ext('').basename.to_s
@@ -71,8 +71,8 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Set a property
-  # @param [String] key The name of the property
-  # @param [String] value The new value of the property
+  # @param key [String] The name of the property
+  # @param value [String] The new value of the property
   # @return [String] The new value of the property
   def set(key, value)
     @properties[key] = value

@@ -39,7 +39,7 @@ module Translatomatic
     end
 
     # Invokes value.match
-    # @param [Regexp,String] pattern The regex pattern to match
+    # @param pattern [Regexp,String] The regex pattern to match
     # @return [MatchData] Object describing the match, or nil if no match
     def match(pattern)
       @value.match(pattern)

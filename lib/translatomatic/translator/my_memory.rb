@@ -28,7 +28,7 @@ module Translatomatic
       #end
 
       # Upload a set of translations to MyMemory
-      # @param [Translatomatic::TMX::Document] tmx TMX document
+      # @param tmx [Translatomatic::TMX::Document] TMX document
       # @return [void]
       def upload(tmx)
         request = Translatomatic::HTTPRequest.new(UPLOAD_URL)

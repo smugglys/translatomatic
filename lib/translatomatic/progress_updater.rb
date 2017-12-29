@@ -1,7 +1,7 @@
 # implements Converter listener
 class Translatomatic::ProgressUpdater
   # Create a new progress updater
-  # @param [Progressbar] progressbar A ruby-progressbar object
+  # @param progressbar [Progressbar] A ruby-progressbar object
   def initialize(progressbar)
     @progressbar = progressbar
   end

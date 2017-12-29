@@ -8,7 +8,7 @@ class Translatomatic::Database
   class << self
     attr_reader :options
 
-    # @param [Hash<Symbol,Object>] options Database options
+    # @param options [Hash<Symbol,Object>] Database options
     # @return [boolean] True if we can connect to the database
     def enabled?(options = {})
       new(options).connect

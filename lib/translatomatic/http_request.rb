@@ -10,7 +10,7 @@ module Translatomatic
     #   default, a random hexadecimal string is used.
     attr_accessor :multipart_boundary
 
-    # @param [String,URI] url URL of the request
+    # @param url [String,URI] URL of the request
     # @return [Translatomatic::HTTPRequest] Create a new request
     def initialize(url)
       @uri = url.respond_to?(:host) ? url : URI.parse(url)
@@ -18,7 +18,7 @@ module Translatomatic
     end
 
     # Start the HTTP request. Yields a http object.
-    # @param [Hash<Symbol,Object>] options Request options
+    # @param options [Hash<Symbol,Object>] Request options
     # @return [void]
     def start(options = {})
       options = options.merge(use_ssl: @uri.scheme == "https")
@@ -30,7 +30,7 @@ module Translatomatic
     end
 
     # Send a HTTP GET request
-    # @param [Hash<String,String>] query Optional query parameters
+    # @param query [Hash<String,String>] Optional query parameters
     # @return [Net::HTTP::Response]
     def get(query = nil)
       uri = @uri
@@ -44,7 +44,7 @@ module Translatomatic
     end
 
     # Send an HTTP POST request
-    # @param [String,Hash] body Body of the request
+    # @param body [String,Hash] Body of the request
     # @return [Net::HTTP::Response]
     def post(body, options = {})
       request = Net::HTTP::Post.new(@uri)

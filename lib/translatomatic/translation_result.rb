@@ -18,9 +18,9 @@ module Translatomatic
     attr_reader :untranslated
 
     # Create a translation result
-    # @param [Hash<String,String>] properties Untranslated properties
-    # @param [Locale] from_locale The locale of the untranslated strings
-    # @param [Locale] to_locale The target locale
+    # @param properties [Hash<String,String>] Untranslated properties
+    # @param from_locale [Locale] The locale of the untranslated strings
+    # @param to_locale [Locale] The target locale
     def initialize(properties, from_locale, to_locale)
       @value_to_keys = {}
       @untranslated = Set.new
