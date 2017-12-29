@@ -56,6 +56,14 @@ RSpec.describe Translatomatic::String do
       expect(sentences[0].substring?).to be_truthy
       expect(sentences[0].parent).to eq(string)
     end
+
+    it "sets the correct offset" do
+      string = string("word1 {var1} word3", 'en')
+      variables = string.substrings(/\{\w+\}/)
+      p variables
+      expect(variables.length).to eq(1)
+      expect(variables[0].offset).to eq(6)
+    end
   end
 
   context :type do

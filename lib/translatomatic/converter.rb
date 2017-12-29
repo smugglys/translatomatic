@@ -27,7 +27,7 @@ class Translatomatic::Converter
 
   # Create a converter to translate files
   #
-  # @param options A hash of converter and/or translator options.
+  # @param options [Hash<Symbol,Object>] converter and/or translator options.
   def initialize(options = {})
     @dry_run = options[:dry_run]
     @translator = options[:translator]
@@ -57,23 +57,26 @@ class Translatomatic::Converter
   # Translate properties of source_file to the target locale.
   # Does not write changes to disk.
   #
-  # @param [String, Translatomatic::ResourceFile] file File to translate
-  # @param [String] to_locale The target locale, e.g. "fr"
+  # @param file [String, Translatomatic::ResourceFile] File to translate
+  # @param to_locale [String] The target locale, e.g. "fr"
   # @return [Translatomatic::ResourceFile] The translated resource file
   def translate(file, to_locale)
     file = resource_file(file)
     to_locale = parse_locale(to_locale)
 
-    properties = translate_properties(file.properties, file.locale, to_locale)
+    result = translate_properties(file.properties, file.locale, to_locale)
+    properties = restore_variables(file, result)
+
     file.properties = properties
     file.locale = to_locale
     file
   end
 
-  # Translates a resource file and writes results to a target resource file
+  # Translates a resource file and writes results to a target resource file.
+  # The path of the target resource file is automatically determined.
   #
   # @param source [Translatomatic::ResourceFile] The source
-  # @param [String] to_locale The target locale, e.g. "fr"
+  # @param to_locale [String] The target locale, e.g. "fr"
   # @return [Translatomatic::ResourceFile] The translated resource file
   def translate_to_file(source, to_locale)
     # Automatically determines the target filename based on target locale.
@@ -90,22 +93,22 @@ class Translatomatic::Converter
     target
   end
 
-  # Translate values in the hash of properties.
+  # Translate resource file properties.
   # Uses existing translations from the database if available.
   #
-  # @param [Hash] properties Text to translate
-  # @param [String, Locale] from_locale The locale of the given properties
-  # @param [String, Locale] to_locale The target locale for translations
-  # @return [Hash] Translated properties
+  # @param properties [Hash<String,String>] Properties
+  # @param to_locale [String, Locale] The locale of the properties
+  # @param to_locale [String, Locale] The target locale for translations
+  # @return [Translatomatic::TranslationResult] Translated properties
   def translate_properties(properties, from_locale, to_locale)
     from_locale = parse_locale(from_locale)
     to_locale = parse_locale(to_locale)
 
-    # sanity check
-    return properties if from_locale.language == to_locale.language
-
     result = Translatomatic::TranslationResult.new(properties,
       from_locale, to_locale)
+
+    # do nothing if target language is the same as source language
+    return result if from_locale.language == to_locale.language
 
     # translate using strings from the database first
     db_texts = translate_properties_with_db(result)
@@ -118,12 +121,35 @@ class Translatomatic::Converter
       untranslated: result.untranslated.length))
     @listener.untranslated_texts(result.untranslated) if @listener
 
-    result.properties
+    result
   end
 
   private
 
   include Translatomatic::Util
+
+  # restore interpolated variables in the translation result.
+  # @param file [Translatomatic::ResourceFile] resource file
+  # @param result Translatomatic::TranslationResult] translation result
+  # @return [Hash<String,String>] translated properties with restored variables
+  def restore_variables(file, result)
+    return result.properties unless file.supports_variable_interpolation?
+
+    original = file.properties
+    translated = result.properties.transform_values { |i| i.dup }
+    original.each do |key, value|
+      value = string(value, result.from_locale)
+      variables = value.substrings(file.variable_regex)
+      translated_value = string(translated[key], result.to_locale)
+      translated_variables = translated_value.substrings(file.variable_regex)
+
+      result.conversions(variables, translated_variables).each do |v1, v2|
+        translated[key][v2.offset, v2.length] = v1.value
+      end
+    end
+
+    translated
+  end
 
   def resource_file(path)
     if path.kind_of?(Translatomatic::ResourceFile::Base)

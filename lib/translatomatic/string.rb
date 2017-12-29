@@ -17,7 +17,7 @@ module Translatomatic
     attr_reader :offset
 
     def initialize(value, locale, options = {})
-      @value = value || ''
+      @value = value.to_s || ''
       @locale = Translatomatic::Locale.parse(locale)
       @offset = options[:offset] || 0
       @parent = options[:parent]
@@ -64,21 +64,27 @@ module Translatomatic
     # Find all sentences in the string
     # @return [Array<Translatomatic::String] List of sentences
     def sentences
-      sentences = @value.scan(sentence_regex)
-      strings = []
-      offset = 0
-      sentences.each do |sentence|
-        # find leading and trailing whitespace
-        next if sentence.length == 0
+      substrings(sentence_regex)
+    end
 
-        parts = sentence.match(/^(\s*)(.*?)(\s*)$/).to_a
+    # Find all substrings matching the given regex
+    # @return [Array<Translatomatic::String] List of substrings
+    def substrings(regex)
+      matches = matches(@value, regex)
+      strings = []
+      matches.each do |match|
+        substring = match.to_s
+        # find leading and trailing whitespace
+        next if substring.length == 0
+
+        parts = substring.match(/^(\s*)(.*?)(\s*)$/).to_a
         value = parts[2]
+        offset = match.offset(0)[0]
         offset += parts[1].length  # leading whitespace
         strings << self.class.new(value, locale, offset: offset, parent: self)
-        offset += value.length + parts[3].length
       end
 
-      # return [self] if there's only one sentence and it's equal to self
+      # return [self] if there's only one substring and it's equal to self
       strings.length == 1 && strings[0].eql?(self) ? [self] : strings
     end
 
@@ -150,6 +156,17 @@ module Translatomatic
         script_data[lang] = script
       end
       @script_data = script_data
+    end
+
+    def matches(s, re)
+      start_at = 0
+      matches = []
+      while(m = s.match(re, start_at))
+        break if m.to_s.empty?
+        matches.push(m)
+        start_at = m.end(0)
+      end
+      matches
     end
 
     def sentence_regex

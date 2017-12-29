@@ -59,9 +59,13 @@ module Translatomatic::ResourceFile
       true
     end
 
-    # (see Translatomatic::ResourceFile::Base#variable)
-    def variable(name)
+    # (see Translatomatic::ResourceFile::Base#create_variable)
+    def create_variable(name)
       return "%{#{name}}"
+    end
+
+    def variable_regex
+      /\%\{.*?\}/
     end
 
     private

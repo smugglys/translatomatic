@@ -42,12 +42,21 @@ module Translatomatic
     end
 
     # Update result with a list of translated strings.
-    # @param [Array<String>] original Original strings
-    # @param [Array<String>] translated Translated strings
+    # @param original [Array<String>] Original strings
+    # @param translated [Array<String>] Translated strings
     # @return [void]
     def update_strings(original, translated)
       raise "strings length mismatch" unless original.length == translated.length
+      conversions(original, translated).each do |text1, text2|
+        update(text1, text2)
+      end
+    end
 
+    # @param original [Array<String>] Original strings
+    # @param translated [Array<String>] Translated strings
+    # @return [Array<Array<String>>] A list of conversions in the form
+    #   [[original, translated], ...]
+    def conversions(original, translated)
       # create list of [from, to] text conversions
       conversions = []
       original.zip(translated).each do |text1, text2|
@@ -60,10 +69,7 @@ module Translatomatic
       conversions.sort_by! do |t1, t2|
         t1.respond_to?(:offset) ? -t1.offset : 0
       end
-
-      conversions.each do |text1, text2|
-        update(text1, text2)
-      end
+      conversions
     end
 
     private

@@ -19,7 +19,7 @@ class Translatomatic::ResourceFile::Base
   # @param [String] path Path to the file
   # @param [String] locale Locale of the file contents
   # @return [Translatomatic::ResourceFile::Base] the resource file.
-  def initialize(path, locale = nil)
+  def initialize(path = nil, locale = nil)
     @path = path.kind_of?(Pathname) ? path : Pathname.new(path)
     @locale = Translatomatic::Locale.parse(locale || detect_locale || Translatomatic::Locale.default)
     raise t("resource.unknown_locale") unless @locale && @locale.language
@@ -55,7 +55,7 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Set all properties
-  # @param [Hash<String,String>] properties New properties
+  # @param properties [Hash<String,String>] New properties
   def properties=(properties)
     # use set rather that set @properties directly as subclasses override set()
     properties.each do |key, value|
@@ -64,7 +64,7 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Get the value of a property
-  # @param [String] key The name of the property
+  # @param key [String] The name of the property
   # @return [String] The value of the property
   def get(key)
     @properties[key]
@@ -85,8 +85,8 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Save the resource file.
-  # @param [Pathname] target The destination path
-  # @param [Hash<Symbol, Object>] options Output format options
+  # @param target [Pathname] The destination path
+  # @param options [Hash<Symbol, Object>] Output format options
   # @return [void]
   def save(target = path, options = {})
     raise "save(path) must be implemented by subclass"
@@ -115,9 +115,15 @@ class Translatomatic::ResourceFile::Base
   # Create an interpolated variable string.
   # @return [String] A string representing the interpolated variable, or
   #   nil if this resource file doesn't support variable interpolation.
-  def variable(name)
+  def create_variable(name)
     return nil unless supports_variable_interpolation?
-    raise "variable(name) must be implemented by subclass"
+    raise "create_variable(name) must be implemented by subclass"
+  end
+
+  # @return [Regexp] A regexp used to match interpolated variables
+  def variable_regex
+    return nil unless supports_variable_interpolation?
+    raise "variable_regex must be implemented by subclass"
   end
 
   private

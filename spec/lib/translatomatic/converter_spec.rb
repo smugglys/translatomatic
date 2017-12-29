@@ -55,7 +55,7 @@ RSpec.describe Translatomatic::Converter do
     t = described_class.new(translator: translator)
     properties = { key: "yoghurt" }
     result = t.translate_properties(properties, "en", "en-US")
-    expect(result[:key]).to eq("yoghurt")
+    expect(result.properties[:key]).to eq("yoghurt")
   end
 
   it "translates multiple sentences separately" do
@@ -67,7 +67,7 @@ RSpec.describe Translatomatic::Converter do
     t = described_class.new(translator: translator)
     properties = { key: "Sentence one. Sentence two." }
     result = t.translate_properties(properties, "en", "de")
-    expect(result[:key]).to eq("Satz eins. Satz zwei.")
+    expect(result.properties[:key]).to eq("Satz eins. Satz zwei.")
   end
 
   it "uses existing translations from the database" do
@@ -83,7 +83,7 @@ RSpec.describe Translatomatic::Converter do
     properties = { key: "yoghurt" }
     result = t.translate_properties(properties, "en", "fr")
     expect(result).to be
-    expect(result[:key]).to eq("yoplait")
+    expect(result.properties[:key]).to eq("yoplait")
   end
 
   it "saves translations to the database" do
@@ -104,8 +104,8 @@ RSpec.describe Translatomatic::Converter do
     file = mod.new("dummy_path", "en")
     if file.supports_variable_interpolation?
       it "preserves interpolation variable names with #{file.format} files" do
-        original_variable = file.variable("var1")
-        translated_variable = file.variable("translated_var1")
+        original_variable = file.create_variable("var1")
+        translated_variable = file.create_variable("translated_var1")
         file.properties = {
           key1: "rah #{original_variable} rah"
         }
