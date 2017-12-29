@@ -27,7 +27,9 @@ module Translatomatic
       private
 
       def perform_translate(strings, from, to)
-        @impl.translate_array(strings, from: from.language, to: to.language)
+        attempt_with_retries(3) do
+          @impl.translate_array(strings, from: from.language, to: to.language)
+        end
       end
 
     end

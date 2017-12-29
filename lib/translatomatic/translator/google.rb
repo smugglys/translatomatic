@@ -25,7 +25,9 @@ module Translatomatic
       private
 
       def perform_translate(strings, from, to)
-        EasyTranslate.translate(strings, from: from.language, to: to.language)
+        attempt_with_retries(3) do
+          EasyTranslate.translate(strings, from: from.language, to: to.language)
+        end
       end
 
     end # class

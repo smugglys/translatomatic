@@ -29,7 +29,9 @@ module Translatomatic
       def perform_translate(strings, from, to)
         translated = []
         strings.each do |string|
-          result = @impl.translate(string, from: from.language, to: to.language) || ""
+          result = attempt_with_retries(3) do
+            @impl.translate(string, from: from.language, to: to.language) || ""
+          end
           translated.push(result)
           update_translated(result)
         end
