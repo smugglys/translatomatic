@@ -1,5 +1,6 @@
 require "thor"
 
+# Command line interface to translatomatic
 class Translatomatic::CLI < Thor
   include Translatomatic::Util
 
@@ -7,13 +8,12 @@ class Translatomatic::CLI < Thor
   map %W[-v --version] => :version
   map %W[-L --list] => :translators
 
-  desc "translate file locale...", "Translate files to target locales"
+  desc "translate file locale...", t("cli.translate")
   method_option :translator, enum: Translatomatic::Translator.names
-  method_option :source_locale, desc: "The locale of the source file"
-  method_option :debug, type: :boolean, desc: "Enable debugging output"
-  method_option :wank, type: :boolean, default: true, desc: "Enable Progress bar"
-  method_option :share, type: :boolean, default: false, desc:
-    "Share translations with translators that support upload"
+  method_option :source_locale, desc: t("cli.source_locale")
+  method_option :debug, type: :boolean, desc: t("cli.debug")
+  method_option :wank, type: :boolean, default: true, desc: t("cli.wank")
+  method_option :share, type: :boolean, default: false, desc: t("cli.share")
   Translatomatic::Converter.options.each do |option|
     method_option option.name, option.to_hash
   end
@@ -25,25 +25,30 @@ class Translatomatic::CLI < Thor
       method_option option.name, option.to_hash
     end
   end
+  # Translate files to target locales
+  # @param [String] file Resource file to translate
+  # @param [Array<String>] locales List of target locales
+  # @return [void]
   def translate(file, *locales)
     run do
-      log.info("Dry run: files will not be translated or written") if options[:dry_run]
-      raise "One or more locales required" if locales.empty?
+      log.info(t("cli.dry_run")) if options[:dry_run]
+      raise t("cli.locales_required") if locales.empty?
 
       config.logger.level = Logger::DEBUG if options[:debug]
 
       # load source file
-      raise "File not found: #{file}" unless File.exist?(file)
+      raise t("cli.file_not_found", file: file) unless File.exist?(file)
       source = Translatomatic::ResourceFile.load(file, options[:source_locale])
-      raise "Unsupported file type #{file}" unless source
+      raise t("cli.file_unsupported", file: file) unless source
 
       # set up database
       Translatomatic::Database.new(options)
 
       # select translator
       translator = select_translator(options)
-      log.info("Using translator #{translator.name}")
-      log.debug("Locales: #{locales}, Properties: #{source.properties.length}")
+      log.info(t("cli.using_translator", name: translator.name))
+      log.debug(t("cli.locales_properties",
+        locales: locales, properties: source.properties.length))
 
       # set up converter
       translation_count = calculate_translation_count(source, locales)
@@ -62,9 +67,13 @@ class Translatomatic::CLI < Thor
     end
   end
 
-  desc "display file [key...]", "Display values from a resource bundle"
-  method_option :locales, type: :string, desc: "Locales to display"
-  method_option :sentences, type: :boolean, desc: "Display sentences"
+  desc "display file [key...]", t("cli.display_values")
+  method_option :locales, type: :string, desc: t("cli.locales_to_display")
+  method_option :sentences, type: :boolean, desc: t("cli.display_sentences")
+  # Display values from a resource bundle
+  # @param [String] file Path to resource file
+  # @param [Array<String>] keys Optional list of locales
+  # @return [void]
   def display(file, *keys)
     run do
       source = Translatomatic::ResourceFile.load(file)
@@ -81,7 +90,10 @@ class Translatomatic::CLI < Thor
     end
   end
 
-  desc "strings file [file...]", "Extract strings from non-resource files"
+  desc "strings file [file...]", t("cli.extract_strings")
+  # Extract strings from non-resource files
+  # @param [Array<String>] files List of paths to files
+  # @return [void]
   def strings(*files)
     run do
       strings = []
@@ -93,14 +105,18 @@ class Translatomatic::CLI < Thor
     end
   end
 
-  desc "list", "List available translation backends"
+  desc "list", t("cli.list_backends")
+  # List available translator services
+  # @return [void]
   def list
     run { puts Translatomatic::Translator.list }
   end
 
-  desc 'version', 'Display version'
+  desc 'version', t("cli.display_version")
+  # Display version number
+  # @return [void]
   def version
-    puts "Translatomatic version #{Translatomatic::VERSION}"
+    puts "Translatomatic v#{Translatomatic::VERSION}"
   end
 
   private
@@ -116,7 +132,7 @@ class Translatomatic::CLI < Thor
     available = Translatomatic::Translator.available(options)
     available.each do |translator|
       if translator.respond_to?(:upload)
-        log.debug("Uploading tmx to #{translator.name}")
+        log.debug(t("cli.uploading_tmx"))
         translator.upload(tmx)
       end
     end
@@ -133,7 +149,7 @@ class Translatomatic::CLI < Thor
     return nil unless options[:wank]
     # set up progress bar
     progressbar = ProgressBar.create(
-      title: "Translating",
+      title: t("cli.translating"),
       format: "%t: |%B| %E ",
       autofinish: false,
       total: translation_count
@@ -149,7 +165,7 @@ class Translatomatic::CLI < Thor
       yield
       true
     rescue Interrupt
-      puts "\nAborted"
+      puts "\n" + t("cli.aborted")
       false
     rescue Exception => e
       log.error(e.message)
@@ -167,7 +183,7 @@ class Translatomatic::CLI < Thor
   end
 
   def display_keys(source, keys)
-    puts "File: #{source}"
+    puts t("cli.file_source", source)
     table = []
     keys.each do |key|
       value = source.get(key)
@@ -176,7 +192,7 @@ class Translatomatic::CLI < Thor
     print_table(table, indent: 2)
 
     if options[:sentences]
-      puts "Sentences:"
+      puts t("cli.sentences")
       source.sentences.each do |sentence|
         puts "- " + sentence.to_s
       end
@@ -199,18 +215,19 @@ class Translatomatic::CLI < Thor
     # find all available translators that work with the given options
     available = Translatomatic::Translator.available(options)
     if available.empty?
-      raise "No translators configured. Use the translators command to see options"
+      raise t("cli.no_translators")
     end
 
     return available[0] if available.length == 1
 
     # prompt user for which translator to use
-    say("Multiple translators available:")
+    say(t("cli.multiple_translators"))
     available.each_with_index { |mod, i| say(" #{i + 1}) #{mod.name}") }
     loop do
-      idx = ask("Select translator (1-#{available.length}): ")
+      idx = ask(t("cli.select_translator", available: available.length))
       idx = idx.to_i
       return available[idx - 1] if (1..available.length).include?(idx)
     end
   end
+
 end

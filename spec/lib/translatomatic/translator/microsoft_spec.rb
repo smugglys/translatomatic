@@ -1,6 +1,6 @@
 RSpec.describe Translatomatic::Translator::Microsoft do
   it "requires an api key" do
-    expect { described_class.new }.to raise_error(/api key required/)
+    expect { described_class.new }.to raise_error(t("translator.microsoft_key_required"))
   end
 
   # TODO

@@ -1,10 +1,14 @@
 module Translatomatic::TMX
+  # A TMX Translation Unit.
+  # A translation unit contains a list of strings, and is part of a TMX
+  # document.
+  # @see Translatomatic::TMX::Document
   class TranslationUnit
 
     # @return [Array<Translatomatic::String>] Strings in this translation unit
     attr_reader :strings
 
-    # @param [Array<Translatomatic::String>] list of strings
+    # @param [Array<Translatomatic::String>] strings List of strings
     def initialize(strings)
       @strings = strings || []
     end

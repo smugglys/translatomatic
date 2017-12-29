@@ -1,6 +1,8 @@
 require 'date'
 
 module Translatomatic::ResourceFile
+  # Properties resource file
+  # @see https://docs.oracle.com/javase/tutorial/essential/environment/properties.html
   class Properties < Base
 
     # (see Translatomatic::ResourceFile::Base.extensions)

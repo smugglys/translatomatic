@@ -1,4 +1,5 @@
 module Translatomatic::Extractor
+  # Base class for string extraction functionality
   class Base
 
     def initialize(path)
@@ -6,6 +7,7 @@ module Translatomatic::Extractor
       @contents = @path.read
     end
 
+    # @return [Array<String>] All strings found
     def extract
       @contents.scan(/\"(.*?[^\\])"|'(.*?[^\\])'/).flatten.compact
     end

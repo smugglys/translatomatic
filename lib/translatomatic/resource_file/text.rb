@@ -1,4 +1,5 @@
 module Translatomatic::ResourceFile
+  # Text resource file
   class Text < Base
 
     # (see Translatomatic::ResourceFile::Base.extensions)

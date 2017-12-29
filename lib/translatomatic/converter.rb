@@ -1,5 +1,8 @@
+# The converter ties together functionality from translators,
+# resource files, and the database to convert files from one
+# language to another.
 class Translatomatic::Converter
-
+  include Translatomatic::Util
   class << self
     attr_reader :options
     private
@@ -8,12 +11,12 @@ class Translatomatic::Converter
 
   define_options(
     { name: :translator, type: :string, aliases: "-t",
-      desc: "Translator implementation to use",
+      desc: t("converter.translator"),
       enum: Translatomatic::Translator.names },
     { name: :dry_run, type: :boolean, aliases: "-n", desc:
-      "Print actions without performing translations or writing files" },
+      t("converter.dry_run") },
     { name: :use_database, type: :boolean, default: true, desc:
-      "Store and retrieve translations in the database" }
+      t("converter.use_database") }
   )
 
   # @return [Translatomatic::ConverterStats] translation statistics
@@ -34,12 +37,12 @@ class Translatomatic::Converter
     use_db = options.include?(:use_database) ? options[:use_database] : true
     @use_db = use_db && ActiveRecord::Base.connected?
 
-    log.debug("database is disabled") unless @use_db
+    log.debug(t("converter.database_disabled")) unless @use_db
     if @translator && !@translator.respond_to?(:translate)
       klass = Translatomatic::Translator.find(@translator)
       @translator = klass.new(options)
     end
-    raise "translator required" unless @translator
+    raise t("converter.translator_required") unless @translator
     @translator.listener = @listener if @listener
     @from_db = 0
     @from_translator = 0
@@ -62,7 +65,7 @@ class Translatomatic::Converter
       source = source_file
     else
       source = Translatomatic::ResourceFile.load(source_file)
-      raise "unsupported file type #{source_file}" unless source
+      raise t("converter.file_unsupported", file: source_file) unless source
     end
 
     to_locale = parse_locale(to_locale)
@@ -79,7 +82,7 @@ class Translatomatic::Converter
   # @return [Translatomatic::ResourceFile] The translated resource file
   def translate_to_target(source, target)
     # perform translation
-    log.info("translating #{source} to #{target}")
+    log.info(t("converter.translating", source: source, target: target))
     properties = translate_properties(source.properties, source.locale, target.locale)
     target.properties = properties
     unless @dry_run
@@ -112,8 +115,9 @@ class Translatomatic::Converter
     # send remaining unknown strings to translator
     tr_texts = translate_properties_with_translator(result)
 
-    log.debug("translations from db: %d translator: %d untranslated: %d" %
-      [db_texts.length, tr_texts.length, result.untranslated.length])
+    log.debug(t("converter.stats", from_db: db_texts.length,
+      from_translator: tr_texts.length,
+      untranslated: result.untranslated.length))
     @listener.untranslated_texts(result.untranslated) if @listener
 
     result.properties

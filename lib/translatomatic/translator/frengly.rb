@@ -3,6 +3,8 @@ require 'net/http'
 module Translatomatic
   module Translator
 
+    # Interface to the Frengly translation API
+    # @see http://www.frengly.com/api
     class Frengly < Base
 
       define_options({
@@ -19,8 +21,8 @@ module Translatomatic
         @key = options[:frengly_api_key] || ENV["FRENGLY_API_KEY"] # optional
         @email = options[:frengly_email]
         @password = options[:frengly_password]
-        raise "email address required" unless @email
-        raise "password required" unless @password
+        raise t("translator.email_required") unless @email
+        raise t("translator.password_required") unless @password
       end
 
       # (see Translatomatic::Translator::Base#languages)

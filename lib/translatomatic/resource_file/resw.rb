@@ -1,4 +1,5 @@
 module Translatomatic::ResourceFile
+  # Windows resources file (XML)
   class RESW < XML
 
     # (see Translatomatic::ResourceFile::Base.extensions)

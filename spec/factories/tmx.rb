@@ -14,7 +14,7 @@ FactoryBot.define do
 
   factory :tmx_locale_string, class: Translatomatic::String do
     value "Yoghurt"
-    locale "en"
+    tag "en"
     skip_create
     initialize_with { new(value, tag) }
   end

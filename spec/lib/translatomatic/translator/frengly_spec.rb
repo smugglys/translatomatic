@@ -1,12 +1,12 @@
 RSpec.describe Translatomatic::Translator::Frengly do
   it "requires an email" do
-    expect { described_class.new }.to raise_error(/email.*required/)
+    expect { described_class.new }.to raise_error(t("translator.email_required"))
   end
 
   it "requires a password" do
     expect {
       described_class.new(frengly_email: "rah")
-    }.to raise_error(/password required/)
+    }.to raise_error(t("translator.password_required"))
   end
 
   it "returns a language list" do

@@ -1,6 +1,8 @@
 require 'yaml'
 
 module Translatomatic::ResourceFile
+  # YAML resource file
+  # @see http://www.yaml.org/
   class YAML < Base
 
     # (see Translatomatic::ResourceFile::Base.extensions)
@@ -54,7 +56,7 @@ module Translatomatic::ResourceFile
         @data = ::YAML.load_file(@path) || {}
         flatten_data(@data)
       rescue Exception => e
-        log.error(e.message)
+        log.error t("resource.error", message: e.message)
         @valid = false
         {}
       end

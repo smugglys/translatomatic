@@ -2,15 +2,24 @@ require 'securerandom'
 require 'net/http'
 
 module Translatomatic
+  # HTTP request
+  # wrapper for Net::HTTP functionality
   class HTTPRequest
 
+    # @return [String] the text to use to denote multipart boundaries. By
+    #   default, a random hexadecimal string is used.
     attr_accessor :multipart_boundary
 
+    # @param [String,URI] url URL of the request
+    # @return [Translatomatic::HTTPRequest] Create a new request
     def initialize(url)
       @uri = url.respond_to?(:host) ? url : URI.parse(url)
       @multipart_boundary = SecureRandom.hex(16)
     end
 
+    # Start the HTTP request. Yields a http object.
+    # @param [Hash<Symbol,Object>] options Request options
+    # @return [void]
     def start(options = {})
       options = options.merge(use_ssl: @uri.scheme == "https")
       Net::HTTP.start(@uri.host, @uri.port, options) do |http|
@@ -20,6 +29,9 @@ module Translatomatic
       @http = nil
     end
 
+    # Send a HTTP GET request
+    # @param [Hash<String,String>] query Optional query parameters
+    # @return [Net::HTTP::Response]
     def get(query = nil)
       uri = @uri
       if query
@@ -31,6 +43,9 @@ module Translatomatic
       send_request(request)
     end
 
+    # Send an HTTP POST request
+    # @param [String,Hash] body Body of the request
+    # @return [Net::HTTP::Response]
     def post(body, options = {})
       request = Net::HTTP::Post.new(@uri)
       request['User-Agent'] = USER_AGENT
@@ -49,10 +64,14 @@ module Translatomatic
       send_request(request)
     end
 
+    # Create a file parameter for a multipart POST request
+    # @return [FileParam] A new file parameter
     def file(*args)
       FileParam.new(*args)
     end
 
+    # Create a parameter for a multipart POST request
+    # @return [Param] A new parameter
     def param(*args)
       Param.new(*args)
     end
@@ -65,16 +84,18 @@ module Translatomatic
     class Param
       attr_accessor :key, :value
 
-      def initialize(key:, value:)
-        @key = key
-        @value = value
-      end
-
+      # @return [String] Representation of this parameter as it appears
+      #   within a multipart post request.
       def to_s
         return header(header_data) + "\r\n#{value}\r\n"
       end
 
       private
+
+      def initialize(key:, value:)
+        @key = key
+        @value = value
+      end
 
       def header_data
         name = CGI::escape(key.to_s)
@@ -97,19 +118,20 @@ module Translatomatic
     class FileParam < Param
       attr_accessor :filename, :content, :mime_type
 
-      def initialize(key:, filename:, content:, mime_type:)
-        @key = key
-        @filename = filename
-        @content = content
-        @mime_type = mime_type
-      end
-
+      # (see Param#to_s)
       def to_s
         return header(header_data) +
           header("Content-Type": mime_type) + "\r\n#{content}\r\n"
       end
 
       private
+
+      def initialize(key:, filename:, content:, mime_type:)
+        @key = key
+        @filename = filename
+        @content = content
+        @mime_type = mime_type
+      end
 
       def header_data
         super.merge({ filename: %Q("#{filename}") })

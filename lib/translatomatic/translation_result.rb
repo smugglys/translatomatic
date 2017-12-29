@@ -1,6 +1,7 @@
 require 'set'
 
 module Translatomatic
+  # Stores results of a translation
   class TranslationResult
 
     # Translation results

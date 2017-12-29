@@ -1,5 +1,7 @@
 module Translatomatic
   module Model
+    # Text database record.
+    # Used to store translations in the database.
     class Text < ActiveRecord::Base
       belongs_to :locale, class_name: "Translatomatic::Model::Locale"
       belongs_to :from_text, class_name: "Translatomatic::Model::Text"

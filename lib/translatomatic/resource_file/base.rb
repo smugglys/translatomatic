@@ -1,3 +1,4 @@
+# Base class for resource file implementations
 # @abstract Subclasses implement different types of resource files
 class Translatomatic::ResourceFile::Base
 
@@ -21,7 +22,7 @@ class Translatomatic::ResourceFile::Base
   def initialize(path, locale = nil)
     @path = path.kind_of?(Pathname) ? path : Pathname.new(path)
     @locale = locale || detect_locale || Translatomatic::Locale.default
-    raise "unable to determine locale" unless @locale && @locale.language
+    raise t("resource.unknown_locale") unless @locale && @locale.language
     @valid = false
     @properties = {}
   end
@@ -63,18 +64,18 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Get the value of a property
-  # @param [String] name The name of the property
+  # @param [String] key The name of the property
   # @return [String] The value of the property
-  def get(name)
-    @properties[name]
+  def get(key)
+    @properties[key]
   end
 
   # Set a property
   # @param [String] key The name of the property
   # @param [String] value The new value of the property
   # @return [String] The new value of the property
-  def set(name, value)
-    @properties[name] = value
+  def set(key, value)
+    @properties[key] = value
   end
 
   # Test if the current resource file is valid
@@ -96,6 +97,7 @@ class Translatomatic::ResourceFile::Base
     "#{path.basename.to_s} (#{locale})"
   end
 
+  # @return [Array<String>] All property values split into sentences
   def sentences
     sentences = []
     properties.values.each do |value|
@@ -110,8 +112,9 @@ class Translatomatic::ResourceFile::Base
   include Translatomatic::Util
 
   def created_by
-    date = DateTime.now.strftime("%Y-%m-%d %H:%M")
-    "Created by Translatomatic #{Translatomatic::VERSION} #{date}"
+    t("resource.created_by", app: "Translatomatic",
+      version: Translatomatic::VERSION,
+      date: I18n.l(DateTime.now, format: :short))
   end
 
   # detect locale from filename

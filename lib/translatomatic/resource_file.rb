@@ -1,5 +1,6 @@
 
 module Translatomatic
+  # Provides methods to create resource files of various types.
   module ResourceFile
     class << self
       include Translatomatic::Util
@@ -17,7 +18,8 @@ module Translatomatic
       modules.each do |mod|
         # match on entire filename to support extensions containing locales
         if extension_match(mod, path)
-          log.debug("attempting to load #{path.to_s} using #{mod.name.demodulize}")
+          log.debug(t("resource.loading", file: path,
+            name: mod.name.demodulize))
           file = mod.new(path, locale)
           return file if file.valid?
         end
@@ -71,6 +73,6 @@ require 'translatomatic/resource_file/text'
 require 'translatomatic/resource_file/xml'
 require 'translatomatic/resource_file/html'
 require 'translatomatic/resource_file/markdown'
+require 'translatomatic/resource_file/xcode_strings'
 require 'translatomatic/resource_file/plist'
 require 'translatomatic/resource_file/resw'
-require 'translatomatic/resource_file/xcode_strings'

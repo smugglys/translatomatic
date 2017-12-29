@@ -3,9 +3,10 @@ module Translatomatic::TMX
   class Document
 
     # Create a new instance
-    # @param [Array<TranslationUnit>] A list of translation units
-    # @param [Locale] Source locale
-    # @return A new TMX object
+    # @param [Array<TranslationUnit>] units A list of translation units
+    # @param [Locale] source_locale Source locale
+    # @param [String] origin Origin (o-tmx)
+    # @return [Translatomatic::TMX::Document] a new TMX object
     def initialize(units, source_locale, origin)
       units = [units] unless units.kind_of?(Array)
       @units = units
@@ -34,17 +35,17 @@ module Translatomatic::TMX
     end
 
     # Create a TMX document from the given converter
-    # @param [Array<Translatomatic::Model::Text>] List of texts
+    # @param [Array<Translatomatic::Model::Text>] texts List of texts
     # @return [Translatomatic::TMX::Document] TMX document
     def self.from_texts(texts)
       # group texts by from_text_id to create units
       # source_locale: use from_text.locale
       # origin: use text.translator
       origins = texts.collect { |i| i.translator }.compact.uniq
-      raise "Multiple origins in texts" if origins.length > 1
+      raise t("tmx.multiple_origins") if origins.length > 1
       sources = texts.select { |i| i.from_text.nil? }
       source_locales = sources.collect { |i| i.locale }.uniq
-      raise "Multiple source locales in texts" if source_locales.length > 1
+      raise t("tmx.multiple_locales") if source_locales.length > 1
       units = units_from_texts(texts)
 
       return new(units, source_locales[0], origins[0])

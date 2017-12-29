@@ -5,6 +5,8 @@ require 'translatomatic/translator/microsoft'
 require 'translatomatic/translator/frengly'
 require 'translatomatic/translator/my_memory'
 
+# Provides methods to access and create instances of
+# interfaces to translation APIs.
 module Translatomatic::Translator
 
   class << self
@@ -38,7 +40,7 @@ module Translatomatic::Translator
         translator = mod.new(options)
         available << translator
       rescue Exception
-        log.debug("translator #{mod.name.demodulize} is unavailable")
+        log.debug(t("translator.unavailable", name: mod.name.demodulize))
       end
     end
     available
@@ -46,14 +48,14 @@ module Translatomatic::Translator
 
   # @return [String] A description of all translators and options
   def self.list
-    out = "Translators:\n"
+    out = t("translator.translators") + "\n"
     modules.each do |mod|
       out += "\n" + mod.name.demodulize + ":\n"
       opts = mod.options
       opts.each do |opt|
         optname = opt.name.to_s.gsub("_", "-")
         out += "  --%-18s  %18s  %10s  %15s\n" % [optname, opt.description,
-          opt.required ? "(required)" : "",
+          opt.required ? t("translator.required_option") : "",
           opt.use_env ? "ENV[#{opt.name.upcase}]" : ""]
       end
     end

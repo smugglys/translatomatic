@@ -1,7 +1,22 @@
 module Translatomatic
+  # Stores details about command line and object constructor options
   class Option
-    attr_reader :name, :required, :use_env, :description
+    # @return [String] Name of the option
+    attr_reader :name
 
+    # @return [boolean] True if this option is required
+    attr_reader :required
+
+    # @return [boolean] If true, the option can be set via an environment
+    #   variable corresponding to the uppercased version of {name}.
+    attr_reader :use_env
+
+    # @return [String] Description of the option
+    attr_reader :description
+
+    # Create a new option
+    # @param [Hash<Symbol,Object>] data Attributes as above
+    # @return [Translatomatic::Option] A new option instance
     def initialize(data = {})
       @name = data[:name]
       @required = data[:required]
@@ -10,11 +25,15 @@ module Translatomatic
       @data = data
     end
 
+    # @return [Hash] Option data as a hash
     def to_hash
       @data
     end
   end
 
+  private
+
+  # @!visibility private
   module DefineOptions
     private
     def define_options(*options)

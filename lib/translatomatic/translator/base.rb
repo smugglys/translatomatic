@@ -2,6 +2,8 @@ require 'bing_translator'
 
 module Translatomatic
   module Translator
+
+    # Base class for interfaces to translation APIs
     # @abstract
     class Base
 
@@ -11,7 +13,7 @@ module Translatomatic
         include Translatomatic::DefineOptions
       end
 
-      # @private
+      # Listener for translation events
       attr_accessor :listener
 
       def initialize(options = {})

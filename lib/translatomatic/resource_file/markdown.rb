@@ -2,6 +2,7 @@ require 'kramdown'
 require 'reverse_markdown'
 
 module Translatomatic::ResourceFile
+  # Markdown resource file
   class Markdown < HTML
 
     # (see Translatomatic::ResourceFile::Base.extensions)
@@ -19,7 +20,7 @@ module Translatomatic::ResourceFile
           markdown = ReverseMarkdown.convert(html, unknown_tags: :bypass)
           target.write(markdown.chomp)
         rescue Exception => e
-          puts "error: #{e.message}"
+          log.error t("resource.error", message: e.message)
         end
       end
     end
@@ -44,7 +45,7 @@ module Translatomatic::ResourceFile
         end
         init_nodemap(@doc)
       rescue Exception => e
-        log.error(e.message)
+        log.error t("resource.error", message: e.message)
         @valid = false
         {}
       end

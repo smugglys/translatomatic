@@ -1,4 +1,5 @@
 module Translatomatic
+  # A string object with an associated locale.
   class String
 
     # @return [String] The string
@@ -27,16 +28,21 @@ module Translatomatic
       @value
     end
 
+    # @return [Number] The length of the string
     def length
       @value.length
     end
 
+    # @return [boolean] True if the string is empty
     def empty?
       @value.empty?
     end
 
-    def match(regex)
-      @value.match(regex)
+    # Invokes value.match
+    # @param [Regexp,String] pattern The regex pattern to match
+    # @return [MatchData] Object describing the match, or nil if no match
+    def match(pattern)
+      @value.match(pattern)
     end
 
     # @return [boolean] true if this string is a substring of another string
@@ -76,20 +82,25 @@ module Translatomatic
       strings.length == 1 && strings[0].eql?(self) ? [self] : strings
     end
 
+    # @return [boolean] true if other is a {Translatomatic::String} with
+    #   the same value and locale.
     def eql?(other)
       other.kind_of?(Translatomatic::String) && other.hash == hash
     end
 
+    # (see #eql?)
     def ==(other)
       eql?(other)
     end
 
+    # @!visibility private
     def hash
       [value, locale].hash
     end
 
     private
 
+    # @!visibility private
     class Script
       attr_reader :language
       attr_reader :delimiter      # sentence delimiter

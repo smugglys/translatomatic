@@ -1,4 +1,5 @@
 module Translatomatic::ResourceFile
+  # HTML resource file
   class HTML < XML
 
     # (see Translatomatic::ResourceFile::Base.extensions)
@@ -36,10 +37,6 @@ module Translatomatic::ResourceFile
 
     def text_nodes_xpath
       '//*[not(self::code)]/text()'
-    end
-
-    def add_created_by
-      @created_by ||= @doc.root.add_previous_sibling(comment(created_by))
     end
 
     def read_doc(path)

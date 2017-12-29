@@ -1,5 +1,17 @@
 module Helpers
-  include Translatomatic::Util
+
+  def create_test_database
+    #log.debug "Setting up test database"
+    options = { database_env: "test" }
+    if Translatomatic::Database.enabled?(options)
+      db = Translatomatic::Database.new(options)
+      db.drop
+      db.migrate
+    else
+      #log.debug "database is disabled"
+      TestConfig.instance.database_disabled = true
+    end
+  end
 
   def fixture_read(path, crlf = false)
     contents = File.read(fixture_path(path))
@@ -10,19 +22,6 @@ module Helpers
 
   def fixture_path(path)
     File.join(File.dirname(__FILE__), '..', 'fixtures', path)
-  end
-
-  def create_test_database
-    log.debug "Setting up test database"
-    options = { database_env: "test" }
-    if Translatomatic::Database.enabled?(options)
-      db = Translatomatic::Database.new(options)
-      db.drop
-      db.migrate
-    else
-      log.debug "database is disabled"
-      TestConfig.instance.database_disabled = true
-    end
   end
 
   def database_disabled?

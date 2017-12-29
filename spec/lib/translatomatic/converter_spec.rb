@@ -23,7 +23,7 @@ RSpec.describe Translatomatic::Converter do
   it "requires a translator" do
     expect {
       described_class.new
-    }.to raise_error(/translator required/)
+    }.to raise_error(t("converter.translator_required"))
   end
 
   it "translates a properties file to a target language" do

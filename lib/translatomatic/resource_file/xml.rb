@@ -1,4 +1,5 @@
 module Translatomatic::ResourceFile
+  # XML resource file
   class XML < Base
 
     # (see Translatomatic::ResourceFile::Base.extensions)
@@ -10,6 +11,7 @@ module Translatomatic::ResourceFile
     def initialize(path, locale = nil)
       super(path, locale)
       @valid = true
+      @nodemap = {}
       @properties = @path.exist? ? read(@path) : {}
     end
 
@@ -33,13 +35,23 @@ module Translatomatic::ResourceFile
       @doc.create_comment(text)
     end
 
+    def add_created_by
+      @created_by ||= @doc.root.add_previous_sibling(comment(created_by))
+    end
+
     # initialize nodemap from nokogiri document
     # returns property hash
     def init_nodemap(doc)
-      # map of key1 => node, key2 => node, ...
-      @nodemap = create_nodemap(doc)
-      # map of key => node content
-      @nodemap.transform_values { |v| v.content }
+      if !doc.errors.empty?
+        log.error(doc.errors)
+        @valid = false
+        {}
+      else
+        # map of key1 => node, key2 => node, ...
+        @nodemap = create_nodemap(doc)
+        # map of key => node content
+        @nodemap.transform_values { |v| v.content }
+      end
     end
 
     # parse xml
@@ -49,7 +61,7 @@ module Translatomatic::ResourceFile
         @doc = read_doc(path)
         init_nodemap(@doc)
       rescue Exception => e
-        log.error(e.message)
+        log.error t("resource.error", message: e.message)
         @valid = false
         {}
       end
