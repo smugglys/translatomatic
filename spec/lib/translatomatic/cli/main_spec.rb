@@ -1,7 +1,7 @@
-RSpec.describe Translatomatic::CLI do
+RSpec.describe Translatomatic::CLI::Main do
 
   before(:each) do
-    @cli = Translatomatic::CLI.new
+    @cli = Translatomatic::CLI::Main.new
     @cli.options = { database_env: "test" }
   end
 
