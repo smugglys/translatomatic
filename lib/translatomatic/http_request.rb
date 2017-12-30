@@ -19,14 +19,16 @@ module Translatomatic
 
     # Start the HTTP request. Yields a http object.
     # @param options [Hash<Symbol,Object>] Request options
-    # @return [void]
+    # @return [Object] Result of the block
     def start(options = {})
       options = options.merge(use_ssl: @uri.scheme == "https")
+      result = nil
       Net::HTTP.start(@uri.host, @uri.port, options) do |http|
         @http = http
-        yield http
+        result = yield http
       end
       @http = nil
+      result
     end
 
     # Send a HTTP GET request
@@ -55,6 +57,7 @@ module Translatomatic
         content_type = "multipart/form-data; boundary=#{@multipart_boundary}"
         request.body = multipartify(body)
       elsif body.kind_of?(Hash)
+        # set_form_data does url encoding
         request.set_form_data(body)
       else
         request.body = body
@@ -146,7 +149,11 @@ module Translatomatic
     end
 
     def send_request(req)
-      response = @http.request(req)
+      if @http
+        response = @http.request(req)
+      else
+        response = start { |http| http.request(req) }
+      end
       raise response.body unless response.kind_of? Net::HTTPSuccess
       response
     end
