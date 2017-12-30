@@ -46,7 +46,11 @@ module Translatomatic
     # @param translated [Array<String>] Translated strings
     # @return [void]
     def update_strings(original, translated)
-      raise "strings length mismatch" unless original.length == translated.length
+      unless original.length == translated.length
+        log.debug("original(#{original.length}): #{original.collect { |i| i.value }}")
+        log.debug("translated(#{translated.length}): #{translated}")
+        raise "strings length mismatch"
+      end
       conversions(original, translated).each do |text1, text2|
         update(text1, text2)
       end
@@ -80,9 +84,12 @@ module Translatomatic
       keys = @value_to_keys[original.to_s]
       raise "no key mapping for text '#{original}'" unless keys
       keys.each do |key|
+        #value = @properties[key]
         if original.kind_of?(Translatomatic::String) && original.substring?
+          #log.debug("#{value[original.offset, original.length]} -> #{translated}")
           @properties[key][original.offset, original.length] = translated
         else
+          #log.debug("#{value} -> #{translated}")
           @properties[key] = translated
         end
       end

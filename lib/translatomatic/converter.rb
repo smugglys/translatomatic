@@ -138,17 +138,25 @@ class Translatomatic::Converter
     original = file.properties
     translated = result.properties.transform_values { |i| i.dup }
     original.each do |key, value|
-      value = string(value, result.from_locale)
-      variables = value.substrings(file.variable_regex)
-      translated_value = string(translated[key], result.to_locale)
-      translated_variables = translated_value.substrings(file.variable_regex)
-
-      result.conversions(variables, translated_variables).each do |v1, v2|
-        translated[key][v2.offset, v2.length] = v1.value
+      variables = string_variables(value, result.from_locale, file)
+      translated_variables = string_variables(translated[key], result.to_locale, file)
+      if variables.length == translated_variables.length
+        result.conversions(variables, translated_variables).each do |v1, v2|
+          translated[key][v2.offset, v2.length] = v1.value
+        end
+      else
+        # internal error - translator removed variable markers?
+        log.debug("number of variables differ in original and translated text.")
+        log.debug("original text: #{value}")
+        log.debug("translated text: #{translated[key]}")
       end
     end
 
     translated
+  end
+
+  def string_variables(value, locale, file)
+    string(value, locale).substrings(file.variable_regex)
   end
 
   def resource_file(path)
@@ -166,17 +174,20 @@ class Translatomatic::Converter
   def translate_properties_with_db(result)
     db_texts = []
     unless database_disabled?
-      untranslated = result.untranslated.to_a
-      db_texts = find_database_translations(result, untranslated)
-
-      # find strings in untranslated that were matched in the database
-      original_map = {}  # map of original text to translated text from db
+      original = []
+      translated = []
+      untranslated = hashify(result.untranslated)
+      db_texts = find_database_translations(result, result.untranslated.to_a)
       db_texts.each do |db_text|
-        original_map[db_text.from_text.value] = db_text
+        from_text = db_text.from_text.value
+
+        if untranslated[from_text]
+          original << untranslated[from_text]
+          translated << db_text.value
+        end
       end
-      matched = untranslated.select { |i| original_map[i.value] }
-      db_texts = db_texts.collect { |i| i.value }
-      result.update_strings(matched, db_texts)
+
+      result.update_strings(original, translated)
       @from_db += db_texts.length
       @listener.translated_texts(db_texts) if @listener
     end
@@ -190,6 +201,7 @@ class Translatomatic::Converter
     translated = []
     @from_translator += untranslated.length
     if !untranslated.empty? && !@dry_run
+      log.debug("untranslated: #{untranslated.collect { |i| i.to_s }}")
       translated = @translator.translate(untranslated.collect { |i| i.to_s },
         result.from_locale, result.to_locale)
       result.update_strings(untranslated, translated)

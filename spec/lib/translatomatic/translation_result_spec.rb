@@ -3,6 +3,7 @@ RSpec.describe Translatomatic::TranslationResult do
   let(:locale_en) { locale('en') }
   let(:locale_de) { locale('de') }
   let(:locale_fr) { locale('fr') }
+  let(:locale_ja) { locale('ja') }
 
   context :new do
     it "creates a result object" do
@@ -40,6 +41,16 @@ RSpec.describe Translatomatic::TranslationResult do
       expect(untranslated.length).to eq(2)
       result.update_strings([untranslated.to_a[0]], ['Satz eins.'])
       expect(result.properties[:key1]).to eq("Satz eins. Sentence two.")
+    end
+
+    it "updates long strings with shorter ones" do
+      input = "Translates text files from one language to another.  The following file formats\nare currently supported:"
+      output = ["変換テキストファイルから一言語ます。", "以下のファイル形式\nは現在サポートされているのは、"]
+      properties = { key1: input }
+      result = create_result(properties, locale_en, locale_ja)
+      untranslated = result.untranslated
+      result.update_strings(untranslated.to_a, output)
+      p result.properties
     end
   end
 

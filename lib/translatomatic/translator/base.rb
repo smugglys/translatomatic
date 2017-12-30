@@ -36,6 +36,7 @@ module Translatomatic
       # @param to [String, Translatomatic::Locale] The locale to translate to.
       # @return [Array<String>] Translated strings
       def translate(strings, from, to)
+        @updated_listener = false
         strings = [strings] unless strings.kind_of?(Array)
         from = locale(from)
         to = locale(to)

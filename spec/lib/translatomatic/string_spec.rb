@@ -27,10 +27,15 @@ RSpec.describe Translatomatic::String do
     # sentence starting with full stop and missing end full stop
     ["en", :paragraph, ". sentence two",
       [".", "sentence two"]],
-
-    # test with leading and trailling spaces
+    # sentence with leading and trailling spaces
     ["en", :paragraph, "   sentence one.   sentence two.  ",
       ["sentence one.", "sentence two."]],
+    # sentence starting on a newline with missing end full stop
+    ["en", :paragraph, "  sentence one.\nsentence two",
+      ["sentence one.", "sentence two"]],
+    # sentence with newline mid-sentence
+    ["en", :paragraph, "  sentence one. sentence\ntwo",
+      ["sentence one.", "sentence\ntwo"]],
   ]
 
   context :new do
@@ -60,7 +65,6 @@ RSpec.describe Translatomatic::String do
     it "sets the correct offset" do
       string = string("word1 {var1} word3", 'en')
       variables = string.substrings(/\{\w+\}/)
-      p variables
       expect(variables.length).to eq(1)
       expect(variables[0].offset).to eq(6)
     end

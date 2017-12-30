@@ -30,4 +30,10 @@ module Translatomatic::Util
   def t(key, options = {})
     I18n.t("translatomatic.#{key}", options)
   end
+
+  def hashify(list)
+    hash = {}
+    list.each { |i| hash[i.to_s] = i }
+    hash
+  end
 end

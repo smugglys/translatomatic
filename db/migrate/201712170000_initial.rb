@@ -8,7 +8,7 @@ class Initial < ActiveRecord::Migration[4.2] # :nodoc:
       t.timestamps
     end
 
-    add_index :locales, [:language, :script, :region]
+    add_index :locales, [:language, :script, :region], unique: true
 
     create_table :texts do |t|
       t.belongs_to :locale, index: true, null: false
@@ -20,5 +20,6 @@ class Initial < ActiveRecord::Migration[4.2] # :nodoc:
       t.string     :translator
       t.timestamps
     end
+
   end
 end
