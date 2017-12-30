@@ -2,7 +2,7 @@
 
 # Translatomatic
 
-変換テキストファイルから一言語ます。 以下のファイル形式は現在サポートされているのは、:
+変換テキストファイルから一言語ます。 以下のファイル形式 は現在サポートされているのは、
 
 - [特性](https://en.wikipedia.org/wiki/.properties)
 - RESW(Windows資源ファイル)
@@ -89,4 +89,4 @@ gem 'translatomatic'
 
 皆様との交流のTranslatomaticプロジェクトのcodebases、ラッカー、チャットルームやメーリングリストで入力してください [行動規範](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)ます。
 
-_Created by Translatomatic 0.1.0 2017-12-29 00:38_
+_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:37 +1030_

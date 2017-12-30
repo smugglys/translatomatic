@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
 
 sv:
   translatomatic:
@@ -29,6 +29,9 @@ sv:
         för att se alternativ
       multiple_translators: 'Flera översättare tillgängliga:'
       select_translator: 'Välj översättare (1-%{available}): '
+      database:
+        subcommand: Databas-kommandon
+        search: Sök i databasen för text som matchar den angivna strängen.
     resource:
       unknown_locale: Det går inte att fastställa locale
       created_by: Skapad av %{app} %{version} %{date}

@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
 
 es:
   translatomatic:
@@ -29,6 +29,9 @@ es:
         comandos para ver las opciones
       multiple_translators: 'Varios traductores disponibles:'
       select_translator: 'Seleccione traductor (1-%{available}): '
+      database:
+        subcommand: Comandos de base de datos
+        search: Base de datos de búsqueda de texto de coincidencia de la cadena dada.
     resource:
       unknown_locale: Incapaz de determinar la configuración regional
       created_by: Creado por %{app} %{version} %{date}

@@ -2,7 +2,7 @@
 
 # Translatomatic
 
-Traduce los archivos de texto de un idioma a otro. Los siguientes formatos de archivoestán soportadas actualmente::
+Traduce los archivos de texto de un idioma a otro. Los siguientes formatos de archivo están soportadas actualmente:
 
 - [Propiedades](https://en.wikipedia.org/wiki/.properties)
 - RESW (Windows archivo de recursos)
@@ -66,7 +66,7 @@ Para leer y mostrar el `store.description` y `store.name` propiedades de los arc
 
 ## Configuración
 
-De forma predeterminada, `translatomatic` utiliza una base de datos sqlite3 en `$HOME/.translatomatic/translatomatic.sqlite3` para almacenar cadenas traducidas. La base de datos puede ser cambiado mediante la creación de un `database.yml` archivo bajo `$HOME/.translatomatic/database.yml` para el `production` medio ambiente, por ejemplo,
+Por defecto, `translatomatic` utiliza una base de datos sqlite3 en `$HOME/.translatomatic/translatomatic.sqlite3` para almacenar cadenas traducidas. La base de datos puede ser cambiado mediante la creación de un `database.yml` archivo bajo `$HOME/.translatomatic/database.yml` para el `production` medio ambiente, por ejemplo,
 
     production:
       adapter: mysql2
@@ -89,4 +89,4 @@ La joya está disponible como código abierto bajo los términos de la [Licencia
 
 Todo el mundo que interactúan con el Translatomatic del proyecto códigos base, incidencias, salas de chat y listas de correo, se espera que siga el [código de conducta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.0 2017-12-29 00:30_
+_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:39 +1030_

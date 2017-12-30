@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
 
 it:
   translatomatic:
@@ -21,14 +21,17 @@ it:
       list_backends: Elenco di servizi di traduzione disponibili
       display_version: Visualizza la versione
       uploading_tmx: Il caricamento di TMX a %{name}
-      translating: Tradurre
-      aborted: Abortito
+      translating: Traduzione
+      aborted: Interrotta
       file_source: 'File: %{file}'
       sentences: 'Frasi:'
       no_translators: No traduttori configurato. Utilizzare i traduttori comando per
         vedere le opzioni
       multiple_translators: 'Più traduttori disponibili:'
       select_translator: 'Seleziona traduttore (1-%{available}): '
+      database:
+        subcommand: I comandi di Database
+        search: Database di ricerca per la corrispondenza del testo la stringa data.
     resource:
       unknown_locale: In grado di determinare locale
       created_by: Creato da %{app} %{version} %{date}

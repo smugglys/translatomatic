@@ -2,7 +2,7 @@
 
 # Translatomatic
 
-Converte file di testo da una lingua all'altra. I seguenti formati di filesono attualmente supportati::
+Converte file di testo da una lingua all'altra. I seguenti formati di file sono attualmente supportati:
 
 - [Proprietà](https://en.wikipedia.org/wiki/.properties)
 - RESW (risorse di Windows, file)
@@ -89,4 +89,4 @@ Il gioiello è disponibile come open source sotto i termini della [La Licenza MI
 
 Tutti interagendo con il Translatomatic progetto di basi di codice, issue tracker, chat e mailing list dovrebbe seguire l' [codice di condotta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.0 2017-12-29 00:07_
+_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:44 +1030_

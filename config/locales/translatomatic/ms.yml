@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
 
 ms:
   translatomatic:
@@ -29,6 +29,9 @@ ms:
         untuk melihat pilihan
       multiple_translators: 'Beberapa penterjemah ada:'
       select_translator: 'Pilih penterjemah (1-%{available}): '
+      database:
+        subcommand: Pangkalan data arahan
+        search: Cari data yang hampir sama teks yang diberikan string.
     resource:
       unknown_locale: Tidak dapat menentukan tempat-tempat kejadian
       created_by: Dicipta oleh %{app} %{version} %{date}

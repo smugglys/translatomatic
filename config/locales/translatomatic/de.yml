@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:46 +1030
 
 de:
   translatomatic:
@@ -21,7 +21,7 @@ de:
       list_backends: Eine Liste der verfügbaren übersetzungsdienste
       display_version: Display-version
       uploading_tmx: TMX hochladen zu %{name}
-      translating: Übersetzen
+      translating: Übersetzung
       aborted: Abgebrochen
       file_source: 'Datei: %{file}'
       sentences: 'Sätze:'
@@ -29,10 +29,13 @@ de:
         um die Optionen
       multiple_translators: 'Mehrere übersetzer zur Verfügung:'
       select_translator: 'Übersetzer auszuwählen (1-%{available}): '
+      database:
+        subcommand: Datenbank-Befehle
+        search: Suche Datenbank für text-passend zu den gegebenen string.
     resource:
       unknown_locale: Nicht in der Lage, um zu bestimmen, locale
       created_by: Erstellt von %{app} %{version} %{date}
-      error: 'Fehlermeldung: %{message}'
+      error: 'Fehler: %{message}'
       loading: Versuch zum laden von %{file} %{name}
     tmx:
       multiple_origins: Mehrere Ursprünge in den Texten.

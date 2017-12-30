@@ -2,7 +2,7 @@
 
 # Translatomatic
 
-Convertit des fichiers à partir d'une langue à l'autre. Les formats de fichier suivantssont actuellement pris en charge::
+Convertit des fichiers à partir d'une langue à l'autre. Les formats de fichier suivants sont actuellement pris en charge:
 
 - [Propriétés](https://en.wikipedia.org/wiki/.properties)
 - RESW (ressources Windows fichier)
@@ -89,4 +89,4 @@ Le bijou est disponible en open source sous les termes de la [Licence MIT](https
 
 Tout le monde l'interaction avec le Translatomatic projet de code, la question des trackers, des salles de discussion et listes de diffusion, il est prévu de suivre l' [code de conduite](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.0 2017-12-28 22:45_
+_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:42 +1030_

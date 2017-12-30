@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
 
 ko:
   translatomatic:
@@ -28,6 +28,9 @@ ko:
       no_translators: 아 번역가 구성되어 있습니다. 사용역을 명령하는 옵션을 참조하십시오
       multiple_translators: '여러 번역할 수 있:'
       select_translator: '번역기를 선택(1-%{available}): '
+      database:
+        subcommand: 데이터베이스의 명령
+        search: 검색에 대한 데이터베이스 텍스트가 일치하는 지정된 문자열이다.
     resource:
       unknown_locale: 를 확인할 수 없는 locale
       created_by: 에 의해 만들어%{app}%{version}%{date}

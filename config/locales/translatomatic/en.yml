@@ -27,6 +27,9 @@ en:
       no_translators: "No translators configured. Use the translators command to see options"
       multiple_translators: "Multiple translators available:"
       select_translator: "Select translator (1-%{available}): "
+      database:
+        subcommand: "Database commands"
+        search: "Search database for text matching the given string."
 
     resource:
       unknown_locale: "Unable to determine locale"

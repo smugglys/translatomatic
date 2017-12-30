@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
 
 pt:
   translatomatic:
@@ -21,7 +21,7 @@ pt:
       list_backends: Lista de serviços de tradução disponíveis
       display_version: Mostra a versão da aplicação
       uploading_tmx: Carregando TMX para %{name}
-      translating: Traduzir
+      translating: Tradução
       aborted: Anulada
       file_source: 'Arquivo: %{file}'
       sentences: 'Frases:'
@@ -29,6 +29,10 @@ pt:
         para ver opções
       multiple_translators: 'Vários tradutores disponíveis:'
       select_translator: 'Selecione tradutor (1-%{available}): '
+      database:
+        subcommand: Comandos de banco de dados
+        search: Banco de dados de pesquisa de texto correspondente a determinada seqüência
+          de caracteres.
     resource:
       unknown_locale: Não é possível determinar localidade
       created_by: Criado por %{app} %{version} %{date}
@@ -49,7 +53,7 @@ pt:
       share_response: 'Compartilhar resposta: %{response}'
       yandex_api_key: Yandex chave da API
       yandex_key_required: Yandex chave de API necessária
-      required_option: "(requerido)"
+      required_option: "(obrigatório)"
       translators: 'Tradutores:'
       unavailable: Tradutor %{name} não está disponível.
     converter:

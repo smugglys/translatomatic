@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
 
 ru:
   translatomatic:
@@ -22,13 +22,16 @@ ru:
       display_version: Дисплей версия
       uploading_tmx: Загрузка ТМХ на %{name}
       translating: Перевод
-      aborted: Прервана
+      aborted: Несформированность
       file_source: 'Файл: %{file}'
       sentences: 'Предложения:'
       no_translators: Переводчиков никто не настроен. Используйте команду переводчиков,
         чтобы увидеть варианты
       multiple_translators: 'Несколько переводчиков:'
       select_translator: 'Выберите переводчик (1-%{available}): '
+      database:
+        subcommand: Команды базы данных
+        search: База данных поиск текста, соответствующего данной строке.
     resource:
       unknown_locale: Не удалось определить язык
       created_by: Созданная %{app} %{version} %{date}

@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
 
 zh:
   translatomatic:
@@ -28,6 +28,9 @@ zh:
       no_translators: 没有翻译人员配置。 使用译员的命令来看到的选择
       multiple_translators: 多笔译员提供：
       select_translator: '选择的翻译(1-%{available}): '
+      database:
+        subcommand: 数据库的命令
+        search: 搜索数据库，用于文本的匹配给串。
     resource:
       unknown_locale: 无法确定区域
       created_by: 创建%{app}%{version}%{date}

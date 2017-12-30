@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 30 Dec 09:58
+# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
 
 ja:
   translatomatic:
@@ -28,6 +28,9 @@ ja:
       no_translators: な翻訳者を設定します。 利用の翻訳者をコマンドを参照オプション
       multiple_translators: 複数の翻訳者：
       select_translator: '選択翻訳(1-%{available}): '
+      database:
+        subcommand: データベースのコマンド
+        search: 検索データベースのためのテキストマッチングの指定された文字列です。
     resource:
       unknown_locale: きるロケール
       created_by: 作成に%{app}%{version}%{date}

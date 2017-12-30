@@ -2,16 +2,16 @@
 
 # Translatomatic
 
-Übersetzt text-Dateien von einer Sprache zur anderen. Die folgenden Datei-Formatewerden derzeit unterstützt::
+Übersetzt text-Dateien von einer Sprache zur anderen. Die folgenden Datei-Formate werden derzeit unterstützt:
 
 - [Eigenschaften](https://en.wikipedia.org/wiki/.properties)
 - RESW (Windows-Ressourcen-Datei)
-- [Eigenschaftslisten](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
+- [Property-Listen](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
 - HTML
 - XML
 - [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 - [YAML](http://yaml.org/)
-- Textdateien
+- Text-Dateien
 
 Übersetzten Zeichenfolgen werden in einer Datenbank gespeichert und wiederverwendet werden.
 
@@ -89,4 +89,4 @@ Der Edelstein ist als open source unter den Bedingungen der [MIT-Lizenz](https:/
 
 Jeder der Interaktion mit dem Translatomatic Projekt codebase, issue-Tracker, chat-rooms und mailing-Listen sollen Folgen [Verhaltenskodex](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.0 2017-12-28 22:28_
+_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:40 +1030_
