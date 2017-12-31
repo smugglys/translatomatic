@@ -6,12 +6,7 @@ module Translatomatic
     # Base class for interfaces to translation APIs
     # @abstract
     class Base
-
-      class << self
-        attr_reader :options
-        private
-        include Translatomatic::DefineOptions
-      end
+      include Translatomatic::DefineOptions
 
       # Listener for translation events
       attr_accessor :listener

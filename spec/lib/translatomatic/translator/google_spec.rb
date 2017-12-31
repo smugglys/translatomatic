@@ -1,5 +1,6 @@
 RSpec.describe Translatomatic::Translator::Google do
   it "requires an api key" do
+    ENV["GOOGLE_API_KEY"] = nil
     expect { described_class.new }.to raise_error(t("translator.google_key_required"))
   end
 

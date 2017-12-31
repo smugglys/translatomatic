@@ -2,22 +2,6 @@
 # resource files, and the database to convert files from one
 # language to another.
 class Translatomatic::Converter
-  include Translatomatic::Util
-  class << self
-    attr_reader :options
-    private
-    include Translatomatic::DefineOptions
-  end
-
-  define_options(
-    { name: :translator, type: :string, aliases: "-t",
-      desc: t("converter.translator"),
-      enum: Translatomatic::Translator.names },
-    { name: :dry_run, type: :boolean, aliases: "-n", desc:
-      t("converter.dry_run") },
-    { name: :use_database, type: :boolean, default: true, desc:
-      t("converter.use_database") }
-  )
 
   # @return [Translatomatic::ConverterStats] translation statistics
   attr_reader :stats
@@ -84,7 +68,8 @@ class Translatomatic::Converter
     target = Translatomatic::ResourceFile.load(source.path)
     target.path = source.locale_path(to_locale)
 
-    log.info(t("converter.translating", source: source, target: target))
+    log.info(t("converter.translating", source: source,
+      source_locale: source.locale, target: target, target_locale: to_locale))
     translate(target, to_locale)
     unless @dry_run
       target.path.parent.mkpath
@@ -127,6 +112,17 @@ class Translatomatic::Converter
   private
 
   include Translatomatic::Util
+  include Translatomatic::DefineOptions
+
+  define_options(
+    { name: :translator, type: :array, aliases: "-t",
+      desc: t("converter.translator"),
+      enum: Translatomatic::Translator.names },
+    { name: :dry_run, type: :boolean, aliases: "-n", desc:
+      t("converter.dry_run") },
+    { name: :use_database, type: :boolean, default: true, desc:
+      t("converter.use_database") }
+  )
 
   # restore interpolated variables in the translation result.
   # @param file [Translatomatic::ResourceFile] resource file
@@ -180,6 +176,7 @@ class Translatomatic::Converter
       db_texts = find_database_translations(result, result.untranslated.to_a)
       db_texts.each do |db_text|
         from_text = db_text.from_text.value
+        next unless valid_translation?(from_text, db_text.value)
 
         if untranslated[from_text]
           original << untranslated[from_text]
@@ -210,6 +207,11 @@ class Translatomatic::Converter
       end
     end
     translated
+  end
+
+  def valid_translation?(from_text, to_text)
+    # TODO
+    true
   end
 
   def database_disabled?

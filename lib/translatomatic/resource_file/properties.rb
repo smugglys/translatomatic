@@ -41,6 +41,7 @@ module Translatomatic::ResourceFile
       return "{#{name}}"
     end
 
+    # (see Translatomatic::ResourceFile::Base#variable_regex)
     def variable_regex
       /\{.*?\}/
     end

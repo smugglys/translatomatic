@@ -1,5 +1,6 @@
 RSpec.describe Translatomatic::Translator::Microsoft do
   it "requires an api key" do
+    ENV["MICROSOFT_API_KEY"] = nil
     expect { described_class.new }.to raise_error(t("translator.microsoft_key_required"))
   end
 

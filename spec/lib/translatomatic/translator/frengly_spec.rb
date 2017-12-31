@@ -1,5 +1,6 @@
 RSpec.describe Translatomatic::Translator::Frengly do
   it "requires an email" do
+    ENV["FRENGLY_API_KEY"] = nil
     expect { described_class.new }.to raise_error(t("translator.email_required"))
   end
 

@@ -15,7 +15,7 @@ module Translatomatic::Translator
 
   # @return [Class] The translator class corresponding to the given name
   def self.find(name)
-    name ? self.const_get(name) : nil
+    name && !name.empty? ? self.const_get(name) : nil
   end
 
   # @return [List<Class>] A list of all translator classes

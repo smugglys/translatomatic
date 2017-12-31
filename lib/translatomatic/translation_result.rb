@@ -4,7 +4,6 @@ module Translatomatic
   # Stores results of a translation
   class TranslationResult
 
-    # Translation results
     # @return [Hash<String,String>] Translation results
     attr_reader :properties
 

@@ -3,6 +3,7 @@ SimpleCov.start do
   add_filter 'spec'
 end
 
+ENV['TEST'] = "1"
 require 'rubygems'
 require "bundler/setup"
 require 'factory_bot'
@@ -14,6 +15,9 @@ require "translatomatic"
 SPEC_DIR = File.dirname(__FILE__)
 Dir[File.join(SPEC_DIR, "support/**/*.rb")].sort.each { |f| require f }
 include Helpers
+
+require 'i18n/missing_translations'
+at_exit { I18n.missing_translations.dump }
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
@@ -32,5 +36,6 @@ RSpec.configure do |config|
   config.before(:suite) do
     FactoryBot.find_definitions
     create_test_database
+    use_test_config
   end
 end

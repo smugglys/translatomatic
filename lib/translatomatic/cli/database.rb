@@ -1,11 +1,12 @@
 module Translatomatic::CLI
-  class Database < Thor
-    include Translatomatic::Util
+  # Database functions for the command line interface
+  class Database < Base
 
     desc "search string [locale]", t("cli.database.search")
-    Util.options(self, Translatomatic::Database)
+    thor_options(self, Translatomatic::CLI::CommonOptions)
+    thor_options(self, Translatomatic::Database)
     # Search database for the given string
-    # @param search [String] String to search for
+    # @param string [String] String to search for
     # @param locale [String] Optional locale, by default search all locales
     # @return [void]
     def search(string, locale = nil)

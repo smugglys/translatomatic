@@ -102,19 +102,35 @@ RSpec.describe Translatomatic::Converter do
   # test preservation of interpolation variable names
   Translatomatic::ResourceFile.modules.each do |mod|
     file = mod.new("dummy_path", "en")
+    described = described_class
     if file.supports_variable_interpolation?
-      it "preserves interpolation variable names with #{file.format} files" do
-        original_variable = file.create_variable("var1")
-        translated_variable = file.create_variable("translated_var1")
-        file.properties = {
-          key1: "rah #{original_variable} rah"
-        }
-        translated_text = "zomg #{translated_variable} zomg"
-        translator = TestTranslator.new(translated_text)
-        t = described_class.new(translator: translator, use_database: false)
-        t.translate(file, "de")
-        expected_result = "zomg #{original_variable} zomg"
-        expect(file.properties[:key1]).to eq(expected_result)
+      describe "#{mod.name.demodulize} files variable interpolation" do
+        it "preserves variable names" do
+          original_variable = file.create_variable("var1")
+          translated_variable = file.create_variable("translated_var1")
+          file.properties = {
+            key1: "rah #{original_variable} rah"
+          }
+          translated_text = "zomg #{translated_variable} zomg"
+          translator = TestTranslator.new(translated_text)
+          t = described.new(translator: translator, use_database: false)
+          t.translate(file, "de")
+          expected_result = "zomg #{original_variable} zomg"
+          expect(file.properties[:key1]).to eq(expected_result)
+        end
+
+        it "rejects translations with malformed variable names" do
+          original_variable = file.create_variable("var1")
+          translated_variable = "MUNGED"
+          file.properties = {
+            key1: "rah #{original_variable} rah"
+          }
+          translated_text = "zomg #{translated_variable} zomg"
+          translator = TestTranslator.new(translated_text)
+          t = described.new(translator: translator, use_database: false)
+          t.translate(file, "de")
+          expect(file.properties[:key1]).to eq(nil)
+        end
       end
     end
   end

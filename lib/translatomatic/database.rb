@@ -3,20 +3,12 @@ require 'active_record'
 # Database functions
 class Translatomatic::Database
 
-  include Translatomatic::Util
-
   class << self
-    attr_reader :options
-
     # @param options [Hash<Symbol,Object>] Database options
     # @return [boolean] True if we can connect to the database
     def enabled?(options = {})
       new(options).connect
     end
-
-    private
-
-    include Translatomatic::DefineOptions
   end
 
   def initialize(options = {})
@@ -99,6 +91,9 @@ class Translatomatic::Database
 
   private
 
+  include Translatomatic::Util
+  include Translatomatic::DefineOptions
+
   def sqlite_database_exists?
     @env_config['adapter'] == 'sqlite3' && File.exist?(@env_config['database'])
   end
@@ -116,9 +111,9 @@ class Translatomatic::Database
   DEFAULT_ENV = "production"
 
   define_options(
-    { name: :database_config, description: t("database.config_file"),
+    { name: :database_config, desc: t("database.config_file"),
       default: DEFAULT_CONFIG },
-    { name: :database_env, description: t("database.env"),
+    { name: :database_env, desc: t("database.env"),
       default: DEFAULT_ENV })
 
   # return path to database config

@@ -8,11 +8,14 @@ module Translatomatic
     class Frengly < Base
 
       define_options({
-        name: :frengly_api_key, desc: "Frengly API key", use_env: true
+        name: :frengly_api_key, use_env: true,
+        desc: t("translator.frengly_api_key"),
       },
-      { name: :frengly_email, desc: "Email address", use_env: true
+      { name: :frengly_email, use_env: true,
+        desc: t("translator.email_address")
       },
-      { name: :frengly_password, desc: "Password", use_env: true
+      { name: :frengly_password, use_env: true,
+        desc: t("translator.password")
         })
 
         # Create a new Frengly translator instance

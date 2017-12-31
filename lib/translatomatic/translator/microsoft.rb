@@ -28,7 +28,11 @@ module Translatomatic
 
       def perform_translate(strings, from, to)
         attempt_with_retries(3) do
-          @impl.translate_array(strings, from: from.language, to: to.language)
+          translations = @impl.translate_array(strings,
+            from: from.language,
+            to: to.language
+          )
+          translations.collect { |i| i.to_s }
         end
       end
 

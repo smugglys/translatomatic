@@ -94,7 +94,7 @@ class Translatomatic::ResourceFile::Base
 
   # @return [String] String representation of this file
   def to_s
-    "#{path.basename.to_s} (#{locale})"
+    path.basename.to_s
   end
 
   # @return [Array<String>] All property values split into sentences

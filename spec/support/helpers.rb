@@ -1,4 +1,5 @@
 module Helpers
+  TEST_SETTINGS_PATH = File.join(File.dirname(__FILE__), "..", "tmp", "config.yml")
 
   def create_test_database
     #log.debug "Setting up test database"
@@ -11,6 +12,12 @@ module Helpers
       #log.debug "database is disabled"
       TestConfig.instance.database_disabled = true
     end
+  end
+
+  def use_test_config
+    File.delete(TEST_SETTINGS_PATH) if File.exist?(TEST_SETTINGS_PATH)
+    config = Translatomatic::Config.instance
+    config.send(:settings_path=, TEST_SETTINGS_PATH)
   end
 
   def fixture_read(path, crlf = false)
