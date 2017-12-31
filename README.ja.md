@@ -9,6 +9,7 @@
 - [物件リスト](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
 - HTML
 - XML
+- [値下げ](https://en.wikipedia.org/wiki/Markdown)
 - [XCodeの文字列](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 - [YAML](http://yaml.org/)
 - テキストファイル
@@ -33,29 +34,28 @@ gem 'translatomatic'
 
 ## 用途
 
-のコマンドラインインターフェース翻訳のための機能を `translatomatic`ます。 めに利用可能なオプションは、実行す:
+この宝石と呼ばれる実行可能ファイルを提供します。 `translatomatic`ます、he `translatomatic` コマンドは、いくつかのここに記載されているすべての機能を持ちます。 利用可能なコマンドとオプションに関するヘルプを実行します。
 
     $ translatomatic help
 
+ヘルプ サブコマンドが実行します。
+
+    $ translatomatic translate help
+    $ translatomatic translate help file
+
 ### 翻訳ファイル
 
-`translatomatic` 変換テキストの文章や言葉です。 場合はファイルを再翻訳の文言変更への翻訳に対しても、それぞれの地域からデータベースです。
+ファイルを変換するとき `translatomatic` 変換テキストの文章や言葉です。 If a file is re-translated, only sファイルが再翻訳された場合、最後の翻訳から変更されている唯一の文は翻訳者に送信され、残りの部分は、ローカル データベースから供給されます。
 
 るシリコーンコーティング翻訳サービス-オプション:
 
-    $ translatomatic translators
+    $ translatomatic list
 
 するJavaプロパティファイルをドイツ語、フランス語:
 
-    $ translatomatic translate resources/strings.properties de fr
+    $ translatomatic translate file resources/strings.properties de,fr
 
 こうした成(上書き) `strings_de.properties` - `strings_fr.properties`ます。
-
-### 抽出から文字列をソースファイル
-
-抽出から文字列の一部のソースファイルを抽出すコマンドなどの
-
-    $ translatomatic strings file.rb
 
 ### 表示文字列からリソースバンドル
 
@@ -64,9 +64,31 @@ gem 'translatomatic'
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
+### 抽出から文字列をソースファイル
+
+抽出から文字列の一部のソースファイルを抽出すコマンドなどの
+
+    $ translatomatic strings file.rb
+
 ## 構成
 
-デフォルトでは、 `translatomatic` を使用してsqlite3データベース `$HOME/.translatomatic/translatomatic.sqlite3` 店舗の翻訳の文字列です。 データベースの変更により作成 `database.yml` ファイル `$HOME/.translatomatic/database.yml` のための `production` 環境、例えば
+### Translatomatic 構成ファイル
+
+多くのコマンド ライン オプションは、Translatomatic を使用して構成することができますの内部 `config` コマンドです。 たとえば、ターゲット翻訳ロケールのデフォルト リストを設定するを実行します。
+
+    $ translatomatic config set target_locales en,de,es,fr,it
+
+と `target_locales` 設定すると、ファイルはターゲットのロケールを指定することがなく翻訳が可能、 `translate file` コマンドです。
+
+    $ translatomatic translate file resources/strings.properties
+
+現在の構成を表示するには、を実行します。
+
+    $ translatomatic config list
+
+### データベースの構成
+
+デフォルトでは、 `translatomatic` を使用してsqlite3データベース `$HOME/.translatomatic/translatomatic.sqlite3` 店舗の翻訳の文字列です。 To store transla翻訳をデータベースに格納するようにインストールされている適切なデータベース アダプターが必要、`sqlite3` 逸品です。 Translatomatic では、データベース アダプターを自動的にインストールされません。 データベースの構成を作成することによって変更できます、 `database.yml` ファイル `$HOME/.translatomatic/database.yml` のための `production` 環境、例えば
 
     production:
       adapter: mysql2
@@ -89,4 +111,4 @@ gem 'translatomatic'
 
 皆様との交流のTranslatomaticプロジェクトのcodebases、ラッカー、チャットルームやメーリングリストで入力してください [行動規範](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)ます。
 
-_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:37 +1030_
+_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:46 +1030_

@@ -9,6 +9,7 @@ Converte arquivos de texto de um idioma para outro. Os seguintes formatos de arq
 - [Listas de propriedades](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
 - HTML
 - XML
+- [Markdown](https://en.wikipedia.org/wiki/Markdown)
 - [XCode cadeias de caracteres](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 - [YAML](http://yaml.org/)
 - Arquivos de texto
@@ -33,29 +34,28 @@ Ou instalá-lo a si mesmo como:
 
 ## Utilização
 
-A interface de linha de comando para a tradução funcionalidade é `translatomatic`. Para obter ajuda sobre as opções disponíveis, execute:
+Esta gema fornece um arquivo executável chamado `translatomatic`. O `translatomatic` comando tem um número de funções, nem todos que estão documentados aqui. Para obter ajuda sobre os comandos disponíveis e opções, execute:
 
     $ translatomatic help
 
+E para obter ajuda sobre um subcomando, execute:
+
+    $ translatomatic translate help
+    $ translatomatic translate help file
+
 ### Conversão de arquivos
 
-`translatomatic` traduz texto de uma sentença ou frase de cada vez. Se um arquivo é re-traduzido, apenas frases que foram alterados são enviados para o tradutor, e o resto são provenientes de uma base de dados local.
+Quando a tradução de arquivos, `translatomatic` traduz texto de uma sentença ou frase de cada vez. Se um arquivo é re-traduzido, apenas as frases que foram alterados desde a última tradução são enviadas para o tradutor, e o resto são provenientes de banco de dados local..
 
 A lista de serviços de tradução disponíveis e opções:
 
-    $ translatomatic translators
+    $ translatomatic list
 
 Para traduzir um arquivo de propriedades Java para o alemão e o francês:
 
-    $ translatomatic translate resources/strings.properties de fr
+    $ translatomatic translate file resources/strings.properties de,fr
 
 Isso poderia criar (ou substituir) `strings_de.properties` e `strings_fr.properties`.
-
-### A extração de seqüências de caracteres a partir de arquivos de origem
-
-Para extrair cadeias de alguns arquivos de origem, use o comando extract, e.g.
-
-    $ translatomatic strings file.rb
 
 ### Exibindo seqüências de caracteres a partir de um pacote de recursos
 
@@ -64,9 +64,31 @@ Para ler e exibir o `store.description` e `store.name` propriedades de arquivos 
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
+### A extração de seqüências de caracteres a partir de arquivos de origem
+
+Para extrair cadeias de alguns arquivos de origem, use o comando extract, e.g.
+
+    $ translatomatic strings file.rb
+
 ## Configuração
 
-Por padrão, `translatomatic` usa um banco de dados sqlite3 no `$HOME/.translatomatic/translatomatic.sqlite3` para armazenar as mensagens traduzidas. O banco de dados pode ser alterado através da criação de um `database.yml` em ficheiro `$HOME/.translatomatic/database.yml` para o `production` ambiente, e.g.
+### Translatomatic arquivo de configuração
+
+Linha de comando muitas opções podem ser configuradas usando Translatomatic é interno `config` comando. Por exemplo, para definir uma lista padrão de localidades de tradução de destino, execute:
+
+    $ translatomatic config set target_locales en,de,es,fr,it
+
+Com `target_locales` conjunto, os arquivos podem ser traduzidos sem especificar locais de destino na `translate file` comando.
+
+    $ translatomatic translate file resources/strings.properties
+
+Para exibir a configuração atual, execute
+
+    $ translatomatic config list
+
+### Configuração de banco de dados
+
+Por padrão, `translatomatic` usa um banco de dados sqlite3 no `$HOME/.translatomatic/translatomatic.sqlite3` para armazenar as mensagens tPara armazenar as traduções em um banco de dados, você deve ter um adaptador de banco de dados apropriado instalado, tais como osuch as the `sqlite3` Gem. Translatomatic não instala automaticamente os adaptadores de banco de dados. A configuração de banco de dados pode ser alterada através da criação de um `database.yml` em ficheiro `$HOME/.translatomatic/database.yml` para o `production` ambiente, e.g.
 
     production:
       adapter: mysql2
@@ -89,4 +111,4 @@ A jóia está disponível como código aberto sob os termos da [Licença MIT](ht
 
 Todos interagindo com o Translatomatic projeto antigo, issue trackers, salas de bate-papo e listas de discussão é esperado para seguir o [código de conduta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:49 +1030_
+_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:49 +1030_

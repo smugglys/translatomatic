@@ -9,6 +9,7 @@
 - [Egendom listor](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
 - HTML -
 - XML
+- [Markdown](https://en.wikipedia.org/wiki/Markdown)
 - [XCode strängar](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 - [YAML](http://yaml.org/)
 - Text filer
@@ -33,29 +34,28 @@ Eller installera det själv:
 
 ## Användning
 
-Command line interface för översättning funktionalitet `translatomatic`. För hjälp om tillgängliga alternativ, utföra:
+Denna pärla ger en körbar som kallas `translatomatic`. Den `translatomatic` kommandot har ett antal funktioner, inte alla som dokumenteras här. För hjälp med tillgängliga kommandon och alternativ, kör:
 
     $ translatomatic help
 
+Och hjälp om en underkommandot, kör:
+
+    $ translatomatic translate help
+    $ translatomatic translate help file
+
 ### Översättning av filer
 
-`translatomatic` översätter texten en mening eller en fras på en gång. Om en fil är åter översätts, bara meningar som har förändrats skickas till översättare, och resten kommer från den lokala databasen.
+När översätta filer, `translatomatic` översätter texten en mening eller en fras på en gånOm en fil är åter översatta, enda meningar som har ändrats sedan den senaste översättningen skickas till översättaren, och resten kommer från den lokala databasen.ase.
 
 För att lista tillgängliga översättning tjänst och alternativ:
 
-    $ translatomatic translators
+    $ translatomatic list
 
 Att översätta en Java egenskaper för filen till tyska och franska:
 
-    $ translatomatic translate resources/strings.properties de fr
+    $ translatomatic translate file resources/strings.properties de,fr
 
 Detta skulle skapa (eller skriva) `strings_de.properties` och `strings_fr.properties`.
-
-### Extrahering av strängar från källfilerna
-
-För att extrahera strängar från en viss källa filer, använd kommandot extract, t ex
-
-    $ translatomatic strings file.rb
 
 ### Visa strängar från en resurs bunt
 
@@ -64,9 +64,31 @@ För att läsa och visa den `store.description` och `store.name` egenskaper frå
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
+### Extrahering av strängar från källfilerna
+
+För att extrahera strängar från en viss källa filer, använd kommandot extract, t ex
+
+    $ translatomatic strings file.rb
+
 ## Konfiguration
 
-Som standard `translatomatic` använder en databas i sqlite3 `$HOME/.translatomatic/translatomatic.sqlite3` till butiken översatta strängar. Databasen kan ändras genom att skapa en `database.yml` fil under `$HOME/.translatomatic/database.yml` för `production` miljö, t ex
+### Translatomatic-konfigurationsfilen
+
+Många kommandoraden alternativ kan konfigureras med hjälp av Translatomatic's interna `config` kommandot. Till exempel om du vill ange en standardlista över målet översättning locales, kör:
+
+    $ translatomatic config set target_locales en,de,es,fr,it
+
+Med `target_locales` Ange, filer kan översättas utan att ange målet locales i den `translate file` kommandot.
+
+    $ translatomatic translate file resources/strings.properties
+
+Om du vill visa den aktuella konfigurationen, utföra
+
+    $ translatomatic config list
+
+### Konfiguration av databas
+
+Som standard `translatomatic` använder en databas i sqlite3 `$HOME/.translatomatic/translatomatic.sqlite3` till butiken översatta strängFör att spara översättningar i en databas, bör du ha en lämplig databas adapter installerat, såsom den the `sqlite3` pärla. Translatomatic installera inte databasen adaptrar automatiskt. Databaskonfigurationen kan ändras genom att skapa en `database.yml` fil under `$HOME/.translatomatic/database.yml` för `production` miljö, t ex
 
     production:
       adapter: mysql2
@@ -89,4 +111,4 @@ Pärla är tillgänglig som öppen källkod under villkoren i [MIT License](http
 
 Alla interagerar med Translatomatic projektets codebases, frågan trackers, chattrum och e-postlistor förväntas följa [uppförandekod](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:52 +1030_
+_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:51 +1030_

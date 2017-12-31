@@ -9,6 +9,7 @@ Diterjemahkan teks fail-fail dari satu bahasa yang lain. Berikut file format dis
 - [Harta senarai](https://en.wikipedia.org/wiki/Property_list) (SELEPAS plist)
 - HTML
 - FAIL
+- [Markdown](https://en.wikipedia.org/wiki/Markdown)
 - [Dan diganti dengan tali](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 - [YAML](http://yaml.org/)
 - Fail teks
@@ -33,29 +34,28 @@ Atau memasang sendiri sebagai:
 
 ## Penggunaan
 
-Baris perintah muka untuk terjemahan fungsi `translatomatic`. Untuk membantu pada pilihan yang ada, melaksanakan:
+Permata ini menyediakan boleh laku yang dipanggil `translatomatic`. Dalam `translatomatic` arahan mempunyai beberapa fungsi, tidak semua yang dihuraikan di sini. Untuk bantuan tentang perintah tersedia dan opsyen, melaksanakan:
 
     $ translatomatic help
 
+Dan untuk bantuan tentang subcommand satu, melaksanakan:
+
+    $ translatomatic translate help
+    $ translatomatic translate help file
+
 ### Menterjemahkan fail
 
-`translatomatic` diterjemahkan teks satu ayat atau frasa pada suatu waktu. Jika fail adalah re-diterjemahkan, hanya ayat yang telah berubah dihantar ke penterjemah, dan sisanya adalah sumber dari pangkalan data tempatan.
+Apabila menterjemahkan fail, `translatomatic` diterjemahkan teks satu ayat atau frasa pada suatu Jika fail terjemahan semula, ayat sahaja yang telah berubah sejak lepas terjemahan dihantar kepada penterjemah, dan selebihnya diperolehi dari pangkalan data tempatan.atabase.
 
 Untuk senarai yang ada perkhidmatan terjemahan dan pilihan:
 
-    $ translatomatic translators
+    $ translatomatic list
 
 Untuk menterjemahkan Jawa sifat file untuk jerman dan perancis:
 
-    $ translatomatic translate resources/strings.properties de fr
+    $ translatomatic translate file resources/strings.properties de,fr
 
 Ini akan membuat (atau tindih) `strings_de.properties` dan `strings_fr.properties`.
-
-### Mengekstrak tali dari sumber fail
-
-Untuk mendapatkan tali dari beberapa sumber fail, gunakan mengeluarkan perintah, contohnya.
-
-    $ translatomatic strings file.rb
 
 ### Memaparkan tali dari sumber ikatan
 
@@ -64,9 +64,31 @@ Untuk membaca dan memaparkan `store.description` dan `store.name` sifat dari sum
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
+### Mengekstrak tali dari sumber fail
+
+Untuk mendapatkan tali dari beberapa sumber fail, gunakan mengeluarkan perintah, contohnya.
+
+    $ translatomatic strings file.rb
+
 ## Konfigurasi
 
-Oleh lalai, `translatomatic` menggunakan sqlite3 dalam `$HOME/.translatomatic/translatomatic.sqlite3` untuk menyimpan tali diterjemahkan. Pangkalan data bisa diubah oleh mewujudkan `database.yml` file yang di bawah `$HOME/.translatomatic/database.yml` untuk itu `production` persekitaran, contohnya.
+### Fail konfigurasi Translatomatic
+
+Banyak baris perintah opsyen boleh ditatarajah menggunakan Translatomatic di Dalaman `config` perintah. Sebagai contoh, untuk menetapkan senarai sasaran terjemahan locales lalai, melaksanakan:
+
+    $ translatomatic config set target_locales en,de,es,fr,it
+
+Dengan `target_locales` ditetapkan, fail boleh diterjemahkan tanpa menentukan sasaran locales di dalam `translate file` perintah.
+
+    $ translatomatic translate file resources/strings.properties
+
+Untuk memaparkan konfigurasi semasa, melaksanakan
+
+    $ translatomatic config list
+
+### Pangkalan data konfigurasi
+
+Oleh lalai, `translatomatic` menggunakan sqlite3 dalam `$HOME/.translatomatic/translatomatic.sqlite3` untuk menyimpan tali diterjemUntuk menyimpan terjemahan dalam pangkalan data, anda harus mempunyai penyesuai pangkalan data yang sesuai dipasang, seperti yang as the `sqlite3` permata. Translatomatic memasang penyesuai pangkalan data secara automatik ini. Pangkalan data konfigurasi boleh ditukar dengan mencipta satu `database.yml` file yang di bawah `$HOME/.translatomatic/database.yml` untuk itu `production` persekitaran, contohnya.
 
     production:
       adapter: mysql2
@@ -87,6 +109,6 @@ Permata yang ada sebagai sumber terbuka di bawah segi [MIT Lesen](https://openso
 
 ## Code of Conduct
 
-Semua orang berinteraksi dengan Translatomatic projek codebases, isu trackers, chat bilik dan senarai mel adalah diharapkan untuk mengikuti [code of conduct](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
+Semua orang berinteraksi dengan Translatomatic projek codebases, isu trackers, chat bilik dan senarai mel adalah diharapkan untuk mengikuti [Kod Amalan](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:47 +1030_
+_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:48 +1030_

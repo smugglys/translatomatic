@@ -9,6 +9,7 @@
 - [Property-Listen](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
 - HTML
 - XML
+- [Markdown](https://en.wikipedia.org/wiki/Markdown)
 - [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 - [YAML](http://yaml.org/)
 - Text-Dateien
@@ -33,29 +34,28 @@ Oder Sie installieren es selbst als:
 
 ## Nutzung
 
-Die command-line-interface für die übersetzung-Funktionalität `translatomatic`. Für Hilfe zu verfügbaren Optionen ausführen:
+Dieses Juwel bietet eine ausführbare Datei namens `translatomatic`. Die `translatomatic` Befehl hat eine Reihe von Funktionen, von denen nicht, die alle hier dokumentiert sind. Hilfe zu verfügbaren Befehle und Optionen ausführen:
 
     $ translatomatic help
 
+Und, um Hilfe zu einem Unterbefehl ausführen:
+
+    $ translatomatic translate help
+    $ translatomatic translate help file
+
 ### Übersetzen von Dateien
 
-`translatomatic` übersetzt den text, ein Satz oder auf Zeit. Wenn eine Datei neu übersetzt, nur Sätze, die geändert wurden, werden an den übersetzer gesendet, und der rest stammen aus der lokalen Datenbank.
+Bei der Übersetzung von Dateien `translatomatic` übersetzt den text, ein Satz oder auf Zeit. If a fWenn eine Datei erneut übersetzt ist, nur Sätze, die seit der letzten Übersetzung geändert haben werden an den Übersetzer geschickt, und der Rest aus der lokalen Datenbank bezogen werden.
 
 Um eine Liste der verfügbaren übersetzungs-services und-Optionen:
 
-    $ translatomatic translators
+    $ translatomatic list
 
 Die übersetzung eines Java-properties-Datei, Deutsch und Französisch:
 
-    $ translatomatic translate resources/strings.properties de fr
+    $ translatomatic translate file resources/strings.properties de,fr
 
 Dies würde zu erstellen (oder überschreiben) `strings_de.properties` und `strings_fr.properties`.
-
-### Extrahieren von Zeichenfolgen aus den Quelldateien
-
-Zum extrahieren von Zeichenfolgen aus einige source-Dateien, benutzen Sie den extract-Befehl, z.B.
-
-    $ translatomatic strings file.rb
 
 ### Die Anzeige von Zeichenfolgen aus einem resource-bundle
 
@@ -64,9 +64,31 @@ Auslesen und anzeigen `store.description` und `store.name` Eigenschaften von der
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
+### Extrahieren von Zeichenfolgen aus den Quelldateien
+
+Zum extrahieren von Zeichenfolgen aus einige source-Dateien, benutzen Sie den extract-Befehl, z.B.
+
+    $ translatomatic strings file.rb
+
 ## Konfiguration
 
-Standardmäßig `translatomatic` nutzt eine sqlite3 Datenbank, in `$HOME/.translatomatic/translatomatic.sqlite3` zum speichern der übersetzten strings. Die Datenbank kann geändert werden, durch die Schaffung einer `database.yml` Datei unter `$HOME/.translatomatic/database.yml` für die `production` Umwelt, z.B.
+### Translatomatic-Konfigurationsdatei
+
+Viele Befehlszeile Optionen konfiguriert werden können, mit Translatomatic die interne `config` Befehl. Beispielsweise legen Sie eine Standardliste von Ziel Übersetzung Gebietsschemas ausführen:
+
+    $ translatomatic config set target_locales en,de,es,fr,it
+
+Mit `target_locales` einstellen, Dateien ohne Angabe Ziel Gebietsschemas in übersetzt werden können die `translate file` Befehl.
+
+    $ translatomatic translate file resources/strings.properties
+
+Um die aktuelle Konfiguration anzuzeigen, führen Sie
+
+    $ translatomatic config list
+
+### Datenbank-Konfiguration
+
+Standardmäßig `translatomatic` nutzt eine sqlite3 Datenbank, in `$HOME/.translatomatic/translatomatic.sqlite3` zum speichern der übersetztenUm Übersetzungen in einer Datenbank zu speichern, sollte man einen entsprechenden Datenbank-Adapter installiert, wie z. B. dieuch as the `sqlite3` Gem. Translatomatic installiert Datenbank-Adapter nicht automatisch. Die Datenbank-Konfiguration kann geändert werden, durch die Schaffung einer `database.yml` Datei unter `$HOME/.translatomatic/database.yml` für die `production` Umwelt, z.B.
 
     production:
       adapter: mysql2
@@ -89,4 +111,4 @@ Der Edelstein ist als open source unter den Bedingungen der [MIT-Lizenz](https:/
 
 Jeder der Interaktion mit dem Translatomatic Projekt codebase, issue-Tracker, chat-rooms und mailing-Listen sollen Folgen [Verhaltenskodex](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:40 +1030_
+_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:41 +1030_

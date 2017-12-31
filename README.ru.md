@@ -9,6 +9,7 @@
 - [Списки собственность](https://en.wikipedia.org/wiki/Property_list) (На OSX файл plist)
 - HTML-код
 - В XML
+- [Уценок](https://en.wikipedia.org/wiki/Markdown)
 - [Строки в xcode](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 - [И yaml](http://yaml.org/)
 - Текстовые файлы
@@ -33,29 +34,28 @@ gem 'translatomatic'
 
 ## Использование
 
-Интерфейс командной строки для возможности перевода `translatomatic`. Для получения справки о наличии варианта, выполнить:
+Этот самоцвет содержит исполняемый файл под названием `translatomatic`. В `translatomatic` команда имеет ряд функций, не все из которых описаны здесь. Для получения справки по доступных команд и параметров выполните:
 
     $ translatomatic help
 
+И для справки на подкоманды, выполните:
+
+    $ translatomatic translate help
+    $ translatomatic translate help file
+
 ### Перевод файлов
 
-`translatomatic` перевод текста одно предложение или фразу одновременно. Если файл переведено, только предложения, которые были изменены, отправляются переводчику, а остальные берутся из локальной базы данных.
+При переводе файлов, `translatomatic` перевод текста одно предложение или фразу одновремеЕсли файл переведены заново, отправляются только предложений, которые были изменены с момента последнего перевода переводчик, и остальные поступают из локальной базы данных.abase.
 
 В списке доступных переводов и услуги:
 
-    $ translatomatic translators
+    $ translatomatic list
 
 Чтобы перевести файл свойств java на немецком и французском языках:
 
-    $ translatomatic translate resources/strings.properties de fr
+    $ translatomatic translate file resources/strings.properties de,fr
 
 Это позволит создать (или заменить) `strings_de.properties` и `strings_fr.properties`.
-
-### Извлечение строк из исходных файлов
-
-Для извлечения строк из некоторых исходных файлов, используйте команду извлечь, например
-
-    $ translatomatic strings file.rb
 
 ### Отображение строк из комплекта ресурсов
 
@@ -64,9 +64,31 @@ gem 'translatomatic'
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
+### Извлечение строк из исходных файлов
+
+Для извлечения строк из некоторых исходных файлов, используйте команду извлечь, например
+
+    $ translatomatic strings file.rb
+
 ## Конфигурации
 
-По умолчанию `translatomatic` использует базу данных sqlite3 в `$HOME/.translatomatic/translatomatic.sqlite3` хранить переведенные строки. База данных может быть изменена путем создания `database.yml` файл под `$HOME/.translatomatic/database.yml` для `production` среды, например,
+### Файл конфигурации Translatomatic
+
+Многие командной строки параметры могут быть настроены с помощью Translatomatic внутреннего `config` команда. Например чтобы задать список по умолчанию цель перевода языков, выполните:
+
+    $ translatomatic config set target_locales en,de,es,fr,it
+
+С `target_locales` задано, файлы могут быть переведены без указания целевой локали в `translate file` команда.
+
+    $ translatomatic translate file resources/strings.properties
+
+Для отображения текущей конфигурации, выполните
+
+    $ translatomatic config list
+
+### Конфигурация базы данных
+
+По умолчанию `translatomatic` использует базу данных sqlite3 в `$HOME/.translatomatic/translatomatic.sqlite3` хранить переведенные строки. Чтобы хранить переводы в базе данных, вы должны иметь соответствующую базу данных адаптер установлен, такие как `sqlite3` драгоценный камень. Translatomatic не устанавливать Адаптеры базы данных автоматически. Конфигурация базы данных можно изменить, создав `database.yml` файл под `$HOME/.translatomatic/database.yml` для `production` среды, например,
 
     production:
       adapter: mysql2
@@ -87,6 +109,6 @@ gem 'translatomatic'
 
 ## Кодекс поведения
 
-Все взаимодействия с исходный код проекта Translatomatic, проблеме трекеры, чаты и списки рассылки, как ожидается, следовать [кодекс поведения](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
+Все взаимодействия с исходный код проекта Translatomatic, проблеме трекеры, чаты и списки рассылки, как ожидается, следовать [Кодекс поведения](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:53:50 +1030_
+_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:50 +1030_
