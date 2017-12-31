@@ -1,0 +1,9 @@
+--protected
+--no-private
+--title "Translatomatic"
+--readme README.md
+lib/**/*.rb
+-
+README.md
+LICENSE.txt
+CODE_OF_CONDUCT.md
