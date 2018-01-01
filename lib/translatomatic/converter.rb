@@ -24,21 +24,6 @@ class Translatomatic::Converter
     @translations = {}      # map of original text to Translation
   end
 
-  def resolve_translators(options)
-    list = options[:translator]
-    list = [list] unless list.kind_of?(Array)
-    list = list.compact.collect do |translator|
-      if translator.respond_to?(:translate)
-        translator
-      else
-        klass = Translatomatic::Translator.find(translator)
-        translator = klass.new(options)
-      end
-      translator.listener = @listener if @listener
-      translator
-    end
-  end
-
   # @return [Translatomatic::ConverterStats] Translation statistics
   def stats
     @stats ||= Translatomatic::ConverterStats.new(@translations)
@@ -62,7 +47,7 @@ class Translatomatic::Converter
     # translate using strings from the database first
     each_translator(result) { translate_properties_with_db(result) }
     # send remaining unknown strings to translator
-    each_translator(result) { translate_properties_with_db(result) }
+    each_translator(result) { translate_properties_with_translator(result) }
 
     log.debug(t("converter.stats", from_db: stats.from_db,
       from_translator: stats.from_translator,
@@ -103,13 +88,30 @@ class Translatomatic::Converter
 
   define_options(
     { name: :translator, type: :array, aliases: "-t",
-      desc: t("converter.translator"),
-      enum: Translatomatic::Translator.names },
-    { name: :dry_run, type: :boolean, aliases: "-n", desc:
-      t("converter.dry_run") },
-    { name: :use_database, type: :boolean, default: true, desc:
-      t("converter.use_database") }
+      desc: t("converter.translator"), enum: Translatomatic::Translator.names
+    },
+    { name: :dry_run, type: :boolean, aliases: "-n",
+      desc: t("converter.dry_run")
+    },
+    { name: :use_database, type: :boolean, default: true,
+      desc: t("converter.use_database")
+    }
   )
+
+  def resolve_translators(options)
+    list = options[:translator]
+    list = [list] unless list.kind_of?(Array)
+    list = list.compact.collect do |translator|
+      if translator.respond_to?(:translate)
+        translator
+      else
+        klass = Translatomatic::Translator.find(translator)
+        translator = klass.new(options)
+      end
+      translator.listener = @listener if @listener
+      translator
+    end
+  end
 
   def each_translator(result)
     @translators.each do |translator|
