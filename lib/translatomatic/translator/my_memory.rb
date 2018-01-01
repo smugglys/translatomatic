@@ -57,7 +57,7 @@ module Translatomatic
       def fetch_translation(request, string, from, to)
         response = request.get({
             langpair: from.to_s + "|" + to.to_s,
-            q: string
+            q: string  # multiple q strings not supported (tested 20180101)
           }.merge(@query_options)
         )
         data = JSON.parse(response.body)

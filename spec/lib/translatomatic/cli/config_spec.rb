@@ -33,6 +33,12 @@ RSpec.describe Translatomatic::CLI::Config do
     end
   end
 
+  context :describe do
+    it "describes configuration options" do
+      cli.describe
+    end
+  end
+
   private
 
   def add_cli_options(options = {})

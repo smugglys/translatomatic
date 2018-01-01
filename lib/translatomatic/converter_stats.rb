@@ -2,7 +2,7 @@
 class Translatomatic::ConverterStats
   include Translatomatic::Util
 
-  # @return [Number] The total number of strings translated.
+  # @return [Array<Translatomatic::Translation>] A list of all translations
   attr_reader :translations
 
   # @return [Number] The number of translations that came from the database.
@@ -13,14 +13,14 @@ class Translatomatic::ConverterStats
 
   private
 
-  def initialize(from_db, from_translator)
-    @translations = from_db + from_translator
-    @from_db = from_db
-    @from_translator = from_translator
+  def initialize(translations)
+    @translations = translations
+    @from_db = translations.count { |i| i.from_database }
+    @from_translator = translations.count { |i| !i.from_database }
   end
 
   def to_s
-    t("converter.total_translations", total: @translations,
+    t("converter.total_translations", total: @translations.length,
       from_db: @from_db, from_translator: @from_translator)
   end
 end

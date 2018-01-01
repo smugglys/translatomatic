@@ -39,6 +39,7 @@ module Translatomatic::CLI
         puts e.message
         log.error(e.message)
         log.debug(e.backtrace.join("\n"))
+        raise e if ENV["TEST"] # reraise exceptions in test
         false
       end
     end
@@ -55,7 +56,15 @@ module Translatomatic::CLI
     # use options specified on the command line first.
     # falls back to configuration values.
     def cli_option(key)
-      options[key] || conf.get(key)
+      if options[key] && !empty_array?(options[key])
+        options[key]
+      else
+        conf.get(key)
+      end
+    end
+
+    def empty_array?(value)
+      value.kind_of?(Array) && value.empty?
     end
 
   end

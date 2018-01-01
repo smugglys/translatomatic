@@ -16,7 +16,8 @@ RSpec.describe Translatomatic::TranslationResult do
     it "updates strings from translator" do
       properties = { key1: "Yoghurt" }
       result = create_result(properties, locale_en, locale_fr)
-      result.update_strings(result.untranslated, %w{Yoplait})
+      translations = create_translations(result.untranslated, %w{Yoplait})
+      result.update_strings(translations)
       expect(result.untranslated).to be_empty
       expect(result.properties[:key1]).to eq("Yoplait")
     end
@@ -28,7 +29,8 @@ RSpec.describe Translatomatic::TranslationResult do
       untranslated = result.untranslated
       expect(untranslated.length).to eq(1)
       expect(untranslated.to_a[0].to_s).to eq("Yoghurt")
-      result.update_strings(untranslated, %w{Yoplait})
+      translations = create_translations(untranslated, %w{Yoplait})
+      result.update_strings(translations)
       expect(result.untranslated).to be_empty
       expect(result.properties).to eq({ key1: "Yoplait", key2: "Yoplait" })
     end
@@ -39,7 +41,8 @@ RSpec.describe Translatomatic::TranslationResult do
       result = create_result(properties, locale_en, locale_de)
       untranslated = result.untranslated
       expect(untranslated.length).to eq(2)
-      result.update_strings([untranslated.to_a[0]], ['Satz eins.'])
+      translations = create_translations([untranslated.to_a[0]], ['Satz eins.'])
+      result.update_strings(translations)
       expect(result.properties[:key1]).to eq("Satz eins. Sentence two.")
     end
 
@@ -49,14 +52,21 @@ RSpec.describe Translatomatic::TranslationResult do
       properties = { key1: input }
       result = create_result(properties, locale_en, locale_ja)
       untranslated = result.untranslated
-      result.update_strings(untranslated.to_a, output)
-      p result.properties
+      translations = create_translations(untranslated.to_a, output)
+      result.update_strings(translations)
+      #p result.properties
     end
   end
 
   private
 
+  def create_translations(from, to)
+    from.zip(to).collect { |t1, t2| Translatomatic::Translation.new(t1, t2) }
+  end
+
   def create_result(properties, from, to)
-    Translatomatic::TranslationResult.new(properties, from, to)
+    file = Translatomatic::ResourceFile::Properties.new("dummy", from)
+    file.properties = properties
+    Translatomatic::TranslationResult.new(file, to)
   end
 end

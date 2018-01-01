@@ -14,28 +14,37 @@ class Translatomatic::Converter
   # @param options [Hash<Symbol,Object>] converter and/or translator options.
   def initialize(options = {})
     @dry_run = options[:dry_run]
-    @translator = options[:translator]
     @listener = options[:listener]
+    @translators = resolve_translators(options)
+    raise t("converter.translator_required") if @translators.empty?
 
     # use database by default if we're connected to a database
     use_db = options.include?(:use_database) ? options[:use_database] : true
     @use_db = use_db && ActiveRecord::Base.connected?
-
     log.debug(t("converter.database_disabled")) unless @use_db
-    if @translator && !@translator.respond_to?(:translate)
-      klass = Translatomatic::Translator.find(@translator)
-      @translator = klass.new(options)
-    end
-    raise t("converter.translator_required") unless @translator
-    @translator.listener = @listener if @listener
-    @from_db = 0
-    @from_translator = 0
+
     @db_translations = []
+    @translations = []
+  end
+
+  def resolve_translators(options)
+    list = options[:translator]
+    list = [list] unless list.kind_of?(Array)
+    list = list.compact.collect do |translator|
+      if translator.respond_to?(:translate)
+        translator
+      else
+        klass = Translatomatic::Translator.find(translator)
+        translator = klass.new(options)
+      end
+      translator.listener = @listener if @listener
+      translator
+    end
   end
 
   # @return [Translatomatic::ConverterStats] Translation statistics
   def stats
-    Translatomatic::ConverterStats.new(@from_db, @from_translator)
+    @stats ||= Translatomatic::ConverterStats.new(@translations)
   end
 
   # Translate properties of source_file to the target locale.
@@ -48,10 +57,27 @@ class Translatomatic::Converter
     file = resource_file(file)
     to_locale = parse_locale(to_locale)
 
-    result = translate_properties(file.properties, file.locale, to_locale)
-    properties = restore_variables(file, result)
+    # do nothing if target language is the same as source language
+    return file if file.locale.language == to_locale.language
 
-    file.properties = properties
+    result = Translatomatic::TranslationResult.new(file, to_locale)
+
+    @translators.each do |translator|
+      break if result.untranslated.empty?
+
+      @current_translator = translator
+      # translate using strings from the database first
+      translate_properties_with_db(result)
+      # send remaining unknown strings to translator
+      translate_properties_with_translator(result)
+    end
+
+    log.debug(t("converter.stats", from_db: stats.from_db,
+      from_translator: stats.from_translator,
+      untranslated: result.untranslated.length))
+    @listener.untranslated_texts(result.untranslated) if @listener
+
+    file.properties = result.properties
     file.locale = to_locale
     file
   end
@@ -78,37 +104,6 @@ class Translatomatic::Converter
     target
   end
 
-  # Translate resource file properties.
-  # Uses existing translations from the database if available.
-  #
-  # @param properties [Hash<String,String>] Properties
-  # @param from_locale [String, Locale] The locale of the properties
-  # @param to_locale [String, Locale] The target locale for translations
-  # @return [Translatomatic::TranslationResult] Translated properties
-  def translate_properties(properties, from_locale, to_locale)
-    from_locale = parse_locale(from_locale)
-    to_locale = parse_locale(to_locale)
-
-    result = Translatomatic::TranslationResult.new(properties,
-      from_locale, to_locale)
-
-    # do nothing if target language is the same as source language
-    return result if from_locale.language == to_locale.language
-
-    # translate using strings from the database first
-    db_texts = translate_properties_with_db(result)
-
-    # send remaining unknown strings to translator
-    tr_texts = translate_properties_with_translator(result)
-
-    log.debug(t("converter.stats", from_db: db_texts.length,
-      from_translator: tr_texts.length,
-      untranslated: result.untranslated.length))
-    @listener.untranslated_texts(result.untranslated) if @listener
-
-    result
-  end
-
   private
 
   include Translatomatic::Util
@@ -124,31 +119,37 @@ class Translatomatic::Converter
       t("converter.use_database") }
   )
 
-  # restore interpolated variables in the translation result.
-  # @param file [Translatomatic::ResourceFile] resource file
-  # @param result Translatomatic::TranslationResult] translation result
-  # @return [Hash<String,String>] translated properties with restored variables
-  def restore_variables(file, result)
-    return result.properties unless file.supports_variable_interpolation?
+  # Attempt to restore interpolated variable names in the translation.
+  # If variable names cannot be restored, sets the translation result to nil.
+  # @param result [Translatomatic::TranslationResult] translation result
+  # @param translation [Translatomatic::Translation] translation
+  # @return [void]
+  def restore_variables(result, translation)
+    file = result.file
+    return unless file.supports_variable_interpolation?
 
-    original = file.properties
-    translated = result.properties.transform_values { |i| i.dup }
-    original.each do |key, value|
-      variables = string_variables(value, result.from_locale, file)
-      translated_variables = string_variables(translated[key], result.to_locale, file)
-      if variables.length == translated_variables.length
-        result.conversions(variables, translated_variables).each do |v1, v2|
-          translated[key][v2.offset, v2.length] = v1.value
-        end
-      else
-        # internal error - translator removed variable markers?
-        log.debug("number of variables differ in original and translated text.")
-        log.debug("original text: #{value}")
-        log.debug("translated text: #{translated[key]}")
+    # find variables in the original string
+    variables = string_variables(translation.original, file.locale, file)
+    # find variables in the translated string
+    translated_variables = string_variables(translation.result, result.to_locale, file)
+
+    if variables.length == translated_variables.length
+      # we can restore variables
+      # sort by largest offset first
+      conversions = variables.zip(translated_variables).collect {
+         |v1, v2| translation(v1, v2)
+      }
+      conversions.sort_by! { |t| -t.original.offset }
+      conversions.each do |conversion|
+        v1 = conversion.original
+        v2 = conversion.result
+        translation.result[v2.offset, v2.length] = v1.value
       end
+    else
+      # unable to restore interpolated variable names
+      log.debug("#{@current_translator.name}: unable to restore variables: #{translation.result}")
+      translation.result = nil  # mark result as invalid
     end
-
-    translated
   end
 
   def string_variables(value, locale, file)
@@ -166,52 +167,59 @@ class Translatomatic::Converter
   end
 
   # update result with translations from the database.
-  # returns a list of text records from the database.
   def translate_properties_with_db(result)
     db_texts = []
     unless database_disabled?
-      original = []
-      translated = []
+      translations = []
       untranslated = hashify(result.untranslated)
       db_texts = find_database_translations(result, result.untranslated.to_a)
       db_texts.each do |db_text|
         from_text = db_text.from_text.value
-        next unless valid_translation?(from_text, db_text.value)
-
         if untranslated[from_text]
-          original << untranslated[from_text]
-          translated << db_text.value
+          translation = translation(untranslated[from_text], db_text.value, true)
+          restore_variables(result, translation)
+          translations << translation
         end
       end
 
-      result.update_strings(original, translated)
-      @from_db += db_texts.length
+      result.update_strings(translations)
+      @translations += translations
       @listener.translated_texts(db_texts) if @listener
     end
     db_texts
   end
 
   # update result with translations from the translator.
-  # returns a list of strings from the translator.
   def translate_properties_with_translator(result)
     untranslated = result.untranslated.to_a.select { |i| translatable?(i) }
     translated = []
-    @from_translator += untranslated.length
     if !untranslated.empty? && !@dry_run
-      log.debug("untranslated: #{untranslated.collect { |i| i.to_s }}")
-      translated = @translator.translate(untranslated.collect { |i| i.to_s },
-        result.from_locale, result.to_locale)
-      result.update_strings(untranslated, translated)
+      untranslated_strings = untranslated.collect { |i| i.to_s }
+      log.debug("translating: #{untranslated_strings}")
+      translated = @current_translator.translate(untranslated_strings,
+        result.from_locale, result.to_locale
+      )
+
+      # create list of translations, filtering out invalid translations
+      translations = []
+      untranslated.zip(translated).each do |from, to|
+        translation = translation(from, to)
+        restore_variables(result, translation)
+        translations << translation
+      end
+
+      result.update_strings(translations)
+      @translations += translations
       unless database_disabled?
-        save_database_translations(result, untranslated, translated)
+        save_database_translations(result, translations)
       end
     end
     translated
   end
 
-  def valid_translation?(from_text, to_text)
-    # TODO
-    true
+  def translation(from, to, from_database = false)
+    translator = @current_translator.name
+    Translatomatic::Translation.new(from, to, translator, from_database)
   end
 
   def database_disabled?
@@ -227,27 +235,28 @@ class Translatomatic::Converter
     !string.empty? && !string.match(/^[\d,]+$/)
   end
 
-  def save_database_translations(result, untranslated, translated)
+  def save_database_translations(result, translations)
     ActiveRecord::Base.transaction do
       from = db_locale(result.from_locale)
       to = db_locale(result.to_locale)
-      untranslated.zip(translated).each do |t1, t2|
-        save_database_translation(from, to, t1, t2)
+      translations.each do |translation|
+        next if translation.result.nil?  # skip invalid translations
+        save_database_translation(from, to, translation)
       end
     end
   end
 
-  def save_database_translation(from_locale, to_locale, t1, t2)
+  def save_database_translation(from_locale, to_locale, translation)
     original_text = Translatomatic::Model::Text.find_or_create_by!(
       locale: from_locale,
-      value: t1.to_s
+      value: translation.original.to_s
     )
 
     text = Translatomatic::Model::Text.find_or_create_by!(
       locale: to_locale,
-      value: t2.to_s,
+      value: translation.result.to_s,
       from_text: original_text,
-      translator: @translator.name
+      translator: @current_translator.name
     )
     @db_translations += [original_text, text]
     text
@@ -257,11 +266,12 @@ class Translatomatic::Converter
     from = db_locale(result.from_locale)
     to = db_locale(result.to_locale)
 
-    # convert untranslated set to strings
     Translatomatic::Model::Text.where({
       locale: to,
+      translator: @current_translator.name,
       from_texts_texts: {
         locale_id: from,
+        # convert untranslated set to strings
         value: untranslated.collect { |i| i.to_s }
       }
     }).joins(:from_text)

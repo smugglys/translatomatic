@@ -1,5 +1,4 @@
 RSpec.describe Translatomatic::String do
-  include Translatomatic::Util
 
   STRING_DATA = [
     # type detection tests

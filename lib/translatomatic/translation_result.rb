@@ -4,6 +4,9 @@ module Translatomatic
   # Stores results of a translation
   class TranslationResult
 
+    # @return [Translatomatic::ResourceFile::Base] The resource file
+    attr_reader :file
+
     # @return [Hash<String,String>] Translation results
     attr_reader :properties
 
@@ -17,19 +20,19 @@ module Translatomatic
     attr_reader :untranslated
 
     # Create a translation result
-    # @param properties [Hash<String,String>] Untranslated properties
-    # @param from_locale [Locale] The locale of the untranslated strings
+    # @param file [Translatomatic::ResourceFile::Base] A resource file
     # @param to_locale [Locale] The target locale
-    def initialize(properties, from_locale, to_locale)
+    def initialize(file, to_locale)
+      @file = file
       @value_to_keys = {}
       @untranslated = Set.new
-      @from_locale = from_locale
+      @from_locale = file.locale
       @to_locale = to_locale
 
       # duplicate strings
-      @properties = properties.transform_values { |i| i.dup }
+      @properties = file.properties.transform_values { |i| i.dup }
 
-      properties.each do |key, value|
+      @properties.each do |key, value|
         # split property value into sentences
         string = string(value, from_locale)
         string.sentences.each do |sentence|
@@ -41,38 +44,22 @@ module Translatomatic
     end
 
     # Update result with a list of translated strings.
-    # @param original [Array<String>] Original strings
-    # @param translated [Array<String>] Translated strings
+    # @param translations [Array<Translatomatic::Translation>] Translations
     # @return [void]
-    def update_strings(original, translated)
-      unless original.length == translated.length
-        log.debug("original(#{original.length}): #{original.collect { |i| i.value }}")
-        log.debug("translated(#{translated.length}): #{translated}")
-        raise "strings length mismatch"
-      end
-      conversions(original, translated).each do |text1, text2|
-        update(text1, text2)
-      end
-    end
-
-    # @param original [Array<String>] Original strings
-    # @param translated [Array<String>] Translated strings
-    # @return [Array<Array<String>>] A list of conversions in the form
-    #   [[original, translated], ...]
-    def conversions(original, translated)
-      # create list of [from, to] text conversions
-      conversions = []
-      original.zip(translated).each do |text1, text2|
-        conversions << [text1, text2]
-      end
-
-      # sort conversion list by largest offset first so that we replace
+    def update_strings(translations)
+      # sort translation list by largest offset first so that we replace
       # from the end of the string to the front, so substring offsets
       # are correct in the target string.
-      conversions.sort_by! do |t1, t2|
-        t1.respond_to?(:offset) ? -t1.offset : 0
+
+      #translations.sort_by! do |translation|
+      #  t1 = translation.original
+      #  t1.respond_to?(:offset) ? -t1.offset : 0
+      #end
+      translations.sort_by! { |t| -t.original.offset }
+
+      translations.each do |translation|
+        update(translation.original, translation.result)
       end
-      conversions
     end
 
     private
@@ -88,12 +75,12 @@ module Translatomatic
           #log.debug("#{value[original.offset, original.length]} -> #{translated}")
           @properties[key][original.offset, original.length] = translated
         else
-          #log.debug("#{value} -> #{translated}")
+          #log.debug("#{key} -> #{translated}")
           @properties[key] = translated
         end
       end
 
-      @untranslated.delete(original)
+      @untranslated.delete(original) unless translated.nil?
     end
   end
 end

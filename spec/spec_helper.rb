@@ -16,9 +16,6 @@ SPEC_DIR = File.dirname(__FILE__)
 Dir[File.join(SPEC_DIR, "support/**/*.rb")].sort.each { |f| require f }
 include Helpers
 
-require 'i18n/missing_translations'
-at_exit { I18n.missing_translations.dump }
-
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include Translatomatic::Util

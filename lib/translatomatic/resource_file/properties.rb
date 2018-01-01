@@ -23,7 +23,7 @@ module Translatomatic::ResourceFile
       out += add_created_by unless options[:no_created_by]
       properties.each do |key, value|
         # TODO: maintain original line ending format?
-        value = value.gsub("\n", "\\n")  # convert newlines to \n
+        value = value.gsub("\n", "\\n") if value  # convert newlines to \n
         out += "#{key} = #{value}\n"
       end
       # escape unicode characters

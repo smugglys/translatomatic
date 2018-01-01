@@ -28,19 +28,19 @@ RSpec.describe Translatomatic::CLI::Translate do
       translator = test_translator
       expect(translator).to_not receive(:translate)
       add_cli_options(use_database: false)  # don't use database results
-      @cli.file(path.to_s, "de")
+      expect {
+        @cli.file(path.to_s, "de")
+      }.to raise_exception(t("cli.file_unsupported", file: path))
     end
 
-    it "prompts user to select translator if there are multiple available" do
+    it "uses all available translators" do
       # create two translators
       translator1 = test_translator("Translator 1")
       translator2 = test_translator("Translator 2")
-      expect(translator2).to receive(:translate).and_return(["Bier"])
+      expect(translator1).to receive(:translate).and_return(["Bier"])
 
       allow(Translatomatic::Translator).to receive(:available).
         and_return([translator1, translator2])
-
-      expect(@cli).to receive(:ask).and_return(2)  # select translator 2
 
       path = create_tempfile("test.properties", "key = Beer")
       add_cli_options(use_database: false)  # don't use database results
@@ -67,10 +67,7 @@ RSpec.describe Translatomatic::CLI::Translate do
   end
 
   def test_translator(name = nil)
-    translator = double(:translator)
-    allow(translator).to receive(:name).and_return("Translator")
-    allow(translator).to receive(:listener=)
-    allow(translator).to receive(:name).and_return(name)
+    translator = TestTranslator.new
     allow(Translatomatic::Translator).to receive(:available).and_return([translator])
     translator
   end

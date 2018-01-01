@@ -4,11 +4,21 @@ module Translatomatic::Util
   private
 
   # @!visibility private
-  module ClassMethods
+  module CommonMethods
     private
     def t(key, options = {})
-      I18n.t("translatomatic.#{key}", options)
+      tkey = "translatomatic.#{key}"
+      raise "missing translation: #{tkey}" unless I18n.exists?(tkey)
+      I18n.t(tkey, options)
     end
+  end
+
+  include CommonMethods
+
+  # @!visibility private
+  module ClassMethods
+    private
+    include CommonMethods
   end
 
   def self.included(klass)
@@ -25,10 +35,6 @@ module Translatomatic::Util
 
   def string(value, locale)
     Translatomatic::String.new(value, locale)
-  end
-
-  def t(key, options = {})
-    I18n.t("translatomatic.#{key}", options)
   end
 
   def hashify(list)

@@ -16,9 +16,13 @@ module Translatomatic::CLI
         setup_translation(locales)
 
         puts "(%s) %s" % [@source_locale, text]
-        @target_locales.each do |target_locale|
-          result = @translator.translate([text], @source_locale, target_locale)
-          puts "  -> (%s) %s" % [target_locale, result]
+        @translators.each do |translator|
+          puts t("cli.using_translator", name: translator.name)
+          @target_locales.each do |target_locale|
+            result = translator.translate([text], @source_locale, target_locale)
+            puts "  -> (%s) %s" % [target_locale, result]
+          end
+          puts
         end
 
         finish_log
@@ -52,13 +56,17 @@ module Translatomatic::CLI
         # set up converter
         translation_count = calculate_translation_count(source, @target_locales)
         converter_options = options.merge(
-          translator: @translator,
+          translator: @translators,
           listener: progress_updater(translation_count)
         )
         converter = Translatomatic::Converter.new(converter_options)
 
         # convert source to locale(s) and write files
-        @target_locales.each { |i| converter.translate_to_file(source, i) }
+        @target_locales.each do |i|
+          to_locale = locale(i)
+          next if to_locale.language == source.locale.language
+          converter.translate_to_file(source, to_locale)
+        end
 
         log.info converter.stats
         finish_log
@@ -85,8 +93,7 @@ module Translatomatic::CLI
       conf.logger.level = Logger::DEBUG if cli_option(:debug)
 
       # select translator
-      @translator = select_translator
-      log.info(t("cli.using_translator", name: @translator.name))
+      @translators = resolve_translators
     end
 
     def determine_source_locale
@@ -130,12 +137,10 @@ module Translatomatic::CLI
       Translatomatic::ProgressUpdater.new(progressbar)
     end
 
-    def select_translator
+    def resolve_translators
       # use options translator if specified
-      if cli_option(:translator)
-        klass = Translatomatic::Translator.find(cli_option(:translator))
-        return klass.new(options)
-      end
+      list = cli_option(:translator)
+      return list if list && !list.empty?
 
       # find all available translators that work with the given options
       available = Translatomatic::Translator.available(options)
@@ -143,16 +148,7 @@ module Translatomatic::CLI
         raise t("cli.no_translators")
       end
 
-      return available[0] if available.length == 1
-
-      # prompt user for which translator to use
-      say(t("cli.multiple_translators"))
-      available.each_with_index { |mod, i| say(" #{i + 1}) #{mod.name}") }
-      loop do
-        idx = ask(t("cli.select_translator", available: available.length))
-        idx = idx.to_i
-        return available[idx - 1] if (1..available.length).include?(idx)
-      end
+      available
     end
 
   end # class
