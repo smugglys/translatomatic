@@ -3,6 +3,16 @@ module Translatomatic::CLI
   # Translation functions for the command line interface
   class Translate < Base
 
+    define_options(
+      { name: :translator, type: :array, aliases: "-t",
+        desc: t("converter.translator"), enum: Translatomatic::Translator.names
+      },
+      { name: :source_locale, desc: t("cli.source_locale") },
+      { name: :share, desc: t("cli.share"), default: false },
+      { name: :target_locales, desc: t("cli.target_locales"),
+        type: :array, hidden: true },
+      )
+
     desc "string text locale...", t("cli.translate.string")
     thor_options(self, Translatomatic::CLI::CommonOptions)
     thor_options(self, Translatomatic::CLI::Translate)
@@ -77,13 +87,6 @@ module Translatomatic::CLI
 
     private
 
-    define_options(
-      { name: :source_locale, desc: t("cli.source_locale") },
-      { name: :share, desc: t("cli.share"), default: false },
-      { name: :target_locales, desc: t("cli.target_locales"),
-        type: :array, hidden: true },
-    )
-
     def setup_translation(locales)
       log.info(t("cli.dry_run")) if cli_option(:dry_run)
 
@@ -92,8 +95,10 @@ module Translatomatic::CLI
       raise t("cli.locales_required") if @target_locales.empty?
       conf.logger.level = Logger::DEBUG if cli_option(:debug)
 
-      # select translator
-      @translators = resolve_translators
+      # resolve translators
+      @translators = Translatomatic::Translator.resolve(
+        cli_option(:translator), options
+      )
     end
 
     def determine_source_locale
@@ -135,20 +140,6 @@ module Translatomatic::CLI
       )
       conf.logger.progressbar = progressbar
       Translatomatic::ProgressUpdater.new(progressbar)
-    end
-
-    def resolve_translators
-      # use options translator if specified
-      list = cli_option(:translator)
-      return list if list && !list.empty?
-
-      # find all available translators that work with the given options
-      available = Translatomatic::Translator.available(options)
-      if available.empty?
-        raise t("cli.no_translators")
-      end
-
-      available
     end
 
   end # class

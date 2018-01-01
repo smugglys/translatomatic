@@ -13,7 +13,10 @@ module Translatomatic::CLI
     def self.thor_options(klass, object)
       Translatomatic::Option.options_from_object(object).each do |option|
         next if option.hidden
-        klass.method_option option.name, option.to_hash
+        data = option.to_hash
+        # use internal ',' splitting for array types
+        data[:type] = :string if data[:type] == :array
+        klass.method_option option.name, data
       end
     end
 
@@ -36,7 +39,6 @@ module Translatomatic::CLI
         false
       rescue Exception => e
         finish_log
-        puts e.message
         log.error(e.message)
         log.debug(e.backtrace.join("\n"))
         raise e if ENV["TEST"] # reraise exceptions in test

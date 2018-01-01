@@ -18,6 +18,33 @@ module Translatomatic::Translator
     name && !name.empty? ? self.const_get(name) : nil
   end
 
+  # Resolve the given list of translator names to a list of translators.
+  # If the list is empty, return all translators that are configured.
+  # @param list [Array<String>] Translator names or translators
+  # @param options [Hash<String,String>] Translator options
+  # @return [Array<Translatomatic::Translator::Base>] Translators
+  def self.resolve(list, options = {})
+    list = [list] unless list.kind_of?(Array)
+    list = list.compact.collect do |translator|
+      if translator.respond_to?(:translate)
+        translator
+      else
+        klass = Translatomatic::Translator.find(translator)
+        translator = klass.new(options)
+      end
+      translator
+    end
+
+    if list.empty?
+      # find all available translators that work with the given options
+      list = Translatomatic::Translator.available(options)
+      if list.empty?
+        raise t("cli.no_translators")
+      end
+    end
+    list
+  end
+
   # @return [List<Class>] A list of all translator classes
   def self.modules
     self.constants.collect { |c| self.const_get(c) }.select do |klass|
@@ -59,6 +86,13 @@ module Translatomatic::Translator
           opt.use_env ? "ENV[#{opt.name.upcase}]" : ""]
       end
     end
+    out += "\n"
+    out += t("translator.configured") + "\n"
+    configured = available
+    configured.each do |translator|
+      out += "  " + translator.name + "\n"
+    end
+    out += t("translator.no_translators") if configured.empty?
     out + "\n"
   end
 

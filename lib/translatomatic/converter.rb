@@ -12,8 +12,9 @@ class Translatomatic::Converter
   def initialize(options = {})
     @dry_run = options[:dry_run]
     @listener = options[:listener]
-    @translators = resolve_translators(options)
+    @translators = Translatomatic::Translator.resolve(options[:translator], options)
     raise t("converter.translator_required") if @translators.empty?
+    @translators.each { |i| i.listener = @listener } if @listener
 
     # use database by default if we're connected to a database
     use_db = options.include?(:use_database) ? options[:use_database] : true
@@ -87,9 +88,6 @@ class Translatomatic::Converter
   include Translatomatic::DefineOptions
 
   define_options(
-    { name: :translator, type: :array, aliases: "-t",
-      desc: t("converter.translator"), enum: Translatomatic::Translator.names
-    },
     { name: :dry_run, type: :boolean, aliases: "-n",
       desc: t("converter.dry_run")
     },
@@ -97,21 +95,6 @@ class Translatomatic::Converter
       desc: t("converter.use_database")
     }
   )
-
-  def resolve_translators(options)
-    list = options[:translator]
-    list = [list] unless list.kind_of?(Array)
-    list = list.compact.collect do |translator|
-      if translator.respond_to?(:translate)
-        translator
-      else
-        klass = Translatomatic::Translator.find(translator)
-        translator = klass.new(options)
-      end
-      translator.listener = @listener if @listener
-      translator
-    end
-  end
 
   def each_translator(result)
     @translators.each do |translator|
