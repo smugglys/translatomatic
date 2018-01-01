@@ -21,12 +21,13 @@ RSpec.describe Translatomatic::Converter do
     end
 
     it "resolves a translator by name" do
-      t = create_converter(translator: "Yandex")
+      t = create_converter(translator: "Yandex", yandex_api_key: "123")
       expect(t).to be
     end
 
     it "allows specifying multiple translators" do
-      t = create_converter(translator: ["Microsoft", "Yandex"])
+      t = create_converter(translator: ["Microsoft", "Yandex"],
+        yandex_api_key: "123", microsoft_api_key: "456")
       expect(t).to be
     end
   end
