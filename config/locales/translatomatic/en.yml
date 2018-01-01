@@ -1,81 +1,100 @@
----
+# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 12:16:33 +1030
+
 en:
   translatomatic:
     cli:
-      translate: "Translate files to target locales"
-      source_locale: "The locale of the source file"
-      debug: "Enable debugging output"
-      wank: "Enable Progress bar"
-      share: "Share translations with translators that support upload"
-      dry_run: "Dry run: files will not be translated or written"
-      locales_required: "One or more locales required"
-      file_not_found: "File not found: %{file}"
-      file_unsupported: "Unsupported file type: %{file}"
-      using_translator: "Using translator: %{name}"
-      locales_properties: "Locales: %{locales}, Properties: %{properties}"
-      display_values: "Display values from a resource bundle"
-      locales_to_display: "Locales to display"
-      display_sentences: "Display sentences"
-      extract_strings: "Extract strings from non-resource files"
-      list_backends: "List available translation services"
-      display_version: "Display version"
-      uploading_tmx: "Uploading TMX to %{name}"
-      translating: "Translating"
-      aborted: "Aborted"
-      file_source: "File: %{file}"
-      sentences: "Sentences:"
-      no_translators: "No translators configured. Use the translators command to see options"
-      multiple_translators: "Multiple translators available:"
-      select_translator: "Select translator (1-%{available}): "
+      config:
+        subcommand: Configuration commands
+        configuration: Configuration
+        set: Change a configuration setting
+        remove: Remove a configuration setting
+        list: List current configuration settings
+        describe: Describe available configuration settings
+        name: Name
+        type: Type
+        value: Value
+        desc: Description
+      translate:
+        subcommand: Translate files or strings
+        file: Translate a file to target locales
+        string: Translate a string to target locales
+      source_locale: The locale of the source file
+      target_locales: Locales to translate to
+      debug: Enable debugging output
+      wank: Enable translation progress bar
+      share: Share translations with translators that support upload
+      dry_run: 'Dry run: files will not be translated or written'
+      locales_required: One or more locales required
+      file_not_found: 'File not found: %{file}'
+      file_unsupported: 'Unsupported file type: %{file}'
+      using_translator: 'Using translator: %{name}'
+      locales_properties: 'Locales: %{locales}, Properties: %{properties}'
+      display_values: Display values from a resource bundle
+      locales_to_display: Locales to display
+      display_sentences: Display sentences
+      extract_strings: Extract strings from non-resource files
+      list_backends: List available translation services
+      display_version: Display version
+      uploading_tmx: Uploading TMX to %{name}
+      translating: Translating
+      aborted: Aborted
+      file_source: 'File: %{file}'
+      sentences: 'Sentences:'
+      no_translators: No translators configured. Use the translators command to see options
       database:
-        subcommand: "Database commands"
-        search: "Search database for text matching the given string."
-
+        subcommand: Database commands
+        search: Search database for text matching the given string.
     resource:
-      unknown_locale: "Unable to determine locale"
-      created_by: "Created by %{app} %{version} %{date}"
-      error: "Error: %{message}"
-      loading: "Attempting to load %{file} using %{name}"
-
+      unknown_locale: Unable to determine locale
+      created_by: Created by %{app} %{version} %{date}
+      error: 'Error: %{message}'
+      loading: Attempting to load %{file} using %{name}
     tmx:
-      multiple_origins: "Multiple origins in texts."
-      multiple_locales: "Multiple source locales in texts."
-
+      multiple_origins: Multiple origins in texts.
+      multiple_locales: Multiple source locales in texts.
     translator:
-      email_required: "Email address required."
-      password_required: "Password required."
-      google_key_required: "Google API key required."
-      google_api_key: "Google API key"
-      microsoft_api_key: "Microsoft API key"
-      microsoft_key_required: "Microsoft API key required."
-      mymemory_api_key: "MyMemory API key"
-      email_address: "Email address"
-      share_response: "Share response: %{response}"
-      yandex_api_key: "Yandex API key"
-      yandex_key_required: "Yandex API key required"
+      email_required: Email address required.
+      password_required: Password required.
+      google_key_required: Google API key required.
+      google_api_key: Google API key
+      frengly_api_key: Frengly API key
+      microsoft_api_key: Microsoft API key
+      microsoft_key_required: Microsoft API key required.
+      mymemory_api_key: MyMemory API key
+      email_address: Email address
+      share_response: 'Share response: %{response}'
+      yandex_api_key: Yandex API key
+      yandex_key_required: Yandex API key required
       required_option: "(required)"
-      translators: "Translators:"
-      unavailable: "Translator %{name} is unavailable."
-
+      translators: 'Translators:'
+      unavailable: Translator %{name} is unavailable.
+      password: Password
     converter:
-      total_translations: "Total translations: %{total} (%{from_db} from database, %{from_translator} from translator)"
-      translator: "Translator implementation to use."
-      dry_run: "Print actions without performing translations or writing files."
-      use_database: "Store and retrieve translations from the database."
-      database_disabled: "Database is disabled."
-      translator_required: "Translator required."
-      file_unsupported: "Unsupported file type: %{file}"
-      translating: "Translating %{source} to %{target}"
-      stats: "Translations from database: %{from_db}, translator: %{from_translator}, untranslated: %{untranslated}"
-
+      total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_translator} from translator, %{untranslated} untranslated)'
+      untranslated: "Untranslated strings:"
+      translator: Translator implementations to use
+      dry_run: Print actions without performing translations or writing files.
+      use_database: Store and retrieve translations from the database.
+      database_disabled: Database is disabled.
+      translator_required: Translator required.
+      file_unsupported: 'Unsupported file type: %{file}'
+      translating: Translating %{source} to %{target}
+      stats: 'Translations from database: %{from_db}, translator: %{from_translator}, untranslated: %{untranslated}'
     database:
-      no_environment: "No environment '%{env}' in %{file}"
-      migrated: "Database migrated."
-      created: "Database created."
-      deleted: "Database deleted."
-      could_not_create: "Database could not be created."
-      config_file: "Path to the database configuration file"
-      env: "Database environment"
-
+      no_environment: No environment '%{env}' in %{file}
+      migrated: Database migrated.
+      created: Database created.
+      deleted: Database deleted.
+      could_not_create: Database could not be created.
+      config_file: Path to the database configuration file
+      env: Database environment
     unicode:
       invalid_byte: "Invalid UTF8 byte: '%{byte}'"
+    config:
+      invalid_key: "Unrecognised configuration key: '%{key}'"
+      types:
+        string: String
+        hash: Hash
+        array: Array
+        numeric: Numeric
+        boolean: Boolean

@@ -1,76 +1,101 @@
-# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
+# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:37 +1030
 
 zh:
   translatomatic:
     cli:
-      translate: 翻译的文件的目标选择
-      source_locale: 该区域的源文件
+      config:
+        subcommand: 配置命令
+        configuration: 配置
+        set: 更改配置设置
+        remove: 删除配置设置
+        list: 列出当前配置设置
+        describe: 描述可用的配置设置
+        name: 名称
+        type: 类型
+        value: 值
+        desc: 描述
+      translate:
+        subcommand: 翻译文件或字符串
+        file: 将文件转换为目标区域设置
+        string: 将字符串转换为目标区域设置
+      source_locale: 源文件的区域设置
+      target_locales: 要转换为的区域设置
       debug: 启用调试输出
-      wank: 使进展吧
-      share: 分享翻译与笔译人员，支持上传
-      dry_run: 干：文件将不会被翻译或书面
-      locales_required: 一个或多个选择需要
+      wank: 启用翻译进度栏
+      share: 与支持上载的翻译人员共享翻译
+      dry_run: '干运行: 文件不会被翻译或写入'
+      locales_required: 需要一个或多个区域设置
       file_not_found: 找不到文件:%{file}
-      file_unsupported: 不支持的文件类型：%{file}
-      using_translator: 使用翻译:%{name}
-      locales_properties: 选择:%{locales}、性质:%{properties}
-      display_values: 值显示从一个资源束
-      locales_to_display: 选择显示
-      display_sentences: 显示的句子
-      extract_strings: 提取串从非资源文件
-      list_backends: 清单提供的翻译服务
-      display_version: 显示的版本
-      uploading_tmx: 上传不同的输入模型可以由不同的来%{name}
-      translating: 翻译
+      file_unsupported: 不支持的文件类型:%{file}
+      using_translator: 使用转换器:%{name}
+      locales_properties: 区域设置:%{locales}, 属性:%{properties}
+      display_values: 显示资源包中的值
+      locales_to_display: 要显示的区域设置
+      display_sentences: 显示句子
+      extract_strings: 从资源文件中提取字符串
+      list_backends: 列出可用的翻译服务
+      display_version: 显示版本
+      uploading_tmx: 正在将 TMX 上载到%{name}
+      translating: 正在翻译
       aborted: 中止
-      file_source: 文件：%{file}
-      sentences: 句子：
-      no_translators: 没有翻译人员配置。 使用译员的命令来看到的选择
-      multiple_translators: 多笔译员提供：
-      select_translator: '选择的翻译(1-%{available}): '
+      file_source: 文件:%{file}
+      sentences: '句子:'
+      no_translators: 没有配置翻译器。 使用 "翻译人员" 命令查看选项
       database:
-        subcommand: 数据库的命令
-        search: 搜索数据库，用于文本的匹配给串。
+        subcommand: 数据库命令
+        search: 搜索与给定字符串匹配的文本的数据库。
     resource:
-      unknown_locale: 无法确定区域
-      created_by: 创建%{app}%{version}%{date}
-      error: Error:%{message}
-      loading: 试图载%{file}使用%{name}
+      unknown_locale: 无法确定区域设置
+      created_by: 由%{app}%{version}%{date} 创建
+      error: 错误:%{message}
+      loading: 尝试使用%{file} 加载%{name}
     tmx:
-      multiple_origins: 多个来源的案文。
-      multiple_locales: 多个来源选择在文本。
+      multiple_origins: 文本中的多个来源。
+      multiple_locales: 文本中的多个源区域设置。
     translator:
-      email_required: 电子邮件地址的需要。
+      email_required: 需要的电子邮件地址。
       password_required: 需要密码。
-      google_key_required: 谷歌API关键需要。
-      google_api_key: 谷歌API关键
-      microsoft_api_key: Microsoft API关键
-      microsoft_key_required: Microsoft API关键需要。
-      mymemory_api_key: 存储器我API关键
+      google_key_required: 需要 Google API 密钥。
+      google_api_key: 谷歌 API 密钥
+      frengly_api_key: Frengly API 密钥
+      microsoft_api_key: 微软 API 密钥
+      microsoft_key_required: 需要使用 Microsoft API 密钥。
+      mymemory_api_key: MyMemory API 密钥
       email_address: 电子邮件地址
-      share_response: 分享应:%{response}
-      yandex_api_key: 该应用
-      yandex_key_required: 该应用需要
-      required_option: "(所需要的)"
-      translators: 翻译：
-      unavailable: 翻译%{name}不可用。
+      share_response: 共享响应:%{response}
+      yandex_api_key: Yandex API 密钥
+      yandex_key_required: 需要 Yandex 的 API 密钥
+      required_option: 需要)
+      translators: '翻译:'
+      unavailable: 转换器%{name} 不可用。
+      password: 密码
     converter:
-      total_translations: 总的翻译:%{total}(%{from_db}从数据库，%{from_translator}从翻译)
-      translator: 翻译实施使用。
-      dry_run: 打印的行动没有执行翻译或书面文件。
-      use_database: 存储和检索的翻译数据库。
-      database_disabled: 数据库是残疾人。
-      translator_required: 翻译所需要的。
-      file_unsupported: 不支持的文件类型：%{file}
-      translating: 翻译%{source}%{target}
-      stats: 翻译数据库：%{from_db}翻译:%{from_translator}、未翻译:%{untranslated}
+      total_translations: 总翻译:%{total} (%{from_db} 来自数据库,%{from_translator} 来自翻译器,%{untranslated}
+        未翻译)
+      untranslated: '未翻译的字符串:'
+      translator: 要使用的转换器实现
+      dry_run: 在不执行翻译或写入文件的情况下打印操作。
+      use_database: 存储和检索数据库中的翻译。
+      database_disabled: 数据库被禁用。
+      translator_required: 需要翻译。
+      file_unsupported: 不支持的文件类型:%{file}
+      translating: 将%{source} 转换为%{target}
+      stats: 数据库翻译:%{from_db}, 转换器:%{from_translator}, 未翻译:%{untranslated}
     database:
-      no_environment: 没有环境'%{env}'%{file}
-      migrated: 数据库迁移。
-      created: 数据库创建的。
-      deleted: 数据库中删除。
-      could_not_create: 数据库可能不会被创建。
-      config_file: 路数据库的配置文件
+      no_environment: '%{env} 中没有环境 "%{file}"'
+      migrated: 数据库已迁移。
+      created: 数据库已创建。
+      deleted: 数据库已删除。
+      could_not_create: 无法创建数据库。
+      config_file: 数据库配置文件的路径
       env: 数据库环境
     unicode:
-      invalid_byte: 无效UTF8字节：'%{byte}'
+      invalid_byte: '无效的 UTF8 字节: "%{byte}"'
+    config:
+      invalid_key: '未配置键: "%{key}"'
+      types:
+        string: 字符串
+        hash: 哈希
+        array: 数组
+        numeric: 数值
+        boolean: 布尔

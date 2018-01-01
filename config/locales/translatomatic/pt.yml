@@ -1,80 +1,105 @@
-# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
+# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:37 +1030
 
 pt:
   translatomatic:
     cli:
-      translate: Converter ficheiros de destino as localidades de
+      config:
+        subcommand: Comandos de configuração
+        configuration: Configuração
+        set: Alterar uma definição de configuração
+        remove: Remover uma definição de configuração
+        list: Lista as definições de configuração atuais
+        describe: Descrever as configurações disponíveis
+        name: Nome
+        type: Tipo
+        value: Valor
+        desc: Descrição
+      translate:
+        subcommand: Traduzir arquivos ou cadeias de caracteres
+        file: Traduzir um arquivo para locais de destino
+        string: Definição da palavra uma sequência de caracteres para localidades
+          de destino
       source_locale: A localidade do arquivo de origem
-      debug: Activar a saída de depuração
-      wank: Ativar a barra de Progresso
-      share: Compartilhar as traduções com tradutores que suporte o upload
-      dry_run: 'Dry run: arquivos não serão traduzido ou escrito'
-      locales_required: Um ou mais idiomas necessários
+      target_locales: Localidades de tradução para o
+      debug: Habilitar a depuração de saída
+      wank: Ativar a barra de progresso de tradução
+      share: Compartilhar traduções com tradutores que oferecem suporte a carregamento
+      dry_run: 'Dry run: arquivos não irão ser traduzidos ou escritos'
+      locales_required: Uma ou mais localidades necessárias
       file_not_found: 'Arquivo não encontrado: %{file}'
-      file_unsupported: 'Tipo de arquivo sem suporte: %{file}'
-      using_translator: 'Usando o tradutor: %{name}'
-      locales_properties: 'Localidades: %{locales}, Propriedades: %{properties}'
-      display_values: Exibir valores a partir de um pacote de recursos
-      locales_to_display: Localidades para exibir
-      display_sentences: Exibir frases
-      extract_strings: Extrato de cadeias de caracteres não-arquivos de recursos
+      file_unsupported: 'Sem suporte de tipo de arquivo: %{file}'
+      using_translator: 'Usando o Tradutor: %{name}'
+      locales_properties: 'Localidades: %{locales}, propriedades: %{properties}'
+      display_values: Valores de exibição de um pacote de recursos
+      locales_to_display: Locales para exibir
+      display_sentences: Exibir as frases
+      extract_strings: Extrair as strings de arquivos não-recurso
       list_backends: Lista de serviços de tradução disponíveis
-      display_version: Mostra a versão da aplicação
-      uploading_tmx: Carregando TMX para %{name}
-      translating: Tradução
-      aborted: Anulada
+      display_version: Versão de visualização
+      uploading_tmx: Upload TMX %{name}
+      translating: Tradução em andamento
+      aborted: Abortada
       file_source: 'Arquivo: %{file}'
       sentences: 'Frases:'
-      no_translators: Sem tradutores configurado. Utilize os tradutores de comando
+      no_translators: Não há tradutores configurados. Use o comando de tradutores
         para ver opções
-      multiple_translators: 'Vários tradutores disponíveis:'
-      select_translator: 'Selecione tradutor (1-%{available}): '
       database:
         subcommand: Comandos de banco de dados
-        search: Banco de dados de pesquisa de texto correspondente a determinada seqüência
-          de caracteres.
+        search: Pesquisar banco de dados para correspondência determinada sequência
+          de caracteres de texto.
     resource:
-      unknown_locale: Não é possível determinar localidade
+      unknown_locale: Não é possível determinar a localidade
       created_by: Criado por %{app} %{version} %{date}
       error: 'Erro: %{message}'
-      loading: Tentar carregar o %{file} com %{name}
+      loading: Tentar carregar %{file} usando %{name}
     tmx:
-      multiple_origins: Múltiplas origens em textos.
-      multiple_locales: Várias localidades de origem em textos.
+      multiple_origins: Múltiplas origens nos textos.
+      multiple_locales: Várias localidades de origem nos textos.
     translator:
-      email_required: Endereço de e-mail necessário.
-      password_required: Palavra-passe necessária.
-      google_key_required: API do Google chave necessária.
-      google_api_key: API do Google chave
-      microsoft_api_key: Microsoft chave da API
-      microsoft_key_required: Microsoft chave de API necessária.
-      mymemory_api_key: MyMemory chave da API
+      email_required: Endereço de email.
+      password_required: Senha necessária.
+      google_key_required: Chave da API do Google exigido.
+      google_api_key: Chave da API do Google
+      frengly_api_key: Chave da API Frengly
+      microsoft_api_key: Chave da API do Microsoft
+      microsoft_key_required: Chave da API do Microsoft necessário.
+      mymemory_api_key: Chave da API do MyMemory
       email_address: Endereço de e-mail
-      share_response: 'Compartilhar resposta: %{response}'
-      yandex_api_key: Yandex chave da API
-      yandex_key_required: Yandex chave de API necessária
+      share_response: 'Compartilhar a resposta: %{response}'
+      yandex_api_key: Chave da API Yandex
+      yandex_key_required: Chave da API Yandex exigido
       required_option: "(obrigatório)"
       translators: 'Tradutores:'
       unavailable: Tradutor %{name} não está disponível.
+      password: Senha
     converter:
-      total_translations: 'Total de traduções: %{total} (%{from_db} a partir do banco
-        de dados, %{from_translator} do tradutor)'
-      translator: Tradutor de implementação para o uso.
-      dry_run: Impressão de ações sem a realização de traduções ou escrita de arquivos.
-      use_database: Armazenar e recuperar as traduções a partir do banco de dados.
-      database_disabled: Banco de dados está desactivado.
-      translator_required: Tradutor necessário.
-      file_unsupported: 'Tipo de arquivo sem suporte: %{file}'
-      translating: Tradução de %{source} para %{target}
-      stats: 'Traduções de banco de dados: %{from_db}, tradutor (a): %{from_translator},
-        não traduzido: %{untranslated}'
+      total_translations: 'Total de traduções: %{total} (%{from_db} de banco de dados,
+        %{from_translator} de tradutor, %{untranslated} não traduzida)'
+      untranslated: 'Untranslated sequências de caracteres:'
+      translator: Implementações de tradutor para usar
+      dry_run: Imprima ações sem realizar traduções ou gravação de arquivos.
+      use_database: Armazenar e recuperar as traduções do banco.
+      database_disabled: Banco de dados é desabilitado.
+      translator_required: Tradutor exigido.
+      file_unsupported: 'Sem suporte de tipo de arquivo: %{file}'
+      translating: Traduzindo %{source} %{target}
+      stats: 'Traduções de banco de dados: %{from_db}, Tradutor: %{from_translator},
+        sem tradução: %{untranslated}'
     database:
-      no_environment: Nenhum ambiente '%{env}' %{file}
+      no_environment: Nenhum ambiente '%{env}' em %{file}
       migrated: Banco de dados migrados.
       created: Banco de dados criado.
-      deleted: Banco de dados excluídos.
+      deleted: Banco de dados excluído.
       could_not_create: Banco de dados não pôde ser criado.
-      config_file: Caminho para o banco de dados de arquivo de configuração
+      config_file: Caminho para o arquivo de configuração de banco de dados
       env: Ambiente de banco de dados
     unicode:
-      invalid_byte: 'Inválido UTF8 bytes: ''%{byte}'''
+      invalid_byte: 'Byte de UTF8 inválido: ''%{byte}'''
+    config:
+      invalid_key: 'Chave de configuração não reconhecida: ''%{key}'''
+      types:
+        string: Sequência de caracteres
+        hash: Hash
+        array: Matriz
+        numeric: Numérico
+        boolean: Boolean

@@ -1,79 +1,103 @@
-# Created by Translatomatic 0.1.1 Sat, 30 Dec 2017 22:26:47 +1030
+# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:37 +1030
 
 ru:
   translatomatic:
     cli:
-      translate: Перевести файлы в целевой районов
-      source_locale: Язык исходный файл
-      debug: Включить отладочный вывод
-      wank: Включение Прогресс-бар
-      share: Доля переводов с переводчиками, которые поддерживают загрузки
-      dry_run: 'Сухого хода: файлы не будут переведены или написаны'
-      locales_required: Один или несколько районов требуется
+      config:
+        subcommand: Команды конфигурации
+        configuration: Конфигурация
+        set: Изменение параметра конфигурации
+        remove: Удаление параметра конфигурации
+        list: Список текущих параметров конфигурации
+        describe: Описать имеющиеся настройки
+        name: Имя
+        type: Тип
+        value: Значение
+        desc: Описание
+      translate:
+        subcommand: Перевод файлов или строк
+        file: Перевести файл в целевой локали
+        string: Перевод строки к целевой локали
+      source_locale: Языковой стандарт исходного файла
+      target_locales: Языки для перевода
+      debug: Включение отладки вывода
+      wank: Включить индикатор выполнения перевода
+      share: Доля переводов с переводчиками, которые поддерживают загрузку
+      dry_run: 'Пробный прогон: файлы не будут переведены или письменные'
+      locales_required: Требуется один или несколько языков
       file_not_found: 'Файл не найден: %{file}'
-      file_unsupported: 'Неподдерживаемый Тип файла: %{file}'
-      using_translator: 'Используя переводчик: %{name}'
-      locales_properties: 'Районов: %{locales}, свойства: %{properties}'
-      display_values: Отображение значений из комплекта ресурсов
-      locales_to_display: Районов для отображения
-      display_sentences: Отображение предложений
-      extract_strings: Извлекать строки из несырьевых файлов
-      list_backends: Список доступных услуг по переводу
-      display_version: Дисплей версия
-      uploading_tmx: Загрузка ТМХ на %{name}
-      translating: Перевод
-      aborted: Несформированность
+      file_unsupported: 'Неподдерживаемый тип файла: %{file}'
+      using_translator: 'С помощью переводчика: %{name}'
+      locales_properties: 'Языки: %{locales}, свойства: %{properties}'
+      display_values: Отображение значения из набора ресурсов
+      locales_to_display: Языки для отображения
+      display_sentences: Показать предложения
+      extract_strings: Извлечение строк из файлов-ресурсов
+      list_backends: Список доступных переводческих услуг
+      display_version: Отображение версии
+      uploading_tmx: Загрузка TMX %{name}
+      translating: Выполняется перевод
+      aborted: Прервана
       file_source: 'Файл: %{file}'
       sentences: 'Предложения:'
-      no_translators: Переводчиков никто не настроен. Используйте команду переводчиков,
-        чтобы увидеть варианты
-      multiple_translators: 'Несколько переводчиков:'
-      select_translator: 'Выберите переводчик (1-%{available}): '
+      no_translators: Переводчики не настроен. Команда переводчиков используется для
+        просмотра параметров
       database:
         subcommand: Команды базы данных
-        search: База данных поиск текста, соответствующего данной строке.
+        search: База данных поиска для соответствия заданной строки текста.
     resource:
-      unknown_locale: Не удалось определить язык
+      unknown_locale: Не удается определить язык
       created_by: Созданная %{app} %{version} %{date}
       error: 'Ошибка: %{message}'
-      loading: Пытаясь загрузить %{file} с помощью %{name}
+      loading: Попытка загрузить %{file}, используя %{name}
     tmx:
-      multiple_origins: Разного происхождения в текстах.
-      multiple_locales: Несколько исходных районов в текстах.
+      multiple_origins: Несколько происхождение в текстах.
+      multiple_locales: Несколько исходных языков в текстах.
     translator:
-      email_required: Адрес электронной почты требуется.
-      password_required: Пароль требуется.
-      google_key_required: Ключ API Google для требуется.
-      google_api_key: Ключ API от Google
-      microsoft_api_key: Ключ Майкрософт API
-      microsoft_key_required: Ключ Microsoft API, необходимые.
-      mymemory_api_key: Ключ API сайт mymemory
+      email_required: Требуется адрес электронной почты.
+      password_required: Требуется пароль.
+      google_key_required: Требуется ключ Google API.
+      google_api_key: Ключ Google API
+      frengly_api_key: Frengly API ключ
+      microsoft_api_key: Microsoft API ключ
+      microsoft_key_required: Требуется ключ Microsoft API.
+      mymemory_api_key: MyMemory API ключ
       email_address: Адрес электронной почты
-      share_response: 'Ответ доля: %{response}'
+      share_response: 'Доля ответов: %{response}'
       yandex_api_key: Ключ API Яндекс
-      yandex_key_required: Ключ API Яндекс требуется
+      yandex_key_required: Яндекс API ключ требуется
       required_option: "(обязательно)"
       translators: 'Переводчики:'
-      unavailable: Переводчик %{name} недоступен.
+      unavailable: Переводчик %{name} недоступна.
+      password: Пароль
     converter:
-      total_translations: 'Общий перевод: %{total} (%{from_db} из базы данных, %{from_translator}
-        от переводчика)'
-      translator: Реализация переводчик использовать.
-      dry_run: Печатать действия, не выполняя перевод или записи файлов.
-      use_database: Хранить и получать переводы из базы данных.
+      total_translations: 'Всего переводы: %{total} (%{from_db} из базы данных, %{from_translator}
+        с переводчиком, %{untranslated} untranslated)'
+      untranslated: 'Непереведенные строки:'
+      translator: Чтобы использовать переводчик реализации
+      dry_run: Печать действия без выполнения переводов или записи файлов.
+      use_database: Хранить и извлекать переводы из базы данных.
       database_disabled: База данных отключена.
-      translator_required: Переводчик требуется.
-      file_unsupported: 'Неподдерживаемый Тип файла: %{file}'
-      translating: Переводя %{source} и %{target}
+      translator_required: Требуется переводчик.
+      file_unsupported: 'Неподдерживаемый тип файла: %{file}'
+      translating: Перевод %{source} %{target}
       stats: 'Переводы из базы данных: %{from_db}, переводчик: %{from_translator},
-        непереведенные: %{untranslated}'
+        untranslated: %{untranslated}'
     database:
-      no_environment: Нет среды '%{env}' в %{file}
-      migrated: Базы данных перенесенных.
-      created: Созданную базу данных.
-      deleted: Удаленная база данных.
+      no_environment: Не окружающей среды «%{env}» %{file}
+      migrated: База данных миграции.
+      created: База данных, созданная.
+      deleted: База данных удалена.
       could_not_create: База данных не может быть создан.
-      config_file: Путь к конфигурационному файлу базы данных
-      env: Среды базы данных
+      config_file: Путь к файлу конфигурации базы данных
+      env: Базы данных окружающей среды
     unicode:
-      invalid_byte: 'Неверный байт в UTF8: ''%{byte}'''
+      invalid_byte: 'Недопустимый UTF8 байт: «%{byte}»'
+    config:
+      invalid_key: 'Непризнанных конфигурационный ключ: «%{key}»'
+      types:
+        string: Строка
+        hash: Хэш
+        array: Массив
+        numeric: Цифровой
+        boolean: Логическое значение
