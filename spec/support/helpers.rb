@@ -1,25 +1,34 @@
 module Helpers
-  include Translatomatic::Util
-
-  def fixture_read(path)
-    File.read(fixture_path(path))
-  end
-
-  def fixture_path(path)
-    File.join(File.dirname(__FILE__), '..', 'fixtures', path)
-  end
+  TEST_SETTINGS_PATH = File.join(File.dirname(__FILE__), "..", "tmp", "config.yml")
 
   def create_test_database
-    log.debug "Setting up test database"
+    #log.debug "Setting up test database"
     options = { database_env: "test" }
     if Translatomatic::Database.enabled?(options)
       db = Translatomatic::Database.new(options)
       db.drop
       db.migrate
     else
-      log.debug "database is disabled"
+      #log.debug "database is disabled"
       TestConfig.instance.database_disabled = true
     end
+  end
+
+  def use_test_config
+    File.delete(TEST_SETTINGS_PATH) if File.exist?(TEST_SETTINGS_PATH)
+    config = Translatomatic::Config.instance
+    config.send(:settings_path=, TEST_SETTINGS_PATH)
+  end
+
+  def fixture_read(path, crlf = false)
+    contents = File.read(fixture_path(path))
+    contents.gsub!(/\r\n/, "\n")
+    contents.gsub!(/\n/, "\r\n") if crlf
+    contents
+  end
+
+  def fixture_path(path)
+    File.join(File.dirname(__FILE__), '..', 'fixtures', path)
   end
 
   def database_disabled?

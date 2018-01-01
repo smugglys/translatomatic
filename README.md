@@ -13,9 +13,18 @@ are currently supported:
 * [Property lists](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
 * HTML
 * XML
+* [Markdown](https://en.wikipedia.org/wiki/Markdown)
 * [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 * [YAML](http://yaml.org/)
 * Text files
+
+The following translation APIs can be used with Translatomatic:
+
+* [Google](https://cloud.google.com/translate/)
+* [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+* [Yandex](https://tech.yandex.com/translate/)
+* [MyMemory](https://mymemory.translated.net/doc/)
+* [Frengly](http://www.frengly.com/api)
 
 Translated strings are saved in a database and reused.
 
@@ -37,30 +46,37 @@ Or install it yourself as:
 
 ## Usage
 
-The command line interface for translation functionality is `translatomatic`. For help on available options, execute:
+This gem provides an executable called `translatomatic`. The `translatomatic` command has a number of functions, not all of which are documented here. For help on available commands and options, execute:
 
     $ translatomatic help
 
-### Translating files
+And for help on a command, execute:
 
-`translatomatic` translates text one sentence or phrase at a time.
-If a file is re-translated, only sentences that have changed are sent to the translator, and the rest are sourced from the local database.
+    $ translatomatic translate help
+    $ translatomatic translate help file
 
-To list available translation services and options:
+## Setup
 
-    $ translatomatic translators
+Check for available translation services and options with the `services` command:
 
-To translate a Java properties file to German and French:
+    $ translatomatic services
 
-    $ translatomatic translate resources/strings.properties de fr
+Options can be specified on the command line, in environment variables, or in translatomatic's configuration file. The configuration file can be modified using translatomatic's internal `config` command. To list all available configuration settings, use:
 
-This would create (or overwrite) `strings_de.properties` and `strings_fr.properties`.
+    $ translatomatic config list
+    $ translatomatic config describe
 
-### Extracting strings from source files
+See also the Configuration section below for more information.
 
-To extract strings from some source files, use the extract command, e.g.
+## Translating files
 
-    $ translatomatic strings file.rb
+When translating files, `translatomatic` translates text one sentence or phrase at a time.  If a file is re-translated, only sentences that have changed since the last translation are sent to the translator, and the rest are sourced from the local database.
+
+To translate a Java properties file to German and French using the Google translator:
+
+    $ translatomatic translate file --translator Google strings.properties de,fr
+
+This would create (or overwrite) `strings_de.properties` and `strings_fr.properties` with translated properties.
 
 ### Displaying strings from a resource bundle
 
@@ -69,10 +85,39 @@ To read and display the `store.description` and `store.name` properties from loc
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
+### Extracting strings from source files
+
+To extract strings from some source files, use the `strings` command, e.g.
+
+    $ translatomatic strings file.rb
+
 ## Configuration
 
+### Translatomatic configuration examples
+
+To set one or more translation services to use:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+Secondary translators will only be used if a translation error occurs when using the first choice.
+
+To set a default list of target locales:
+
+    $ translatomatic config set target_locales en,de,es,fr,it
+
+With `target_locales` set, files can be translated without specifying target locales in the `translate file` command.
+
+    $ translatomatic translate file resources/strings.properties
+
+To display the current configuration, execute
+
+    $ translatomatic config list
+
+### Database configuration
+
 By default, `translatomatic` uses an sqlite3 database in `$HOME/.translatomatic/translatomatic.sqlite3` to store translated strings.
-The database can be changed by creating a `database.yml` file under `$HOME/.translatomatic/database.yml` for the `production` environment, e.g.
+To store translations in a database, you should have an appropriate database adapter installed, such as the `sqlite3` gem. Translatomatic does not install database adapters automatically.
+The database configuration can be changed by creating a `database.yml` file under `$HOME/.translatomatic/database.yml` for the `production` environment, e.g.
 
     production:
       adapter: mysql2

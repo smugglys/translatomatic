@@ -3,6 +3,7 @@ SimpleCov.start do
   add_filter 'spec'
 end
 
+ENV['TEST'] = "1"
 require 'rubygems'
 require "bundler/setup"
 require 'factory_bot'
@@ -32,5 +33,6 @@ RSpec.configure do |config|
   config.before(:suite) do
     FactoryBot.find_definitions
     create_test_database
+    use_test_config
   end
 end

@@ -1,4 +1,5 @@
 module Translatomatic
+  # A string object with an associated locale.
   class String
 
     # @return [String] The string
@@ -16,7 +17,7 @@ module Translatomatic
     attr_reader :offset
 
     def initialize(value, locale, options = {})
-      @value = value || ''
+      @value = value.to_s || ''
       @locale = Translatomatic::Locale.parse(locale)
       @offset = options[:offset] || 0
       @parent = options[:parent]
@@ -27,16 +28,21 @@ module Translatomatic
       @value
     end
 
+    # @return [Number] The length of the string
     def length
       @value.length
     end
 
+    # @return [boolean] True if the string is empty
     def empty?
       @value.empty?
     end
 
-    def match(regex)
-      @value.match(regex)
+    # Invokes value.match
+    # @param pattern [Regexp,String] The regex pattern to match
+    # @return [MatchData] Object describing the match, or nil if no match
+    def match(pattern)
+      @value.match(pattern)
     end
 
     # @return [boolean] true if this string is a substring of another string
@@ -58,38 +64,49 @@ module Translatomatic
     # Find all sentences in the string
     # @return [Array<Translatomatic::String] List of sentences
     def sentences
-      sentences = @value.scan(sentence_regex)
-      strings = []
-      offset = 0
-      sentences.each do |sentence|
-        # find leading and trailing whitespace
-        next if sentence.length == 0
+      substrings(sentence_regex)
+    end
 
-        parts = sentence.match(/^(\s*)(.*?)(\s*)$/).to_a
+    # Find all substrings matching the given regex
+    # @return [Array<Translatomatic::String] List of substrings
+    def substrings(regex)
+      matches = matches(@value, regex)
+      strings = []
+      matches.each do |match|
+        substring = match.to_s
+        # find leading and trailing whitespace
+        next if substring.length == 0
+
+        parts = substring.match(/\A(\s*)(.*?)(\s*)\z/m).to_a
         value = parts[2]
+        offset = match.offset(0)[0]
         offset += parts[1].length  # leading whitespace
         strings << self.class.new(value, locale, offset: offset, parent: self)
-        offset += value.length + parts[3].length
       end
 
-      # return [self] if there's only one sentence and it's equal to self
+      # return [self] if there's only one substring and it's equal to self
       strings.length == 1 && strings[0].eql?(self) ? [self] : strings
     end
 
+    # @return [boolean] true if other is a {Translatomatic::String} with
+    #   the same value and locale.
     def eql?(other)
       other.kind_of?(Translatomatic::String) && other.hash == hash
     end
 
+    # (see #eql?)
     def ==(other)
       eql?(other)
     end
 
+    # @!visibility private
     def hash
       [value, locale].hash
     end
 
     private
 
+    # @!visibility private
     class Script
       attr_reader :language
       attr_reader :delimiter      # sentence delimiter
@@ -141,13 +158,24 @@ module Translatomatic
       @script_data = script_data
     end
 
+    def matches(s, re)
+      start_at = 0
+      matches = []
+      while(m = s.match(re, start_at))
+        break if m.to_s.empty?
+        matches.push(m)
+        start_at = m.end(0)
+      end
+      matches
+    end
+
     def sentence_regex
       script = script_data
       if script.trailing_space
-        regex = /.*?(?:#{script.delimiter}\s+|$)/
+        regex = /.*?(?:#{script.delimiter}\s+|\z)/m
       else
         # no trailing space after delimiter
-        regex = /.*?(?:#{script.delimiter}|$)/
+        regex = /.*?(?:#{script.delimiter}|\z)/m
       end
     end
 

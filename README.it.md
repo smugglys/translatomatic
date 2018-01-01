@@ -2,16 +2,25 @@
 
 # Translatomatic
 
-Converte file di testo da una lingua all'altra. I seguenti formati di filesono attualmente supportati::
+Converte file di testo da una lingua all'altra. I seguenti formati di file sono attualmente supportati:
 
 - [Proprietà](https://en.wikipedia.org/wiki/.properties)
 - RESW (risorse di Windows, file)
 - [Elenchi di proprietà](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
 - HTML
 - XML
+- [Markdown](https://en.wikipedia.org/wiki/Markdown)
 - [XCode stringhe](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 - [YAML](http://yaml.org/)
 - I file di testo
+
+La seguente traduzione API può essere utilizzata con Translatomatic:
+
+- [Google](https://cloud.google.com/translate/)
+- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
 
 Tradotto le stringhe vengono salvati in un database e riutilizzati.
 
@@ -33,29 +42,37 @@ O installare da soli come:
 
 ## Utilizzo
 
-L'interfaccia a riga di comando per la traduzione funzionalità `translatomatic`. Per la guida sulle opzioni disponibili, eseguire:
+Questo gioiello fornisce un eseguibile chiamato `translatomatic`. Il `translatomatic` comando ha un numero di funzioni, dei quali non tutti sono documentati qui. Per aiuto sulle opzioni e comandi disponibili, eseguire:
 
     $ translatomatic help
 
-### La traduzione di file
+E per un aiuto su un comando, eseguire:
 
-`translatomatic` traduce il testo una frase o una frase alla volta. Se un file è ri-tradotto, solo frasi che hanno cambiato inviati al traduttore, e il resto provengono dalla banca dati locale.
+    $ translatomatic translate help
+    $ translatomatic translate help file
 
-Elenco di servizi di traduzione ed opzioni:
+## Programma di installazione
 
-    $ translatomatic translators
+Controllare i servizi di traduzione disponibili e opzioni con la `services` comando:
 
-Per tradurre un file delle proprietà Java per il tedesco e il francese:
+    $ translatomatic services
 
-    $ translatomatic translate resources/strings.properties de fr
+Opzioni possono essere specificate nella riga di comando, nelle variabili di ambiente, o nel file di configurazione di translatomatic. Il file di configurazione possa essere modificato utilizzando translatomatic interna del `config` comando. Per elencare tutte le impostazioni di configurazione disponibili, utilizzare:
 
-Questo permetterebbe di creare (o sovrascrivere) `strings_de.properties` e `strings_fr.properties`.
+    $ translatomatic config list
+    $ translatomatic config describe
 
-### Estrarre le stringhe dal file di origine
+Vedi anche la sezione di configurazione sotto per ulteriori informazioni.
 
-Per estrarre le stringhe da alcuni file di origine, utilizzare il comando di estrazione, ad es.
+## La traduzione di file
 
-    $ translatomatic strings file.rb
+Quando si converte il file, `translatomatic` traduce il testo una frase o una frase alla volta. Se un file è ri-tradotto, soli frasi che sono stati modificati dopo l'ultima traduzione vengono inviati al traduttore, e il resto sono provenienti dal database locale.
+
+Per tradurre un file di proprietà Java in tedesco e francese utilizzando il traduttore di Google:
+
+    $ translatomatic translate file --translator Google strings.properties de,fr
+
+Questo permetterebbe di creare (o sovrascrivere) `strings_de.properties` e `strings_fr.properties` con proprietà tradotta.
 
 ### Visualizzazione di stringhe da un pacchetto di risorse
 
@@ -64,9 +81,37 @@ Per leggere e visualizzare il `store.description` e `store.name` proprietà dal 
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
+### Estrarre le stringhe dal file di origine
+
+Per estrarre le stringhe da alcuni file di origine, utilizzare il `strings` comando, ad es.
+
+    $ translatomatic strings file.rb
+
 ## Configurazione
 
-Per impostazione predefinita, `translatomatic` utilizza un database sqlite3 in `$HOME/.translatomatic/translatomatic.sqlite3` per memorizzare stringhe tradotte. Il database può essere modificato con la creazione di un `database.yml` file sotto `$HOME/.translatomatic/database.yml` per il `production` ambiente, ad es.
+### Esempi di configurazione di Translatomatic
+
+Per impostare uno o più servizi di traduzione da utilizzare:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+Traduttori secondari solo essere utilizzati se si verifica un errore di traduzione quando si utilizza la prima scelta.
+
+Per impostare un elenco predefinito delle impostazioni locali di destinazione:
+
+    $ translatomatic config set target_locales en,de,es,fr,it
+
+Con `target_locales` impostata, il file possono essere tradotto senza specificare impostazioni locali di destinazione nella `translate file` comando.
+
+    $ translatomatic translate file resources/strings.properties
+
+Per visualizzare la configurazione corrente, eseguire
+
+    $ translatomatic config list
+
+### Configurazione del database
+
+Per impostazione predefinita, `translatomatic` utilizza un database sqlite3 in `$HOME/.translatomatic/translatomatic.sqlite3` per memorizzare stringhe tradotte. Per memorizzare traduzioni in un database, è necessario un adattatore di database appropriato installato, come il `sqlite3` gemma. Translatomatic non installa automaticamente schede di database. La configurazione del database può essere modificata mediante la creazione di un `database.yml` file sotto `$HOME/.translatomatic/database.yml` per il `production` ambiente, ad es.
 
     production:
       adapter: mysql2
@@ -85,8 +130,8 @@ Le segnalazioni di Bug e tirare le richieste sono i benvenuti su GitHub a https:
 
 Il gioiello è disponibile come open source sotto i termini della [La Licenza MIT](https://opensource.org/licenses/MIT).
 
-## Codice di Condotta
+## codice di condotta
 
 Tutti interagendo con il Translatomatic progetto di basi di codice, issue tracker, chat e mailing list dovrebbe seguire l' [codice di condotta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.0 2017-12-29 00:07_
+_Creato da Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:19 +1030_

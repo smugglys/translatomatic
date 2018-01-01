@@ -1,28 +1,22 @@
 require 'active_record'
 
+# Database functions
 class Translatomatic::Database
 
-  include Translatomatic::Util
-
   class << self
-    attr_reader :options
-
-    # @param [Hash<Symbol,Object>] options Database options
-    # @return True if we can connect to the database
+    # @param options [Hash<Symbol,Object>] Database options
+    # @return [boolean] True if we can connect to the database
     def enabled?(options = {})
       new(options).connect
     end
-
-    private
-
-    include Translatomatic::DefineOptions
   end
 
   def initialize(options = {})
     @env = options[:database_env] || DEFAULT_ENV
     @db_config = database_config(@env, options)
     @env_config = @db_config
-    raise "no environment '#{@env}' in #{db_config_path}" unless @env_config[@env]
+    raise t("database.no_environment",
+      env: @env, file: db_config_path) unless @env_config[@env]
     @env_config = @env_config[@env] || {}
 
     ActiveRecord::Base.configurations = @db_config
@@ -70,7 +64,7 @@ class Translatomatic::Database
     return false unless connect
     ActiveRecord::Migrator.migrate(MIGRATIONS_PATH)
     ActiveRecord::Base.clear_cache!
-    log.debug "Database migrated."
+    log.debug t("database.migrated")
   end
 
   # Create the database
@@ -78,10 +72,11 @@ class Translatomatic::Database
   def create
     begin
       ActiveRecord::Tasks::DatabaseTasks.create(@env_config)
-      log.debug "Database created."
+      log.debug t("database.created")
       true
     rescue LoadError => e
-      log.debug "Database could not be created: " + e.message
+      log.debug t("database.could_not_create")
+      log.error e.message
       false
     end
   end
@@ -91,10 +86,13 @@ class Translatomatic::Database
   def drop
     disconnect
     ActiveRecord::Tasks::DatabaseTasks.drop(@env_config)
-    log.debug "Database deleted."
+    log.debug t("database.deleted")
   end
 
   private
+
+  include Translatomatic::Util
+  include Translatomatic::DefineOptions
 
   def sqlite_database_exists?
     @env_config['adapter'] == 'sqlite3' && File.exist?(@env_config['database'])
@@ -113,9 +111,9 @@ class Translatomatic::Database
   DEFAULT_ENV = "production"
 
   define_options(
-    { name: :database_config, description: "Database config file",
+    { name: :database_config, desc: t("database.config_file"),
       default: DEFAULT_CONFIG },
-    { name: :database_env, description: "Database environment",
+    { name: :database_env, desc: t("database.env"),
       default: DEFAULT_ENV })
 
   # return path to database config

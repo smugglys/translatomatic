@@ -41,7 +41,7 @@ module Translatomatic::EscapedUnicode
         )+ |
         [\x80-\xc1\xf5-\xff]       # invalid
         )/nx) { |c|
-          c.size == 1 and raise "Invalid utf8 byte: '#{c}'"
+          c.size == 1 and raise t("unicode.invalid_byte", byte: c)
           s = c.encode("utf-16be", "utf-8").unpack('H*')[0]
           s.force_encoding(::Encoding::ASCII_8BIT)
           s.gsub!(/.{4}/n, '\\\\u\&')

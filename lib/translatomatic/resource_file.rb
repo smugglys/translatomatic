@@ -1,5 +1,6 @@
 
 module Translatomatic
+  # Provides methods to create resource files of various types.
   module ResourceFile
     class << self
       include Translatomatic::Util
@@ -8,8 +9,8 @@ module Translatomatic
     # Load a resource file. If locale is not specified, the locale of the
     # file will be determined from the filename, or else the current default
     # locale will be used.
-    # @param [String] path Path to the resource file
-    # @param [String] locale Locale of the resource file
+    # @param path [String] Path to the resource file
+    # @param locale [String] Locale of the resource file
     # @return [Translatomatic::ResourceFile::Base] The resource file, or nil
     #   if the file type is unsupported.
     def self.load(path, locale = nil)
@@ -17,7 +18,8 @@ module Translatomatic
       modules.each do |mod|
         # match on entire filename to support extensions containing locales
         if extension_match(mod, path)
-          log.debug("attempting to load #{path.to_s} using #{mod.name.demodulize}")
+          log.debug(t("resource.loading", file: path,
+            name: mod.name.demodulize))
           file = mod.new(path, locale)
           return file if file.valid?
         end
@@ -26,7 +28,7 @@ module Translatomatic
     end
 
     # Find all resource files under the given directory. Follows symlinks.
-    # @param [String, Pathname] path The path to search from
+    # @param path [String, Pathname] The path to search from
     # @return [Array<Translatomatic::ResourceFile>] Resource files found
     def self.find(path, options = {})
       files = []
@@ -71,6 +73,6 @@ require 'translatomatic/resource_file/text'
 require 'translatomatic/resource_file/xml'
 require 'translatomatic/resource_file/html'
 require 'translatomatic/resource_file/markdown'
+require 'translatomatic/resource_file/xcode_strings'
 require 'translatomatic/resource_file/plist'
 require 'translatomatic/resource_file/resw'
-require 'translatomatic/resource_file/xcode_strings'

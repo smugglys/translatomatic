@@ -1,0 +1,102 @@
+# Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:41 +1030 によって作成されました。
+
+ja:
+  translatomatic:
+    cli:
+      config:
+        subcommand: 構成コマンド
+        configuration: 構成
+        set: 構成設定を変更します。
+        remove: 構成設定を削除します。
+        list: リストの現在の構成設定
+        describe: 使用可能な構成設定について説明します。
+        name: 名
+        type: タイプ
+        value: 値
+        desc: 説明
+      translate:
+        subcommand: ファイルまたは文字列を翻訳します。
+        file: ターゲットのロケールにファイルを翻訳します。
+        string: ターゲット ロケールを文字列に変換します。
+      source_locale: ソース ファイルのロケール
+      target_locales: 変換するロケール
+      debug: デバッグ出力を有効にします。
+      wank: 翻訳進行状況バーを有効にします。
+      share: アップロードをサポートする翻訳者と翻訳を共有します。
+      dry_run: '乾燥を実行: ファイルはない翻訳されるか書かれて'
+      locales_required: 必要な 1 つまたは複数のロケール
+      file_not_found: ファイルが見つかりません:%{file}
+      file_unsupported: 'ファイルの種類はサポートされていません: %{file}'
+      using_translator: '翻訳を使用して: %{name}'
+      locales_properties: 'ロケール: %{locales} のロケール プロパティ: %{properties}'
+      display_values: リソース バンドルから値を表示します。
+      locales_to_display: 表示するロケール
+      display_sentences: 文章を表示します。
+      extract_strings: 非リソース ファイルから文字列を抽出します。
+      list_backends: 一覧翻訳サービス
+      display_version: バージョンの表示
+      uploading_tmx: "%{name} に TMX をアップロードします。"
+      translating: 翻訳しています
+      aborted: 中止
+      file_source: 'ファイル: %{file}'
+      sentences: '文:'
+      database:
+        subcommand: データベース コマンド
+        search: 指定した文字列と一致する文字列の検索データベースです。
+    resource:
+      unknown_locale: ロケールを決定できません。
+      created_by: "%{app} %{version} %{date} によって作成されました。"
+      error: 'エラー: %{message}'
+      loading: "%{file} %{name} を使用してロードしようと"
+    tmx:
+      multiple_origins: テキストの複数の起源。
+      multiple_locales: テキストに複数のソースのロケール。
+    translator:
+      email_required: メール アドレスが必要です。
+      password_required: パスワードが必要です。
+      google_key_required: Google の API キーが必要です。
+      google_api_key: Google の API キー
+      frengly_api_key: Frengly API キー
+      microsoft_api_key: マイクロソフトの API キー
+      microsoft_key_required: マイクロソフトの API キーが必要です。
+      mymemory_api_key: MyMemory API キー
+      email_address: メール アドレス
+      share_response: '応答を共有: %{response}'
+      yandex_api_key: Yandex API キー
+      yandex_key_required: Yandex の API キーが必要です。
+      required_option: "(必須)"
+      translators: 'すべての翻訳者:'
+      configured: '構成された翻訳者:'
+      unavailable: 翻訳 %{name} は使用できません。
+      no_translators: 翻訳者は構成されていません。
+      password: パスワード
+    converter:
+      total_translations: '翻訳を合計: %{total} (%{from_db} %{from_translator}、%{untranslated}
+        非翻訳の翻訳者からのデータベースから)'
+      untranslated: '未翻訳の文字列:'
+      translator: 翻訳の実装を使用するには
+      dry_run: 翻訳の実行やファイルの書き込みせずにアクションを印刷します。
+      use_database: 保存し、データベースから翻訳を取得します。
+      database_disabled: データベースは無効です。
+      translator_required: 必要な翻訳。
+      file_unsupported: 'ファイルの種類はサポートされていません: %{file}'
+      translating: "%{source} %{target} の翻訳"
+      stats: 翻訳からデータベース:%{from_db},翻訳:%{from_translator},翻:%{untranslated}
+    database:
+      no_environment: ない環境 '%{env}' %{file}
+      migrated: データベースの移行。
+      created: データベースを作成します。
+      deleted: データベースは削除されます。
+      could_not_create: データベースを作成できませんでした。
+      config_file: データベース構成ファイルへのパス
+      env: データベース環境
+    unicode:
+      invalid_byte: '無効な UTF8 バイト: ''%{byte}'''
+    config:
+      invalid_key: '認識できないコンフィギュレーション キー: ''%{key}'''
+      types:
+        string: 文字列
+        hash: ハッシュ
+        array: 配列
+        numeric: 数値
+        boolean: ブール値

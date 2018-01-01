@@ -1,0 +1,105 @@
+# Créé par Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:40 +1030
+
+fr:
+  translatomatic:
+    cli:
+      config:
+        subcommand: Commandes de configuration
+        configuration: Configuration
+        set: Modifier un paramètre de configuration
+        remove: Supprimer un paramètre de configuration
+        list: Liste des paramètres de configuration actuels
+        describe: Décrire les paramètres de configuration disponibles
+        name: Nom
+        type: Type de
+        value: Valeur
+        desc: Description
+      translate:
+        subcommand: Traduire des fichiers ou des chaînes
+        file: Traduire un fichier de paramètres régionaux cibles
+        string: Traduire une chaîne de paramètres régionaux cibles
+      source_locale: Les paramètres régionaux du fichier source
+      target_locales: Paramètres régionaux pour la traduction
+      debug: Activer la sortie de débogage
+      wank: Activer la barre de progression de traduction
+      share: Partager les traductions avec des traducteurs qui prennent en charge
+        le téléchargement
+      dry_run: 'Galop d’essai : fichiers ne seront pas traduits ou écrits'
+      locales_required: Un ou plusieurs endroits requis
+      file_not_found: 'Fichier non trouvé : %{file}'
+      file_unsupported: 'Non pris en charge le type de fichier : %{file}'
+      using_translator: 'À l’aide du traducteur : %{name}'
+      locales_properties: 'Paramètres régionaux : %{locales}, propriétés : %{properties}'
+      display_values: Afficher les valeurs d’un groupe de ressources
+      locales_to_display: Paramètres régionaux pour afficher
+      display_sentences: Afficher les phrases
+      extract_strings: Extraire les chaînes des fichiers autres que les ressources
+      list_backends: Liste des services de traduction disponibles
+      display_version: Version d’affichage
+      uploading_tmx: Téléchargement de TMX %{name}
+      translating: Traduction en cours
+      aborted: Abandonnée
+      file_source: 'Fichier : %{file}'
+      sentences: 'Phrases :'
+      database:
+        subcommand: Commandes de base de données
+        search: Base de données de recherche pour texte correspondant de la chaîne
+          donnée.
+    resource:
+      unknown_locale: Impossible de déterminer les paramètres régionaux
+      created_by: Créé par %{app} %{version} %{date}
+      error: 'Erreur : %{message}'
+      loading: La tentative de chargement %{file} à l’aide de %{name}
+    tmx:
+      multiple_origins: Origines multiples dans les textes.
+      multiple_locales: Plusieurs localités de source dans les textes.
+    translator:
+      email_required: Adresse de courriel requise.
+      password_required: Mot de passe requis.
+      google_key_required: Clé d’API Google requise.
+      google_api_key: Clé API Google
+      frengly_api_key: Frengly API key
+      microsoft_api_key: Clé API de Microsoft
+      microsoft_key_required: Clé de Microsoft API requis.
+      mymemory_api_key: MyMemory API key
+      email_address: Adresse de courriel
+      share_response: 'Partager la réponse : %{response}'
+      yandex_api_key: Clé API de Yandex
+      yandex_key_required: Clé d’API Yandex requise.
+      required_option: "(obligatoire)"
+      translators: 'Tous les traducteurs :'
+      configured: 'Traducteurs configurés :'
+      unavailable: Traducteur %{name} n’est pas disponible.
+      no_translators: Aucun traducteurs ne sont configurés.
+      password: Mot de passe
+    converter:
+      total_translations: 'Total des traductions : %{total} (%{from_db} de la base
+        de données, %{from_translator} de traducteur, %{untranslated} non traduite)'
+      untranslated: 'Chaînes non traduites :'
+      translator: Implémentations de traducteur
+      dry_run: Imprimer des actions sans effectuer des traductions ou écrire des fichiers.
+      use_database: Stocker et récupérer des traductions depuis la base de données.
+      database_disabled: Base de données est désactivée.
+      translator_required: Traducteur requis.
+      file_unsupported: 'Non pris en charge le type de fichier : %{file}'
+      translating: Traduction de %{source} %{target}
+      stats: 'Traductions de base de données : %{from_db}, traducteur : %{from_translator},
+        non traduite : %{untranslated}'
+    database:
+      no_environment: Aucun environnement « %{env} » %{file}
+      migrated: Base de données migrée.
+      created: Base de données créée.
+      deleted: Base de données supprimée.
+      could_not_create: Base de données n’a pas pu être créé.
+      config_file: Chemin vers le fichier de configuration de base de données
+      env: Environnement de base de données
+    unicode:
+      invalid_byte: 'Les octets UTF8 non valide : « %{byte} »'
+    config:
+      invalid_key: 'Clé de configuration non reconnue : « %{key} »'
+      types:
+        string: Chaîne
+        hash: Hachage
+        array: Tableau
+        numeric: Numérique
+        boolean: Boolean

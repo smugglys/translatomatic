@@ -13,7 +13,7 @@ function remote_size {
 
 if [ "$1" == "before" ]; then
   gem install sqlite3  # enable database tests
-  
+
   local_size=$(wc -c < $REPORTER_CMD 2>/dev/null)
   remote_size=$(remote_size $REPORTER_URL)
   if [ "$local_size" != "$remote_size" ]; then

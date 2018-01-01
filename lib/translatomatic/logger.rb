@@ -1,6 +1,10 @@
+# Logging
 class Translatomatic::Logger
+
+  # @return [ProgressBar] A progress bar
   attr_accessor :progressbar
 
+  # @return [Translatomatic::Logger] create a new logger instance
   def initialize
     @logger = Logger.new(STDOUT)
     @logger.level = ENV['DEBUG'] ? Logger::DEBUG : Logger::INFO
@@ -9,15 +13,19 @@ class Translatomatic::Logger
     end
   end
 
-  def method_missing(name, *args)
-    handle_logger_method(name, args) if @logger.respond_to?(name)
-  end
-
+  # Called at the end of translatomatic to clear the progress bar.
   def finish
-    @progressbar.finish if @progressbar
+    @finished ||= begin
+      @progressbar.finish if @progressbar
+      true
+    end
   end
 
   private
+
+  def method_missing(name, *args)
+    handle_logger_method(name, args) if @logger.respond_to?(name)
+  end
 
   def handle_logger_method(name, args)
     @progressbar.clear if @progressbar

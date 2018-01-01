@@ -3,12 +3,14 @@ require 'bing_translator'
 module Translatomatic
   module Translator
 
+    # Interface to the MyMemory translation API
+    # @see https://mymemory.translated.net/doc/
     class MyMemory < Base
 
       define_options(
-        { name: :mymemory_api_key, desc: "MyMemory API key", use_env: true },
-        { name: :mymemory_email, desc: "Email address", use_env: true }
-        )
+        { name: :mymemory_api_key, desc: t("translator.mymemory_api_key"), use_env: true },
+        { name: :mymemory_email, desc: t("translator.email_address"), use_env: true }
+      )
 
       # Create a new MyMemory translator instance
       def initialize(options = {})
@@ -26,7 +28,8 @@ module Translatomatic
       #end
 
       # Upload a set of translations to MyMemory
-      # @param [Translatomatic::TMX::Document] TMX document
+      # @param tmx [Translatomatic::TMX::Document] TMX document
+      # @return [void]
       def upload(tmx)
         request = Translatomatic::HTTPRequest.new(UPLOAD_URL)
         request.start do |http|
@@ -37,7 +40,8 @@ module Translatomatic
             request.param(key: :private, value: 0)
           ]
           response = request.post(body, multipart: true)
-          log.debug("share response: #{response.body}")
+          log.debug(t("translator.share_response",
+            response: response.body.inspect))
         end
       end
 
@@ -53,7 +57,7 @@ module Translatomatic
       def fetch_translation(request, string, from, to)
         response = request.get({
             langpair: from.to_s + "|" + to.to_s,
-            q: string
+            q: string  # multiple q strings not supported (tested 20180101)
           }.merge(@query_options)
         )
         data = JSON.parse(response.body)

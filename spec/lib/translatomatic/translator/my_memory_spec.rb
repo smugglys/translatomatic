@@ -1,5 +1,6 @@
 RSpec.describe Translatomatic::Translator::MyMemory do
   it "creates a translator" do
+    ENV["MYMEMORY_API_KEY"] = nil
     t = described_class.new
     expect(t).to be
   end

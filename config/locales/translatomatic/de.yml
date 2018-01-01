@@ -1,0 +1,104 @@
+# Erstellt von Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:39 +1030
+
+de:
+  translatomatic:
+    cli:
+      config:
+        subcommand: Konfigurationsbefehle
+        configuration: Konfiguration
+        set: Ändern Sie eine Konfigurationseinstellung
+        remove: Entfernen Sie eine Konfigurationseinstellung
+        list: Liste aktuellen Konfigurationseinstellungen
+        describe: Verfügbaren Konfigurationseinstellungen zu beschreiben
+        name: Name
+        type: Typ
+        value: Wert
+        desc: Beschreibung
+      translate:
+        subcommand: Dateien oder Zeichenfolgen übersetzen
+        file: Eine Datei zum Ziel Gebietsschemas zu übersetzen
+        string: Eine Zeichenfolge, die Ziel-Gebietsschemas zu übersetzen
+      source_locale: Das Gebietsschema der Quelldatei
+      target_locales: Sprachen zu übersetzen
+      debug: Aktiviere Debug-Ausgabe
+      wank: Übersetzung-Statusanzeige aktivieren
+      share: Teilen Sie Übersetzungen mit Übersetzern, die Upload unterstützen
+      dry_run: 'Dry Run: Dateien werden nicht übersetzt oder geschrieben werden'
+      locales_required: Eine oder mehrere Gebietsschemas erforderlich
+      file_not_found: 'Datei nicht gefunden: %{file}'
+      file_unsupported: 'Nicht unterstützte Datei-Typ: %{file}'
+      using_translator: 'Mit Übersetzer: %{name}'
+      locales_properties: 'Gebietsschemas: %{locales}, Eigenschaften: %{properties}'
+      display_values: Werte aus einer Ressourcenbündel anzeigen
+      locales_to_display: Ländereinstellungen anzeigen
+      display_sentences: Display-Sätze
+      extract_strings: Saiten aus nicht-Ressource-Dateien extrahieren
+      list_backends: Liste der verfügbaren Übersetzungsdienste
+      display_version: Display-version
+      uploading_tmx: Hochladen von TMX %{name}
+      translating: Wird übersetzt
+      aborted: Abgebrochen
+      file_source: 'Datei: %{file}'
+      sentences: 'Sätze:'
+      database:
+        subcommand: Datenbank-Befehle
+        search: Suchdatenbank für Text passend die angegebene Zeichenfolge.
+    resource:
+      unknown_locale: Nicht in der Lage, Sprachumgebung zu bestimmen
+      created_by: Erstellt von %{app} %{version} %{date}
+      error: 'Fehler: %{message}'
+      loading: "%{file} %{name} mit laden"
+    tmx:
+      multiple_origins: Mehrere Wurzeln in Texten.
+      multiple_locales: Mehreren Quelle Gebietsschemas in Texten.
+    translator:
+      email_required: E-Mail-Adresse erforderlich.
+      password_required: Passwort erforderlich.
+      google_key_required: Google-API-Schlüssel erforderlich.
+      google_api_key: Google-API-Schlüssel
+      frengly_api_key: Frengly API-Schlüssel
+      microsoft_api_key: Microsoft-API-Schlüssel
+      microsoft_key_required: Microsoft-API-Schlüssel erforderlich.
+      mymemory_api_key: MyMemory-API-Schlüssel
+      email_address: E-Mail-Adresse
+      share_response: 'Teil Antwort: %{response}'
+      yandex_api_key: Yandex-API-Schlüssel
+      yandex_key_required: Yandex-API-Schlüssel erforderlich.
+      required_option: "(erforderlich)"
+      translators: 'Alle Übersetzer:'
+      configured: 'Konfigurierten Übersetzer:'
+      unavailable: Übersetzer-%{name} ist nicht verfügbar.
+      no_translators: Keine Übersetzer konfiguriert sind.
+      password: Passwort
+    converter:
+      total_translations: 'Total translations: %{total} (%{from_db} aus der Datenbank,
+        %{from_translator} von übersetzer, %{untranslated} unübersetzte)'
+      untranslated: 'Nicht übersetzte Zeichenfolgen:'
+      translator: Übersetzer-Implementierungen verwenden
+      dry_run: Aktionen ohne Durchführung von Übersetzungen oder Schreiben von Dateien
+        zu drucken.
+      use_database: Speichern und Abrufen von Übersetzungen aus der Datenbank.
+      database_disabled: Datenbank ist deaktiviert.
+      translator_required: Übersetzer erforderlich.
+      file_unsupported: 'Nicht unterstützte Datei-Typ: %{file}'
+      translating: Übersetzung von %{source} %{target}
+      stats: 'Übersetzungen aus der Datenbank: %{from_db}, translator: %{from_translator},
+        un: %{untranslated}'
+    database:
+      no_environment: Keine Umwelt '%{env}' %{file}
+      migrated: Datenbank migriert.
+      created: Datenbank erstellt.
+      deleted: Datenbank gelöscht.
+      could_not_create: Datenbank konnte nicht erstellt werden.
+      config_file: Pfad zu der Datenbank-Konfiguration-Datei
+      env: Datenbank-Umgebung
+    unicode:
+      invalid_byte: 'Ungültigen UTF-8-Byte: ''%{byte}'''
+    config:
+      invalid_key: 'Unerkannte Konfigurationsschlüssel: "%{key}"'
+      types:
+        string: Zeichenfolge
+        hash: Hash
+        array: Array
+        numeric: Numerische
+        boolean: Boolescher Wert

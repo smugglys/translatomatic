@@ -17,15 +17,12 @@ RSpec.describe Translatomatic::Model::Text do
 
   it "creates a text record translated from another record" do
     skip if database_disabled?
-    text = described_class.new
-    text.value = "this is some text"
-    text.locale = @locale_en
+
+    text = FactoryBot.build(:text_model, locale: @locale_en)
     expect(text.save).to be_truthy
 
-    translated = described_class.new
-    translated.value = "la la la french"
-    translated.locale = @locale_fr
-    translated.from_text = text
+    translated = FactoryBot.build(:text_model, locale: @locale_fr,
+      from_text: text)
     expect(translated.save).to be_truthy
 
     text.reload

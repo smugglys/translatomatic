@@ -2,24 +2,38 @@ require 'securerandom'
 require 'net/http'
 
 module Translatomatic
+  # HTTP request
+  # wrapper for Net::HTTP functionality
   class HTTPRequest
 
+    # @return [String] the text to use to denote multipart boundaries. By
+    #   default, a random hexadecimal string is used.
     attr_accessor :multipart_boundary
 
+    # @param url [String,URI] URL of the request
+    # @return [Translatomatic::HTTPRequest] Create a new request
     def initialize(url)
       @uri = url.respond_to?(:host) ? url : URI.parse(url)
       @multipart_boundary = SecureRandom.hex(16)
     end
 
+    # Start the HTTP request. Yields a http object.
+    # @param options [Hash<Symbol,Object>] Request options
+    # @return [Object] Result of the block
     def start(options = {})
       options = options.merge(use_ssl: @uri.scheme == "https")
+      result = nil
       Net::HTTP.start(@uri.host, @uri.port, options) do |http|
         @http = http
-        yield http
+        result = yield http
       end
       @http = nil
+      result
     end
 
+    # Send a HTTP GET request
+    # @param query [Hash<String,String>] Optional query parameters
+    # @return [Net::HTTP::Response]
     def get(query = nil)
       uri = @uri
       if query
@@ -31,6 +45,9 @@ module Translatomatic
       send_request(request)
     end
 
+    # Send an HTTP POST request
+    # @param body [String,Hash] Body of the request
+    # @return [Net::HTTP::Response]
     def post(body, options = {})
       request = Net::HTTP::Post.new(@uri)
       request['User-Agent'] = USER_AGENT
@@ -40,6 +57,7 @@ module Translatomatic
         content_type = "multipart/form-data; boundary=#{@multipart_boundary}"
         request.body = multipartify(body)
       elsif body.kind_of?(Hash)
+        # set_form_data does url encoding
         request.set_form_data(body)
       else
         request.body = body
@@ -49,10 +67,14 @@ module Translatomatic
       send_request(request)
     end
 
+    # Create a file parameter for a multipart POST request
+    # @return [FileParam] A new file parameter
     def file(*args)
       FileParam.new(*args)
     end
 
+    # Create a parameter for a multipart POST request
+    # @return [Param] A new parameter
     def param(*args)
       Param.new(*args)
     end
@@ -65,16 +87,18 @@ module Translatomatic
     class Param
       attr_accessor :key, :value
 
-      def initialize(key:, value:)
-        @key = key
-        @value = value
-      end
-
+      # @return [String] Representation of this parameter as it appears
+      #   within a multipart post request.
       def to_s
         return header(header_data) + "\r\n#{value}\r\n"
       end
 
       private
+
+      def initialize(key:, value:)
+        @key = key
+        @value = value
+      end
 
       def header_data
         name = CGI::escape(key.to_s)
@@ -97,19 +121,20 @@ module Translatomatic
     class FileParam < Param
       attr_accessor :filename, :content, :mime_type
 
-      def initialize(key:, filename:, content:, mime_type:)
-        @key = key
-        @filename = filename
-        @content = content
-        @mime_type = mime_type
-      end
-
+      # (see Param#to_s)
       def to_s
         return header(header_data) +
           header("Content-Type": mime_type) + "\r\n#{content}\r\n"
       end
 
       private
+
+      def initialize(key:, filename:, content:, mime_type:)
+        @key = key
+        @filename = filename
+        @content = content
+        @mime_type = mime_type
+      end
 
       def header_data
         super.merge({ filename: %Q("#{filename}") })
@@ -124,7 +149,11 @@ module Translatomatic
     end
 
     def send_request(req)
-      response = @http.request(req)
+      if @http
+        response = @http.request(req)
+      else
+        response = start { |http| http.request(req) }
+      end
       raise response.body unless response.kind_of? Net::HTTPSuccess
       response
     end

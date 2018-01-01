@@ -2,16 +2,25 @@
 
 # Translatomatic
 
-変換テキストファイルから一言語ます。 以下のファイル形式は現在サポートされているのは、:
+変換テキストファイルから一言語ます。 以下のファイル形式 は現在サポートされているのは、
 
 - [特性](https://en.wikipedia.org/wiki/.properties)
 - RESW(Windows資源ファイル)
 - [物件リスト](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
 - HTML
 - XML
+- [値下げ](https://en.wikipedia.org/wiki/Markdown)
 - [XCodeの文字列](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
 - [YAML](http://yaml.org/)
 - テキストファイル
+
+次の翻訳 Api は、Translatomatic で使用できます。
+
+- [Google](https://cloud.google.com/translate/)
+- [マイクロソフト](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
 
 翻訳文字列に保存されたデータベースの再利用されます。
 
@@ -33,29 +42,37 @@ gem 'translatomatic'
 
 ## 用途
 
-のコマンドラインインターフェース翻訳のための機能を `translatomatic`ます。 めに利用可能なオプションは、実行す:
+この宝石と呼ばれる実行可能ファイルを提供します。 `translatomatic`ます。 、 `translatomatic` コマンドは、いくつかのここに記載されているすべての機能を持ちます。 利用可能なコマンドとオプションに関するヘルプを実行します。
 
     $ translatomatic help
 
-### 翻訳ファイル
+ヘルプ コマンドが実行します。
 
-`translatomatic` 変換テキストの文章や言葉です。 場合はファイルを再翻訳の文言変更への翻訳に対しても、それぞれの地域からデータベースです。
+    $ translatomatic translate help
+    $ translatomatic translate help file
 
-るシリコーンコーティング翻訳サービス-オプション:
+## セットアップ
 
-    $ translatomatic translators
+利用可能な翻訳サービスとオプションを確認、 `services` コマンド:
 
-するJavaプロパティファイルをドイツ語、フランス語:
+    $ translatomatic services
 
-    $ translatomatic translate resources/strings.properties de fr
+オプションは、コマンドライン、環境変数、または translatomatic の構成ファイルで指定することができます。 使用して構成ファイルを変更することができます translatomatic の内部 `config` コマンドです。 すべての利用可能な構成設定を一覧表示するには、使用します。
 
-こうした成(上書き) `strings_de.properties` - `strings_fr.properties`ます。
+    $ translatomatic config list
+    $ translatomatic config describe
 
-### 抽出から文字列をソースファイル
+詳細については、後述の構成も参照してください。
 
-抽出から文字列の一部のソースファイルを抽出すコマンドなどの
+## 翻訳ファイル
 
-    $ translatomatic strings file.rb
+ファイルを変換するとき `translatomatic` 変換テキストの文章や言葉です。 ファイルが再翻訳された場合、最後の翻訳から変更されている唯一の文は翻訳者に送信され、残りの部分は、ローカル データベースから供給されます。
+
+ドイツ語とフランス語の Google 翻訳を使用して Java のプロパティ ファイルを翻訳。
+
+    $ translatomatic translate file --translator Google strings.properties de,fr
+
+こうした成(上書き) `strings_de.properties` - `strings_fr.properties` 変換のプロパティを実行します。
 
 ### 表示文字列からリソースバンドル
 
@@ -64,9 +81,37 @@ gem 'translatomatic'
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
+### 抽出から文字列をソースファイル
+
+いくつかのソース ファイルから文字列を抽出するを使用、 `strings` コマンド例。
+
+    $ translatomatic strings file.rb
+
 ## 構成
 
-デフォルトでは、 `translatomatic` を使用してsqlite3データベース `$HOME/.translatomatic/translatomatic.sqlite3` 店舗の翻訳の文字列です。 データベースの変更により作成 `database.yml` ファイル `$HOME/.translatomatic/database.yml` のための `production` 環境、例えば
+### Translatomatic の設定例
+
+使用する 1 つまたは複数の翻訳サービスを設定: する
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+二次翻訳者は、最初の選択肢を使用する場合、変換エラーが発生した場合にのみ使用されます。
+
+ターゲットのロケールの既定の一覧を設定: する
+
+    $ translatomatic config set target_locales en,de,es,fr,it
+
+と `target_locales` 設定すると、ファイルはターゲットのロケールを指定することがなく翻訳が可能、 `translate file` コマンドです。
+
+    $ translatomatic translate file resources/strings.properties
+
+現在の構成を表示するには、を実行します。
+
+    $ translatomatic config list
+
+### データベースの構成
+
+デフォルトでは、 `translatomatic` を使用してsqlite3データベース `$HOME/.translatomatic/translatomatic.sqlite3` 店舗の翻訳の文字列です。 翻訳をデータベースに格納するようにインストールされている適切なデータベース アダプターが必要、 `sqlite3` 逸品です。 Translatomatic では、データベース アダプターを自動的にインストールされません。 データベースの構成を作成することによって変更できます、 `database.yml` ファイル `$HOME/.translatomatic/database.yml` のための `production` 環境、例えば
 
     production:
       adapter: mysql2
@@ -89,4 +134,4 @@ gem 'translatomatic'
 
 皆様との交流のTranslatomaticプロジェクトのcodebases、ラッカー、チャットルームやメーリングリストで入力してください [行動規範](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)ます。
 
-_Created by Translatomatic 0.1.0 2017-12-29 00:38_
+_Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:20 +1030 によって作成されました。_

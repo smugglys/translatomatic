@@ -1,3 +1,4 @@
+# Base class for resource file implementations
 # @abstract Subclasses implement different types of resource files
 class Translatomatic::ResourceFile::Base
 
@@ -15,13 +16,13 @@ class Translatomatic::ResourceFile::Base
   # Create a new resource file.
   # If locale is unspecified, attempts to determine the locale of the file
   # automatically, and if that fails, uses the default locale.
-  # @param [String] path Path to the file
-  # @param [String] locale Locale of the file contents
+  # @param path [String] Path to the file
+  # @param locale [String] Locale of the file contents
   # @return [Translatomatic::ResourceFile::Base] the resource file.
   def initialize(path, locale = nil)
     @path = path.kind_of?(Pathname) ? path : Pathname.new(path)
-    @locale = locale || detect_locale || Translatomatic::Locale.default
-    raise "unable to determine locale" unless @locale && @locale.language
+    @locale = Translatomatic::Locale.parse(locale || detect_locale || Translatomatic::Locale.default)
+    raise t("resource.unknown_locale") unless @locale && @locale.language
     @valid = false
     @properties = {}
   end
@@ -32,7 +33,7 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Create a path for the current resource file with a given locale
-  # @param [String] locale for the path
+  # @param locale [String] The target locale
   # @return [Pathname] The path of this resource file modified for the given locale
   def locale_path(locale)
     basename = path.sub_ext('').basename.to_s
@@ -54,7 +55,7 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Set all properties
-  # @param [Hash<String,String>] properties New properties
+  # @param properties [Hash<String,String>] New properties
   def properties=(properties)
     # use set rather that set @properties directly as subclasses override set()
     properties.each do |key, value|
@@ -63,18 +64,18 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Get the value of a property
-  # @param [String] name The name of the property
+  # @param key [String] The name of the property
   # @return [String] The value of the property
-  def get(name)
-    @properties[name]
+  def get(key)
+    @properties[key]
   end
 
   # Set a property
-  # @param [String] key The name of the property
-  # @param [String] value The new value of the property
+  # @param key [String] The name of the property
+  # @param value [String] The new value of the property
   # @return [String] The new value of the property
-  def set(name, value)
-    @properties[name] = value
+  def set(key, value)
+    @properties[key] = value
   end
 
   # Test if the current resource file is valid
@@ -84,8 +85,8 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Save the resource file.
-  # @param [Pathname] target The destination path
-  # @param [Hash<Symbol, Object>] options Output format options
+  # @param target [Pathname] The destination path
+  # @param options [Hash<Symbol, Object>] Output format options
   # @return [void]
   def save(target = path, options = {})
     raise "save(path) must be implemented by subclass"
@@ -93,9 +94,10 @@ class Translatomatic::ResourceFile::Base
 
   # @return [String] String representation of this file
   def to_s
-    "#{path.basename.to_s} (#{locale})"
+    path.basename.to_s
   end
 
+  # @return [Array<String>] All property values split into sentences
   def sentences
     sentences = []
     properties.values.each do |value|
@@ -105,13 +107,34 @@ class Translatomatic::ResourceFile::Base
     sentences
   end
 
+  # @return [boolean] true if this resource file supports variable interpolation
+  def supports_variable_interpolation?
+    false
+  end
+
+  # Create an interpolated variable string.
+  # @return [String] A string representing the interpolated variable, or
+  #   nil if this resource file doesn't support variable interpolation.
+  def create_variable(name)
+    return nil unless supports_variable_interpolation?
+    raise "create_variable(name) must be implemented by subclass"
+  end
+
+  # @return [Regexp] A regexp used to match interpolated variables
+  def variable_regex
+    return nil unless supports_variable_interpolation?
+    raise "variable_regex must be implemented by subclass"
+  end
+
   private
 
   include Translatomatic::Util
 
   def created_by
-    date = DateTime.now.strftime("%Y-%m-%d %H:%M")
-    "Created by Translatomatic #{Translatomatic::VERSION} #{date}"
+    t("resource.created_by", app: "Translatomatic",
+      version: Translatomatic::VERSION, date: I18n.l(DateTime.now),
+      locale: locale.language
+    )
   end
 
   # detect locale from filename

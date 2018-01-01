@@ -8,9 +8,8 @@ FactoryBot.define do
 
   factory :text_model, class: Translatomatic::Model::Text do
     association :locale, factory: :locale_model
-    value "Beer"
+    sequence(:value) { |i| "text value #{i}" }
     #shared false
-    translator nil
   end
 
 end

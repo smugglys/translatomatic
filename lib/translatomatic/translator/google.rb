@@ -1,17 +1,19 @@
 module Translatomatic
   module Translator
 
+    # Interface to the Google translation API
+    # @see https://cloud.google.com/translate/
     class Google < Base
 
-      define_options({ name: :google_api_key, desc: "Google API key",
-            use_env: true
-          })
+      define_options(name: :google_api_key,
+        desc: t("translator.google_api_key"), use_env: true
+      )
 
       # Create a new Google translator instance
       def initialize(options = {})
         super(options)
         key = options[:google_api_key] || ENV["GOOGLE_API_KEY"]
-        raise "google api key required" if key.nil?
+        raise t("translator.google_key_required") if key.nil?
         EasyTranslate.api_key = key
       end
 
@@ -23,7 +25,9 @@ module Translatomatic
       private
 
       def perform_translate(strings, from, to)
-        EasyTranslate.translate(strings, from: from.language, to: to.language)
+        attempt_with_retries(3) do
+          EasyTranslate.translate(strings, from: from.language, to: to.language)
+        end
       end
 
     end # class

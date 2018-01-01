@@ -45,10 +45,9 @@ RSpec.describe Translatomatic::TMX::Document do
 
   def create_doc
     source_locale = Translatomatic::Locale.parse("en")
-    origin = "Test"
     strings = [string("Yoghurt", "en"), string("Yoplait", "fr")]
     units = Translatomatic::TMX::TranslationUnit.new(strings)
-    Translatomatic::TMX::Document.new(units, source_locale, origin)
+    Translatomatic::TMX::Document.new(units, source_locale)
   end
 
 end
