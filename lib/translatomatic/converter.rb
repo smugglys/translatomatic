@@ -217,7 +217,7 @@ class Translatomatic::Converter
 
   def translatable?(string)
     # don't translate numbers
-    !string.empty? && !string.match(/^[\d,]+$/)
+    string && !string.match(/\A\s*\z/) && !string.match(/\A[\d,]+\z/)
   end
 
   def save_database_translations(result, translations)
