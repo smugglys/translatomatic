@@ -132,7 +132,9 @@ class Translatomatic::ResourceFile::Base
 
   def created_by
     t("resource.created_by", app: "Translatomatic",
-      version: Translatomatic::VERSION, date: I18n.l(DateTime.now))
+      version: Translatomatic::VERSION, date: I18n.l(DateTime.now),
+      locale: locale.language
+    )
   end
 
   # detect locale from filename
