@@ -9,7 +9,7 @@ FactoryBot.define do
 
   factory :tmx_document, class: Translatomatic::TMX::Document do
     skip_create
-    initialize_with { new([build(:tmx_unit)], build(:locale), "Test") }
+    initialize_with { new([build(:tmx_unit)], build(:locale)) }
   end
 
   factory :tmx_locale_string, class: Translatomatic::String do

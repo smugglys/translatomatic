@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE tmx SYSTEM "http://www.ttt.org/oscarstandards/tmx/tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="Translatomatic" creationtoolversion="0.1.0" datatype="PlainText" segtype="phrase" adminlang="en" srclang="en" o-tmx="Test"/>
+  <header creationtool="Translatomatic" creationtoolversion="0.1.0" datatype="PlainText" segtype="phrase" adminlang="en" srclang="en" o-tmf="Translatomatic"/>
   <body>
     <tu segtype="phrase">
       <tuv xml:lang="en">

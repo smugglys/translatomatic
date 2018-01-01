@@ -5,13 +5,11 @@ module Translatomatic::TMX
     # Create a new instance
     # @param units [Array<TranslationUnit>] A list of translation units
     # @param source_locale [Locale] Source locale
-    # @param origin [String] Origin (o-tmx)
     # @return [Translatomatic::TMX::Document] a new TMX object
-    def initialize(units, source_locale, origin)
+    def initialize(units, source_locale)
       units = [units] unless units.kind_of?(Array)
       @units = units
       @source_locale = source_locale
-      @origin = origin
     end
 
     # @return [String] An XML string
@@ -26,7 +24,7 @@ module Translatomatic::TMX
             segtype: "phrase",  # default segtype
             adminlang: @source_locale.to_s,
             srclang: @source_locale.to_s,
-            "o-tmx": @origin
+            "o-tmf": DEFAULT_OTMF
           )
           xml.body { tmx_body(xml) }
         end
@@ -41,14 +39,12 @@ module Translatomatic::TMX
       # group texts by from_text_id to create units
       # source_locale: use from_text.locale
       # origin: use text.translator
-      origins = texts.collect { |i| i.translator }.compact.uniq
-      raise t("tmx.multiple_origins") if origins.length > 1
       sources = texts.select { |i| i.from_text.nil? }
       source_locales = sources.collect { |i| i.locale }.uniq
       raise t("tmx.multiple_locales") if source_locales.length > 1
       units = units_from_texts(texts)
 
-      return new(units, source_locales[0], origins[0])
+      return new(units, source_locales[0])
     end
 
     def self.valid?(xml)
@@ -64,6 +60,7 @@ module Translatomatic::TMX
     end
 
     TMX_DTD = "http://www.ttt.org/oscarstandards/tmx/tmx14.dtd"
+    DEFAULT_OTMF = "Translatomatic"
 
     def tmx_body(xml)
       @units.each do |unit|
@@ -89,7 +86,8 @@ module Translatomatic::TMX
 
       # create list of Translation Units
       texts_by_from_id.values.collect do |list|
-        tmx_unit(list.uniq.collect { |i| string(i.value, i.locale) })
+        strings = list.uniq.collect { |i| string(i.value, i.locale) }
+        tmx_unit(strings)
       end
     end
 
