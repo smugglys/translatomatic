@@ -3,9 +3,6 @@
 # language to another.
 class Translatomatic::Converter
 
-  # @return [Translatomatic::ConverterStats] translation statistics
-  attr_reader :stats
-
   # @return [Array<Translatomatic::Model::Text>] A list of translations saved to the database
   attr_reader :db_translations
 
@@ -24,7 +21,7 @@ class Translatomatic::Converter
     log.debug(t("converter.database_disabled")) unless @use_db
 
     @db_translations = []
-    @translations = []
+    @translations = {}      # map of original text to Translation
   end
 
   def resolve_translators(options)
@@ -62,15 +59,10 @@ class Translatomatic::Converter
 
     result = Translatomatic::TranslationResult.new(file, to_locale)
 
-    @translators.each do |translator|
-      break if result.untranslated.empty?
-
-      @current_translator = translator
-      # translate using strings from the database first
-      translate_properties_with_db(result)
-      # send remaining unknown strings to translator
-      translate_properties_with_translator(result)
-    end
+    # translate using strings from the database first
+    each_translator(result) { translate_properties_with_db(result) }
+    # send remaining unknown strings to translator
+    each_translator(result) { translate_properties_with_db(result) }
 
     log.debug(t("converter.stats", from_db: stats.from_db,
       from_translator: stats.from_translator,
@@ -119,6 +111,14 @@ class Translatomatic::Converter
       t("converter.use_database") }
   )
 
+  def each_translator(result)
+    @translators.each do |translator|
+      break if result.untranslated.empty?
+      @current_translator = translator
+      yield
+    end
+  end
+
   # Attempt to restore interpolated variable names in the translation.
   # If variable names cannot be restored, sets the translation result to nil.
   # @param result [Translatomatic::TranslationResult] translation result
@@ -134,10 +134,10 @@ class Translatomatic::Converter
     translated_variables = string_variables(translation.result, result.to_locale, file)
 
     if variables.length == translated_variables.length
-      # we can restore variables
-      # sort by largest offset first
+      # we can restore variables. sort by largest offset first.
+      # not using translation() method as that adds to @translations hash.
       conversions = variables.zip(translated_variables).collect {
-         |v1, v2| translation(v1, v2)
+         |v1, v2| Translatomatic::Translation.new(v1, v2)
       }
       conversions.sort_by! { |t| -t.original.offset }
       conversions.each do |conversion|
@@ -183,7 +183,6 @@ class Translatomatic::Converter
       end
 
       result.update_strings(translations)
-      @translations += translations
       @listener.translated_texts(db_texts) if @listener
     end
     db_texts
@@ -203,13 +202,12 @@ class Translatomatic::Converter
       # create list of translations, filtering out invalid translations
       translations = []
       untranslated.zip(translated).each do |from, to|
-        translation = translation(from, to)
+        translation = translation(from, to, false)
         restore_variables(result, translation)
         translations << translation
       end
 
       result.update_strings(translations)
-      @translations += translations
       unless database_disabled?
         save_database_translations(result, translations)
       end
@@ -219,7 +217,9 @@ class Translatomatic::Converter
 
   def translation(from, to, from_database = false)
     translator = @current_translator.name
-    Translatomatic::Translation.new(from, to, translator, from_database)
+    t = Translatomatic::Translation.new(from, to, translator, from_database)
+    @translations[from] = t
+    t
   end
 
   def database_disabled?
