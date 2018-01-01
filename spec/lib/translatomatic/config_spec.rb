@@ -16,13 +16,6 @@ RSpec.describe Translatomatic::Config do
       expect(config.get(KEY_DEBUG)).to eq(true)
     end
 
-    it "removes a boolean setting" do
-      config.set(KEY_DEBUG, "false")
-      expect(config.get(KEY_DEBUG)).to eq(false)
-      config.remove(KEY_DEBUG)
-      expect(config.get(KEY_DEBUG)).to eq(false)  # default setting
-    end
-
     it "writes configuration to file" do
       config.set(KEY_LOCALES, "de")
       expect(config.get(KEY_LOCALES)).to eq(["de"])
@@ -35,6 +28,23 @@ RSpec.describe Translatomatic::Config do
       expect {
         config.set(key, "value ")
       }.to raise_error(t("config.invalid_key", key: key))
+    end
+  end
+
+  describe :remove do
+    it "writes configuration to file" do
+      config.set(KEY_LOCALES, "de")
+      expect(config.get(KEY_LOCALES)).to eq(["de"])
+      config.remove(KEY_LOCALES)
+      config.load
+      expect(config.get(KEY_LOCALES)).to eq(nil)
+    end
+
+    it "removes a boolean setting" do
+      config.set(KEY_DEBUG, "false")
+      expect(config.get(KEY_DEBUG)).to eq(false)
+      config.remove(KEY_DEBUG)
+      expect(config.get(KEY_DEBUG)).to eq(false)  # default setting
     end
   end
 

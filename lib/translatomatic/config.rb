@@ -43,6 +43,7 @@ class Translatomatic::Config
   def remove(key)
     key = check_valid_key(key)
     @settings.delete(key)
+    save
   end
 
   # Test if configuration includes the given key

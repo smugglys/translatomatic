@@ -9,7 +9,7 @@ module Translatomatic::CLI
     # @param value [String] new value for the configuration
     # @return [String] the new value
     def set(key, value)
-      conf.set(key, value)
+      run { conf.set(key, value) }
     end
 
     desc "remove key", t("cli.config.remove")
@@ -18,23 +18,27 @@ module Translatomatic::CLI
     # @param key [String] configuration key to remove
     # @return [void]
     def remove(key)
-      conf.remove(key)
+      run { conf.remove(key) }
     end
 
     desc "list", t("cli.config.list")
     thor_options(self, Translatomatic::CLI::CommonOptions)
     # List current configuration settings
     def list
-      puts t("cli.config.configuration")
-      print_config_table(:key, :value)
+      run do
+        puts t("cli.config.configuration")
+        print_config_table(:key, :value)
+      end
     end
 
     desc "describe", t("cli.config.describe")
     thor_options(self, Translatomatic::CLI::CommonOptions)
     # Describe available configuration settings
     def describe
-      puts t("cli.config.configuration")
-      print_config_table(:key, :type, :desc)
+      run do
+        puts t("cli.config.configuration")
+        print_config_table(:key, :type, :desc)
+      end
     end
 
     private
