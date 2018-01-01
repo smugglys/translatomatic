@@ -46,24 +46,33 @@ gem 'translatomatic'
 
     $ translatomatic help
 
-ヘルプ サブコマンドが実行します。
+ヘルプ コマンドが実行します。
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
-### 翻訳ファイル
+## セットアップ
+
+利用可能な翻訳サービスとオプションを確認、 `services` コマンド:
+
+    $ translatomatic services
+
+オプションは、コマンドライン、環境変数、または translatomatic の構成ファイルで指定することができます。 使用して構成ファイルを変更することができます translatomatic の内部 `config` コマンドです。 すべての利用可能な構成設定を一覧表示するには、使用します。
+
+    $ translatomatic config list
+    $ translatomatic config describe
+
+詳細については、後述の構成も参照してください。
+
+## 翻訳ファイル
 
 ファイルを変換するとき `translatomatic` 変換テキストの文章や言葉です。 ファイルが再翻訳された場合、最後の翻訳から変更されている唯一の文は翻訳者に送信され、残りの部分は、ローカル データベースから供給されます。
 
-るシリコーンコーティング翻訳サービス-オプション:
+ドイツ語とフランス語の Google 翻訳を使用して Java のプロパティ ファイルを翻訳。
 
-    $ translatomatic list
+    $ translatomatic translate file --translator Google strings.properties de,fr
 
-するJavaプロパティファイルをドイツ語、フランス語:
-
-    $ translatomatic translate file resources/strings.properties de,fr
-
-こうした成(上書き) `strings_de.properties` - `strings_fr.properties`ます。
+こうした成(上書き) `strings_de.properties` - `strings_fr.properties` 変換のプロパティを実行します。
 
 ### 表示文字列からリソースバンドル
 
@@ -74,15 +83,21 @@ gem 'translatomatic'
 
 ### 抽出から文字列をソースファイル
 
-抽出から文字列の一部のソースファイルを抽出すコマンドなどの
+いくつかのソース ファイルから文字列を抽出するを使用、 `strings` コマンド例。
 
     $ translatomatic strings file.rb
 
 ## 構成
 
-### Translatomatic 構成ファイル
+### Translatomatic の設定例
 
-多くのコマンド ライン オプションは、Translatomatic を使用して構成することができますの内部 `config` コマンドです。 たとえば、ターゲット翻訳ロケールのデフォルト リストを設定するを実行します。
+使用する 1 つまたは複数の翻訳サービスを設定: する
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+二次翻訳者は、最初の選択肢を使用する場合、変換エラーが発生した場合にのみ使用されます。
+
+ターゲットのロケールの既定の一覧を設定: する
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -119,4 +134,4 @@ gem 'translatomatic'
 
 皆様との交流のTranslatomaticプロジェクトのcodebases、ラッカー、チャットルームやメーリングリストで入力してください [行動規範](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)ます。
 
-_Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:39 +1030 によって作成されました。_
+_Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:20 +1030 によって作成されました。_

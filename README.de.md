@@ -46,24 +46,33 @@ Dieses Juwel bietet eine ausführbare Datei namens `translatomatic`. Die `transl
 
     $ translatomatic help
 
-Und, um Hilfe zu einem Unterbefehl ausführen:
+Und für Hilfe zu einem Befehl ausführen:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
-### Übersetzen von Dateien
+## Setup
+
+Suchen Sie nach verfügbaren Translation Services und Optionen mit der `services` Befehl:
+
+    $ translatomatic services
+
+Optionen können in der Befehlszeile in Umgebungsvariablen oder in Translatomatic der Konfigurationsdatei angegeben werden. Die Konfigurationsdatei kann geändert werden, mit Translatomatic die interne `config` Befehl. Um alle verfügbaren Konfigurationseinstellungen aufzulisten, verwenden Sie:
+
+    $ translatomatic config list
+    $ translatomatic config describe
+
+Siehe auch Abschnitt "Konfiguration" unten für weitere Informationen.
+
+## Übersetzen von Dateien
 
 Bei der Übersetzung von Dateien `translatomatic` übersetzt den text, ein Satz oder auf Zeit. Wenn eine Datei erneut übersetzt ist, nur Sätze, die seit der letzten Übersetzung geändert haben werden an den Übersetzer geschickt, und der Rest aus der lokalen Datenbank bezogen werden.
 
-Um eine Liste der verfügbaren übersetzungs-services und-Optionen:
+Um eine Java-Properties-Datei auf Deutsch und Französisch mit den Google-Übersetzer übersetzen:
 
-    $ translatomatic list
+    $ translatomatic translate file --translator Google strings.properties de,fr
 
-Die übersetzung eines Java-properties-Datei, Deutsch und Französisch:
-
-    $ translatomatic translate file resources/strings.properties de,fr
-
-Dies würde zu erstellen (oder überschreiben) `strings_de.properties` und `strings_fr.properties`.
+Dies würde zu erstellen (oder überschreiben) `strings_de.properties` und `strings_fr.properties` mit übersetzten Eigenschaften.
 
 ### Die Anzeige von Zeichenfolgen aus einem resource-bundle
 
@@ -74,15 +83,21 @@ Auslesen und anzeigen `store.description` und `store.name` Eigenschaften von der
 
 ### Extrahieren von Zeichenfolgen aus den Quelldateien
 
-Zum extrahieren von Zeichenfolgen aus einige source-Dateien, benutzen Sie den extract-Befehl, z.B.
+Verwenden, um Zeichenfolgen von einige Quellcode-Dateien zu extrahieren, die `strings` Befehl, z.B.
 
     $ translatomatic strings file.rb
 
 ## Konfiguration
 
-### Translatomatic-Konfigurationsdatei
+### Translatomatic Konfigurationsbeispiele
 
-Viele Befehlszeile Optionen konfiguriert werden können, mit Translatomatic die interne `config` Befehl. Beispielsweise legen Sie eine Standardliste von Ziel Übersetzung Gebietsschemas ausführen:
+Eine oder mehrere Übersetzungen zu verwenden, stellen Sie ein:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+Sekundäre Übersetzer werden nur verwendet, wenn ein Übersetzungsfehler tritt auf, wenn die erste Wahl zu verwenden.
+
+Eine Standardliste von Ziel Gebietsschemas festgelegt:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -119,4 +134,4 @@ Der Edelstein ist als open source unter den Bedingungen der [MIT-Lizenz](https:/
 
 Jeder der Interaktion mit dem Translatomatic Projekt codebase, issue-Tracker, chat-rooms und mailing-Listen sollen Folgen [Verhaltenskodex](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Erstellt von Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:36 +1030_
+_Erstellt von Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:17 +1030_

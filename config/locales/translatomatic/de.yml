@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:36 +1030
+# Erstellt von Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:39 +1030
 
 de:
   translatomatic:
@@ -40,8 +40,6 @@ de:
       aborted: Abgebrochen
       file_source: 'Datei: %{file}'
       sentences: 'Sätze:'
-      no_translators: Keine Übersetzer konfiguriert. Mit dem Befehl Übersetzer um
-        Optionen anzuzeigen
       database:
         subcommand: Datenbank-Befehle
         search: Suchdatenbank für Text passend die angegebene Zeichenfolge.
@@ -65,10 +63,12 @@ de:
       email_address: E-Mail-Adresse
       share_response: 'Teil Antwort: %{response}'
       yandex_api_key: Yandex-API-Schlüssel
-      yandex_key_required: Yandex-API-Schlüssel erforderlich
+      yandex_key_required: Yandex-API-Schlüssel erforderlich.
       required_option: "(erforderlich)"
-      translators: 'Übersetzer:'
+      translators: 'Alle Übersetzer:'
+      configured: 'Konfigurierten Übersetzer:'
       unavailable: Übersetzer-%{name} ist nicht verfügbar.
+      no_translators: Keine Übersetzer konfiguriert sind.
       password: Passwort
     converter:
       total_translations: 'Total translations: %{total} (%{from_db} aus der Datenbank,

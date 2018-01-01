@@ -21,6 +21,7 @@ module Translatomatic::CLI
         text.translations.each do |translation|
           puts "  -> (%s) %s" % [translation.locale, translation.value]
         end
+        puts
       end
     end
 

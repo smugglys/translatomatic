@@ -1,6 +1,9 @@
 RSpec.describe Translatomatic::CLI::Translate do
 
+  let(:config) { Translatomatic::Config.instance }
+
   before(:each) do
+    config.remove(:translator)
     @cli = Translatomatic::CLI::Translate.new
     @cli.options = { database_env: "test" }
   end
@@ -10,6 +13,14 @@ RSpec.describe Translatomatic::CLI::Translate do
       translator = test_translator
       expect(translator).to receive(:translate).and_return(["Bier"])
       add_cli_options(use_database: false)
+      @cli.string("Beer", "de")
+    end
+
+    it "uses command line options in preference to configuration" do
+      config.set(:translator, "Yandex,Microsoft")
+      add_cli_options(translator: "Google")
+      expect(Translatomatic::Translator).to receive(:find)
+      .with("Google").and_return(TestTranslator)
       @cli.string("Beer", "de")
     end
   end

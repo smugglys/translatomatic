@@ -46,24 +46,33 @@ gem 'translatomatic'
 
     $ translatomatic help
 
-对于子命令的帮助, 请执行以下操作:
+有关命令的帮助, 请执行以下操作:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
-### 翻译的文件
+## 安装
+
+检查可用的翻译服务和选项。 `services` 命令:
+
+    $ translatomatic services
+
+可以在命令行、环境变量或 translatomatic 的配置文件中指定选项。 配置文件可以使用 translatomatic 的内部 `config` 命令. 要列出所有可用的配置设置, 请使用:
+
+    $ translatomatic config list
+    $ translatomatic config describe
+
+有关详细信息, 请参阅下面的配置部分。
+
+## 翻译的文件
 
 翻译文件时, `translatomatic` 翻译文本的一句话或短语的时间。 如果文件是流传的, 则只会将自上次翻译以来已更改的句子发送到转换器, 其余的则来自本地数据库。
 
-为清单提供的翻译服务和选择：
+使用 Google 翻译器将 Java 属性文件转换为德语和法语:
 
-    $ translatomatic list
+    $ translatomatic translate file --translator Google strings.properties de,fr
 
-翻译Java性文件，以德语和法语：
-
-    $ translatomatic translate file resources/strings.properties de,fr
-
-这将创建(或复盖) `strings_de.properties` 和 `strings_fr.properties`中。
+这将创建(或复盖) `strings_de.properties` 和 `strings_fr.properties` 具有翻译的属性。
 
 ### 显示串从资源束
 
@@ -74,15 +83,21 @@ gem 'translatomatic'
 
 ### 提取串自源文件
 
-提取串从一些来源文件，使用萃取物的命令，例如
+若要从某些源文件中提取字符串, 请使用 `strings` 命令, 例如
 
     $ translatomatic strings file.rb
 
 ## 配置
 
-### Translatomatic 配置文件
+### Translatomatic 配置示例
 
-许多命令行选项可以配置使用 Translatomatic 的内部 `config` 命令. 例如, 若要设置目标转换语言环境的默认列表, 请执行以下操作:
+要设置一个或多个要使用的翻译服务:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+只有当使用第一个选项时发生翻译错误时, 才能使用辅助翻译器。
+
+设置目标语言环境的默认列表:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -119,4 +134,4 @@ gem 'translatomatic'
 
 每个人都相互作用的Translatomatic项目的代码库中，问题跟踪、聊天室和邮件列表，预计后续的 [行为守则](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)中。
 
-_由Translatomatic0.1.1Mon, 01 Jan 2018 13:33:44 +1030 创建_
+_由Translatomatic0.1.1Mon, 01 Jan 2018 21:36:25 +1030 创建_

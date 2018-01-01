@@ -46,24 +46,33 @@ Ce bijou offre un exécutable nommé `translatomatic`. Le `translatomatic` comma
 
     $ translatomatic help
 
-Et de l’aide sur une sous-commande, exécutez&nbsp;:
+Et de l’aide sur une commande, exécutez&nbsp;:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
-### Traduction de fichiers
+## Programme d’installation
+
+Recherchez les services de traduction disponibles et les options avec la `services` commande&nbsp;:
+
+    $ translatomatic services
+
+Options peuvent être spécifiées sur la ligne de commande, dans les variables d’environnement, ou dans le fichier de configuration de translatomatic. Le fichier de configuration peut être modifié à l’aide interne du translatomatic `config` commande. Pour répertorier tous les paramètres de configuration disponibles, utilisez&nbsp;:
+
+    $ translatomatic config list
+    $ translatomatic config describe
+
+Voir aussi la section de Configuration ci-dessous pour plus d’informations.
+
+## Traduction de fichiers
 
 Lors de la conversion des fichiers, `translatomatic` traduire un texte d'une phrase ou d'une phrase à la fois. Si un fichier est re-traduit, seulement les phrases qui ont changé depuis la dernière traduction sont envoyés au traducteur, et les autres proviennent de la base de données locale.
 
-Pour une liste des services de traduction et d'options:
+Pour traduire un fichier de propriétés Java allemand et le Français à utiliser le traducteur de Google&nbsp;:
 
-    $ translatomatic list
+    $ translatomatic translate file --translator Google strings.properties de,fr
 
-Pour traduire un fichier de propriétés Java pour l'allemand et le français:
-
-    $ translatomatic translate file resources/strings.properties de,fr
-
-Cela permettrait de créer (ou écraser) `strings_de.properties` et `strings_fr.properties`.
+Cela permettrait de créer (ou écraser) `strings_de.properties` et `strings_fr.properties` avec traduit les propriétés.
 
 ### L'affichage des chaînes de caractères à partir d'un regroupement de ressources
 
@@ -74,15 +83,21 @@ Pour lire et afficher le `store.description` et `store.name` propriétés à par
 
 ### L'extraction de chaînes à partir de fichiers source
 
-Pour extraire les chaînes de certains fichiers source, utilisez la commande extraire, par exemple
+Afin d’extraire les chaînes de certains fichiers source, les `strings` commande, par exemple
 
     $ translatomatic strings file.rb
 
 ## Configuration
 
-### Fichier de configuration Translatomatic
+### Exemples de configuration Translatomatic
 
-Interne de la ligne de commande plusieurs options peuvent être configurées à l’aide de Translatomatic `config` commande. Par exemple, pour définir une liste par défaut des paramètres régionaux de traduction cible, exécutez&nbsp;:
+Pour définir un ou plusieurs services de traduction à utiliser&nbsp;:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+Les traducteurs secondaires serviront uniquement si une erreur de conversion se produit lorsque vous utilisez le premier choix.
+
+Pour définir une liste par défaut des paramètres régionaux cibles&nbsp;:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -119,4 +134,4 @@ Le bijou est disponible en open source sous les termes de la [Licence MIT](https
 
 Tout le monde l'interaction avec le Translatomatic projet de code, la question des trackers, des salles de discussion et listes de diffusion, il est prévu de suivre l' [Code de conduite](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Créé par Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:38 +1030_
+_Créé par Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:19 +1030_

@@ -46,24 +46,33 @@ Questo gioiello fornisce un eseguibile chiamato `translatomatic`. Il `translatom
 
     $ translatomatic help
 
-E per un aiuto su un sottocomando, eseguire:
+E per un aiuto su un comando, eseguire:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
-### La traduzione di file
+## Programma di installazione
+
+Controllare i servizi di traduzione disponibili e opzioni con la `services` comando:
+
+    $ translatomatic services
+
+Opzioni possono essere specificate nella riga di comando, nelle variabili di ambiente, o nel file di configurazione di translatomatic. Il file di configurazione possa essere modificato utilizzando translatomatic interna del `config` comando. Per elencare tutte le impostazioni di configurazione disponibili, utilizzare:
+
+    $ translatomatic config list
+    $ translatomatic config describe
+
+Vedi anche la sezione di configurazione sotto per ulteriori informazioni.
+
+## La traduzione di file
 
 Quando si converte il file, `translatomatic` traduce il testo una frase o una frase alla volta. Se un file è ri-tradotto, soli frasi che sono stati modificati dopo l'ultima traduzione vengono inviati al traduttore, e il resto sono provenienti dal database locale.
 
-Elenco di servizi di traduzione ed opzioni:
+Per tradurre un file di proprietà Java in tedesco e francese utilizzando il traduttore di Google:
 
-    $ translatomatic list
+    $ translatomatic translate file --translator Google strings.properties de,fr
 
-Per tradurre un file delle proprietà Java per il tedesco e il francese:
-
-    $ translatomatic translate file resources/strings.properties de,fr
-
-Questo permetterebbe di creare (o sovrascrivere) `strings_de.properties` e `strings_fr.properties`.
+Questo permetterebbe di creare (o sovrascrivere) `strings_de.properties` e `strings_fr.properties` con proprietà tradotta.
 
 ### Visualizzazione di stringhe da un pacchetto di risorse
 
@@ -74,15 +83,21 @@ Per leggere e visualizzare il `store.description` e `store.name` proprietà dal 
 
 ### Estrarre le stringhe dal file di origine
 
-Per estrarre le stringhe da alcuni file di origine, utilizzare il comando di estrazione, ad es.
+Per estrarre le stringhe da alcuni file di origine, utilizzare il `strings` comando, ad es.
 
     $ translatomatic strings file.rb
 
 ## Configurazione
 
-### File di configurazione Translatomatic
+### Esempi di configurazione di Translatomatic
 
-Interno della riga di comando molte opzioni possono essere configurate utilizzando Translatomatic `config` comando. Ad esempio, per impostare una lista predefinita di destinazione traduzione locale, eseguire:
+Per impostare uno o più servizi di traduzione da utilizzare:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+Traduttori secondari solo essere utilizzati se si verifica un errore di traduzione quando si utilizza la prima scelta.
+
+Per impostare un elenco predefinito delle impostazioni locali di destinazione:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -119,4 +134,4 @@ Il gioiello è disponibile come open source sotto i termini della [La Licenza MI
 
 Tutti interagendo con il Translatomatic progetto di basi di codice, issue tracker, chat e mailing list dovrebbe seguire l' [codice di condotta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Creato da Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:39 +1030_
+_Creato da Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:19 +1030_

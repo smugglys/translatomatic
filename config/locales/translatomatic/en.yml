@@ -40,7 +40,6 @@ en:
       aborted: Aborted
       file_source: 'File: %{file}'
       sentences: 'Sentences:'
-      no_translators: No translators configured. Use the translators command to see options
       database:
         subcommand: Database commands
         search: Search database for text matching the given string.
@@ -64,10 +63,12 @@ en:
       email_address: Email address
       share_response: 'Share response: %{response}'
       yandex_api_key: Yandex API key
-      yandex_key_required: Yandex API key required
+      yandex_key_required: Yandex API key required.
       required_option: "(required)"
-      translators: 'Translators:'
+      translators: 'All Translators:'
+      configured: "Configured Translators:"
       unavailable: Translator %{name} is unavailable.
+      no_translators: No translators are configured.
       password: Password
     converter:
       total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_translator} from translator, %{untranslated} untranslated)'

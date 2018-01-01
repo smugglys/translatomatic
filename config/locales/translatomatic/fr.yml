@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:36 +1030
+# Créé par Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:40 +1030
 
 fr:
   translatomatic:
@@ -41,8 +41,6 @@ fr:
       aborted: Abandonnée
       file_source: 'Fichier : %{file}'
       sentences: 'Phrases :'
-      no_translators: Aucun traducteurs configurés. Utilisez la commande de traducteurs
-        pour voir les options
       database:
         subcommand: Commandes de base de données
         search: Base de données de recherche pour texte correspondant de la chaîne
@@ -67,10 +65,12 @@ fr:
       email_address: Adresse de courriel
       share_response: 'Partager la réponse : %{response}'
       yandex_api_key: Clé API de Yandex
-      yandex_key_required: Clé de Yandex API requis
+      yandex_key_required: Clé d’API Yandex requise.
       required_option: "(obligatoire)"
-      translators: 'Traducteurs :'
+      translators: 'Tous les traducteurs :'
+      configured: 'Traducteurs configurés :'
       unavailable: Traducteur %{name} n’est pas disponible.
+      no_translators: Aucun traducteurs ne sont configurés.
       password: Mot de passe
     converter:
       total_translations: 'Total des traductions : %{total} (%{from_db} de la base

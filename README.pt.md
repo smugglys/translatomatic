@@ -46,24 +46,33 @@ Esta gema fornece um arquivo executável chamado `translatomatic`. O `translatom
 
     $ translatomatic help
 
-E para obter ajuda sobre um subcomando, execute:
+E para obter ajuda sobre um comando, execute:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
-### Conversão de arquivos
+## Instalação
+
+Verificar se há serviços de tradução disponíveis e opções com a `services` comando:
+
+    $ translatomatic services
+
+Opções podem ser especificadas na linha de comando, em variáveis de ambiente, ou no arquivo de configuração do translatomatic. O arquivo de configuração pode ser modificado usando translatomatic do (a) interno `config` comando. Para listar todas as configurações disponíveis, use:
+
+    $ translatomatic config list
+    $ translatomatic config describe
+
+Veja também a seção de configuração abaixo para obter mais informações.
+
+## Conversão de arquivos
 
 Quando a tradução de arquivos, `translatomatic` traduz texto de uma sentença ou frase de cada vez. Se um arquivo é re-traduzido, apenas as frases que foram alterados desde a última tradução são enviadas para o tradutor, e o resto são provenientes de banco de dados local.
 
-A lista de serviços de tradução disponíveis e opções:
+Para traduzir um arquivo de propriedades Java para alemão e francês, usando o Google Tradutor:
 
-    $ translatomatic list
+    $ translatomatic translate file --translator Google strings.properties de,fr
 
-Para traduzir um arquivo de propriedades Java para o alemão e o francês:
-
-    $ translatomatic translate file resources/strings.properties de,fr
-
-Isso poderia criar (ou substituir) `strings_de.properties` e `strings_fr.properties`.
+Isso poderia criar (ou substituir) `strings_de.properties` e `strings_fr.properties` com propriedades traduzidas.
 
 ### Exibindo seqüências de caracteres a partir de um pacote de recursos
 
@@ -74,15 +83,21 @@ Para ler e exibir o `store.description` e `store.name` propriedades de arquivos 
 
 ### A extração de seqüências de caracteres a partir de arquivos de origem
 
-Para extrair cadeias de alguns arquivos de origem, use o comando extract, e.g.
+Para extrair sequências de alguns arquivos de fonte, use o `strings` comando, por exemplo
 
     $ translatomatic strings file.rb
 
 ## Configuração
 
-### Translatomatic arquivo de configuração
+### Translatomatic exemplos de configuração
 
-Linha de comando muitas opções podem ser configuradas usando Translatomatic é interno `config` comando. Por exemplo, para definir uma lista padrão de localidades de tradução de destino, execute:
+Para definir um ou mais serviços de tradução para usar:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+Tradutores secundários serão usados apenas se ocorrer um erro de tradução, ao usar a primeira escolha.
+
+Para definir uma lista padrão de localidades de destino:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -119,4 +134,4 @@ A jóia está disponível como código aberto sob os termos da [Licença MIT](ht
 
 Todos interagindo com o Translatomatic projeto antigo, issue trackers, salas de bate-papo e listas de discussão é esperado para seguir o [código de conduta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Criado por Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:41 +1030_
+_Criado por Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:23 +1030_

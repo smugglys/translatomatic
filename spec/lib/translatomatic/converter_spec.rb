@@ -14,12 +14,6 @@ RSpec.describe Translatomatic::Converter do
       expect(t).to be
     end
 
-    it "requires a translator" do
-      expect {
-        create_converter
-      }.to raise_error(t("converter.translator_required"))
-    end
-
     it "resolves a translator by name" do
       t = create_converter(translator: "Yandex", yandex_api_key: "123")
       expect(t).to be

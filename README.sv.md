@@ -46,24 +46,33 @@ Denna pärla ger en körbar som kallas `translatomatic`. Den `translatomatic` ko
 
     $ translatomatic help
 
-Och hjälp om en underkommandot, kör:
+Och hjälp om ett kommando, kör:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
-### Översättning av filer
+## Setup
+
+Kontrollera tillgängliga översättningstjänster och alternativ med den `services` kommandot:
+
+    $ translatomatic services
+
+Alternativ kan anges på kommandoraden, i miljövariabler eller i translatomatic's konfigurationsfil. Konfigurationsfilen kan ändras med hjälp av translatomatic's interna `config` kommandot. För att lista alla tillgängliga konfigurationsinställningar, Använd:
+
+    $ translatomatic config list
+    $ translatomatic config describe
+
+Se även avsnittet konfiguration nedan för mer information.
+
+## Översättning av filer
 
 När översätta filer, `translatomatic` översätter texten en mening eller en fras på en gång. Om en fil är åter översatta, enda meningar som har ändrats sedan den senaste översättningen skickas till översättaren, och resten kommer från den lokala databasen.
 
-För att lista tillgängliga översättning tjänst och alternativ:
+Att översätta en Java properties fil till tyska och franska använder Google translator:
 
-    $ translatomatic list
+    $ translatomatic translate file --translator Google strings.properties de,fr
 
-Att översätta en Java egenskaper för filen till tyska och franska:
-
-    $ translatomatic translate file resources/strings.properties de,fr
-
-Detta skulle skapa (eller skriva) `strings_de.properties` och `strings_fr.properties`.
+Detta skulle skapa (eller skriva) `strings_de.properties` och `strings_fr.properties` med översatta egenskaper.
 
 ### Visa strängar från en resurs bunt
 
@@ -74,15 +83,21 @@ För att läsa och visa den `store.description` och `store.name` egenskaper frå
 
 ### Extrahering av strängar från källfilerna
 
-För att extrahera strängar från en viss källa filer, använd kommandot extract, t ex
+Om du vill extrahera strängar från vissa källfiler, den `strings` kommandot, t.ex.
 
     $ translatomatic strings file.rb
 
 ## Konfiguration
 
-### Translatomatic-konfigurationsfilen
+### Translatomatic Konfigurationsexempel
 
-Många kommandoraden alternativ kan konfigureras med hjälp av Translatomatic's interna `config` kommandot. Till exempel om du vill ange en standardlista över målet översättning locales, kör:
+Ställa in en eller flera översättningstjänster att använda:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+Sekundära översättare kommer endast användas om ett översättningsfel uppträder när du använder det första valet.
+
+Ange en standardlista över målet locales:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -119,4 +134,4 @@ Pärla är tillgänglig som öppen källkod under villkoren i [MIT License](http
 
 Alla interagerar med Translatomatic projektets codebases, frågan trackers, chattrum och e-postlistor förväntas följa [uppförandekod](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Skapad av Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:43 +1030_
+_Skapad av Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:24 +1030_

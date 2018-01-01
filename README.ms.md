@@ -46,24 +46,33 @@ Permata ini menyediakan boleh laku yang dipanggil `translatomatic`. Dalam `trans
 
     $ translatomatic help
 
-Dan untuk bantuan tentang subcommand satu, melaksanakan:
+Dan untuk bantuan tentang arahan, melaksanakan:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
-### Menterjemahkan fail
+## Persediaan
+
+Menyemak Perkhidmatan penterjemahan tersedia dan dengan itu `services` perintah:
+
+    $ translatomatic services
+
+Pilihan boleh ditetapkan pada baris arahan, dalam pembolehubah persekitaran, atau dalam fail konfigurasi di translatomatic. Fail konfigurasi boleh diubahsuai menggunakan translatomatic di Dalaman `config` perintah. Untuk menyenaraikan semua tetapan tatarajah tersedia, gunakan:
+
+    $ translatomatic config list
+    $ translatomatic config describe
+
+Lihat juga Seksyen konfigurasi di bawah untuk maklumat lanjut.
+
+## Menterjemahkan fail
 
 Apabila menterjemahkan fail, `translatomatic` diterjemahkan teks satu ayat atau frasa pada suatu waktu. Jika fail terjemahan semula, ayat sahaja yang telah berubah sejak lepas terjemahan dihantar kepada penterjemah, dan selebihnya diperolehi dari pangkalan data tempatan.
 
-Untuk senarai yang ada perkhidmatan terjemahan dan pilihan:
+Untuk menterjemahkan fail sifat Java untuk Jerman dan Perancis yang menggunakan Google penterjemah:
 
-    $ translatomatic list
+    $ translatomatic translate file --translator Google strings.properties de,fr
 
-Untuk menterjemahkan Jawa sifat file untuk jerman dan perancis:
-
-    $ translatomatic translate file resources/strings.properties de,fr
-
-Ini akan membuat (atau tindih) `strings_de.properties` dan `strings_fr.properties`.
+Ini akan membuat (atau tindih) `strings_de.properties` dan `strings_fr.properties` dengan sifat-sifat yang diterjemahkan.
 
 ### Memaparkan tali dari sumber ikatan
 
@@ -74,15 +83,21 @@ Untuk membaca dan memaparkan `store.description` dan `store.name` sifat dari sum
 
 ### Mengekstrak tali dari sumber fail
 
-Untuk mendapatkan tali dari beberapa sumber fail, gunakan mengeluarkan perintah, contohnya.
+Untuk mengekstrak rentetan dari sesetengah fail sumber, gunakan dalam `strings` arahan, misalnya
 
     $ translatomatic strings file.rb
 
 ## Konfigurasi
 
-### Fail konfigurasi Translatomatic
+### Contoh-contoh tatarajah Translatomatic
 
-Banyak baris perintah opsyen boleh ditatarajah menggunakan Translatomatic di Dalaman `config` perintah. Sebagai contoh, untuk menetapkan senarai sasaran terjemahan locales lalai, melaksanakan:
+Untuk menetapkan satu atau lebih perkhidmatan penterjemahan untuk digunakan:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+Penterjemah menengah hanya boleh digunakan jika satu ralat penterjemahan berlaku bila menggunakan pilihan pertama.
+
+Untuk menetapkan senarai sasaran locales lalai:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -119,4 +134,4 @@ Permata yang ada sebagai sumber terbuka di bawah segi [MIT Lesen](https://openso
 
 Semua orang berinteraksi dengan Translatomatic projek codebases, isu trackers, chat bilik dan senarai mel adalah diharapkan untuk mengikuti [Kod Amalan](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Dicipta oleh Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:41 +1030_
+_Dicipta oleh Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:22 +1030_

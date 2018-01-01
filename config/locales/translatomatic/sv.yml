@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:37 +1030
+# Skapad av Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:44 +1030
 
 sv:
   translatomatic:
@@ -40,8 +40,6 @@ sv:
       aborted: Avbröts
       file_source: 'Fil: %{file}'
       sentences: 'Meningar:'
-      no_translators: Ingen översättare som konfigurerats. Använda kommandot översättare
-        för att se alternativ
       database:
         subcommand: Databas-kommandon
         search: Sökdatabas för text på en given sträng.
@@ -65,10 +63,12 @@ sv:
       email_address: E-postadress
       share_response: 'Dela svar: %{response}'
       yandex_api_key: Yandex API-nyckel
-      yandex_key_required: Yandex API-nyckel krävs
+      yandex_key_required: Yandex API-nyckel krävs.
       required_option: "(krävs)"
-      translators: 'Översättare:'
+      translators: 'Alla översättare:'
+      configured: 'Konfigurerade översättare:'
       unavailable: Översättare %{name} är inte tillgänglig.
+      no_translators: Ingen översättare är konfigurerade.
       password: Lösenord
     converter:
       total_translations: 'Summa översättningar: %{total} (%{from_db} från databas,

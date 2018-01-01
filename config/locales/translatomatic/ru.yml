@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:37 +1030
+# Созданная Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:44 +1030
 
 ru:
   translatomatic:
@@ -40,8 +40,6 @@ ru:
       aborted: Прервана
       file_source: 'Файл: %{file}'
       sentences: 'Предложения:'
-      no_translators: Переводчики не настроен. Команда переводчиков используется для
-        просмотра параметров
       database:
         subcommand: Команды базы данных
         search: База данных поиска для соответствия заданной строки текста.
@@ -65,10 +63,12 @@ ru:
       email_address: Адрес электронной почты
       share_response: 'Доля ответов: %{response}'
       yandex_api_key: Ключ API Яндекс
-      yandex_key_required: Яндекс API ключ требуется
+      yandex_key_required: Яндекс API ключа требуется.
       required_option: "(обязательно)"
-      translators: 'Переводчики:'
+      translators: 'Все переводчики:'
+      configured: 'Настроенные переводчики:'
       unavailable: Переводчик %{name} недоступна.
+      no_translators: Переводчики не настроены.
       password: Пароль
     converter:
       total_translations: 'Всего переводы: %{total} (%{from_db} из базы данных, %{from_translator}

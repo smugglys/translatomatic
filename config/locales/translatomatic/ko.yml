@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:37 +1030
+# Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:42 +1030에 의해 만들어진
 
 ko:
   translatomatic:
@@ -40,7 +40,6 @@ ko:
       aborted: 중단
       file_source: '파일: %{file}'
       sentences: '문장:'
-      no_translators: 구성 된 아무 번역입니다. 번역사 명령을 사용 하 여 옵션 참조
       database:
         subcommand: 데이터베이스 명령
         search: 지정 된 문자열과 일치 하는 텍스트에 대 한 검색 데이터베이스입니다.
@@ -64,10 +63,12 @@ ko:
       email_address: 이메일 주소
       share_response: '공유 응답: %{response}'
       yandex_api_key: Yandex API 키
-      yandex_key_required: Yandex API 키 필요
+      yandex_key_required: Yandex API 키 필요입니다.
       required_option: "(필수)"
-      translators: '번역자:'
+      translators: '모든 번역자:'
+      configured: '구성된 변환기:'
       unavailable: 번역기 %{name} 불가능합니다.
+      no_translators: 아니 변환기 구성 됩니다.
       password: 암호
     converter:
       total_translations: 총 번역:%{total}(%{from_db}데이터베이스에서,%{from_translator}에서 번역,%{untranslated}맞)

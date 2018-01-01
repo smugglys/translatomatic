@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:37 +1030
+# 由Translatomatic0.1.1Mon, 01 Jan 2018 21:36:45 +1030 创建
 
 zh:
   translatomatic:
@@ -40,7 +40,6 @@ zh:
       aborted: 中止
       file_source: 文件:%{file}
       sentences: '句子:'
-      no_translators: 没有配置翻译器。 使用 "翻译人员" 命令查看选项
       database:
         subcommand: 数据库命令
         search: 搜索与给定字符串匹配的文本的数据库。
@@ -64,10 +63,12 @@ zh:
       email_address: 电子邮件地址
       share_response: 共享响应:%{response}
       yandex_api_key: Yandex API 密钥
-      yandex_key_required: 需要 Yandex 的 API 密钥
+      yandex_key_required: 需要 Yandex API 密钥。
       required_option: 需要)
-      translators: '翻译:'
+      translators: '所有翻译人员:'
+      configured: '已配置的翻译人员:'
       unavailable: 转换器%{name} 不可用。
+      no_translators: 未配置任何翻译器。
       password: 密码
     converter:
       total_translations: 总翻译:%{total} (%{from_db} 来自数据库,%{from_translator} 来自翻译器,%{untranslated}

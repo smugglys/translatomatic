@@ -46,24 +46,33 @@ gem 'translatomatic'
 
     $ translatomatic help
 
-그리고는 하위에 도움, 실행:
+그리고에 대 한 도움말을 명령, 실행:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
-### 번역 파일
+## 설치
+
+사용 가능한 번역 서비스와 옵션에 대 한 확인은 `services` 명령:
+
+    $ translatomatic services
+
+옵션은 명령줄, 환경 변수, 또는 translatomatic의 구성 파일에 지정할 수 있습니다. 구성 파일을 사용 하 여 수정할 수 있습니다 translatomatic의 내부 `config` 명령입니다. 모든 사용 가능한 구성 설정, 사용:
+
+    $ translatomatic config list
+    $ translatomatic config describe
+
+또한 자세한 내용은 아래의 구성 섹션을 참조.
+
+## 번역 파일
 
 파일을 변환할 때 `translatomatic` 번역 텍스트나 문장이나 문구를 시간이다. 파일은 다시 번역 하는 경우 마지막 번역 이후 변경 된 유일한 문장 번역기, 전송 됩니다 그리고 나머지는 로컬 데이터베이스에서 공급.
 
-목록을 사용할 수 있는 번역 서비스와 옵션:
+자바 속성 파일을 독일어와 프랑스어 구글 번역기를 사용 하 여 번역:
 
-    $ translatomatic list
+    $ translatomatic translate file --translator Google strings.properties de,fr
 
-번역 Java properties 파일을 독일어,프랑스:
-
-    $ translatomatic translate file resources/strings.properties de,fr
-
-이들(또는 덮어쓰기) `strings_de.properties` 고 `strings_fr.properties`니다.
+이들(또는 덮어쓰기) `strings_de.properties` 고 `strings_fr.properties` 와 속성을 변환.
 
 ### 문자열을 표시하는 리소스에 번들
 
@@ -74,15 +83,21 @@ gem 'translatomatic'
 
 ### 추출 문서는 원본 파일
 
-추출 문자열을 일부 소스에서 파일을 사용하여 추출물 명령,예를 들어,
+사용 하는 일부 소스 파일에서 문자열을 추출 하는 `strings` 예를 들어, 명령
 
     $ translatomatic strings file.rb
 
 ## 구성
 
-### Translatomatic 구성 파일
+### Translatomatic 구성 예
 
-많은 커맨드 라인 옵션 Translatomatic를 사용 하 여 구성할 수 있습니다의 내부 `config` 명령입니다. 예를 들어 설정 하려면 대상 번역 로케일의 기본 목록, 실행 합니다.
+설정 하려면 하나 이상의 번역 서비스를 사용 하 여:
+
+    $ translatomatic config set translator Microsoft,Yandex
+
+2 차 번역 번역 오류가 발생 하는 첫 번째 선택을 사용 하는 경우 경우에 사용 됩니다.
+
+설정 하려면 대상 로케일의 기본 목록:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -119,4 +134,4 @@ gem 'translatomatic'
 
 모든 사람과 상호 작용 Translatomatic 프로젝트의 지원,문제 trackers,대화방 및 메일링 리스트를 수행 할 것으로 예상된 [윤리 강령](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)니다.
 
-_Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:40 +1030에 의해 만들어진_
+_Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:21 +1030에 의해 만들어진_

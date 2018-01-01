@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:37 +1030
+# Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:41 +1030 によって作成されました。
 
 ja:
   translatomatic:
@@ -40,7 +40,6 @@ ja:
       aborted: 中止
       file_source: 'ファイル: %{file}'
       sentences: '文:'
-      no_translators: 翻訳者は構成しません。 翻訳コマンドを使用して、オプションを参照してください。
       database:
         subcommand: データベース コマンド
         search: 指定した文字列と一致する文字列の検索データベースです。
@@ -66,8 +65,10 @@ ja:
       yandex_api_key: Yandex API キー
       yandex_key_required: Yandex の API キーが必要です。
       required_option: "(必須)"
-      translators: '翻訳者:'
+      translators: 'すべての翻訳者:'
+      configured: '構成された翻訳者:'
       unavailable: 翻訳 %{name} は使用できません。
+      no_translators: 翻訳者は構成されていません。
       password: パスワード
     converter:
       total_translations: '翻訳を合計: %{total} (%{from_db} %{from_translator}、%{untranslated}

@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 13:15:37 +1030
+# Dicipta oleh Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:42 +1030
 
 ms:
   translatomatic:
@@ -40,8 +40,6 @@ ms:
       aborted: Dibatalkan
       file_source: 'Fail: %{file}'
       sentences: 'Ayat:'
-      no_translators: Tiada penterjemah yang dikonfigurasikan. Gunakan perintah penterjemah
-        untuk melihat opsyen
       database:
         subcommand: Arahan pangkalan data
         search: Cari pangkalan data teks yang dipadankan dengan tali yang diberikan.
@@ -65,10 +63,12 @@ ms:
       email_address: Alamat e-mel
       share_response: 'Berkongsi jawapan: %{response}'
       yandex_api_key: Kekunci Yandex API
-      yandex_key_required: Kekunci Yandex API yang diperlukan
+      yandex_key_required: Masukkan Yandex API diperlukan.
       required_option: "(wajib)"
-      translators: 'Penterjemah:'
+      translators: 'Semua penterjemah yang terlibat:'
+      configured: 'Penterjemah yang dikonfigurasikan dengan betul:'
       unavailable: Tidak ada penterjemah %{name}.
+      no_translators: Penterjemah tidak dikonfigurasikan.
       password: Kata laluan
     converter:
       total_translations: 'Jumlah terjemahan: %{total} (%{from_db} dari pangkalan
