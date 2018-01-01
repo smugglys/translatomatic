@@ -14,6 +14,14 @@
 - [YAML](http://yaml.org/)
 - 텍스트 파일
 
+다음 번역 Api Translatomatic와 함께 사용할 수 있습니다.
+
+- [구글](https://cloud.google.com/translate/)
+- [마이크로 소프트](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
+
 번역된 문자열 데이터베이스에서 저장 및 재사용 가능합니다.
 
 ## 설치
@@ -34,7 +42,7 @@ gem 'translatomatic'
 
 ## 사용법
 
-라는 실행 파일을 제공 하는이 보석 `translatomatic`니다는he `translatomatic` 명령 기능, 모두는 여기에 설명 되어 있다. 에 대 한 도움말 사용 가능한 명령 및 옵션을 실행 합니다.
+라는 실행 파일을 제공 하는이 보석 `translatomatic`니다. 는 `translatomatic` 명령 기능, 모두는 여기에 설명 되어 있다. 에 대 한 도움말 사용 가능한 명령 및 옵션을 실행 합니다.
 
     $ translatomatic help
 
@@ -45,7 +53,7 @@ gem 'translatomatic'
 
 ### 번역 파일
 
-파일을 변환할 때 `translatomatic` 번역 텍스트나 문장이나 문구를 시간이다. If a file is re-translated,파일은 다시 번역 하는 경우 마지막 번역 이후 변경 된 유일한 문장 번역기, 전송 됩니다 그리고 나머지는 로컬 데이터베이스에서 공급.
+파일을 변환할 때 `translatomatic` 번역 텍스트나 문장이나 문구를 시간이다. 파일은 다시 번역 하는 경우 마지막 번역 이후 변경 된 유일한 문장 번역기, 전송 됩니다 그리고 나머지는 로컬 데이터베이스에서 공급.
 
 목록을 사용할 수 있는 번역 서비스와 옵션:
 
@@ -88,7 +96,7 @@ gem 'translatomatic'
 
 ### 데이터베이스 구성
 
-기본적으로, `translatomatic` 사용 sqlite3 데이터베이스에 `$HOME/.translatomatic/translatomatic.sqlite3` 를 저장하는 번역된 문자열이다. To store tr번역 데이터베이스에 저장 하기와 같은 설치 적절 한 데이터베이스 어댑터 있어야 합니다`sqlite3` 보석입니다. Translatomatic는 데이터베이스 어댑터를 자동으로 설치 되지 않습니다. 데이터베이스 구성을 생성 하 여 변경 수는 `database.yml` 에서 파일 `$HOME/.translatomatic/database.yml` 대 `production` 환경,예를 들어,
+기본적으로, `translatomatic` 사용 sqlite3 데이터베이스에 `$HOME/.translatomatic/translatomatic.sqlite3` 를 저장하는 번역된 문자열이다. 번역 데이터베이스에 저장 하기와 같은 설치 적절 한 데이터베이스 어댑터 있어야 합니다 `sqlite3` 보석입니다. Translatomatic는 데이터베이스 어댑터를 자동으로 설치 되지 않습니다. 데이터베이스 구성을 생성 하 여 변경 수는 `database.yml` 에서 파일 `$HOME/.translatomatic/database.yml` 대 `production` 환경,예를 들어,
 
     production:
       adapter: mysql2
@@ -107,8 +115,8 @@ gem 'translatomatic'
 
 보석으로 사용할 수 있는 오픈 소스에서의 약관 [MIT 라이센스](https://opensource.org/licenses/MIT)니다.
 
-## Code of Conduct
+## 윤리 강령
 
 모든 사람과 상호 작용 Translatomatic 프로젝트의 지원,문제 trackers,대화방 및 메일링 리스트를 수행 할 것으로 예상된 [윤리 강령](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)니다.
 
-_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:47 +1030_
+_Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:40 +1030에 의해 만들어진_

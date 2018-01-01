@@ -18,6 +18,14 @@ are currently supported:
 * [YAML](http://yaml.org/)
 * Text files
 
+The following translation APIs can be used with Translatomatic:
+
+* [Google](https://cloud.google.com/translate/)
+* [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+* [Yandex](https://tech.yandex.com/translate/)
+* [MyMemory](https://mymemory.translated.net/doc/)
+* [Frengly](http://www.frengly.com/api)
+
 Translated strings are saved in a database and reused.
 
 ## Installation

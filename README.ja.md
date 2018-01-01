@@ -14,6 +14,14 @@
 - [YAML](http://yaml.org/)
 - テキストファイル
 
+次の翻訳 Api は、Translatomatic で使用できます。
+
+- [Google](https://cloud.google.com/translate/)
+- [マイクロソフト](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
+
 翻訳文字列に保存されたデータベースの再利用されます。
 
 ## 設置
@@ -34,7 +42,7 @@ gem 'translatomatic'
 
 ## 用途
 
-この宝石と呼ばれる実行可能ファイルを提供します。 `translatomatic`ます、he `translatomatic` コマンドは、いくつかのここに記載されているすべての機能を持ちます。 利用可能なコマンドとオプションに関するヘルプを実行します。
+この宝石と呼ばれる実行可能ファイルを提供します。 `translatomatic`ます。 、 `translatomatic` コマンドは、いくつかのここに記載されているすべての機能を持ちます。 利用可能なコマンドとオプションに関するヘルプを実行します。
 
     $ translatomatic help
 
@@ -45,7 +53,7 @@ gem 'translatomatic'
 
 ### 翻訳ファイル
 
-ファイルを変換するとき `translatomatic` 変換テキストの文章や言葉です。 If a file is re-translated, only sファイルが再翻訳された場合、最後の翻訳から変更されている唯一の文は翻訳者に送信され、残りの部分は、ローカル データベースから供給されます。
+ファイルを変換するとき `translatomatic` 変換テキストの文章や言葉です。 ファイルが再翻訳された場合、最後の翻訳から変更されている唯一の文は翻訳者に送信され、残りの部分は、ローカル データベースから供給されます。
 
 るシリコーンコーティング翻訳サービス-オプション:
 
@@ -88,7 +96,7 @@ gem 'translatomatic'
 
 ### データベースの構成
 
-デフォルトでは、 `translatomatic` を使用してsqlite3データベース `$HOME/.translatomatic/translatomatic.sqlite3` 店舗の翻訳の文字列です。 To store transla翻訳をデータベースに格納するようにインストールされている適切なデータベース アダプターが必要、`sqlite3` 逸品です。 Translatomatic では、データベース アダプターを自動的にインストールされません。 データベースの構成を作成することによって変更できます、 `database.yml` ファイル `$HOME/.translatomatic/database.yml` のための `production` 環境、例えば
+デフォルトでは、 `translatomatic` を使用してsqlite3データベース `$HOME/.translatomatic/translatomatic.sqlite3` 店舗の翻訳の文字列です。 翻訳をデータベースに格納するようにインストールされている適切なデータベース アダプターが必要、 `sqlite3` 逸品です。 Translatomatic では、データベース アダプターを自動的にインストールされません。 データベースの構成を作成することによって変更できます、 `database.yml` ファイル `$HOME/.translatomatic/database.yml` のための `production` 環境、例えば
 
     production:
       adapter: mysql2
@@ -111,4 +119,4 @@ gem 'translatomatic'
 
 皆様との交流のTranslatomaticプロジェクトのcodebases、ラッカー、チャットルームやメーリングリストで入力してください [行動規範](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)ます。
 
-_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:46 +1030_
+_Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:39 +1030 によって作成されました。_

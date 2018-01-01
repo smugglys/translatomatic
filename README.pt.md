@@ -14,6 +14,14 @@ Converte arquivos de texto de um idioma para outro. Os seguintes formatos de arq
 - [YAML](http://yaml.org/)
 - Arquivos de texto
 
+A tradução seguinte APIs pode ser usada com Translatomatic:
+
+- [Google](https://cloud.google.com/translate/)
+- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
+
 Traduzido seqüências de caracteres são salvos em um banco de dados e reutilizados.
 
 ## Instalação
@@ -45,7 +53,7 @@ E para obter ajuda sobre um subcomando, execute:
 
 ### Conversão de arquivos
 
-Quando a tradução de arquivos, `translatomatic` traduz texto de uma sentença ou frase de cada vez. Se um arquivo é re-traduzido, apenas as frases que foram alterados desde a última tradução são enviadas para o tradutor, e o resto são provenientes de banco de dados local..
+Quando a tradução de arquivos, `translatomatic` traduz texto de uma sentença ou frase de cada vez. Se um arquivo é re-traduzido, apenas as frases que foram alterados desde a última tradução são enviadas para o tradutor, e o resto são provenientes de banco de dados local.
 
 A lista de serviços de tradução disponíveis e opções:
 
@@ -88,7 +96,7 @@ Para exibir a configuração atual, execute
 
 ### Configuração de banco de dados
 
-Por padrão, `translatomatic` usa um banco de dados sqlite3 no `$HOME/.translatomatic/translatomatic.sqlite3` para armazenar as mensagens tPara armazenar as traduções em um banco de dados, você deve ter um adaptador de banco de dados apropriado instalado, tais como osuch as the `sqlite3` Gem. Translatomatic não instala automaticamente os adaptadores de banco de dados. A configuração de banco de dados pode ser alterada através da criação de um `database.yml` em ficheiro `$HOME/.translatomatic/database.yml` para o `production` ambiente, e.g.
+Por padrão, `translatomatic` usa um banco de dados sqlite3 no `$HOME/.translatomatic/translatomatic.sqlite3` para armazenar as mensagens traduzidas. Para armazenar as traduções em um banco de dados, você deve ter um adaptador de banco de dados apropriado instalado, tais como o `sqlite3` Gem. Translatomatic não instala automaticamente os adaptadores de banco de dados. A configuração de banco de dados pode ser alterada através da criação de um `database.yml` em ficheiro `$HOME/.translatomatic/database.yml` para o `production` ambiente, e.g.
 
     production:
       adapter: mysql2
@@ -107,8 +115,8 @@ Relatórios de bugs e puxe pedidos são bem-vindos no GitHub em https://github.c
 
 A jóia está disponível como código aberto sob os termos da [Licença MIT](https://opensource.org/licenses/MIT).
 
-## Código de Conduta
+## código de conduta
 
 Todos interagindo com o Translatomatic projeto antigo, issue trackers, salas de bate-papo e listas de discussão é esperado para seguir o [código de conduta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:49 +1030_
+_Criado por Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:41 +1030_

@@ -14,6 +14,14 @@ Diterjemahkan teks fail-fail dari satu bahasa yang lain. Berikut file format dis
 - [YAML](http://yaml.org/)
 - Fail teks
 
+Terjemahan berikut api boleh digunakan dengan Translatomatic:
+
+- [Google](https://cloud.google.com/translate/)
+- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
+
 Diterjemahkan tali disimpan dalam pengkalan data dan semula.
 
 ## Pemasangan
@@ -45,7 +53,7 @@ Dan untuk bantuan tentang subcommand satu, melaksanakan:
 
 ### Menterjemahkan fail
 
-Apabila menterjemahkan fail, `translatomatic` diterjemahkan teks satu ayat atau frasa pada suatu Jika fail terjemahan semula, ayat sahaja yang telah berubah sejak lepas terjemahan dihantar kepada penterjemah, dan selebihnya diperolehi dari pangkalan data tempatan.atabase.
+Apabila menterjemahkan fail, `translatomatic` diterjemahkan teks satu ayat atau frasa pada suatu waktu. Jika fail terjemahan semula, ayat sahaja yang telah berubah sejak lepas terjemahan dihantar kepada penterjemah, dan selebihnya diperolehi dari pangkalan data tempatan.
 
 Untuk senarai yang ada perkhidmatan terjemahan dan pilihan:
 
@@ -88,7 +96,7 @@ Untuk memaparkan konfigurasi semasa, melaksanakan
 
 ### Pangkalan data konfigurasi
 
-Oleh lalai, `translatomatic` menggunakan sqlite3 dalam `$HOME/.translatomatic/translatomatic.sqlite3` untuk menyimpan tali diterjemUntuk menyimpan terjemahan dalam pangkalan data, anda harus mempunyai penyesuai pangkalan data yang sesuai dipasang, seperti yang as the `sqlite3` permata. Translatomatic memasang penyesuai pangkalan data secara automatik ini. Pangkalan data konfigurasi boleh ditukar dengan mencipta satu `database.yml` file yang di bawah `$HOME/.translatomatic/database.yml` untuk itu `production` persekitaran, contohnya.
+Oleh lalai, `translatomatic` menggunakan sqlite3 dalam `$HOME/.translatomatic/translatomatic.sqlite3` untuk menyimpan tali diterjemahkan. Untuk menyimpan terjemahan dalam pangkalan data, anda harus mempunyai penyesuai pangkalan data yang sesuai dipasang, seperti yang `sqlite3` permata. Translatomatic memasang penyesuai pangkalan data secara automatik ini. Pangkalan data konfigurasi boleh ditukar dengan mencipta satu `database.yml` file yang di bawah `$HOME/.translatomatic/database.yml` untuk itu `production` persekitaran, contohnya.
 
     production:
       adapter: mysql2
@@ -107,8 +115,8 @@ Laporan Bug dan tarik permintaan selamat datang pada Orang yang di https://githu
 
 Permata yang ada sebagai sumber terbuka di bawah segi [MIT Lesen](https://opensource.org/licenses/MIT).
 
-## Code of Conduct
+## Kod Amalan
 
 Semua orang berinteraksi dengan Translatomatic projek codebases, isu trackers, chat bilik dan senarai mel adalah diharapkan untuk mengikuti [Kod Amalan](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:48 +1030_
+_Dicipta oleh Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:41 +1030_

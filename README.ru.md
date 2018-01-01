@@ -14,6 +14,14 @@
 - [И yaml](http://yaml.org/)
 - Текстовые файлы
 
+Следующее перевод интерфейсы API могут использоваться с Translatomatic:
+
+- [Google](https://cloud.google.com/translate/)
+- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Яндекс](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
+
 Переведенные строки сохраняются в базе данных и повторно.
 
 ## Установка
@@ -45,7 +53,7 @@ gem 'translatomatic'
 
 ### Перевод файлов
 
-При переводе файлов, `translatomatic` перевод текста одно предложение или фразу одновремеЕсли файл переведены заново, отправляются только предложений, которые были изменены с момента последнего перевода переводчик, и остальные поступают из локальной базы данных.abase.
+При переводе файлов, `translatomatic` перевод текста одно предложение или фразу одновременно. Если файл переведены заново, отправляются только предложений, которые были изменены с момента последнего перевода переводчик, и остальные поступают из локальной базы данных.
 
 В списке доступных переводов и услуги:
 
@@ -70,7 +78,7 @@ gem 'translatomatic'
 
     $ translatomatic strings file.rb
 
-## Конфигурации
+## Конфигурация
 
 ### Файл конфигурации Translatomatic
 
@@ -111,4 +119,4 @@ gem 'translatomatic'
 
 Все взаимодействия с исходный код проекта Translatomatic, проблеме трекеры, чаты и списки рассылки, как ожидается, следовать [Кодекс поведения](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:50 +1030_
+_Созданная Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:42 +1030_

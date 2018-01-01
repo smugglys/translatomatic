@@ -14,6 +14,14 @@
 - [YAML](http://yaml.org/)
 - Text-Dateien
 
+Die folgende Übersetzung APIs kann mit Translatomatic verwendet werden:
+
+- [Google](https://cloud.google.com/translate/)
+- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
+
 Übersetzten Zeichenfolgen werden in einer Datenbank gespeichert und wiederverwendet werden.
 
 ## Installation
@@ -45,7 +53,7 @@ Und, um Hilfe zu einem Unterbefehl ausführen:
 
 ### Übersetzen von Dateien
 
-Bei der Übersetzung von Dateien `translatomatic` übersetzt den text, ein Satz oder auf Zeit. If a fWenn eine Datei erneut übersetzt ist, nur Sätze, die seit der letzten Übersetzung geändert haben werden an den Übersetzer geschickt, und der Rest aus der lokalen Datenbank bezogen werden.
+Bei der Übersetzung von Dateien `translatomatic` übersetzt den text, ein Satz oder auf Zeit. Wenn eine Datei erneut übersetzt ist, nur Sätze, die seit der letzten Übersetzung geändert haben werden an den Übersetzer geschickt, und der Rest aus der lokalen Datenbank bezogen werden.
 
 Um eine Liste der verfügbaren übersetzungs-services und-Optionen:
 
@@ -88,7 +96,7 @@ Um die aktuelle Konfiguration anzuzeigen, führen Sie
 
 ### Datenbank-Konfiguration
 
-Standardmäßig `translatomatic` nutzt eine sqlite3 Datenbank, in `$HOME/.translatomatic/translatomatic.sqlite3` zum speichern der übersetztenUm Übersetzungen in einer Datenbank zu speichern, sollte man einen entsprechenden Datenbank-Adapter installiert, wie z. B. dieuch as the `sqlite3` Gem. Translatomatic installiert Datenbank-Adapter nicht automatisch. Die Datenbank-Konfiguration kann geändert werden, durch die Schaffung einer `database.yml` Datei unter `$HOME/.translatomatic/database.yml` für die `production` Umwelt, z.B.
+Standardmäßig `translatomatic` nutzt eine sqlite3 Datenbank, in `$HOME/.translatomatic/translatomatic.sqlite3` zum speichern der übersetzten strings. Um Übersetzungen in einer Datenbank zu speichern, sollte man einen entsprechenden Datenbank-Adapter installiert, wie z. B. die `sqlite3` Gem. Translatomatic installiert Datenbank-Adapter nicht automatisch. Die Datenbank-Konfiguration kann geändert werden, durch die Schaffung einer `database.yml` Datei unter `$HOME/.translatomatic/database.yml` für die `production` Umwelt, z.B.
 
     production:
       adapter: mysql2
@@ -111,4 +119,4 @@ Der Edelstein ist als open source unter den Bedingungen der [MIT-Lizenz](https:/
 
 Jeder der Interaktion mit dem Translatomatic Projekt codebase, issue-Tracker, chat-rooms und mailing-Listen sollen Folgen [Verhaltenskodex](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:41 +1030_
+_Erstellt von Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:36 +1030_

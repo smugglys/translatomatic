@@ -14,6 +14,14 @@ Converte file di testo da una lingua all'altra. I seguenti formati di file sono 
 - [YAML](http://yaml.org/)
 - I file di testo
 
+La seguente traduzione API può essere utilizzata con Translatomatic:
+
+- [Google](https://cloud.google.com/translate/)
+- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
+
 Tradotto le stringhe vengono salvati in un database e riutilizzati.
 
 ## Installazione
@@ -45,7 +53,7 @@ E per un aiuto su un sottocomando, eseguire:
 
 ### La traduzione di file
 
-Quando si converte il file, `translatomatic` traduce il testo una frase o una frase alla volta. Se un file è ri-tradotto, soli frasi che sono stati modificati dopo l'ultima traduzione vengono inviati al traduttore, e il resto sono provenienti dal database locale..
+Quando si converte il file, `translatomatic` traduce il testo una frase o una frase alla volta. Se un file è ri-tradotto, soli frasi che sono stati modificati dopo l'ultima traduzione vengono inviati al traduttore, e il resto sono provenienti dal database locale.
 
 Elenco di servizi di traduzione ed opzioni:
 
@@ -88,7 +96,7 @@ Per visualizzare la configurazione corrente, eseguire
 
 ### Configurazione del database
 
-Per impostazione predefinita, `translatomatic` utilizza un database sqlite3 in `$HOME/.translatomatic/translatomatic.sqlite3` per memorizzare stringhe tradPer memorizzare traduzioni in un database, è necessario un adattatore di database appropriato installato, come ilas the `sqlite3` gemma. Translatomatic non installa automaticamente schede di database. La configurazione del database può essere modificata mediante la creazione di un `database.yml` file sotto `$HOME/.translatomatic/database.yml` per il `production` ambiente, ad es.
+Per impostazione predefinita, `translatomatic` utilizza un database sqlite3 in `$HOME/.translatomatic/translatomatic.sqlite3` per memorizzare stringhe tradotte. Per memorizzare traduzioni in un database, è necessario un adattatore di database appropriato installato, come il `sqlite3` gemma. Translatomatic non installa automaticamente schede di database. La configurazione del database può essere modificata mediante la creazione di un `database.yml` file sotto `$HOME/.translatomatic/database.yml` per il `production` ambiente, ad es.
 
     production:
       adapter: mysql2
@@ -107,8 +115,8 @@ Le segnalazioni di Bug e tirare le richieste sono i benvenuti su GitHub a https:
 
 Il gioiello è disponibile come open source sotto i termini della [La Licenza MIT](https://opensource.org/licenses/MIT).
 
-## Codice di Condotta
+## codice di condotta
 
 Tutti interagendo con il Translatomatic progetto di basi di codice, issue tracker, chat e mailing list dovrebbe seguire l' [codice di condotta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:44 +1030_
+_Creato da Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:39 +1030_

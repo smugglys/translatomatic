@@ -14,6 +14,14 @@
 - [YAML](http://yaml.org/)
 - Text filer
 
+Följande översättning API: er kan användas med Translatomatic:
+
+- [Google](https://cloud.google.com/translate/)
+- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex](https://tech.yandex.com/translate/)
+- [MyMemory](https://mymemory.translated.net/doc/)
+- [Frengly](http://www.frengly.com/api)
+
 Översatta strängar sparas i en databas och användas på nytt.
 
 ## Installation
@@ -45,7 +53,7 @@ Och hjälp om en underkommandot, kör:
 
 ### Översättning av filer
 
-När översätta filer, `translatomatic` översätter texten en mening eller en fras på en gånOm en fil är åter översatta, enda meningar som har ändrats sedan den senaste översättningen skickas till översättaren, och resten kommer från den lokala databasen.ase.
+När översätta filer, `translatomatic` översätter texten en mening eller en fras på en gång. Om en fil är åter översatta, enda meningar som har ändrats sedan den senaste översättningen skickas till översättaren, och resten kommer från den lokala databasen.
 
 För att lista tillgängliga översättning tjänst och alternativ:
 
@@ -88,7 +96,7 @@ Om du vill visa den aktuella konfigurationen, utföra
 
 ### Konfiguration av databas
 
-Som standard `translatomatic` använder en databas i sqlite3 `$HOME/.translatomatic/translatomatic.sqlite3` till butiken översatta strängFör att spara översättningar i en databas, bör du ha en lämplig databas adapter installerat, såsom den the `sqlite3` pärla. Translatomatic installera inte databasen adaptrar automatiskt. Databaskonfigurationen kan ändras genom att skapa en `database.yml` fil under `$HOME/.translatomatic/database.yml` för `production` miljö, t ex
+Som standard `translatomatic` använder en databas i sqlite3 `$HOME/.translatomatic/translatomatic.sqlite3` till butiken översatta strängar. För att spara översättningar i en databas, bör du ha en lämplig databas adapter installerat, såsom den `sqlite3` pärla. Translatomatic installera inte databasen adaptrar automatiskt. Databaskonfigurationen kan ändras genom att skapa en `database.yml` fil under `$HOME/.translatomatic/database.yml` för `production` miljö, t ex
 
     production:
       adapter: mysql2
@@ -107,8 +115,8 @@ Felrapporter och dra förfrågningar är välkomna på GitHub på https://github
 
 Pärla är tillgänglig som öppen källkod under villkoren i [MIT License](https://opensource.org/licenses/MIT).
 
-## Uppförandekod
+## uppförandekod
 
 Alla interagerar med Translatomatic projektets codebases, frågan trackers, chattrum och e-postlistor förväntas följa [uppförandekod](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.1 Sun, 31 Dec 2017 17:27:51 +1030_
+_Skapad av Translatomatic 0.1.1 Mon, 01 Jan 2018 13:33:43 +1030_
