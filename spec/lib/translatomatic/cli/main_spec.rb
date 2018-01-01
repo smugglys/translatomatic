@@ -5,9 +5,9 @@ RSpec.describe Translatomatic::CLI::Main do
     @cli.options = { database_env: "test" }
   end
 
-  context :list do
+  context :services do
     it "lists available translators" do
-      @cli.list
+      @cli.services
     end
   end
 

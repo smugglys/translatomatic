@@ -63,11 +63,11 @@ module Translatomatic::CLI
       end
     end
 
-    desc "list", t("cli.list_backends")
+    desc "services", t("cli.list_backends")
     thor_options(self, Translatomatic::CLI::CommonOptions)
     # List available translator services
     # @return [void]
-    def list
+    def services
       run { puts Translatomatic::Translator.list }
     end
 
