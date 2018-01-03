@@ -56,9 +56,9 @@ module Translatomatic
         translated = []
         untranslated = strings.dup
         request = Translatomatic::HTTPRequest.new(url)
+        fail_count = 0  # number of consecutive translation failures
 
         while !untranslated.empty?  # request start block
-          fail_count = 0  # number of consecutive translation failures
 
           request.start do |http|
             while !untranslated.empty?
