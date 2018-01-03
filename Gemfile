@@ -13,7 +13,6 @@ def optional_gem(*args)
   gem *args if gem_installed?(args)
 end
 
-optional_gem 'sqlite3', '~> 1.3'
 optional_gem 'mysql2'
 optional_gem 'postgresql'
 
@@ -25,6 +24,8 @@ optional_gem 'activerecord-jdbc-adapter', platform: :jruby
 optional_gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
 optional_gem 'activerecord-jdbcmysql-adapter', platform: :jruby
 optional_gem 'activerecord-jdbcpostgresql-adapter', platform: :jruby
+
+gem "sqlite3", '~> 1.3', platform: :ruby
 
 # Specify your gem's dependencies in translatomatic.gemspec
 gemspec
