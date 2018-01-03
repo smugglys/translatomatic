@@ -23,6 +23,7 @@ RSpec.describe Translatomatic::CLI::Translate do
       .with("Google").and_return(TestTranslator)
       @cli.string("Beer", "de")
     end
+
   end
 
   context :file do

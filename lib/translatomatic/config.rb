@@ -27,13 +27,10 @@ class Translatomatic::Config
   def get(key)
     key = check_valid_key(key)
     option = option(key)
-    env_name = option.name.to_s.upcase
     if @settings.include?(key)
       cast(@settings[key], option.type)
-    elsif option.use_env && ENV.include?(env_name)
-      cast(ENV[env_name], option.type)
     else
-      option.default
+      cast(option.default, option.type)
     end
   end
 
@@ -71,6 +68,12 @@ class Translatomatic::Config
     @settings ||= {}
     @settings.delete_if { |i| !valid_key?(i) }
     @settings
+  end
+
+  # Reset all configuration to the defaults
+  def reset
+    @settings = {}
+    save
   end
 
   # @return [Array<Translatomatic::Option] all available options
@@ -115,7 +118,9 @@ class Translatomatic::Config
     when :string
       return value.nil? ? value : value.to_s
     when :array
-      unless value.nil?
+      if value.nil?
+        value = []
+      else
         value = [value] unless value.kind_of?(Array)
         value = value.collect { |i| i.split(/[, ]/) }.flatten.compact
       end

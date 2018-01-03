@@ -37,7 +37,7 @@ RSpec.describe Translatomatic::Config do
       expect(config.get(KEY_LOCALES)).to eq(["de"])
       config.remove(KEY_LOCALES)
       config.load
-      expect(config.get(KEY_LOCALES)).to eq(nil)
+      expect(config.get(KEY_LOCALES)).to be_empty
     end
 
     it "removes a boolean setting" do
@@ -79,6 +79,15 @@ RSpec.describe Translatomatic::Config do
   describe :load do
     it "loads settings from the config file" do
       config.load
+    end
+  end
+
+  describe :reset do
+    it "resets all settings" do
+      config.set(KEY_LOCALES, "de")
+      config.reset
+      config.load
+      expect(config.settings).to be_empty
     end
   end
 end

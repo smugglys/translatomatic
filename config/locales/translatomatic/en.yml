@@ -24,7 +24,7 @@ en:
       wank: Enable translation progress bar
       share: Share translations with translators that support upload
       dry_run: 'Dry run: files will not be translated or written'
-      locales_required: One or more locales required
+      locales_required: One or more target locales required
       file_not_found: 'File not found: %{file}'
       file_unsupported: 'Unsupported file type: %{file}'
       using_translator: 'Using translator: %{name}'

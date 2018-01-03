@@ -31,17 +31,28 @@ module Translatomatic
     def initialize(data = {})
       @name = data[:name]
       @required = data[:required]
-      @use_env = data[:use_env]
       @description = data[:desc]
+      @use_env = data[:use_env]
       @hidden = data[:hidden]
-      @default = data[:default]
       @type = data[:type] || :string
-      @data = data
+      @default = data[:default]
+
+      if @use_env && @default.nil?
+        env_name = @name.to_s.upcase
+        @default = ENV[env_name]
+      end
     end
 
-    # @return [Hash] Option data as a hash
-    def to_hash
-      @data
+    def to_thor
+      # use internal ',' splitting for array types on command line
+      type = @type == :array ? :string : @type
+
+      { name: @name,
+        required: @required,
+        type: type,
+        desc: @description,
+        default: @default
+      }
     end
 
     # Retrieve all options from an object or list of objects.

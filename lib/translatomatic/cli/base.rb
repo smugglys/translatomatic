@@ -13,10 +13,7 @@ module Translatomatic::CLI
     def self.thor_options(klass, object)
       Translatomatic::Option.options_from_object(object).each do |option|
         next if option.hidden
-        data = option.to_hash
-        # use internal ',' splitting for array types
-        data[:type] = :string if data[:type] == :array
-        klass.method_option option.name, data
+        klass.method_option option.name, option.to_thor
       end
     end
 
