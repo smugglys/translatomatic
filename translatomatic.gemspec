@@ -42,4 +42,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "kramdown"           # markdown -> html
   spec.add_dependency "reverse_markdown"   # html -> markdown
   spec.add_dependency "concurrent-ruby"
+  spec.add_dependency "PoParser"
 end
