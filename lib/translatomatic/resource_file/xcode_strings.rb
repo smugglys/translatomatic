@@ -5,9 +5,9 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#locale_path)
     # @note localization files in XCode use the following file name
-    #   convention: Project/locale.lproj/filename
+    #   convention: locale.lproj/filename
     def locale_path(locale)
-      if path.to_s.match(/\/([-\w]+).lproj\/.+$/)
+      if path.to_s.match(/\b([-\w]+).lproj\/.+$/)
         # xcode style
         filename = path.basename
         path.parent.parent + (locale.to_s + ".lproj") + filename
@@ -54,7 +54,7 @@ module Translatomatic::ResourceFile
 
     def read(path)
       result = {}
-      content = path.read
+      content = read_contents(path)
       uncommented = content.gsub(/\/\*.*?\*\//, '')
       key_values = uncommented.scan(/"(.*?[^\\])"\s*=\s*"(.*?[^\\])"\s*;/m)
       key_values.each do |entry|

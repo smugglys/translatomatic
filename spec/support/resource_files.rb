@@ -7,7 +7,7 @@ RSpec.shared_examples "a resource file" do |config|
     "de",
     "de-DE",
     "en-US",
-    "zh-Hant"
+    "zh-Hans"
   ]
 
   def self.test_file(number = 0)

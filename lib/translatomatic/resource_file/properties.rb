@@ -58,7 +58,7 @@ module Translatomatic::ResourceFile
 
     # parse key = value property file
     def read(path)
-      contents = path.read
+      contents = read_contents(path)
       # convert escaped unicode characters into unicode
       contents = Translatomatic::EscapedUnicode.unescape(contents)
       result = {}

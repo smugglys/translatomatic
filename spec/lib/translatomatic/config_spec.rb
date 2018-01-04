@@ -62,13 +62,6 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe :settings do
-    it "returns all configuration settings" do
-      config.set(KEY_LOCALES, "de")
-      expect(config.settings.keys).to include(KEY_LOCALES)
-    end
-  end
-
   describe :save do
     it "saves settings to the config file" do
       config.set(KEY_LOCALES, "de")
@@ -82,12 +75,4 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe :reset do
-    it "resets all settings" do
-      config.set(KEY_LOCALES, "de")
-      config.reset
-      config.load
-      expect(config.settings).to be_empty
-    end
-  end
 end

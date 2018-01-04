@@ -17,7 +17,7 @@ module Helpers
   def use_test_config
     File.delete(TEST_SETTINGS_PATH) if File.exist?(TEST_SETTINGS_PATH)
     config = Translatomatic::Config.instance
-    config.send(:settings_path=, TEST_SETTINGS_PATH)
+    config.send(:user_settings_path=, TEST_SETTINGS_PATH)
   end
 
   def fixture_read(path, crlf = false)

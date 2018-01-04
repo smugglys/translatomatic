@@ -137,6 +137,10 @@ class Translatomatic::ResourceFile::Base
     )
   end
 
+  def read_contents(path)
+    File.read(path.to_s, mode: "r:bom|utf-8")
+  end
+
   # detect locale from filename
   def detect_locale
     tag = nil

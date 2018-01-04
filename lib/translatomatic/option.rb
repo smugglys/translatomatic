@@ -7,9 +7,9 @@ module Translatomatic
     # @return [boolean] True if this option is required
     attr_reader :required
 
-    # @return [boolean] If true, the option can be set via an environment
-    #   variable corresponding to the uppercased version of {name}.
-    attr_reader :use_env
+    # @return [String] If set, the name of the environment variable
+    #   that can be used to set this option in the environment.
+    attr_reader :env_name
 
     # @return [String] Description of the option
     attr_reader :description
@@ -25,6 +25,12 @@ module Translatomatic
     # @return [Object] The default value for this option
     attr_reader :default
 
+    # @return [boolean] True if this option can only be set on the command line
+    attr_reader :command_line_only
+
+    # @return [boolean] True if this option can only be set in user context
+    attr_reader :user_context_only
+
     # Create a new option
     # @param data [Hash<Symbol,Object>] Attributes as above
     # @return [Translatomatic::Option] A new option instance
@@ -36,11 +42,11 @@ module Translatomatic
       @hidden = data[:hidden]
       @type = data[:type] || :string
       @default = data[:default]
-
-      if @use_env && @default.nil?
-        env_name = @name.to_s.upcase
-        @default = ENV[env_name]
-      end
+      @aliases = data[:aliases]
+      @enum = data[:enum]
+      @user_context_only = data[:user_context_only]
+      @command_line_only = data[:command_line_only]
+      @env_name = data[:env_name] || (@use_env ? @name.to_s.upcase : nil)
     end
 
     def to_thor
@@ -51,7 +57,9 @@ module Translatomatic
         required: @required,
         type: type,
         desc: @description,
-        default: @default
+        default: @default,
+        aliases: @aliases,
+        enum: @enum ? @enum.collect { |i| i.to_s } : nil
       }
     end
 

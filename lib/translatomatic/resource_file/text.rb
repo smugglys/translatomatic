@@ -23,7 +23,7 @@ module Translatomatic::ResourceFile
     private
 
     def read(path)
-      text = path.read
+      text = read_contents(path)
       { "text" => text }
     end
   end

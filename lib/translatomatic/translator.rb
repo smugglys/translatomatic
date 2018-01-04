@@ -83,7 +83,7 @@ module Translatomatic::Translator
         optname = opt.name.to_s.gsub("_", "-")
         out += "  --%-18s  %18s  %10s  %15s\n" % [optname, opt.description,
           opt.required ? t("translator.required_option") : "",
-          opt.use_env ? "ENV[#{opt.name.upcase}]" : ""]
+          opt.env_name ? "ENV[#{opt.env_name}]" : ""]
       end
     end
     out += "\n"

@@ -37,7 +37,7 @@ module Translatomatic::ResourceFile
     def read(path)
       begin
         # read markdown and convert to html
-        markdown = path.read
+        markdown = read_contents(path)
         html = Kramdown::Document.new(markdown).to_html
         # parse html with nokogiri
         @doc = Nokogiri::HTML(html) do |config|

@@ -89,7 +89,8 @@ class Translatomatic::Converter
 
   define_options(
     { name: :dry_run, type: :boolean, aliases: "-n",
-      desc: t("converter.dry_run")
+      desc: t("converter.dry_run"),
+      command_line_only: true
     },
     { name: :use_database, type: :boolean, default: true,
       desc: t("converter.use_database")
