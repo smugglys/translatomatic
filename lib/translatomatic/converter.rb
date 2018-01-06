@@ -19,13 +19,22 @@ class Translatomatic::Converter
     source_file = load_file(source_path)
     target_file = load_file(target_path)
 
-    # copy properties from source file to target
-    target_file.properties = source_file.properties
+    if source_file.type == target_file.type
+      # if same file type, modify source.
+      # this retains internal structure
+      target_file = source_file
+    else
+      # different file type, copy properties from source file to target
+      target_file.properties = source_file.properties
+    end
+
     target_file.save(target_path, @options)
     target_file
   end
 
   private
+
+  include Translatomatic::Util
 
   def load_file(path)
     file = Translatomatic::ResourceFile.load(path)
