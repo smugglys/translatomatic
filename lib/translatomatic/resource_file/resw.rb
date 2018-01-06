@@ -4,7 +4,7 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{resw}
+      %w{resw resx}
     end
 
     # (see Translatomatic::ResourceFile::Base.is_key_value?)
