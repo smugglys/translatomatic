@@ -12,10 +12,12 @@
 | [PO-Dateien](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
 | [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
+| Untertitel | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
 | XML | `.xml` |
 | [Markdown](https://en.wikipedia.org/wiki/Markdown) | `.md` |
 | Text-Dateien | `.txt` |
+| CSV-Dateien | `.csv` |
 
 Die folgende Übersetzung APIs kann mit Translatomatic verwendet werden:
 
@@ -167,4 +169,4 @@ Der Edelstein ist als open source unter den Bedingungen der [MIT-Lizenz](https:/
 
 Jeder der Interaktion mit dem Translatomatic Projekt codebase, issue-Tracker, chat-rooms und mailing-Listen sollen Folgen [Verhaltenskodex](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Erstellt von Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:24 +1030_
+_Erstellt von Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:21 +1030_

@@ -12,10 +12,12 @@
 | [PO 文件](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
 | [低字符串](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [其](http://yaml.org/) | `.yaml` |
+| 字幕 | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
 | XML | `.xml` |
 | [降价](https://en.wikipedia.org/wiki/Markdown) | `.md` |
 | 文本的文件 | `.txt` |
+| CSV 文件 | `.csv` |
 
 以下翻译 api 可与 Translatomatic 一起使用:
 
@@ -110,7 +112,7 @@ Translatomatic 可用于将文件从一种格式转换为另一种形式。 例�
 
 ## 配置
 
-Translatomatic 的每个用户配置文件位于 `$HOME/.translatomatic/config.yml`, 还可以选择每个项目配置文件 `$PROJECT_DIR/.translatomatic/config.yml`中。 的e `translatomatic config set` 在包含 translatomatic 配置文件的项目中执行时, 命令对项目级别配置进行操作。t否则, 用户级别配置文件将被更改。he `--context` 选项可用于指定 `user` 或 `project` 级别配置。 配置选项的有效值是通过从环境中读取、用户级别配置文件、项目级别配置文件 (如果存在) 以及命令行来确定的。 找到的最后一个值优先于先前读取的值。
+Translatomatic 的每个用户配置文件位于 `$HOME/.translatomatic/config.yml`, 还可以选择每个项目配置文件 `$PROJECT_DIR/.translatomatic/config.yml`中。 的e `translatomatic config set` 在包含 translatomatic 配置文件的项目中执行时, 命令对项目级别配置进行操作。则, 用户级别配置文件将被更改。 The `--context` 选项可用于指定 `user` 或 `project` 级别配置。 配置选项的有效值是通过从环境中读取、用户级别配置文件、项目级别配置文件 (如果存在) 以及命令行来确定的。 找到的最后一个值优先于先前读取的值。
 
 ### Translatomatic 配置示例
 
@@ -167,4 +169,4 @@ Translatomatic 的每个用户配置文件位于 `$HOME/.translatomatic/config.y
 
 每个人都相互作用的Translatomatic项目的代码库中，问题跟踪、聊天室和邮件列表，预计后续的 [行为守则](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)中。
 
-_由Translatomatic0.1.2Sat, 06 Jan 2018 13:04:40 +1030 创建_
+_由Translatomatic0.1.2Sat, 06 Jan 2018 22:56:28 +1030 创建_

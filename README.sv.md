@@ -12,10 +12,12 @@
 | [PO-filer](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
 | [XCode strängar](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
+| Undertexter | `.srt, .ass, .ssa` |
 | HTML - | `.html, .htm, .shtml` |
 | XML | `.xml` |
 | [Markdown](https://en.wikipedia.org/wiki/Markdown) | `.md` |
 | Text filer | `.txt` |
+| CSV-filer | `.csv` |
 
 Följande översättning API: er kan användas med Translatomatic:
 
@@ -167,4 +169,4 @@ Pärla är tillgänglig som öppen källkod under villkoren i [MIT License](http
 
 Alla interagerar med Translatomatic projektets codebases, frågan trackers, chattrum och e-postlistor förväntas följa [uppförandekod](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Skapad av Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:39 +1030_
+_Skapad av Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:27 +1030_

@@ -12,10 +12,12 @@ Convertit des fichiers de texte d’une langue à l’autre, ou d’un format à
 | [Fichiers PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
 | [XCode chaînes](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
+| Sous-titres | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
 | XML | `.xml` |
 | [Markdown](https://en.wikipedia.org/wiki/Markdown) | `.md` |
 | Les fichiers texte | `.txt` |
+| Fichiers CSV | `.csv` |
 
 La traduction suivante API peut être utilisée avec Translatomatic&nbsp;:
 
@@ -110,7 +112,7 @@ Translatomatic peut être utilisé pour convertir des fichiers d’un format à 
 
 ## Configuration
 
-Translatomatic est un fichier de configuration par utilisateur au `$HOME/.translatomatic/config.yml`et éventuellement un par fichier de configuration de projet `$PROJECT_DIR/.translatomatic/config.yml`. Lee `translatomatic config set` commande fonctionne sur la configuration au niveau du projet lorsqu’il est exécuté au sein d’un projet contenant un fichier de configuration translatomatic.OSinon, le fichier de configuration au niveau utilisateur est modifié.The `--context` option peut être utilisée pour spécifier `user` ou `project` configuration du niveau. La valeur effective d’une option de configuration est déterminée par la lecture de l’environnement, le fichier de configuration au niveau utilisateur, le fichier de configuration au niveau du projet (le cas échéant) et de la ligne de commande. La dernière valeur trouvée a priorité sur les valeurs lues auparavant.
+Translatomatic est un fichier de configuration par utilisateur au `$HOME/.translatomatic/config.yml`et éventuellement un par fichier de configuration de projet `$PROJECT_DIR/.translatomatic/config.yml`. Lee `translatomatic config set` commande fonctionne sur la configuration au niveau du projet lorsqu’il est exécuté au sein d’un projet contenant un fichier de configuration translatomatic.Sinon, le fichier de configuration au niveau utilisateur est modifié. The `--context` option peut être utilisée pour spécifier `user` ou `project` configuration du niveau. La valeur effective d’une option de configuration est déterminée par la lecture de l’environnement, le fichier de configuration au niveau utilisateur, le fichier de configuration au niveau du projet (le cas échéant) et de la ligne de commande. La dernière valeur trouvée a priorité sur les valeurs lues auparavant.
 
 ### Exemples de configuration Translatomatic
 
@@ -167,4 +169,4 @@ Le bijou est disponible en open source sous les termes de la [Licence MIT](https
 
 Tout le monde l'interaction avec le Translatomatic projet de code, la question des trackers, des salles de discussion et listes de diffusion, il est prévu de suivre l' [Code de conduite](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Créé par Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:28 +1030_
+_Créé par Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:22 +1030_

@@ -12,10 +12,12 @@ Converte arquivos de texto de um idioma para outro, ou de um formato para outro.
 | [Arquivos PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
 | [XCode cadeias de caracteres](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
+| Legendas | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
 | XML | `.xml` |
 | [Markdown](https://en.wikipedia.org/wiki/Markdown) | `.md` |
 | Arquivos de texto | `.txt` |
+| Arquivos CSV | `.csv` |
 
 A tradução seguinte APIs pode ser usada com Translatomatic:
 
@@ -110,7 +112,7 @@ Translatomatic pode ser usado para converter arquivos de um formato para outro. 
 
 # # Configuração
 
-Translatomatic tem um arquivo de configuração por usuário no `$HOME/.translatomatic/config.yml`e, opcionalmente, um por arquivo de configuração do projeto `$PROJECT_DIR/.translatomatic/config.yml`. Oe `translatomatic config set` comando funciona com a configuração de nível de projeto quando executada dentro de um projeto que contém um arquivo de configuração translatomatic.tCaso contrário, o arquivo de configuração de nível de usuário é alterado.he `--context` opção pode ser usada para especificar `user` ou `project` configuração de nível. O valor efetivo de uma opção de configuração é determinado pela leitura do ambiente, o arquivo de configuração de nível de usuário, o arquivo de configuração de nível de projeto (se houver) e na linha de comando. O último valor encontrado tem precedência sobre valores lidos anteriormente.
+Translatomatic tem um arquivo de configuração por usuário no `$HOME/.translatomatic/config.yml`e, opcionalmente, um por arquivo de configuração do projeto `$PROJECT_DIR/.translatomatic/config.yml`. Oe `translatomatic config set` comando funciona com a configuração de nível de projeto quando executada dentro de um projeto que contém um arquivo de configuração translatomatic.aso contrário, o arquivo de configuração de nível de usuário é alterado. The `--context` opção pode ser usada para especificar `user` ou `project` configuração de nível. O valor efetivo de uma opção de configuração é determinado pela leitura do ambiente, o arquivo de configuração de nível de usuário, o arquivo de configuração de nível de projeto (se houver) e na linha de comando. O último valor encontrado tem precedência sobre valores lidos anteriormente.
 
 ### Translatomatic exemplos de configuração
 
@@ -167,4 +169,4 @@ A jóia está disponível como código aberto sob os termos da [Licença MIT](ht
 
 Todos interagindo com o Translatomatic projeto antigo, issue trackers, salas de bate-papo e listas de discussão é esperado para seguir o [código de conduta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Criado por Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:36 +1030_
+_Criado por Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:26 +1030_

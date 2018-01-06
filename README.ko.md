@@ -12,10 +12,12 @@
 | [PO 파일](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
 | [XCode 문자열](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
+| 자막 | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
 | XML | `.xml` |
 | [Markdown](https://en.wikipedia.org/wiki/Markdown) | `.md` |
 | 텍스트 파일 | `.txt` |
+| CSV 파일 | `.csv` |
 
 다음 번역 Api Translatomatic와 함께 사용할 수 있습니다.
 
@@ -110,7 +112,7 @@ Translatomatic는 한 형식에서 다른 파일을 변환에 사용할 수 있�
 
 # # 구성
 
-Translatomatic는 사용자 구성 파일에 `$HOME/.translatomatic/config.yml`그리고 선택적으로 한 프로젝트 구성 파일 당 `$PROJECT_DIR/.translatomatic/config.yml`니다. 는e `translatomatic config set` 명령은 translatomatic 구성 파일을 포함 하는 프로젝트 내에서 실행 될 때 프로젝트 수준 구성에서 작동 합니다.t그렇지 않으면 사용자 수준 구성 파일이 변경 됩니다.he `--context` 옵션 지정을 사용할 수 있습니다. `user` 또는 `project` 레벨 구성입니다. 구성 옵션의 유효 값 읽기 환경, 사용자 수준 구성 파일, 프로젝트 수준 구성 파일 (있는 경우)에서 및 명령줄에서 의해 결정 됩니다. 마지막 값 발견 이전에 읽은 값 보다 우선 합니다.
+Translatomatic는 사용자 구성 파일에 `$HOME/.translatomatic/config.yml`그리고 선택적으로 한 프로젝트 구성 파일 당 `$PROJECT_DIR/.translatomatic/config.yml`니다. 는e `translatomatic config set` 명령은 translatomatic 구성 파일을 포함 하는 프로젝트 내에서 실행 될 때 프로젝트 수준 구성에서 작동 합니다.렇지 않으면 사용자 수준 구성 파일이 변경 됩니다. The `--context` 옵션 지정을 사용할 수 있습니다. `user` 또는 `project` 레벨 구성입니다. 구성 옵션의 유효 값 읽기 환경, 사용자 수준 구성 파일, 프로젝트 수준 구성 파일 (있는 경우)에서 및 명령줄에서 의해 결정 됩니다. 마지막 값 발견 이전에 읽은 값 보다 우선 합니다.
 
 ### Translatomatic 구성 예
 
@@ -167,4 +169,4 @@ Translatomatic는 사용자 구성 파일에 `$HOME/.translatomatic/config.yml`�
 
 모든 사람과 상호 작용 Translatomatic 프로젝트의 지원,문제 trackers,대화방 및 메일링 리스트를 수행 할 것으로 예상된 [윤리 강령](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)니다.
 
-_Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:34 +1030에 의해 만들어진_
+_Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:24 +1030에 의해 만들어진_

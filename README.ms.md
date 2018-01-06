@@ -12,10 +12,12 @@ Menterjemahkan teks fail dari satu bahasa yang lain, atau dari satu format yang 
 | [Fail PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
 | [Dan diganti dengan tali](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
+| Sari kata | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
 | FAIL | `.xml` |
 | [Markdown](https://en.wikipedia.org/wiki/Markdown) | `.md` |
 | Fail teks | `.txt` |
+| Fail CSV | `.csv` |
 
 Terjemahan berikut api boleh digunakan dengan Translatomatic:
 
@@ -110,7 +112,7 @@ Translatomatic boleh digunakan untuk menukar fail dari satu format yang lain. Co
 
 ## Konfigurasi
 
-Translatomatic mempunyai fail konfigurasi setiap pengguna di `$HOME/.translatomatic/config.yml`, dan yang satu fail konfigurasi projek `$PROJECT_DIR/.translatomatic/config.yml`. Dalame `translatomatic config set` Perintah beroperasi pada projek peringkat konfigurasi apabila dilaksanakan dalam sebuah projek yang mengandungi fail tatarajah translatomatic.eJika tidak fail tatarajah peringkat pengguna ditukar.d. The `--context` pilihan boleh digunakan untuk menentukan `user` atau `project` peringkat konfigurasi. Nilai berkesan opsyen konfigurasi ditentukan melalui pembacaan dari alam sekitar, pengguna peringkat Konfigurasi fail, fail konfigurasi tahap projek (jika ada), dan dari baris perintah. Nilai lepas yang mendapati keutamaan berbanding nilai membaca lebih awal.
+Translatomatic mempunyai fail konfigurasi setiap pengguna di `$HOME/.translatomatic/config.yml`, dan yang satu fail konfigurasi projek `$PROJECT_DIR/.translatomatic/config.yml`. Dalame `translatomatic config set` Perintah beroperasi pada projek peringkat konfigurasi apabila dilaksanakan dalam sebuah projek yang mengandungi fail tatarajah translatomatic.e. Jika tidak fail tatarajah peringkat pengguna ditukar. The `--context` pilihan boleh digunakan untuk menentukan `user` atau `project` peringkat konfigurasi. Nilai berkesan opsyen konfigurasi ditentukan melalui pembacaan dari alam sekitar, pengguna peringkat Konfigurasi fail, fail konfigurasi tahap projek (jika ada), dan dari baris perintah. Nilai lepas yang mendapati keutamaan berbanding nilai membaca lebih awal.
 
 ### Contoh-contoh tatarajah Translatomatic
 
@@ -167,4 +169,4 @@ Permata yang ada sebagai sumber terbuka di bawah segi [MIT Lesen](https://openso
 
 Semua orang berinteraksi dengan Translatomatic projek codebases, isu trackers, chat bilik dan senarai mel adalah diharapkan untuk mengikuti [Kod Amalan](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Dicipta oleh Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:35 +1030_
+_Dicipta oleh Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:25 +1030_
