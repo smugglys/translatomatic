@@ -28,19 +28,21 @@ class Translatomatic::Config
   # Change a configuration setting.  The default context is project level
   #   if a project configuration file exists, otherwise user level.
   # @param key [String] configuration key
-  # @param value [String] new value for the configuration
+  # @param value [Object] new value for the configuration
   # @param context [Symbol] configuration context
-  # @return [String] the new value
+  # @return [Object] the new value
   def set(key, value, context = nil)
-    key = check_valid_key(key)
-    option = option(key)
-    raise t("config.command_line_only") if option.command_line_only
-    context ||= default_context
-    context = :user if option.user_context_only || key.to_s.match(/api_key/)
-    context = check_valid_context(context)
-    @settings[context][key] = cast(value, option.type)
-    save
-    value
+    add_or_set(key, value, context, :set)
+  end
+
+  # If key is an array type, adds the value to the existing value.
+  # For non array types, behaves the same as set.
+  # @param key [String] configuration key
+  # @param value [Object] new value for the configuration
+  # @param context [Symbol] configuration context
+  # @return [Object] the new value
+  def add(key, value, context = nil)
+    add_or_set(key, value, context, :add)
   end
 
   # Get a configuration setting
@@ -151,6 +153,24 @@ class Translatomatic::Config
 
   # valid context list in order of precedence
   CONTEXTS = [:project, :user, :env]
+
+  def add_or_set(key, value, context, mode)
+    key = check_valid_key(key)
+    option = option(key)
+    raise t("config.command_line_only") if option.command_line_only
+    context ||= default_context
+    context = :user if option.user_context_only || key.to_s.match(/api_key/)
+    context = check_valid_context(context)
+
+    casted_value = cast(value, option.type)
+    if mode == :add && option.type == :array
+      current_value = @settings[context][key] || []
+      casted_value = current_value + casted_value
+    end
+    @settings[context][key] = casted_value
+    save
+    @settings[context][key]
+  end
 
   def save_context(context, path)
     return unless path

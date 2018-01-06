@@ -5,6 +5,10 @@ RSpec.describe Translatomatic::Config do
 
   let(:config) { Translatomatic.config }
 
+  before(:each) do
+    config.reset
+  end
+
   describe :set do
     it "sets a configuration key" do
       config.set(KEY_LOCALES, "de")
@@ -28,6 +32,19 @@ RSpec.describe Translatomatic::Config do
       expect {
         config.set(key, "value ")
       }.to raise_error(t("config.invalid_key", key: key))
+    end
+  end
+
+  describe :add do
+    it "adds a value to a list" do
+      config.set(KEY_LOCALES, "de")
+      config.add(KEY_LOCALES, "fr")
+      expect(config.get(KEY_LOCALES)).to eq(['de', 'fr'])
+    end
+
+    it "sets a value when used on non-list types" do
+      config.add(KEY_DEBUG, true)
+      expect(config.get(KEY_DEBUG)).to eq(true)
     end
   end
 

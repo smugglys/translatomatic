@@ -21,6 +21,17 @@ module Translatomatic::CLI
       run { conf.set(key, value, cli_option(:context)) }
     end
 
+    desc "add key value", t("cli.config.add")
+    thor_options(self, Translatomatic::CLI::CommonOptions)
+    thor_options(self, Translatomatic::CLI::Config)
+    # Change a configuration setting
+    # @param key [String] configuration key
+    # @param value [String] value to add to the configuration
+    # @return [String] the new value
+    def add(key, *value)
+      run { conf.add(key, value, cli_option(:context)) }
+    end
+
     desc "remove key", t("cli.config.remove")
     thor_options(self, Translatomatic::CLI::CommonOptions)
     thor_options(self, Translatomatic::CLI::Config)

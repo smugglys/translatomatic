@@ -7,6 +7,7 @@ en:
         context_configuration: Configuration for context '%{context}'
         no_config: No configuration found
         set: Change a configuration setting
+        add: Add to a configuration setting
         remove: Remove a configuration setting
         list: List current configuration settings
         describe: Describe available configuration settings
