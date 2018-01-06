@@ -23,9 +23,6 @@ module Translatomatic::CLI
     desc "config", t("cli.config.subcommand")
     subcommand "config", Config
 
-    desc "convert", t("cli.convert.subcommand")
-    subcommand "convert", Convert
-
     desc "display file [key...]", t("cli.display_values")
     thor_options(self, Translatomatic::CLI::CommonOptions)
     method_option :locales, type: :string, desc: t("cli.locales_to_display")
@@ -65,6 +62,18 @@ module Translatomatic::CLI
           strings << extractor.extract
         end
         puts strings.join("\n")
+      end
+    end
+
+    desc "convert source target", t("cli.convert")
+    # Convert a resource file from one format to another
+    # @param source [String] An existing resource file
+    # @param target [String] The name of a target resource file
+    # @return [void]
+    def convert(source, target)
+      run do
+        converter = Translatomatic::Converter.new
+        converter.convert(source, target)
       end
     end
 
