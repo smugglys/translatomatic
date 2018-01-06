@@ -1,4 +1,4 @@
-# Erstellt von Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:39 +1030
+# Created by Translatomatic 0.1.2 Sat, 06 Jan 2018 12:18:54 +1030
 
 de:
   translatomatic:
@@ -6,6 +6,8 @@ de:
       config:
         subcommand: Konfigurationsbefehle
         configuration: Konfiguration
+        context_configuration: Konfiguration für Kontext '%{context}'
+        no_config: Keine Konfiguration gefunden
         set: Ändern Sie eine Konfigurationseinstellung
         remove: Entfernen Sie eine Konfigurationseinstellung
         list: Liste aktuellen Konfigurationseinstellungen
@@ -14,21 +16,24 @@ de:
         type: Typ
         value: Wert
         desc: Beschreibung
+        context: Konfigurations-Contexts
+      convert:
+        subcommand: Ressource-Dateien von einem Format in ein anderes konvertieren
+        convert: Quelldatei in Ziel-Datei-Format konvertieren
       translate:
         subcommand: Dateien oder Zeichenfolgen übersetzen
         file: Eine Datei zum Ziel Gebietsschemas zu übersetzen
         string: Eine Zeichenfolge, die Ziel-Gebietsschemas zu übersetzen
+        translator: Übersetzer-Implementierungen verwenden
       source_locale: Das Gebietsschema der Quelldatei
       target_locales: Sprachen zu übersetzen
+      source_files: Dateien zu übersetzen
       debug: Aktiviere Debug-Ausgabe
       wank: Übersetzung-Statusanzeige aktivieren
-      share: Teilen Sie Übersetzungen mit Übersetzern, die Upload unterstützen
+      share: Übersetzungen mit Übersetzern zu teilen
       dry_run: 'Dry Run: Dateien werden nicht übersetzt oder geschrieben werden'
-      locales_required: Eine oder mehrere Gebietsschemas erforderlich
-      file_not_found: 'Datei nicht gefunden: %{file}'
-      file_unsupported: 'Nicht unterstützte Datei-Typ: %{file}'
+      locales_required: Eine oder mehrere Ziel-Gebietsschemas erforderlich
       using_translator: 'Mit Übersetzer: %{name}'
-      locales_properties: 'Gebietsschemas: %{locales}, Eigenschaften: %{properties}'
       display_values: Werte aus einer Ressourcenbündel anzeigen
       locales_to_display: Ländereinstellungen anzeigen
       display_sentences: Display-Sätze
@@ -43,11 +48,15 @@ de:
       database:
         subcommand: Datenbank-Befehle
         search: Suchdatenbank für Text passend die angegebene Zeichenfolge.
-    resource:
+    file:
+      not_found: 'Datei nicht gefunden: %{file}'
+      unsupported: 'Nicht unterstützte Datei-Typ: %{file}'
       unknown_locale: Nicht in der Lage, Sprachumgebung zu bestimmen
       created_by: Erstellt von %{app} %{version} %{date}
       error: 'Fehler: %{message}'
       loading: "%{file} %{name} mit laden"
+      directory: 'Die Datei ist ein Verzeichnis: %{file}'
+      invalid: 'Datei ist ungültig: %{file}'
     tmx:
       multiple_origins: Mehrere Wurzeln in Texten.
       multiple_locales: Mehreren Quelle Gebietsschemas in Texten.
@@ -70,18 +79,16 @@ de:
       unavailable: Übersetzer-%{name} ist nicht verfügbar.
       no_translators: Keine Übersetzer konfiguriert sind.
       password: Passwort
-    converter:
+    file_translator:
       total_translations: 'Total translations: %{total} (%{from_db} aus der Datenbank,
         %{from_translator} von übersetzer, %{untranslated} unübersetzte)'
       untranslated: 'Nicht übersetzte Zeichenfolgen:'
-      translator: Übersetzer-Implementierungen verwenden
       dry_run: Aktionen ohne Durchführung von Übersetzungen oder Schreiben von Dateien
         zu drucken.
       use_database: Speichern und Abrufen von Übersetzungen aus der Datenbank.
       database_disabled: Datenbank ist deaktiviert.
       translator_required: Übersetzer erforderlich.
-      file_unsupported: 'Nicht unterstützte Datei-Typ: %{file}'
-      translating: Übersetzung von %{source} %{target}
+      translating: Übersetzung %{source} (%{source_locale}) %{target} (%{target_locale})
       stats: 'Übersetzungen aus der Datenbank: %{from_db}, translator: %{from_translator},
         un: %{untranslated}'
     database:
@@ -95,10 +102,16 @@ de:
     unicode:
       invalid_byte: 'Ungültigen UTF-8-Byte: ''%{byte}'''
     config:
+      invalid_context: 'Unerkannte Konfigurations-Contexts: ''%{context}'''
       invalid_key: 'Unerkannte Konfigurationsschlüssel: "%{key}"'
+      command_line_only: Konfiguration "%{key}" kann nicht gespeichert werden
       types:
         string: Zeichenfolge
         hash: Hash
         array: Array
         numeric: Numerische
         boolean: Boolescher Wert
+      context:
+        env: Umgebung
+        project: Projekt
+        user: Benutzer

@@ -1,4 +1,4 @@
-# Criado por Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:43 +1030
+# Criado por Translatomatic 0.1.2 Sat, 06 Jan 2018 12:18:54 +1030
 
 pt:
   translatomatic:
@@ -6,6 +6,8 @@ pt:
       config:
         subcommand: Comandos de configuração
         configuration: Configuração
+        context_configuration: Configuração para o contexto '%{context}'
+        no_config: Nenhuma configuração encontrada
         set: Alterar uma definição de configuração
         remove: Remover uma definição de configuração
         list: Lista as definições de configuração atuais
@@ -14,22 +16,25 @@ pt:
         type: Tipo
         value: Valor
         desc: Descrição
+        context: Contexto de configuração
+      convert:
+        subcommand: Converter arquivos de recurso de um formato para outro
+        convert: Converter o arquivo de origem para o formato de arquivo de destino
       translate:
         subcommand: Traduzir arquivos ou cadeias de caracteres
         file: Traduzir um arquivo para locais de destino
         string: Definição da palavra uma sequência de caracteres para localidades
           de destino
+        translator: Implementações de tradutor para usar
       source_locale: A localidade do arquivo de origem
       target_locales: Localidades de tradução para o
+      source_files: Arquivos para traduzir
       debug: Habilitar a depuração de saída
       wank: Ativar a barra de progresso de tradução
-      share: Compartilhar traduções com tradutores que oferecem suporte a carregamento
+      share: Compartilhamento de traduções com tradutores
       dry_run: 'Dry run: arquivos não irão ser traduzidos ou escritos'
-      locales_required: Uma ou mais localidades necessárias
-      file_not_found: 'Arquivo não encontrado: %{file}'
-      file_unsupported: 'Sem suporte de tipo de arquivo: %{file}'
+      locales_required: Um ou mais locais de destino necessários
       using_translator: 'Usando o Tradutor: %{name}'
-      locales_properties: 'Localidades: %{locales}, propriedades: %{properties}'
       display_values: Valores de exibição de um pacote de recursos
       locales_to_display: Locales para exibir
       display_sentences: Exibir as frases
@@ -45,11 +50,15 @@ pt:
         subcommand: Comandos de banco de dados
         search: Pesquisar banco de dados para correspondência determinada sequência
           de caracteres de texto.
-    resource:
+    file:
+      not_found: 'Arquivo não encontrado: %{file}'
+      unsupported: 'Sem suporte de tipo de arquivo: %{file}'
       unknown_locale: Não é possível determinar a localidade
       created_by: Criado por %{app} %{version} %{date}
       error: 'Erro: %{message}'
       loading: Tentar carregar %{file} usando %{name}
+      directory: 'Arquivo é um diretório: %{file}'
+      invalid: 'Arquivo é inválido: %{file}'
     tmx:
       multiple_origins: Múltiplas origens nos textos.
       multiple_locales: Várias localidades de origem nos textos.
@@ -72,17 +81,15 @@ pt:
       unavailable: Tradutor %{name} não está disponível.
       no_translators: Não há tradutores são configurados.
       password: Senha
-    converter:
+    file_translator:
       total_translations: 'Total de traduções: %{total} (%{from_db} de banco de dados,
         %{from_translator} de tradutor, %{untranslated} não traduzida)'
       untranslated: 'Untranslated sequências de caracteres:'
-      translator: Implementações de tradutor para usar
       dry_run: Imprima ações sem realizar traduções ou gravação de arquivos.
       use_database: Armazenar e recuperar as traduções do banco.
       database_disabled: Banco de dados é desabilitado.
       translator_required: Tradutor exigido.
-      file_unsupported: 'Sem suporte de tipo de arquivo: %{file}'
-      translating: Traduzindo %{source} %{target}
+      translating: Traduzindo %{source} (%{source_locale}) para %{target} (%{target_locale})
       stats: 'Traduções de banco de dados: %{from_db}, Tradutor: %{from_translator},
         sem tradução: %{untranslated}'
     database:
@@ -96,10 +103,16 @@ pt:
     unicode:
       invalid_byte: 'Byte de UTF8 inválido: ''%{byte}'''
     config:
+      invalid_context: 'Contexto de configuração não reconhecida: ''%{context}'''
       invalid_key: 'Chave de configuração não reconhecida: ''%{key}'''
+      command_line_only: Configuração '%{key}' não pode ser salvo.
       types:
         string: Sequência de caracteres
         hash: Hash
         array: Matriz
         numeric: Numérico
         boolean: Boolean
+      context:
+        env: Meio ambiente
+        project: Projeto
+        user: Usuário

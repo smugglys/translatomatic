@@ -1,5 +1,3 @@
-# Created by Translatomatic 0.1.1 Mon, 01 Jan 2018 12:16:33 +1030
-
 en:
   translatomatic:
     cli:
@@ -17,10 +15,14 @@ en:
         value: Value
         desc: Description
         context: Configuration context
+      convert:
+        subcommand: Convert resource files from one format to another
+        convert: Convert source file to target file format
       translate:
         subcommand: Translate files or strings
         file: Translate a file to target locales
         string: Translate a string to target locales
+        translator: Translator implementations to use
       source_locale: The locale of the source file
       target_locales: Locales to translate to
       source_files: Files to translate
@@ -29,8 +31,6 @@ en:
       share: Share translations with translators
       dry_run: 'Dry run: files will not be translated or written'
       locales_required: One or more target locales required
-      file_not_found: 'File not found: %{file}'
-      file_unsupported: 'Unsupported file type: %{file}'
       using_translator: 'Using translator: %{name}'
       display_values: Display values from a resource bundle
       locales_to_display: Locales to display
@@ -46,11 +46,15 @@ en:
       database:
         subcommand: Database commands
         search: Search database for text matching the given string.
-    resource:
+    file:
+      not_found: 'File not found: %{file}'
+      unsupported: 'Unsupported file type: %{file}'
       unknown_locale: Unable to determine locale
       created_by: Created by %{app} %{version} %{date}
       error: 'Error: %{message}'
       loading: Attempting to load %{file} using %{name}
+      directory: "File is a directory: %{file}"
+      invalid: "File is invalid: %{file}"
     tmx:
       multiple_origins: Multiple origins in texts.
       multiple_locales: Multiple source locales in texts.
@@ -73,15 +77,13 @@ en:
       unavailable: Translator %{name} is unavailable.
       no_translators: No translators are configured.
       password: Password
-    converter:
+    file_translator:
       total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_translator} from translator, %{untranslated} untranslated)'
       untranslated: "Untranslated strings:"
-      translator: Translator implementations to use
       dry_run: Print actions without performing translations or writing files.
       use_database: Store and retrieve translations from the database.
       database_disabled: Database is disabled.
       translator_required: Translator required.
-      file_unsupported: 'Unsupported file type: %{file}'
       translating: Translating %{source} (%{source_locale}) to %{target} (%{target_locale})
       stats: 'Translations from database: %{from_db}, translator: %{from_translator}, untranslated: %{untranslated}'
     database:

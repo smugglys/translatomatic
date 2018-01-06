@@ -1,4 +1,4 @@
-# Созданная Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:44 +1030
+# Созданная Translatomatic 0.1.2 Sat, 06 Jan 2018 12:18:54 +1030
 
 ru:
   translatomatic:
@@ -6,6 +6,8 @@ ru:
       config:
         subcommand: Команды конфигурации
         configuration: Конфигурация
+        context_configuration: Конфигурация для контекста «%{context}»
+        no_config: Конфигурация не найдены
         set: Изменение параметра конфигурации
         remove: Удаление параметра конфигурации
         list: Список текущих параметров конфигурации
@@ -14,21 +16,24 @@ ru:
         type: Тип
         value: Значение
         desc: Описание
+        context: Контекст конфигурации
+      convert:
+        subcommand: Конвертировать файлы ресурсов из одного формата в другой
+        convert: Преобразовать исходный файл в целевой формат файла
       translate:
         subcommand: Перевод файлов или строк
         file: Перевести файл в целевой локали
         string: Перевод строки к целевой локали
+        translator: Чтобы использовать переводчик реализации
       source_locale: Языковой стандарт исходного файла
       target_locales: Языки для перевода
+      source_files: Файлы для перевода
       debug: Включение отладки вывода
       wank: Включить индикатор выполнения перевода
-      share: Доля переводов с переводчиками, которые поддерживают загрузку
+      share: Доля переводов с переводчиками
       dry_run: 'Пробный прогон: файлы не будут переведены или письменные'
-      locales_required: Требуется один или несколько языков
-      file_not_found: 'Файл не найден: %{file}'
-      file_unsupported: 'Неподдерживаемый тип файла: %{file}'
+      locales_required: Один или более целевых языков требуется
       using_translator: 'С помощью переводчика: %{name}'
-      locales_properties: 'Языки: %{locales}, свойства: %{properties}'
       display_values: Отображение значения из набора ресурсов
       locales_to_display: Языки для отображения
       display_sentences: Показать предложения
@@ -43,11 +48,15 @@ ru:
       database:
         subcommand: Команды базы данных
         search: База данных поиска для соответствия заданной строки текста.
-    resource:
+    file:
+      not_found: 'Файл не найден: %{file}'
+      unsupported: 'Неподдерживаемый тип файла: %{file}'
       unknown_locale: Не удается определить язык
       created_by: Созданная %{app} %{version} %{date}
       error: 'Ошибка: %{message}'
       loading: Попытка загрузить %{file}, используя %{name}
+      directory: 'Файл представляет собой каталог: %{file}'
+      invalid: 'Недопустимый файл: %{file}'
     tmx:
       multiple_origins: Несколько происхождение в текстах.
       multiple_locales: Несколько исходных языков в текстах.
@@ -70,17 +79,15 @@ ru:
       unavailable: Переводчик %{name} недоступна.
       no_translators: Переводчики не настроены.
       password: Пароль
-    converter:
+    file_translator:
       total_translations: 'Всего переводы: %{total} (%{from_db} из базы данных, %{from_translator}
         с переводчиком, %{untranslated} untranslated)'
       untranslated: 'Непереведенные строки:'
-      translator: Чтобы использовать переводчик реализации
       dry_run: Печать действия без выполнения переводов или записи файлов.
       use_database: Хранить и извлекать переводы из базы данных.
       database_disabled: База данных отключена.
       translator_required: Требуется переводчик.
-      file_unsupported: 'Неподдерживаемый тип файла: %{file}'
-      translating: Перевод %{source} %{target}
+      translating: Перевод %{source} (%{source_locale}) %{target} (%{target_locale})
       stats: 'Переводы из базы данных: %{from_db}, переводчик: %{from_translator},
         untranslated: %{untranslated}'
     database:
@@ -94,10 +101,16 @@ ru:
     unicode:
       invalid_byte: 'Недопустимый UTF8 байт: «%{byte}»'
     config:
+      invalid_context: 'Контекст непризнанных конфигурации: «%{context}»'
       invalid_key: 'Непризнанных конфигурационный ключ: «%{key}»'
+      command_line_only: Не удается сохранить конфигурации «%{key}»
       types:
         string: Строка
         hash: Хэш
         array: Массив
         numeric: Цифровой
         boolean: Логическое значение
+      context:
+        env: Окружающая среда
+        project: Проект
+        user: Пользователь
