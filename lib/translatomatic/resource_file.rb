@@ -15,16 +15,17 @@ module Translatomatic
     #   if the file type is unsupported.
     def self.load(path, locale = nil)
       path = path.kind_of?(Pathname) ? path : Pathname.new(path)
-      modules.each do |mod|
-        # match on entire filename to support extensions containing locales
-        if extension_match(mod, path)
-          log.debug(t("resource.loading", file: path,
-            name: mod.name.demodulize))
-          file = mod.new(path, locale)
-          return file if file.valid?
-        end
+      types_for_path(path).each do |klass|
+        log.debug(t("file.loading", file: path, name: klass.name.demodulize))
+        return klass.new(path, locale: locale)
       end
       nil
+    end
+
+    # Create a new resource file
+    def self.create(path, locale = nil)
+      klass = const_get(klass_name)
+      klass.new
     end
 
     # Find all resource files under the given directory. Follows symlinks.
@@ -47,17 +48,23 @@ module Translatomatic
 
     # Find all configured resource file classes
     # @return [Array<Class>] Available resource file classes
-    def self.modules
-      self.constants.map { |c| self.const_get(c) }.select do |klass|
+    def self.types
+      @types ||= self.constants.map { |c| self.const_get(c) }.select do |klass|
         klass.is_a?(Class) && klass != Base
       end
     end
 
     private
 
-    def self.extension_match(mod, path)
+    # find classes that can load the given path by file extension
+    def self.types_for_path(path)
+      path = path.kind_of?(Pathname) ? path : Pathname.new(path)
+      types.select { |klass| extension_match(klass, path) }
+    end
+
+    def self.extension_match(klass, path)
       filename = path.basename.to_s.downcase
-      mod.extensions.each do |extension|
+      klass.extensions.each do |extension|
         # don't match end of line in case file has locale extension
         return true if filename.match(/\.#{extension}/)
       end

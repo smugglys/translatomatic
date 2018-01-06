@@ -43,7 +43,7 @@ RSpec.describe Translatomatic::CLI::Translate do
       add_cli_options(use_database: false, target_locales: "de")
       expect {
         @cli.file(path.to_s)
-      }.to raise_exception(t("cli.file_unsupported", file: path))
+      }.to raise_exception(t("file.unsupported", file: path))
     end
 
     it "uses all available translators" do

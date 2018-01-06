@@ -7,13 +7,6 @@ module Translatomatic::ResourceFile
       %w{txt text}
     end
 
-    # (see Translatomatic::ResourceFile::Base#initialize)
-    def initialize(path, locale = nil)
-      super(path, locale)
-      @valid = true
-      @properties = @path.exist? ? read(@path) : {}
-    end
-
     # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path, options = {})
       values = @properties.values.collect { |i| i.strip + "\n" }
@@ -22,9 +15,10 @@ module Translatomatic::ResourceFile
 
     private
 
-    def read(path)
-      text = read_contents(path)
-      { "text" => text }
+    def load
+      text = read_contents(@path)
+      @properties = { "text" => text }
     end
+
   end
 end

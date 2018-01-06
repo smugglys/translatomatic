@@ -10,12 +10,14 @@ module Translatomatic::ResourceFile
       %w{yml yaml}
     end
 
-    # (see Translatomatic::ResourceFile::Base#initialize)
-    def initialize(path, locale = nil)
-      super(path, locale)
-      @valid = true
-      @data = {}
-      @properties = @path.exist? ? read : {}
+    # (see Translatomatic::ResourceFile::Base.is_key_value?)
+    def self.is_key_value?
+      true
+    end
+
+    # (see Translatomatic::ResourceFile::Base.supports_variable_interpolation?)
+    def self.supports_variable_interpolation?
+      true
     end
 
     # (see Translatomatic::ResourceFile::Base#locale_path)
@@ -54,11 +56,6 @@ module Translatomatic::ResourceFile
       end
     end
 
-    # (see Translatomatic::ResourceFile::Base#supports_variable_interpolation?)
-    def supports_variable_interpolation?
-      true
-    end
-
     # (see Translatomatic::ResourceFile::Base#create_variable)
     def create_variable(name)
       return "%{#{name}}"
@@ -70,6 +67,16 @@ module Translatomatic::ResourceFile
     end
 
     private
+
+    def init
+      # yaml data
+      @data = {}
+    end
+
+    def load
+      @data = ::YAML.load_file(path.to_s) || {}
+      @properties = flatten(@data)
+    end
 
     # true if this resource file looks like a ruby i18n data file.
     def ruby_i18n?
@@ -83,34 +90,5 @@ module Translatomatic::ResourceFile
       "# #{text}\n"
     end
 
-    def read
-      begin
-        @data = ::YAML.load_file(@path) || {}
-        flatten_data(@data)
-      rescue Exception => e
-        log.error t("resource.error", message: e.message)
-        @valid = false
-        {}
-      end
-    end
-
-    def flatten_data(data)
-      result = {}
-      unless data.kind_of?(Hash)
-        @valid = false
-        return {}
-      end
-      data.each do |key, value|
-        if value.kind_of?(Hash)
-          children = flatten_data(value)
-          children.each do |ck, cv|
-            result[key + "." + ck] = cv
-          end
-        else
-          result[key] = value
-        end
-      end
-      result
-    end
   end
 end

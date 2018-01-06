@@ -10,11 +10,14 @@ module Translatomatic::ResourceFile
       %w{properties}
     end
 
-    # (see Translatomatic::ResourceFile::Base#initialize)
-    def initialize(path, locale = nil)
-      super(path, locale)
-      @valid = true
-      @properties = @path.exist? ? read(@path) : {}
+    # (see Translatomatic::ResourceFile::Base.is_key_value?)
+    def self.is_key_value?
+      true
+    end
+
+    # (see Translatomatic::ResourceFile::Base.supports_variable_interpolation?)
+    def self.supports_variable_interpolation?
+      true
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
@@ -31,11 +34,6 @@ module Translatomatic::ResourceFile
       target.write(out)
     end
 
-    # (see Translatomatic::ResourceFile::Base#supports_variable_interpolation?)
-    def supports_variable_interpolation?
-      true
-    end
-
     # (see Translatomatic::ResourceFile::Base#create_variable)
     def create_variable(name)
       return "{#{name}}"
@@ -48,6 +46,10 @@ module Translatomatic::ResourceFile
 
     private
 
+    def load
+      @properties = read_properties
+    end
+
     def add_created_by
       comment(created_by)
     end
@@ -56,9 +58,8 @@ module Translatomatic::ResourceFile
       "# #{text}\n"
     end
 
-    # parse key = value property file
-    def read(path)
-      contents = read_contents(path)
+    def read_properties
+      contents = read_contents(@path)
       # convert escaped unicode characters into unicode
       contents = Translatomatic::EscapedUnicode.unescape(contents)
       result = {}
@@ -76,7 +77,7 @@ module Translatomatic::ResourceFile
           # TODO: translate comments or keep originals?
           next
         elsif equal_idx.nil? && colon_idx.nil?
-          @valid = false
+          # TODO: throw exception here?
           return {}
         end
         name, value = line.split(/\s*[=:]\s*/, 2)

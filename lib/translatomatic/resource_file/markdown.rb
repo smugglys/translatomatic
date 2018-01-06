@@ -13,15 +13,11 @@ module Translatomatic::ResourceFile
     # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path, options = {})
       if @doc
-        begin
-          add_created_by unless options[:no_created_by]
-          html = @doc.to_html
-          # convert html back to markdown
-          markdown = ReverseMarkdown.convert(html, unknown_tags: :bypass)
-          target.write(markdown.chomp)
-        rescue Exception => e
-          log.error t("resource.error", message: e.message)
-        end
+        add_created_by unless options[:no_created_by]
+        html = @doc.to_html
+        # convert html back to markdown
+        markdown = ReverseMarkdown.convert(html, unknown_tags: :bypass)
+        target.write(markdown.chomp)
       end
     end
 
@@ -34,20 +30,19 @@ module Translatomatic::ResourceFile
       end
     end
 
-    def read(path)
-      begin
-        # read markdown and convert to html
-        markdown = read_contents(path)
+    def read_doc
+      # read markdown and convert to html
+      markdown = read_contents(@path)
+      if markdown.blank?
+        empty_doc
+      else
         html = Kramdown::Document.new(markdown).to_html
         # parse html with nokogiri
-        @doc = Nokogiri::HTML(html) do |config|
+        doc = Nokogiri::HTML(html) do |config|
           config.noblanks
         end
-        init_nodemap(@doc)
-      rescue Exception => e
-        log.error t("resource.error", message: e.message)
-        @valid = false
-        {}
+        parse_error(doc.errors[0]) if doc.errors.present?
+        doc
       end
     end
 
