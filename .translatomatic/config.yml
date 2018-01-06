@@ -1,0 +1,18 @@
+---
+:target_locales:
+- en
+- de
+- es
+- fr
+- it
+- ja
+- ko
+- ms
+- pt
+- ru
+- sv
+- zh
+:source_locale: en
+:source_files:
+- config/locales/translatomatic/en.yml
+- README.md

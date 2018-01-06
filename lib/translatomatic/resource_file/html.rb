@@ -35,14 +35,21 @@ module Translatomatic::ResourceFile
 
     private
 
+    def read_doc
+      doc = Nokogiri::HTML(@path.open) do |config|
+        config.noblanks
+      end
+      parse_error(doc.errors[0]) if doc.errors.present?
+      doc
+    end
+
+    def empty_doc
+      Nokogiri::HTML("<html><body></body></html>")
+    end
+
     def text_nodes_xpath
       '//*[not(self::code)]/text()'
     end
 
-    def read_doc(path)
-      Nokogiri::HTML(path.open) do |config|
-        config.noblanks
-      end
-    end
   end
 end

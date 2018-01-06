@@ -7,9 +7,9 @@ module Translatomatic
     # @return [boolean] True if this option is required
     attr_reader :required
 
-    # @return [boolean] If true, the option can be set via an environment
-    #   variable corresponding to the uppercased version of {name}.
-    attr_reader :use_env
+    # @return [String] If set, the name of the environment variable
+    #   that can be used to set this option in the environment.
+    attr_reader :env_name
 
     # @return [String] Description of the option
     attr_reader :description
@@ -25,23 +25,42 @@ module Translatomatic
     # @return [Object] The default value for this option
     attr_reader :default
 
+    # @return [boolean] True if this option can only be set on the command line
+    attr_reader :command_line_only
+
+    # @return [boolean] True if this option can only be set in user context
+    attr_reader :user_context_only
+
     # Create a new option
     # @param data [Hash<Symbol,Object>] Attributes as above
     # @return [Translatomatic::Option] A new option instance
     def initialize(data = {})
       @name = data[:name]
       @required = data[:required]
-      @use_env = data[:use_env]
       @description = data[:desc]
+      @use_env = data[:use_env]
       @hidden = data[:hidden]
-      @default = data[:default]
       @type = data[:type] || :string
-      @data = data
+      @default = data[:default]
+      @aliases = data[:aliases]
+      @enum = data[:enum]
+      @user_context_only = data[:user_context_only]
+      @command_line_only = data[:command_line_only]
+      @env_name = data[:env_name] || (@use_env ? @name.to_s.upcase : nil)
     end
 
-    # @return [Hash] Option data as a hash
-    def to_hash
-      @data
+    def to_thor
+      # use internal ',' splitting for array types on command line
+      type = @type == :array ? :string : @type
+
+      { name: @name,
+        required: @required,
+        type: type,
+        desc: @description,
+        default: @default,
+        aliases: @aliases,
+        enum: @enum ? @enum.collect { |i| i.to_s } : nil
+      }
     end
 
     # Retrieve all options from an object or list of objects.
@@ -61,29 +80,6 @@ module Translatomatic
         end
       end
       options
-    end
-  end
-
-  private
-
-  # @!visibility private
-  module DefineOptions
-
-    # @!visibility private
-    module ClassMethods
-      attr_reader :options
-
-      private
-
-      def define_options(*options)
-        @options = options.collect { |i| Translatomatic::Option.new(i) }
-      end
-    end
-
-    private
-
-    def self.included(klass)
-      klass.extend(ClassMethods)
     end
   end
 end

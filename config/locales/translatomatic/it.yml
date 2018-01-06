@@ -1,4 +1,4 @@
-# Creato da Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:41 +1030
+# Creato da Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:17 +1030
 
 it:
   translatomatic:
@@ -6,6 +6,8 @@ it:
       config:
         subcommand: Comandi di configurazione
         configuration: Configurazione
+        context_configuration: Configurazione per il contesto '%{context}'
+        no_config: Nessuna configurazione trovata
         set: Modificare un'impostazione di configurazione
         remove: Rimuovere un'impostazione di configurazione
         list: Elenco di impostazioni di configurazione correnti
@@ -14,21 +16,22 @@ it:
         type: Tipo
         value: Valore
         desc: Descrizione
+        context: Contesto di configurazione
+      convert: Convertire file di origine in formato di file di destinazione
       translate:
         subcommand: Tradurre file o stringhe
         file: Tradurre un file di impostazioni internazionali di destinazione
         string: Tradurre una stringa per le impostazioni locali di destinazione
+        translator: Implementazioni di traduttore di
       source_locale: Le impostazioni internazionali del file sorgente
       target_locales: Locales traduzione in
+      source_files: File da tradurre
       debug: Attivare l'output di debug
       wank: Abilitare la barra di avanzamento della traduzione
-      share: Condividere le traduzioni con traduttori che supportano il caricamento
+      share: Condividere le traduzioni con traduttori
       dry_run: 'Funzionamento a secco: file non saranno tradotti o scritti'
-      locales_required: Una o più impostazioni internazionali richieste
-      file_not_found: 'File non trovato: %{file}'
-      file_unsupported: 'Tipo di file non supportato: %{file}'
+      locales_required: Una o più impostazioni locali di destinazione richieste
       using_translator: 'Utilizzando translator: %{name}'
-      locales_properties: 'Impostazioni locali: %{locales}, proprietà: %{properties}'
       display_values: Visualizzare i valori da un raggruppamento di risorse
       locales_to_display: Impostazioni internazionali per visualizzare
       display_sentences: Frasi di visualizzazione
@@ -43,11 +46,15 @@ it:
       database:
         subcommand: Comandi di database
         search: Database di ricerca per testo corrispondente alla stringa specificata.
-    resource:
+    file:
+      not_found: 'File non trovato: %{file}'
+      unsupported: 'Tipo di file non supportato: %{file}'
       unknown_locale: Impossibile determinare le impostazioni internazionali
       created_by: Creato da %{app} %{version} %{date}
       error: 'Errore: %{message}'
       loading: Tentativo di caricare %{file} utilizzando %{name}
+      directory: 'File è una directory: %{file}'
+      invalid: 'File non è valido: %{file}'
     tmx:
       multiple_origins: Origini multiple nei testi.
       multiple_locales: Più locale di origine nei testi.
@@ -70,17 +77,15 @@ it:
       unavailable: Traduttore %{name} non è disponibile.
       no_translators: No traduttori sono configurati.
       password: Password
-    converter:
+    file_translator:
       total_translations: 'Totale Traduzioni: %{total} (%{from_db} dal database, %{from_translator}
         da traduttore, %{untranslated} non tradotta)'
       untranslated: 'Stringhe non tradotte:'
-      translator: Implementazioni di traduttore di
       dry_run: Stampare le azioni senza eseguire traduzioni o scrittura di file.
       use_database: Archiviare e recuperare le traduzioni dal database.
       database_disabled: Database è disattivato.
       translator_required: Traduttore richiesto.
-      file_unsupported: 'Tipo di file non supportato: %{file}'
-      translating: Traducendo %{source} a %{target}
+      translating: Traducendo %{source} (%{source_locale}) %{target} (%{target_locale})
       stats: 'Traduzioni dal database: %{from_db}, traduttore: %{from_translator},
         non tradotta: %{untranslated}'
     database:
@@ -94,10 +99,16 @@ it:
     unicode:
       invalid_byte: 'Byte di UTF8 non valida: ''%{byte}'''
     config:
+      invalid_context: 'Contesto di configurazione non riconosciuto: ''%{context}'''
       invalid_key: 'Chiave di configurazione non riconosciuto: ''%{key}'''
+      command_line_only: Configurazione '%{key}' non può essere salvato
       types:
         string: Stringa
         hash: Hash
         array: Matrice
         numeric: Numerico
         boolean: Boolean
+      context:
+        env: Ambiente
+        project: Progetto
+        user: Utente

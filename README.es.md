@@ -2,17 +2,22 @@
 
 # Translatomatic
 
-Traduce los archivos de texto de un idioma a otro. Los siguientes formatos de archivo están soportadas actualmente:
+Traduce archivos de texto de un idioma a otro, o de un formato a otro. Se admiten los siguientes formatos:
 
-- [Propiedades](https://en.wikipedia.org/wiki/.properties)
-- RESW (Windows archivo de recursos)
-- [Las listas de propiedades](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
-- HTML
-- XML
-- [Descuento](https://en.wikipedia.org/wiki/Markdown)
-- [XCode cadenas](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
-- [YAML](http://yaml.org/)
-- Los archivos de texto
+| Formato de archivo | Extensiones |
+| --- | --- |
+| [Propiedades](https://en.wikipedia.org/wiki/.properties) | `.properties` |
+| Archivos de recursos de Windows | `.resw, .resx` |
+| [Las listas de propiedades](https://en.wikipedia.org/wiki/Property_list) (OSX plist) | `.plist` |
+| [Archivos PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [XCode cadenas](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [YAML](http://yaml.org/) | `.yaml` |
+| Subtítulos | `.srt, .ass, .ssa` |
+| HTML | `.html, .htm, .shtml` |
+| XML | `.xml` |
+| [Descuento](https://en.wikipedia.org/wiki/Markdown) | `.md` |
+| Los archivos de texto | `.txt` |
+| Archivos CSV | `.csv` |
 
 La traducción siguiente API se puede utilizar con Translatomatic:
 
@@ -23,6 +28,8 @@ La traducción siguiente API se puede utilizar con Translatomatic:
 - [Frengly](http://www.frengly.com/api)
 
 Traducido cadenas se guardan en una base de datos y volver a utilizar.
+
+* * *
 
 ## Instalación
 
@@ -40,7 +47,9 @@ O instalar usted mismo como:
 
     $ gem install translatomatic
 
-## El uso de
+* * *
+
+## Uso
 
 Esta gema ofrece un ejecutable llamado `translatomatic`. El `translatomatic` comando tiene un número de funciones, no todos los cuales están documentados aquí. Para obtener ayuda sobre los comandos disponibles y opciones, ejecute:
 
@@ -51,20 +60,24 @@ Y para obtener ayuda sobre un comando, ejecutar:
     $ translatomatic translate help
     $ translatomatic translate help file
 
-## Programa de instalación
+* * *
+
+## Setup
 
 Para servicios de traducción disponibles y opciones con el `services` comando:
 
     $ translatomatic services
 
-Opciones se pueden especificar en la línea de comandos, variables de entorno, o en archivo de configuración de translatomatic. El archivo de configuración se puede modificar con translatomatic interna del `config` comando. Para mostrar todas las configuraciones disponibles, utilice:
+Opciones se pueden especificar en la línea de comandos, variables de entorno, o en los archivos de configuración de translatomatic. La configuración pueden modificar archivos con translatomatic interna del `config` comando. Para mostrar todas las configuraciones disponibles, utilice:
 
     $ translatomatic config list
     $ translatomatic config describe
 
-Ver también la sección de configuración a continuación para obtener más información.
+Opciones se pueden establecer en el nivel de usuario o el nivel de proyecto. Ver también la sección de configuración a continuación para obtener más información.
 
-## La traducción de los archivos de
+* * *
+
+## Traducir archivos
 
 Traducción de archivos, `translatomatic` traduce el texto una oración o una frase en un momento. Si un archivo es volver a traducido, sólo las frases que han cambiado desde la última traducción se envían al traductor, y el resto provienen de la base de datos local.
 
@@ -83,13 +96,29 @@ Para leer y mostrar el `store.description` y `store.name` propiedades de los arc
 
 ### La extracción de las cadenas de los archivos de origen
 
-Para extraer cadenas desde algunos archivos de fuente, utilice el `strings` comando, por ejemplo
+Para extraer secuencias de archivos de código fuente, utilizar la `strings` comando, por ejemplo
 
     $ translatomatic strings file.rb
 
+* * *
+
+## Conversión de archivos
+
+Translatomatic se puede utilizar para convertir archivos de un formato a otro. Por ejemplo, para convertir un Java archivo de propiedades a un XCode cadenas archivo:
+
+    $ translatomatic convert strings.properties Localization.strings
+
+* * *
+
 ## Configuración
 
+Translatomatic tiene un archivo de configuración de cada usuario en `$HOME/.translatomatic/config.yml`y, opcionalmente, una por el archivo de configuración del proyecto `$PROJECT_DIR/.translatomatic/config.yml`. Ele `translatomatic config set` comando funciona en la configuración de nivel de proyecto cuando se ejecuta dentro de un proyecto que contiene un archivo de configuración translatomatic.De lo contrario se cambia el archivo de configuración de nivel de usuario. The `--context` opción puede utilizarse para especificar `user` o `project` configuración del nivel. El valor eficaz de una opción de configuración se determina mediante la lectura del medio ambiente, el archivo de configuración de nivel de usuario, el archivo de configuración del nivel de proyecto (si existe) y de la línea de comandos. El último valor encontrado tiene prioridad sobre los valores de leer antes.
+
 ### Ejemplos de configuración de Translatomatic
+
+Para establecer `google_api_key` dentro del archivo de configuración de usuario, use:
+
+    $ translatomatic config set google_api_key value --context user
 
 Para establecer uno o más servicios de traducción a utilizar:
 
@@ -122,16 +151,22 @@ Por defecto, `translatomatic` utiliza una base de datos sqlite3 en `$HOME/.trans
       username: username
       password: password
 
-## Contribuir
+* * *
+
+## Contribuyendo
 
 Los informes de error y tire de las solicitudes son bienvenidas en GitHub en https://github.com/smugglys/translatomatic. Este proyecto está destinado a ser un lugar seguro, acogedor espacio para la colaboración, y los participantes se adhieran a la [Colaborador Pacto](http://contributor-covenant.org) el código de conducta.
+
+* * *
 
 ## Licencia
 
 La joya está disponible como código abierto bajo los términos de la [Licencia MIT](https://opensource.org/licenses/MIT).
 
-## código de conducta
+* * *
+
+## Código de conducta
 
 Todo el mundo que interactúan con el Translatomatic del proyecto códigos base, incidencias, salas de chat y listas de correo, se espera que siga el [código de conducta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Creado por Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:18 +1030_
+_Creado por Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:22 +1030_

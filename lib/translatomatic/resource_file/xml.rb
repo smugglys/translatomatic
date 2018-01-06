@@ -7,29 +7,37 @@ module Translatomatic::ResourceFile
       %w{xml}
     end
 
-    # (see Translatomatic::ResourceFile::Base#initialize)
-    def initialize(path, locale = nil)
-      super(path, locale)
-      @valid = true
-      @nodemap = {}
-      @properties = @path.exist? ? read(@path) : {}
-    end
-
     # (see Translatomatic::ResourceFile::Base#set)
     def set(key, value)
       super(key, value)
-      @nodemap[key].content = value if @nodemap.include?(key)
+      if @nodemap.include?(key)
+        @nodemap[key].content = value
+      else
+        create_node(key, value)
+      end
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path, options = {})
       if @doc
         add_created_by unless options[:no_created_by]
-        target.write(@doc.to_xml)
+        target.write(@doc.to_xml(indent: 2))
       end
     end
 
     private
+
+    def init
+      @nodemap = {}
+      @doc = empty_doc
+    end
+
+    def load
+      # parse xml with nokogiri
+      @doc = read_doc
+      init_nodemap
+      init_properties
+    end
 
     def comment(text)
       @doc.create_comment(text)
@@ -39,50 +47,49 @@ module Translatomatic::ResourceFile
       @created_by ||= @doc.root.add_previous_sibling(comment(created_by))
     end
 
-    # initialize nodemap from nokogiri document
-    # returns property hash
-    def init_nodemap(doc)
-      if !doc.errors.empty?
-        log.error(doc.errors)
-        @valid = false
-        {}
-      else
-        # map of key1 => node, key2 => node, ...
-        @nodemap = create_nodemap(doc)
-        # map of key => node content
-        @nodemap.transform_values { |v| v.content }
-      end
+    def init_properties
+      @properties = @nodemap.transform_values { |i| i ? i.content : nil }
     end
 
-    # parse xml
-    def read(path)
-      begin
-        # parse xml with nokogiri
-        @doc = read_doc(path)
-        init_nodemap(@doc)
-      rescue Exception => e
-        log.error t("resource.error", message: e.message)
-        @valid = false
-        {}
-      end
+    # initialize nodemap and properties hash from nokogiri document
+    def init_nodemap
+      # map of key1 => node, key2 => node, ...
+      @keynum = 1
+      text_nodes = @doc.search(text_nodes_xpath)
+      text_nodes.each { |node| add_node(node) }
     end
 
-    def read_doc(path)
-      Nokogiri::XML(path.open) do |config|
+    def read_doc
+      doc = Nokogiri::XML(@path.open) do |config|
         config.noblanks
       end
+      parsing_error(doc.errors[0]) if doc.errors.present?
+      doc
     end
 
-    def create_nodemap(doc)
-      result = {}
-      text_nodes = doc.search(text_nodes_xpath)
-      idx = 1
-      text_nodes.each do |node|
-        next if whitespace?(node.content)
-        result["key#{idx}"] = node
-        idx += 1
-      end
-      result
+    def create_node(key, value)
+      # separate nodes by whitespace
+      text_node = Nokogiri::XML::Text.new("\n", @doc)
+      @doc.root.add_child(text_node)
+
+      # create the key/value node
+      node = Nokogiri::XML::Node.new(key, @doc)
+      node.content = value
+      @doc.root.add_child(node)
+
+      @nodemap[key] = node
+      @properties[key] = node.content
+    end
+
+    def add_node(node)
+      return if whitespace?(node.content)
+      key = "key#{@keynum}"
+      @nodemap[key] = node
+      @keynum += 1
+    end
+
+    def empty_doc
+      Nokogiri::XML("<root />")
     end
 
     def text_nodes_xpath

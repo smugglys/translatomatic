@@ -13,10 +13,7 @@ module Translatomatic::CLI
     def self.thor_options(klass, object)
       Translatomatic::Option.options_from_object(object).each do |option|
         next if option.hidden
-        data = option.to_hash
-        # use internal ',' splitting for array types
-        data[:type] = :string if data[:type] == :array
-        klass.method_option option.name, data
+        klass.method_option option.name, option.to_thor
       end
     end
 
@@ -25,13 +22,18 @@ module Translatomatic::CLI
       list = default if list.nil? || list.empty?
       list = [list] unless list.kind_of?(Array)
       # split list entries on ','
-      list.collect { |i| i.split(/[, ]/) }.flatten.compact
+      list.compact.collect { |i| i.split(/[, ]/) }.flatten.compact
     end
 
     # run the give code block, display exceptions.
     # return true if the code ran without exceptions
     def run
       begin
+        merge_options_and_config
+        @dry_run = cli_option(:dry_run)
+        conf.logger.level = Logger::DEBUG if cli_option(:debug)
+        log.info(t("cli.dry_run")) if @dry_run
+
         yield
         true
       rescue Interrupt
@@ -51,17 +53,23 @@ module Translatomatic::CLI
     end
 
     def conf
-      Translatomatic::Config.instance
+      Translatomatic.config
     end
 
     # get an option value
-    # use options specified on the command line first.
-    # falls back to configuration values.
     def cli_option(key)
-      if options[key] && !empty_array?(options[key])
-        options[key]
-      else
-        conf.get(key)
+      @options[key]
+    end
+
+    # create @options from options and config
+    def merge_options_and_config
+      # start with command line options
+      @options = options.transform_keys { |i| i.to_sym }
+      # fill missing entries with config values
+      Translatomatic::Config.options.each do |option|
+        unless @options.include?(option.name)
+          @options[option.name] = conf.get(option.name)
+        end
       end
     end
 

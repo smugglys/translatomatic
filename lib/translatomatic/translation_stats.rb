@@ -1,5 +1,5 @@
 # Translation statistics
-class Translatomatic::ConverterStats
+class Translatomatic::TranslationStats
   include Translatomatic::Util
 
   # @return [Array<Translatomatic::Translation>] A list of all translations
@@ -24,7 +24,7 @@ class Translatomatic::ConverterStats
   end
 
   def to_s
-    t("converter.total_translations", total: @translations.length,
+    t("file_translator.total_translations", total: @translations.length,
       from_db: @from_db, from_translator: @from_translator,
       untranslated: @untranslated)
   end

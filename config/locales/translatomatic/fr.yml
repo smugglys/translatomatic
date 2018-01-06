@@ -1,4 +1,4 @@
-# Créé par Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:40 +1030
+# Créé par Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:17 +1030
 
 fr:
   translatomatic:
@@ -6,6 +6,8 @@ fr:
       config:
         subcommand: Commandes de configuration
         configuration: Configuration
+        context_configuration: Configuration pour le contexte « %{context} »
+        no_config: Aucune configuration n’est trouvée
         set: Modifier un paramètre de configuration
         remove: Supprimer un paramètre de configuration
         list: Liste des paramètres de configuration actuels
@@ -14,22 +16,22 @@ fr:
         type: Type de
         value: Valeur
         desc: Description
+        context: Contexte de configuration
+      convert: Convertir fichier source au format de fichier cible
       translate:
         subcommand: Traduire des fichiers ou des chaînes
         file: Traduire un fichier de paramètres régionaux cibles
         string: Traduire une chaîne de paramètres régionaux cibles
+        translator: Implémentations de traducteur
       source_locale: Les paramètres régionaux du fichier source
       target_locales: Paramètres régionaux pour la traduction
+      source_files: Fichiers à traduire
       debug: Activer la sortie de débogage
       wank: Activer la barre de progression de traduction
-      share: Partager les traductions avec des traducteurs qui prennent en charge
-        le téléchargement
+      share: Partager les traductions avec les traducteurs
       dry_run: 'Galop d’essai : fichiers ne seront pas traduits ou écrits'
-      locales_required: Un ou plusieurs endroits requis
-      file_not_found: 'Fichier non trouvé : %{file}'
-      file_unsupported: 'Non pris en charge le type de fichier : %{file}'
+      locales_required: Un ou plusieurs paramètres régionaux cibles requis
       using_translator: 'À l’aide du traducteur : %{name}'
-      locales_properties: 'Paramètres régionaux : %{locales}, propriétés : %{properties}'
       display_values: Afficher les valeurs d’un groupe de ressources
       locales_to_display: Paramètres régionaux pour afficher
       display_sentences: Afficher les phrases
@@ -45,11 +47,15 @@ fr:
         subcommand: Commandes de base de données
         search: Base de données de recherche pour texte correspondant de la chaîne
           donnée.
-    resource:
+    file:
+      not_found: 'Fichier non trouvé : %{file}'
+      unsupported: 'Non pris en charge le type de fichier : %{file}'
       unknown_locale: Impossible de déterminer les paramètres régionaux
       created_by: Créé par %{app} %{version} %{date}
       error: 'Erreur : %{message}'
       loading: La tentative de chargement %{file} à l’aide de %{name}
+      directory: 'Fichier est un répertoire : %{file}'
+      invalid: 'Fichier est non valide : %{file}'
     tmx:
       multiple_origins: Origines multiples dans les textes.
       multiple_locales: Plusieurs localités de source dans les textes.
@@ -72,17 +78,15 @@ fr:
       unavailable: Traducteur %{name} n’est pas disponible.
       no_translators: Aucun traducteurs ne sont configurés.
       password: Mot de passe
-    converter:
+    file_translator:
       total_translations: 'Total des traductions : %{total} (%{from_db} de la base
         de données, %{from_translator} de traducteur, %{untranslated} non traduite)'
       untranslated: 'Chaînes non traduites :'
-      translator: Implémentations de traducteur
       dry_run: Imprimer des actions sans effectuer des traductions ou écrire des fichiers.
       use_database: Stocker et récupérer des traductions depuis la base de données.
       database_disabled: Base de données est désactivée.
       translator_required: Traducteur requis.
-      file_unsupported: 'Non pris en charge le type de fichier : %{file}'
-      translating: Traduction de %{source} %{target}
+      translating: La traduction de %{source} (%{source_locale}) %{target} (%{target_locale})
       stats: 'Traductions de base de données : %{from_db}, traducteur : %{from_translator},
         non traduite : %{untranslated}'
     database:
@@ -96,10 +100,16 @@ fr:
     unicode:
       invalid_byte: 'Les octets UTF8 non valide : « %{byte} »'
     config:
+      invalid_context: 'Contexte de configuration non reconnue : « %{context} »'
       invalid_key: 'Clé de configuration non reconnue : « %{key} »'
+      command_line_only: Configuration « %{key} » ne peut pas être sauvée
       types:
         string: Chaîne
         hash: Hachage
         array: Tableau
         numeric: Numérique
         boolean: Boolean
+      context:
+        env: Environnement
+        project: Projet
+        user: Utilisateur

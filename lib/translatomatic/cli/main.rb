@@ -3,9 +3,10 @@ module Translatomatic::CLI
   # Main command line interface
   class Main < Base
 
+    default_task :translate
+
     begin
-      config = Translatomatic::Config.instance
-      I18n.default_locale = config.default_locale
+      I18n.default_locale = Translatomatic.config.default_locale
     end
 
     package_name "Translatomatic"
@@ -60,6 +61,18 @@ module Translatomatic::CLI
           strings << extractor.extract
         end
         puts strings.join("\n")
+      end
+    end
+
+    desc "convert source target", t("cli.convert")
+    # Convert a resource file from one format to another
+    # @param source [String] An existing resource file
+    # @param target [String] The name of a target resource file
+    # @return [void]
+    def convert(source, target)
+      run do
+        converter = Translatomatic::Converter.new
+        converter.convert(source, target)
       end
     end
 

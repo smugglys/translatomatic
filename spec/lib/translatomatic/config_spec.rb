@@ -3,7 +3,7 @@ RSpec.describe Translatomatic::Config do
   KEY_LOCALES = "target_locales"
   KEY_DEBUG = "debug"
 
-  let(:config) { Translatomatic::Config.instance }
+  let(:config) { Translatomatic.config }
 
   describe :set do
     it "sets a configuration key" do
@@ -37,7 +37,7 @@ RSpec.describe Translatomatic::Config do
       expect(config.get(KEY_LOCALES)).to eq(["de"])
       config.remove(KEY_LOCALES)
       config.load
-      expect(config.get(KEY_LOCALES)).to eq(nil)
+      expect(config.get(KEY_LOCALES)).to be_empty
     end
 
     it "removes a boolean setting" do
@@ -62,13 +62,6 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe :settings do
-    it "returns all configuration settings" do
-      config.set(KEY_LOCALES, "de")
-      expect(config.settings.keys).to include(KEY_LOCALES)
-    end
-  end
-
   describe :save do
     it "saves settings to the config file" do
       config.set(KEY_LOCALES, "de")
@@ -81,4 +74,5 @@ RSpec.describe Translatomatic::Config do
       config.load
     end
   end
+
 end

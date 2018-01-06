@@ -8,23 +8,51 @@ class Translatomatic::ResourceFile::Base
   # @return [Hash<String,String>] key -> value properties
   attr_reader :properties
 
+  # @return [boolean] True if this resource format is enabled
+  def self.enabled?
+    true
+  end
+
   # @return [Array<String>] File extensions supported by this resource file
   def self.extensions
     raise "extensions must be implemented by subclass"
   end
 
-  # Create a new resource file.
-  # If locale is unspecified, attempts to determine the locale of the file
-  # automatically, and if that fails, uses the default locale.
+  # @return [boolean] True if the file format consists of keys and values
+  def self.is_key_value?
+    false
+  end
+
+  # @return [boolean] true if this resource file supports variable interpolation
+  def self.supports_variable_interpolation?
+    false
+  end
+
+  # Create a new resource file or load an existing file.
+  # If options[:locale] is unspecified, attempts to determine
+  # the locale of the file automatically, and if that fails,
+  # uses the default locale.
+  # Raises an exception if errors were encountered loading the file.
   # @param path [String] Path to the file
-  # @param locale [String] Locale of the file contents
+  # @param options [Hash<Symbol,String>] Options
   # @return [Translatomatic::ResourceFile::Base] the resource file.
-  def initialize(path, locale = nil)
-    @path = path.kind_of?(Pathname) ? path : Pathname.new(path)
-    @locale = Translatomatic::Locale.parse(locale || detect_locale || Translatomatic::Locale.default)
-    raise t("resource.unknown_locale") unless @locale && @locale.language
-    @valid = false
+  def initialize(path = nil, options = {})
+    raise "expected options hash" if options && !options.kind_of?(Hash)
+    raise t("file.unsupported", file: path) unless self.class.enabled?
+    @options = options || {}
     @properties = {}
+    @path = path.nil? || path.kind_of?(Pathname) ? path : Pathname.new(path)
+    update_locale
+    init
+    load if @path && @path.exist?
+  end
+
+  # Save the resource file.
+  # @param target [Pathname] The destination path
+  # @param options [Hash<Symbol, Object>] Output format options
+  # @return [void]
+  def save(target = path, options = {})
+    raise "save(path) must be implemented by subclass"
   end
 
   # @return [String] The format of this resource file, e.g. "Properties"
@@ -78,23 +106,13 @@ class Translatomatic::ResourceFile::Base
     @properties[key] = value
   end
 
-  # Test if the current resource file is valid
-  # @return true if the current file is valid
-  def valid?
-    @valid
-  end
-
-  # Save the resource file.
-  # @param target [Pathname] The destination path
-  # @param options [Hash<Symbol, Object>] Output format options
-  # @return [void]
-  def save(target = path, options = {})
-    raise "save(path) must be implemented by subclass"
-  end
-
   # @return [String] String representation of this file
   def to_s
     path.basename.to_s
+  end
+
+  def type
+    self.class.name.demodulize
   end
 
   # @return [Array<String>] All property values split into sentences
@@ -105,11 +123,6 @@ class Translatomatic::ResourceFile::Base
       sentences += string.sentences
     end
     sentences
-  end
-
-  # @return [boolean] true if this resource file supports variable interpolation
-  def supports_variable_interpolation?
-    false
   end
 
   # Create an interpolated variable string.
@@ -130,15 +143,47 @@ class Translatomatic::ResourceFile::Base
 
   include Translatomatic::Util
 
+  # called by constructor before load
+  def init
+  end
+
+  # load contents from @path
+  def load
+    raise "load must be implemented by subclass"
+  end
+
+  def update_locale
+    locale = @options[:locale] || detect_locale || Translatomatic::Locale.default
+    @locale = Translatomatic::Locale.parse(locale)
+    raise t("file.unknown_locale") unless @locale && @locale.language
+  end
+
   def created_by
-    t("resource.created_by", app: "Translatomatic",
-      version: Translatomatic::VERSION, date: I18n.l(DateTime.now),
-      locale: locale.language
+    options = {
+      app: "Translatomatic",
+      version: Translatomatic::VERSION,
+      date: I18n.l(DateTime.now),
+    }
+    # use created by string in current file's locale, fall back to
+    # english locale if translation is missing.
+    t("file.created_by", options.merge({
+      locale: locale.language,
+      default: t("file.created_by", options.merge(locale: "en"))
+      })
     )
+  end
+
+  def read_contents(path)
+    File.read(path.to_s, mode: "r:bom|utf-8")
+  end
+
+  def parsing_error(error)
+    raise Exception.new(error)
   end
 
   # detect locale from filename
   def detect_locale
+    return nil unless path
     tag = nil
     basename = path.sub_ext('').basename.to_s
     directory = path.dirname.basename.to_s
@@ -189,4 +234,36 @@ class Translatomatic::ResourceFile::Base
     idx && idx < filename.length - 1 ? filename[idx + 1..-1].split('.') : []
   end
 
+  # flatten hash or array of hashes to a hash of key => value pairs
+  def flatten(data)
+    result = {}
+
+    if data.kind_of?(Hash)
+      data.each do |key, value|
+        flatten_add(result, key, value)
+      end
+    elsif data.kind_of?(Array)
+      data.each_with_index do |value, i|
+        key = "key" + i.to_s
+        flatten_add(result, key, value)
+      end
+    end
+
+    result
+  end
+
+  def flatten_add(result, key, value)
+    if needs_flatten?(value)
+      children = flatten(value)
+      children.each do |ck, cv|
+        result[key + "." + ck] = cv
+      end
+    else
+      result[key] = value
+    end
+  end
+
+  def needs_flatten?(value)
+    value.kind_of?(Array) || value.kind_of?(Hash)
+  end
 end

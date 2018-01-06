@@ -1,5 +1,8 @@
 module Helpers
-  TEST_SETTINGS_PATH = File.join(File.dirname(__FILE__), "..", "tmp", "config.yml")
+  TMP_PATH = File.join(File.dirname(__FILE__), "..", "tmp")
+  TEST_USER_SETTINGS_PATH = File.join(TMP_PATH, "config.yml")
+  TEST_PROJ_SETTINGS_PATH = File.join(TMP_PATH, "project_config.yml")
+  FIXTURES_PATH = File.join(File.dirname(__FILE__), '..', 'fixtures')
 
   def create_test_database
     #log.debug "Setting up test database"
@@ -15,9 +18,12 @@ module Helpers
   end
 
   def use_test_config
-    File.delete(TEST_SETTINGS_PATH) if File.exist?(TEST_SETTINGS_PATH)
-    config = Translatomatic::Config.instance
-    config.send(:settings_path=, TEST_SETTINGS_PATH)
+    [TEST_USER_SETTINGS_PATH, TEST_PROJ_SETTINGS_PATH].each do |file|
+      File.delete(file) if File.exist?(file)
+    end
+    config = Translatomatic.config
+    config.send(:user_settings_path=, TEST_USER_SETTINGS_PATH)
+    config.send(:project_settings_path=, TEST_PROJ_SETTINGS_PATH)
   end
 
   def fixture_read(path, crlf = false)
@@ -28,7 +34,11 @@ module Helpers
   end
 
   def fixture_path(path)
-    File.join(File.dirname(__FILE__), '..', 'fixtures', path)
+    f1 = File.join(FIXTURES_PATH, path)
+    return f1 if File.exist?(f1)
+    f2 = File.join(FIXTURES_PATH, "resource_file", path)
+    return f2 if File.exist?(f2)
+    raise "fixture #{path} not found"
   end
 
   def database_disabled?
@@ -39,8 +49,11 @@ module Helpers
     TestConfig::DEFAULT_HTTP_HEADERS.merge(options)
   end
 
+  # create a temporary file, return path to file
   def create_tempfile(name, contents = nil)
-    tempfile = Tempfile.new(name)
+    path = name.kind_of?(Pathname) ? name : Pathname.new(name)
+    # keep extension in tempfile
+    tempfile = Tempfile.new([path.basename(path.extname).to_s, path.extname])
     tempfile.write(contents) if contents
     tempfile.close
     Pathname.new(tempfile.path)

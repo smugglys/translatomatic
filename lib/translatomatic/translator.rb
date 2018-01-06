@@ -76,24 +76,32 @@ module Translatomatic::Translator
   # @return [String] A description of all translators and options
   def self.list
     out = t("translator.translators") + "\n"
+    configured_options = {}
     modules.each do |mod|
       out += "\n" + mod.name.demodulize + ":\n"
       opts = mod.options
       opts.each do |opt|
+        configured_options[opt.name] = config.get(opt.name)
         optname = opt.name.to_s.gsub("_", "-")
         out += "  --%-18s  %18s  %10s  %15s\n" % [optname, opt.description,
           opt.required ? t("translator.required_option") : "",
-          opt.use_env ? "ENV[#{opt.name.upcase}]" : ""]
+          opt.env_name ? "ENV[#{opt.env_name}]" : ""]
       end
     end
     out += "\n"
     out += t("translator.configured") + "\n"
-    configured = available
+    configured = available(configured_options)
     configured.each do |translator|
       out += "  " + translator.name + "\n"
     end
     out += t("translator.no_translators") if configured.empty?
     out + "\n"
+  end
+
+  private
+
+  def self.config
+    Translatomatic.config
   end
 
 end

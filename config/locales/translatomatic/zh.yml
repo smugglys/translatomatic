@@ -1,4 +1,4 @@
-# 由Translatomatic0.1.1Mon, 01 Jan 2018 21:36:45 +1030 创建
+# 由Translatomatic0.1.2Sat, 06 Jan 2018 22:56:18 +1030 创建
 
 zh:
   translatomatic:
@@ -6,6 +6,8 @@ zh:
       config:
         subcommand: 配置命令
         configuration: 配置
+        context_configuration: 上下文 "%{context}" 的配置
+        no_config: 找不到配置
         set: 更改配置设置
         remove: 删除配置设置
         list: 列出当前配置设置
@@ -14,21 +16,22 @@ zh:
         type: 类型
         value: 值
         desc: 描述
+        context: 配置上下文
+      convert: 将源文件转换为目标文件格式
       translate:
         subcommand: 翻译文件或字符串
         file: 将文件转换为目标区域设置
         string: 将字符串转换为目标区域设置
+        translator: 要使用的转换器实现
       source_locale: 源文件的区域设置
       target_locales: 要转换为的区域设置
+      source_files: 要翻译的文件
       debug: 启用调试输出
       wank: 启用翻译进度栏
-      share: 与支持上载的翻译人员共享翻译
+      share: 与翻译人员共享翻译
       dry_run: '干运行: 文件不会被翻译或写入'
-      locales_required: 需要一个或多个区域设置
-      file_not_found: 找不到文件:%{file}
-      file_unsupported: 不支持的文件类型:%{file}
+      locales_required: 需要一个或多个目标区域设置
       using_translator: 使用转换器:%{name}
-      locales_properties: 区域设置:%{locales}, 属性:%{properties}
       display_values: 显示资源包中的值
       locales_to_display: 要显示的区域设置
       display_sentences: 显示句子
@@ -43,11 +46,15 @@ zh:
       database:
         subcommand: 数据库命令
         search: 搜索与给定字符串匹配的文本的数据库。
-    resource:
+    file:
+      not_found: 找不到文件:%{file}
+      unsupported: 不支持的文件类型:%{file}
       unknown_locale: 无法确定区域设置
       created_by: 由%{app}%{version}%{date} 创建
       error: 错误:%{message}
       loading: 尝试使用%{file} 加载%{name}
+      directory: 文件是一个目录:%{file}
+      invalid: 文件无效:%{file}
     tmx:
       multiple_origins: 文本中的多个来源。
       multiple_locales: 文本中的多个源区域设置。
@@ -70,17 +77,15 @@ zh:
       unavailable: 转换器%{name} 不可用。
       no_translators: 未配置任何翻译器。
       password: 密码
-    converter:
+    file_translator:
       total_translations: 总翻译:%{total} (%{from_db} 来自数据库,%{from_translator} 来自翻译器,%{untranslated}
         未翻译)
       untranslated: '未翻译的字符串:'
-      translator: 要使用的转换器实现
       dry_run: 在不执行翻译或写入文件的情况下打印操作。
       use_database: 存储和检索数据库中的翻译。
       database_disabled: 数据库被禁用。
       translator_required: 需要翻译。
-      file_unsupported: 不支持的文件类型:%{file}
-      translating: 将%{source} 转换为%{target}
+      translating: 将%{source} (%{source_locale}) 转换为%{target} (%{target_locale})
       stats: 数据库翻译:%{from_db}, 转换器:%{from_translator}, 未翻译:%{untranslated}
     database:
       no_environment: '%{env} 中没有环境 "%{file}"'
@@ -93,10 +98,16 @@ zh:
     unicode:
       invalid_byte: '无效的 UTF8 字节: "%{byte}"'
     config:
+      invalid_context: '未配置上下文: "%{context}"'
       invalid_key: '未配置键: "%{key}"'
+      command_line_only: 无法保存配置 "%{key}"
       types:
         string: 字符串
         hash: 哈希
         array: 数组
         numeric: 数值
         boolean: 布尔
+      context:
+        env: 环境
+        project: 项目
+        user: 用户

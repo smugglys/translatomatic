@@ -1,8 +1,13 @@
 RSpec.describe Translatomatic::CLI::Config do
   let(:cli) { Translatomatic::CLI::Config.new }
-  let(:config) { Translatomatic::Config.instance }
+  let(:config) { Translatomatic.config }
 
   KEY_CLI_TEST = "target_locales"
+
+  before(:each) do
+    # TODO: test with project level config also
+    cli.options = { context: "user" }
+  end
 
   context :set do
     it "sets a configuration option" do
@@ -23,7 +28,7 @@ RSpec.describe Translatomatic::CLI::Config do
       key = KEY_CLI_TEST
       cli.set(key, "de")
       cli.remove(key)
-      expect(config.include?(key)).to be_falsey
+      expect(config.include?(key, :user)).to be_falsey
     end
   end
 

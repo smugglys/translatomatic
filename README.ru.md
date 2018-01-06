@@ -2,17 +2,22 @@
 
 # Translatomatic
 
-Переводит текстовые файлы с одного языка на другой. Следующие форматы файлов в настоящее время поддерживаются:
+Преобразует текстовые файлы из одного языка в другой или из одного формата в другой. В настоящее время поддерживаются следующие форматы файлов:
 
-- [Свойства](https://en.wikipedia.org/wiki/.properties)
-- Файл resw (файл ресурсов Windows)
-- [Списки собственность](https://en.wikipedia.org/wiki/Property_list) (На OSX файл plist)
-- HTML-код
-- В XML
-- [Уценок](https://en.wikipedia.org/wiki/Markdown)
-- [Строки в xcode](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
-- [И yaml](http://yaml.org/)
-- Текстовые файлы
+| Формат файла | Расширения |
+| --- | --- |
+| [Свойства](https://en.wikipedia.org/wiki/.properties) | `.properties` |
+| Файлы ресурсов Windows | `.resw, .resx` |
+| [Списки собственность](https://en.wikipedia.org/wiki/Property_list) (На OSX файл plist) | `.plist` |
+| [PO-файлов](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [Строки в xcode](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [И yaml](http://yaml.org/) | `.yaml` |
+| Субтитры | `.srt, .ass, .ssa` |
+| HTML-код | `.html, .htm, .shtml` |
+| В XML | `.xml` |
+| [Уценок](https://en.wikipedia.org/wiki/Markdown) | `.md` |
+| Текстовые файлы | `.txt` |
+| CSV файлов | `.csv` |
 
 Следующее перевод интерфейсы API могут использоваться с Translatomatic:
 
@@ -24,7 +29,9 @@
 
 Переведенные строки сохраняются в базе данных и повторно.
 
-## Установка
+* * *
+
+## Установки
 
 Добавьте в ваши приложения `Gemfile`:
 
@@ -40,6 +47,8 @@ gem 'translatomatic'
 
     $ gem install translatomatic
 
+* * *
+
 ## Использование
 
 Этот самоцвет содержит исполняемый файл под названием `translatomatic`. В `translatomatic` команда имеет ряд функций, не все из которых описаны здесь. Для получения справки по доступных команд и параметров выполните:
@@ -51,18 +60,22 @@ gem 'translatomatic'
     $ translatomatic translate help
     $ translatomatic translate help file
 
-## Установка
+* * *
+
+## Установки
 
 Проверить наличие доступных переводческих услуг и варианты с `services` команда:
 
     $ translatomatic services
 
-Параметры можно указать в командной строке, в переменных среды, или в translatomatic в файле конфигурации. Файл конфигурации можно изменять с помощью translatomatic внутреннего `config` команда. Чтобы получить список всех доступных настроек, используйте:
+Параметры можно указать в командной строке, в переменных среды, или в translatomatic в файлах конфигурации. Файлы можно изменять с помощью translatomatic конфигурации внутреннего `config` команда. Чтобы получить список всех доступных настроек, используйте:
 
     $ translatomatic config list
     $ translatomatic config describe
 
-Смотрите также раздел конфигурации ниже для получения дополнительной информации.
+Параметры можно задать на уровне пользователя или на уровне проекта. Смотрите также раздел конфигурации ниже для получения дополнительной информации.
+
+* * *
 
 ## Перевод файлов
 
@@ -83,13 +96,29 @@ gem 'translatomatic'
 
 ### Извлечение строк из исходных файлов
 
-Чтобы извлечь строки из некоторых исходных файлов, используйте `strings` команда, например
+Для извлечения строк из исходных файлов, используйте `strings` команда, например
 
     $ translatomatic strings file.rb
 
+* * *
+
+## Преобразование файлов
+
+Translatomatic может использоваться для преобразования файлов из одного формата в другой. Например чтобы преобразовать Java файл свойств XCode строк файла:
+
+    $ translatomatic convert strings.properties Localization.strings
+
+* * *
+
 ## Конфигурация
 
+Translatomatic имеет файл конфигурации пользователя в `$HOME/.translatomatic/config.yml`и при необходимости в файл конфигурации проекта `$PROJECT_DIR/.translatomatic/config.yml`. Вe `translatomatic config set` команда работает на уровне конфигурации проекта при выполнении в рамках проекта, содержащий файл конфигурации translatomatic. противном случае файл конфигурации уровня пользователя изменяется. The `--context` параметр может использоваться для указания `user` или `project` уровень конфигурации. Эффективное значение параметра конфигурации определяется чтение из окружающей среды, из файла конфигурации уровня пользователя, файл конфигурации уровня проекта (если есть) и из командной строки. Последнее значение имеет приоритет над читать ранее значения.
+
 ### Примеры конфигурации Translatomatic
+
+Чтобы установить `google_api_key` в файле конфигурации пользователя используйте:
+
+    $ translatomatic config set google_api_key value --context user
 
 Чтобы задать одну или несколько услуг перевода для использования:
 
@@ -122,16 +151,22 @@ gem 'translatomatic'
       username: username
       password: password
 
+* * *
+
 ## Войска
 
 Сообщения об ошибках и запросы приветствуются на github в https://github.com/smugglys/translatomatic. Этот проект предназначен, чтобы быть безопасным, гостеприимное пространство для сотрудничества, и участников, как ожидается, придерживаться [Завет Автор](http://contributor-covenant.org) кодекса поведения.
+
+* * *
 
 ## Лицензия
 
 Камень доступен как открытый источник в соответствии с условиями [Лицензия mit](https://opensource.org/licenses/MIT).
 
-## Кодекс поведения
+* * *
+
+## Кодекса поведения
 
 Все взаимодействия с исходный код проекта Translatomatic, проблеме трекеры, чаты и списки рассылки, как ожидается, следовать [Кодекс поведения](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Созданная Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:24 +1030_
+_Созданная Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:26 +1030_

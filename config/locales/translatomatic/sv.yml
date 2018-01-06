@@ -1,4 +1,4 @@
-# Skapad av Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:44 +1030
+# Skapad av Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:18 +1030
 
 sv:
   translatomatic:
@@ -6,6 +6,8 @@ sv:
       config:
         subcommand: Konfigurationskommandon
         configuration: Konfiguration
+        context_configuration: Konfiguration för sammanhang '%{context}'
+        no_config: Ingen konfiguration som hittade
         set: Ändra en konfigurationsinställning
         remove: Ta bort en konfigurationsinställning
         list: Förteckning aktuella konfigurationsinställningar
@@ -14,21 +16,22 @@ sv:
         type: Typ
         value: Värde
         desc: Beskrivning
+        context: Konfiguration sammanhang
+      convert: Konvertera källfilen till mål-format
       translate:
         subcommand: Översätta filer eller strängar
         file: Översätta en fil till målet locales
         string: Översätta en sträng till målet locales
+        translator: Översättare-implementeringar använda
       source_locale: Lokalen på källfilen
       target_locales: Språk att översätta till
+      source_files: Filer att översätta
       debug: Aktivera felsökning utdata
       wank: Aktivera översättning förloppsindikatorn
-      share: Dela översättningar med översättare som stöder uppladdning
+      share: Dela översättningar med översättare
       dry_run: 'Torr kör: filer kommer inte att översättas eller skrivit'
-      locales_required: En eller flera lokaler krävs
-      file_not_found: 'Filen hittades inte: %{file}'
-      file_unsupported: 'Unsupported filtypen: %{file}'
+      locales_required: Ett eller flera mål locales krävs
       using_translator: 'Med hjälp av översättare: %{name}'
-      locales_properties: 'Språk: %{locales}, egenskaper: %{properties}'
       display_values: Visa värden från en resurssamling
       locales_to_display: Locales att Visa
       display_sentences: Visa meningar
@@ -43,11 +46,15 @@ sv:
       database:
         subcommand: Databas-kommandon
         search: Sökdatabas för text på en given sträng.
-    resource:
+    file:
+      not_found: 'Filen hittades inte: %{file}'
+      unsupported: 'Unsupported filtypen: %{file}'
       unknown_locale: Det går inte att avgöra locale
       created_by: Skapad av %{app} %{version} %{date}
       error: 'Fel: %{message}'
       loading: Försöker läsa in %{file} med %{name}
+      directory: 'Filen är en katalog: %{file}'
+      invalid: 'Filen är ogiltig: %{file}'
     tmx:
       multiple_origins: Flera ursprung i texter.
       multiple_locales: Flera källa lokalanpassningar i texter.
@@ -70,17 +77,15 @@ sv:
       unavailable: Översättare %{name} är inte tillgänglig.
       no_translators: Ingen översättare är konfigurerade.
       password: Lösenord
-    converter:
+    file_translator:
       total_translations: 'Summa översättningar: %{total} (%{from_db} från databas,
         %{from_translator} från översättare, %{untranslated} translaterade)'
       untranslated: 'Oöversatta strängar:'
-      translator: Översättare-implementeringar använda
       dry_run: Skriva ut åtgärder utan utför översättningar eller skriva filer.
       use_database: Lagra och hämta översättningar från databasen.
       database_disabled: Databasen är inaktiverad.
       translator_required: Översättare som krävs.
-      file_unsupported: 'Unsupported filtypen: %{file}'
-      translating: Att översätta %{source} %{target}
+      translating: Att översätta %{source} (%{source_locale}) till %{target} (%{target_locale})
       stats: 'Översättningar från databas: %{from_db}, översättare: %{from_translator},
         translaterade: %{untranslated}'
     database:
@@ -94,10 +99,16 @@ sv:
     unicode:
       invalid_byte: 'Ogiltigt UTF8 byte: ''%{byte}'''
     config:
+      invalid_context: 'Oredovisade konfiguration sammanhang: ''%{context}'''
       invalid_key: 'Konfigurationsnyckel för oredovisade: ''%{key}'''
+      command_line_only: Konfiguration '%{key}' kan inte sparas
       types:
         string: Sträng
         hash: Hash
         array: Array
         numeric: Numeriska
         boolean: Boolean
+      context:
+        env: Miljö
+        project: Projektet
+        user: Användaren

@@ -1,0 +1,8 @@
+/* Class = "IBUIViewController"; title = "Detail"; ObjectID = "Ah7-4n-0Wa"; */
+"property1" = "value 1";
+
+/* Class = "IBUINavigationItem"; title = "Detail"; ObjectID = "cra-N8-TIN"; */
+"property2" = "value 2";
+
+/* Class = "IBUINavigationItem"; title = "Detail"; ObjectID = "cra-N8-TIN"; */
+"property3" = "value 3";

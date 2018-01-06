@@ -39,15 +39,4 @@ RSpec.describe Translatomatic::CLI::Main do
     end
   end
 
-  it "displays config commands" do
-    @cli.config
-  end
-
-  it "displays database commands" do
-    @cli.database
-  end
-
-  it "displays translate commands" do
-    @cli.translate
-  end
 end

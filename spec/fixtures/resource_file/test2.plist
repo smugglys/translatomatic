@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>arraykey</key>
+    <array>
+      <string>array value 1</string>
+      <string>array value 2</string>
+    </array>
+
+    <!-- data is base64 encoded -->
+    <key>datakey</key>
+    <data>ZGF0YSB2YWx1ZQ==</data>
+
+    <key>datekey</key>
+    <date>2011-04-01T02:09:15Z</date>
+
+    <key>intkey</key>
+    <integer>10</integer>
+
+    <key>realkey</key>
+    <real>3.14</real>
+
+    <key>boolkey1</key>
+    <true />
+
+    <key>boolkey2</key>
+    <false />
+
+    <key>dictkey</key>
+    <dict>
+      <key>nestedkey</key>
+      <string>nested value</string>
+    </dict>
+  </dict>
+</plist>
