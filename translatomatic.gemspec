@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Andrew Williams"]
   spec.email         = ["contact@smugglys.com"]
 
-  spec.summary       = %q{Strings translation utility}
+  spec.summary       = %q{File translation and conversion utility}
   spec.homepage      = Translatomatic::URL
   spec.license       = "MIT"
 
@@ -41,6 +41,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "ruby-progressbar"
   spec.add_dependency "kramdown"           # markdown -> html
   spec.add_dependency "reverse_markdown"   # html -> markdown
-  spec.add_dependency "concurrent-ruby"
   spec.add_dependency "PoParser"
+  spec.add_dependency "titlekit"
 end

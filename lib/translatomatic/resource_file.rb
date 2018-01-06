@@ -59,7 +59,7 @@ module Translatomatic
     # find classes that can load the given path by file extension
     def self.types_for_path(path)
       path = path.kind_of?(Pathname) ? path : Pathname.new(path)
-      types.select { |klass| extension_match(klass, path) }
+      types.select { |klass| klass.enabled? && extension_match(klass, path) }
     end
 
     def self.extension_match(klass, path)
@@ -83,3 +83,5 @@ require 'translatomatic/resource_file/markdown'
 require 'translatomatic/resource_file/xcode_strings'
 require 'translatomatic/resource_file/plist'
 require 'translatomatic/resource_file/resw'
+require 'translatomatic/resource_file/subtitle'
+require 'translatomatic/resource_file/csv'

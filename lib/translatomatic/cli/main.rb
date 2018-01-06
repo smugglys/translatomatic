@@ -6,8 +6,7 @@ module Translatomatic::CLI
     default_task :translate
 
     begin
-      config = Translatomatic::Config.instance
-      I18n.default_locale = config.default_locale
+      I18n.default_locale = Translatomatic.config.default_locale
     end
 
     package_name "Translatomatic"

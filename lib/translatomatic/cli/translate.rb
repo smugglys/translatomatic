@@ -1,3 +1,5 @@
+require 'ruby-progressbar'
+
 # Command line interface to translatomatic
 module Translatomatic::CLI
   # Translation functions for the command line interface

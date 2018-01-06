@@ -13,19 +13,20 @@ def optional_gem(*args)
   gem *args if gem_installed?(args)
 end
 
-optional_gem 'mysql2'
-optional_gem 'postgresql'
+# database adapters
+optional_gem 'mysql2', platform: :ruby
+optional_gem 'postgresql', platform: :ruby
+optional_gem 'ruby-oci8', platform: :ruby
+gem "sqlite3", '~> 1.3', platform: :ruby
 
 # bigdecimal required by crack-0.4.3 on cygwin
 optional_gem 'bigdecimal'
 
-# jruby
+# jruby database adapters
 optional_gem 'activerecord-jdbc-adapter', platform: :jruby
 optional_gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
 optional_gem 'activerecord-jdbcmysql-adapter', platform: :jruby
 optional_gem 'activerecord-jdbcpostgresql-adapter', platform: :jruby
-
-gem "sqlite3", '~> 1.3', platform: :ruby
 
 # Specify your gem's dependencies in translatomatic.gemspec
 gemspec

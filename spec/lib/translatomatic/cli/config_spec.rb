@@ -1,6 +1,6 @@
 RSpec.describe Translatomatic::CLI::Config do
   let(:cli) { Translatomatic::CLI::Config.new }
-  let(:config) { Translatomatic::Config.instance }
+  let(:config) { Translatomatic.config }
 
   KEY_CLI_TEST = "target_locales"
 

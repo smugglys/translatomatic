@@ -21,7 +21,7 @@ module Helpers
     [TEST_USER_SETTINGS_PATH, TEST_PROJ_SETTINGS_PATH].each do |file|
       File.delete(file) if File.exist?(file)
     end
-    config = Translatomatic::Config.instance
+    config = Translatomatic.config
     config.send(:user_settings_path=, TEST_USER_SETTINGS_PATH)
     config.send(:project_settings_path=, TEST_PROJ_SETTINGS_PATH)
   end

@@ -1,8 +1,14 @@
 require 'i18n'
 require 'rails-i18n'
+require 'i18n_data'
+
+require 'pathname'
+require 'active_support/core_ext/hash'
+require 'active_support/dependencies/autoload'
 
 # Module containing all of the translation goodness
 module Translatomatic
+
   # @return [Translatomatic::Config] configuration
   def self.config
     @config ||= Translatomatic::Config.new
@@ -20,13 +26,9 @@ begin
   Translatomatic.init_i18n(__FILE__)
 end
 
-require 'pathname'
-require 'active_support/core_ext/hash'
-require 'easy_translate'
-require 'i18n_data'
-require 'ruby-progressbar'
-
+require 'translatomatic/version'
 require 'translatomatic/option'
+require 'translatomatic/define_options'
 require 'translatomatic/locale'
 require 'translatomatic/string'
 require 'translatomatic/translation'

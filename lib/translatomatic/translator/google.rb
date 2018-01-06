@@ -1,3 +1,5 @@
+require 'easy_translate'
+
 module Translatomatic
   module Translator
 

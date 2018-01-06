@@ -3,7 +3,7 @@ RSpec.describe Translatomatic::Config do
   KEY_LOCALES = "target_locales"
   KEY_DEBUG = "debug"
 
-  let(:config) { Translatomatic::Config.instance }
+  let(:config) { Translatomatic.config }
 
   describe :set do
     it "sets a configuration key" do

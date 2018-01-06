@@ -28,7 +28,7 @@ class Translatomatic::Locale
 
   # @return [Locale] the default locale
   def self.default
-    parse(Translatomatic::Config.instance.default_locale)
+    parse(Translatomatic.config.default_locale)
   end
 
   # @return [Locale] create a new locale object

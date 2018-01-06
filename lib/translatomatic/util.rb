@@ -26,7 +26,7 @@ module Translatomatic::Util
   end
 
   def log
-    Translatomatic::Config.instance.logger
+    Translatomatic.config.logger
   end
 
   def locale(tag)

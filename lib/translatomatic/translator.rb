@@ -101,7 +101,7 @@ module Translatomatic::Translator
   private
 
   def self.config
-    Translatomatic::Config.instance
+    Translatomatic.config
   end
 
 end

@@ -1,6 +1,6 @@
 RSpec.describe Translatomatic::CLI::Translate do
 
-  let(:config) { Translatomatic::Config.instance }
+  let(:config) { Translatomatic.config }
 
   before(:each) do
     config.remove(:translator)

@@ -8,6 +8,11 @@ class Translatomatic::ResourceFile::Base
   # @return [Hash<String,String>] key -> value properties
   attr_reader :properties
 
+  # @return [boolean] True if this resource format is enabled
+  def self.enabled?
+    true
+  end
+
   # @return [Array<String>] File extensions supported by this resource file
   def self.extensions
     raise "extensions must be implemented by subclass"
@@ -33,6 +38,7 @@ class Translatomatic::ResourceFile::Base
   # @return [Translatomatic::ResourceFile::Base] the resource file.
   def initialize(path = nil, options = {})
     raise "expected options hash" if options && !options.kind_of?(Hash)
+    raise t("file.unsupported", file: path) unless self.class.enabled?
     @options = options || {}
     @properties = {}
     @path = path.nil? || path.kind_of?(Pathname) ? path : Pathname.new(path)
@@ -228,7 +234,7 @@ class Translatomatic::ResourceFile::Base
     idx && idx < filename.length - 1 ? filename[idx + 1..-1].split('.') : []
   end
 
-  # flatten hash or array of data to a hash of key => value pairs
+  # flatten hash or array of hashes to a hash of key => value pairs
   def flatten(data)
     result = {}
 

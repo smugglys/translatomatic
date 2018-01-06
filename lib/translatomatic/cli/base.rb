@@ -53,7 +53,7 @@ module Translatomatic::CLI
     end
 
     def conf
-      Translatomatic::Config.instance
+      Translatomatic.config
     end
 
     # get an option value

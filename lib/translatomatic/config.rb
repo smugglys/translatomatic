@@ -144,7 +144,6 @@ class Translatomatic::Config
   private
 
   include Translatomatic::Util
-  include Singleton
 
   SETTINGS_DIR = ".translatomatic"
   SETTINGS_PATH = File.join(SETTINGS_DIR, "config.yml")
