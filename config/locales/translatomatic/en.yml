@@ -15,9 +15,7 @@ en:
         value: Value
         desc: Description
         context: Configuration context
-      convert:
-        subcommand: Convert resource files from one format to another
-        convert: Convert source file to target file format
+      convert: Convert source file to target file format
       translate:
         subcommand: Translate files or strings
         file: Translate a file to target locales

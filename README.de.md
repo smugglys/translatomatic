@@ -2,17 +2,20 @@
 
 # Translatomatic
 
-Übersetzt text-Dateien von einer Sprache zur anderen. Die folgenden Datei-Formate werden derzeit unterstützt:
+Übersetzt Text-Dateien von einer Sprache zur anderen oder von einem Format in ein anderes. Die folgenden Dateiformate werden derzeit unterstützt:
 
-- [Eigenschaften](https://en.wikipedia.org/wiki/.properties)
-- RESW (Windows-Ressourcen-Datei)
-- [Property-Listen](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
-- HTML
-- XML
-- [Markdown](https://en.wikipedia.org/wiki/Markdown)
-- [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
-- [YAML](http://yaml.org/)
-- Text-Dateien
+| Datei-format | Erweiterungen |
+| --- | --- |
+| [Eigenschaften](https://en.wikipedia.org/wiki/.properties) | `.properties` |
+| Windows-Ressource-Dateien | `.resw, .resx` |
+| [Property-Listen](https://en.wikipedia.org/wiki/Property_list) (OSX plist) | `.plist` |
+| [PO-Dateien](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [YAML](http://yaml.org/) | `.yaml` |
+| HTML | `.html, .htm, .shtml` |
+| XML | `.xml` |
+| [Markdown](https://en.wikipedia.org/wiki/Markdown) | `.md` |
+| Text-Dateien | `.txt` |
 
 Die folgende Übersetzung APIs kann mit Translatomatic verwendet werden:
 
@@ -23,6 +26,8 @@ Die folgende Übersetzung APIs kann mit Translatomatic verwendet werden:
 - [Frengly](http://www.frengly.com/api)
 
 Übersetzten Zeichenfolgen werden in einer Datenbank gespeichert und wiederverwendet werden.
+
+* * *
 
 ## Installation
 
@@ -40,7 +45,9 @@ Oder Sie installieren es selbst als:
 
     $ gem install translatomatic
 
-## Nutzung
+* * *
+
+## Verwendung
 
 Dieses Juwel bietet eine ausführbare Datei namens `translatomatic`. Die `translatomatic` Befehl hat eine Reihe von Funktionen, von denen nicht, die alle hier dokumentiert sind. Hilfe zu verfügbaren Befehle und Optionen ausführen:
 
@@ -51,20 +58,24 @@ Und für Hilfe zu einem Befehl ausführen:
     $ translatomatic translate help
     $ translatomatic translate help file
 
+* * *
+
 ## Setup
 
 Suchen Sie nach verfügbaren Translation Services und Optionen mit der `services` Befehl:
 
     $ translatomatic services
 
-Optionen können in der Befehlszeile in Umgebungsvariablen oder in Translatomatic der Konfigurationsdatei angegeben werden. Die Konfigurationsdatei kann geändert werden, mit Translatomatic die interne `config` Befehl. Um alle verfügbaren Konfigurationseinstellungen aufzulisten, verwenden Sie:
+Optionen können in der Befehlszeile in Umgebungsvariablen oder in Translatomatic der Konfigurationsdateien angegeben werden. Die Konfiguration, die Dateien mit Translatomatic geändert werden können die interne `config` Befehl. Um alle verfügbaren Konfigurationseinstellungen aufzulisten, verwenden Sie:
 
     $ translatomatic config list
     $ translatomatic config describe
 
-Siehe auch Abschnitt "Konfiguration" unten für weitere Informationen.
+Optionen können auf der Benutzerebene oder Projektebene festgelegt werden. Siehe auch Abschnitt "Konfiguration" unten für weitere Informationen.
 
-## Übersetzen von Dateien
+* * *
+
+## Übersetzung von Dateien
 
 Bei der Übersetzung von Dateien `translatomatic` übersetzt den text, ein Satz oder auf Zeit. Wenn eine Datei erneut übersetzt ist, nur Sätze, die seit der letzten Übersetzung geändert haben werden an den Übersetzer geschickt, und der Rest aus der lokalen Datenbank bezogen werden.
 
@@ -83,13 +94,29 @@ Auslesen und anzeigen `store.description` und `store.name` Eigenschaften von der
 
 ### Extrahieren von Zeichenfolgen aus den Quelldateien
 
-Verwenden, um Zeichenfolgen von einige Quellcode-Dateien zu extrahieren, die `strings` Befehl, z.B.
+Verwenden, um Zeichenfolgen von Quellcode-Dateien zu extrahieren, die `strings` Befehl, z.B.
 
     $ translatomatic strings file.rb
 
+* * *
+
+## Dateien konvertieren
+
+Translatomatic kann verwendet werden, Dateien von einem Format in ein anderes zu konvertieren. Z. B. um eine Java zu konvertieren Streicher "Properties"-Datei für ein XCode Datei:
+
+    $ translatomatic convert strings.properties Localization.strings
+
+* * *
+
 ## Konfiguration
 
+Translatomatic hat eine benutzerspezifische Konfigurationsdatei an `$HOME/.translatomatic/config.yml`, und optional eine pro Projekt Konfigurationsdatei `$PROJECT_DIR/.translatomatic/config.yml`. Diee `translatomatic config set` Befehl funktioniert auf die Projektkonfiguration Ebene Ausführung innerhalb eines Projekts mit einer Translatomatic-Konfigurationsdatei. Andernfalls wird die Benutzer-Ebene Konfigurationsdatei geändert. The `--context` Option kann verwendet werden, um anzugeben `user` oder `project` Konfiguration der Ebene. Der effektive Wert einer Konfigurationsoption wird durch das Lesen aus der Umwelt, die User-Konfiguration-Datei, der Projekt-Konfiguration-Datei (falls vorhanden) und von der Kommandozeile aus bestimmt. Der letzte Wert gefunden hat Vorrang vor Werte vorher zu lesen.
+
 ### Translatomatic Konfigurationsbeispiele
+
+Festzulegende `google_api_key` innerhalb der Benutzer-Konfiguration-Datei verwenden:
+
+    $ translatomatic config set google_api_key value --context user
 
 Eine oder mehrere Übersetzungen zu verwenden, stellen Sie ein:
 
@@ -122,16 +149,22 @@ Standardmäßig `translatomatic` nutzt eine sqlite3 Datenbank, in `$HOME/.transl
       username: username
       password: password
 
-## Beitrag
+* * *
+
+## Beitragen
 
 Bug-reports und pull-requests sind willkommen auf GitHub an https://github.com/smugglys/translatomatic. Dieses Projekt soll zu einem sicheren, einladenden Raum für die Zusammenarbeit und Mitwirkende werden erwartet, um die Einhaltung der [Beitrag Bund](http://contributor-covenant.org) code of conduct.
+
+* * *
 
 ## Lizenz
 
 Der Edelstein ist als open source unter den Bedingungen der [MIT-Lizenz](https://opensource.org/licenses/MIT).
 
+* * *
+
 ## Verhaltenskodex
 
 Jeder der Interaktion mit dem Translatomatic Projekt codebase, issue-Tracker, chat-rooms und mailing-Listen sollen Folgen [Verhaltenskodex](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Erstellt von Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:17 +1030_
+_Erstellt von Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:24 +1030_

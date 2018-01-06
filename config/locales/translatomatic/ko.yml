@@ -1,4 +1,4 @@
-# Translatomatic 0.1.2 Sat, 06 Jan 2018 12:18:54 +1030에 의해 만들어진
+# Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:20 +1030에 의해 만들어진
 
 ko:
   translatomatic:
@@ -17,9 +17,7 @@ ko:
         value: 값
         desc: 설명
         context: 구성 컨텍스트
-      convert:
-        subcommand: 한 형식에서 다른 리소스 파일을 변환
-        convert: 소스 파일을 대상 파일 형식으로 변환
+      convert: 소스 파일을 대상 파일 형식으로 변환
       translate:
         subcommand: 파일 또는 문자열 번역
         file: 대상 로케일 파일 번역

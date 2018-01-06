@@ -1,4 +1,4 @@
-# Translatomatic 0.1.2 Sat, 06 Jan 2018 12:18:54 +1030 によって作成されました。
+# Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:20 +1030 によって作成されました。
 
 ja:
   translatomatic:
@@ -17,9 +17,7 @@ ja:
         value: 値
         desc: 説明
         context: 構成コンテキスト
-      convert:
-        subcommand: 1 つの形式から別のリソース ファイルに変換します。
-        convert: ソース ファイルをターゲット ファイル形式に変換します。
+      convert: ソース ファイルをターゲット ファイル形式に変換します。
       translate:
         subcommand: ファイルまたは文字列を翻訳します。
         file: ターゲットのロケールにファイルを翻訳します。

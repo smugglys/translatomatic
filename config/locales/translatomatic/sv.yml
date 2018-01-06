@@ -1,4 +1,4 @@
-# Skapad av Translatomatic 0.1.2 Sat, 06 Jan 2018 12:18:54 +1030
+# Skapad av Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:21 +1030
 
 sv:
   translatomatic:
@@ -17,9 +17,7 @@ sv:
         value: Värde
         desc: Beskrivning
         context: Konfiguration sammanhang
-      convert:
-        subcommand: Konvertera resursfiler från ett format till ett annat
-        convert: Konvertera källfilen till mål-format
+      convert: Konvertera källfilen till mål-format
       translate:
         subcommand: Översätta filer eller strängar
         file: Översätta en fil till målet locales

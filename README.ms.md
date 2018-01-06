@@ -2,17 +2,20 @@
 
 # Translatomatic
 
-Diterjemahkan teks fail-fail dari satu bahasa yang lain. Berikut file format disokong:
+Menterjemahkan teks fail dari satu bahasa yang lain, atau dari satu format yang lain. Format fail berikut disokong buat masa ini:
 
-- [Sifat](https://en.wikipedia.org/wiki/.properties)
-- RESW (Tingkap sumber file)
-- [Harta senarai](https://en.wikipedia.org/wiki/Property_list) (SELEPAS plist)
-- HTML
-- FAIL
-- [Markdown](https://en.wikipedia.org/wiki/Markdown)
-- [Dan diganti dengan tali](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
-- [YAML](http://yaml.org/)
-- Fail teks
+| Format fail | Sambungan |
+| --- | --- |
+| [Sifat](https://en.wikipedia.org/wiki/.properties) | `.properties` |
+| Fail sumber Windows | `.resw, .resx` |
+| [Harta senarai](https://en.wikipedia.org/wiki/Property_list) (SELEPAS plist) | `.plist` |
+| [Fail PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [Dan diganti dengan tali](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [YAML](http://yaml.org/) | `.yaml` |
+| HTML | `.html, .htm, .shtml` |
+| FAIL | `.xml` |
+| [Markdown](https://en.wikipedia.org/wiki/Markdown) | `.md` |
+| Fail teks | `.txt` |
 
 Terjemahan berikut api boleh digunakan dengan Translatomatic:
 
@@ -23,6 +26,8 @@ Terjemahan berikut api boleh digunakan dengan Translatomatic:
 - [Frengly](http://www.frengly.com/api)
 
 Diterjemahkan tali disimpan dalam pengkalan data dan semula.
+
+* * *
 
 ## Pemasangan
 
@@ -40,6 +45,8 @@ Atau memasang sendiri sebagai:
 
     $ gem install translatomatic
 
+* * *
+
 ## Penggunaan
 
 Permata ini menyediakan boleh laku yang dipanggil `translatomatic`. Dalam `translatomatic` arahan mempunyai beberapa fungsi, tidak semua yang dihuraikan di sini. Untuk bantuan tentang perintah tersedia dan opsyen, melaksanakan:
@@ -51,18 +58,22 @@ Dan untuk bantuan tentang arahan, melaksanakan:
     $ translatomatic translate help
     $ translatomatic translate help file
 
+* * *
+
 ## Persediaan
 
 Menyemak Perkhidmatan penterjemahan tersedia dan dengan itu `services` perintah:
 
     $ translatomatic services
 
-Pilihan boleh ditetapkan pada baris arahan, dalam pembolehubah persekitaran, atau dalam fail konfigurasi di translatomatic. Fail konfigurasi boleh diubahsuai menggunakan translatomatic di Dalaman `config` perintah. Untuk menyenaraikan semua tetapan tatarajah tersedia, gunakan:
+Pilihan boleh ditetapkan pada baris arahan, dalam pembolehubah persekitaran, atau dalam fail konfigurasi di translatomatic. Konfigurasi fail boleh diubahsuai menggunakan translatomatic di Dalaman `config` perintah. Untuk menyenaraikan semua tetapan tatarajah tersedia, gunakan:
 
     $ translatomatic config list
     $ translatomatic config describe
 
-Lihat juga Seksyen konfigurasi di bawah untuk maklumat lanjut.
+Pilihan boleh ditetapkan pada paras pengguna atau peringkat projek. Lihat juga Seksyen konfigurasi di bawah untuk maklumat lanjut.
+
+* * *
 
 ## Menterjemahkan fail
 
@@ -83,13 +94,29 @@ Untuk membaca dan memaparkan `store.description` dan `store.name` sifat dari sum
 
 ### Mengekstrak tali dari sumber fail
 
-Untuk mengekstrak rentetan dari sesetengah fail sumber, gunakan dalam `strings` arahan, misalnya
+Untuk mengekstrak rentetan daripada fail sumber, gunakan dalam `strings` arahan, misalnya
 
     $ translatomatic strings file.rb
 
+* * *
+
+## Menukar fail
+
+Translatomatic boleh digunakan untuk menukar fail dari satu format yang lain. Contohnya, untuk menukar Java yang sifat fail untuk XCode satu tali fail:
+
+    $ translatomatic convert strings.properties Localization.strings
+
+* * *
+
 ## Konfigurasi
 
+Translatomatic mempunyai fail konfigurasi setiap pengguna di `$HOME/.translatomatic/config.yml`, dan yang satu fail konfigurasi projek `$PROJECT_DIR/.translatomatic/config.yml`. Dalame `translatomatic config set` Perintah beroperasi pada projek peringkat konfigurasi apabila dilaksanakan dalam sebuah projek yang mengandungi fail tatarajah translatomatic.eJika tidak fail tatarajah peringkat pengguna ditukar.d. The `--context` pilihan boleh digunakan untuk menentukan `user` atau `project` peringkat konfigurasi. Nilai berkesan opsyen konfigurasi ditentukan melalui pembacaan dari alam sekitar, pengguna peringkat Konfigurasi fail, fail konfigurasi tahap projek (jika ada), dan dari baris perintah. Nilai lepas yang mendapati keutamaan berbanding nilai membaca lebih awal.
+
 ### Contoh-contoh tatarajah Translatomatic
+
+Untuk menetapkan `google_api_key` dalam fail konfigurasi pengguna, gunakan:
+
+    $ translatomatic config set google_api_key value --context user
 
 Untuk menetapkan satu atau lebih perkhidmatan penterjemahan untuk digunakan:
 
@@ -122,16 +149,22 @@ Oleh lalai, `translatomatic` menggunakan sqlite3 dalam `$HOME/.translatomatic/tr
       username: username
       password: password
 
+* * *
+
 ## Menyumbang
 
 Laporan Bug dan tarik permintaan selamat datang pada Orang yang di https://github.com/smugglys/translatomatic. Projek ini dimaksudkan untuk menjadi aman, menyambut ruang untuk kerjasama, dan penyumbang diharapkan untuk mematuhi [Penyumbang Perjanjian](http://contributor-covenant.org) code of conduct.
+
+* * *
 
 ## Lesen
 
 Permata yang ada sebagai sumber terbuka di bawah segi [MIT Lesen](https://opensource.org/licenses/MIT).
 
-## Kod Amalan
+* * *
+
+## Tatakelakuan
 
 Semua orang berinteraksi dengan Translatomatic projek codebases, isu trackers, chat bilik dan senarai mel adalah diharapkan untuk mengikuti [Kod Amalan](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Dicipta oleh Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:22 +1030_
+_Dicipta oleh Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:35 +1030_

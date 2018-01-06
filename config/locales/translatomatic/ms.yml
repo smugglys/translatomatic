@@ -1,4 +1,4 @@
-# Dicipta oleh Translatomatic 0.1.2 Sat, 06 Jan 2018 12:18:54 +1030
+# Dicipta oleh Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:20 +1030
 
 ms:
   translatomatic:
@@ -17,9 +17,7 @@ ms:
         value: Nilai
         desc: Description/kawalan
         context: Konteks konfigurasi
-      convert:
-        subcommand: Menukar fail sumber dari satu format lain
-        convert: Menukar fail sumber kepada fail format sasaran
+      convert: Menukar fail sumber kepada fail format sasaran
       translate:
         subcommand: Menterjemahkan fail atau tali
         file: Menterjemahkan fail untuk locales sasaran

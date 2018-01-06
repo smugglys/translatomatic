@@ -1,4 +1,4 @@
-# Criado por Translatomatic 0.1.2 Sat, 06 Jan 2018 12:18:54 +1030
+# Criado por Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:21 +1030
 
 pt:
   translatomatic:
@@ -17,9 +17,7 @@ pt:
         value: Valor
         desc: Descrição
         context: Contexto de configuração
-      convert:
-        subcommand: Converter arquivos de recurso de um formato para outro
-        convert: Converter o arquivo de origem para o formato de arquivo de destino
+      convert: Converter o arquivo de origem para o formato de arquivo de destino
       translate:
         subcommand: Traduzir arquivos ou cadeias de caracteres
         file: Traduzir um arquivo para locais de destino

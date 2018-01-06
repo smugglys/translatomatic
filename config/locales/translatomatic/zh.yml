@@ -1,4 +1,4 @@
-# 由Translatomatic0.1.2Sat, 06 Jan 2018 12:18:55 +1030 创建
+# 由Translatomatic0.1.2Sat, 06 Jan 2018 13:04:21 +1030 创建
 
 zh:
   translatomatic:
@@ -17,9 +17,7 @@ zh:
         value: 值
         desc: 描述
         context: 配置上下文
-      convert:
-        subcommand: 将资源文件从一种格式转换为另一种形式
-        convert: 将源文件转换为目标文件格式
+      convert: 将源文件转换为目标文件格式
       translate:
         subcommand: 翻译文件或字符串
         file: 将文件转换为目标区域设置

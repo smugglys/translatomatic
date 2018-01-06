@@ -5,18 +5,20 @@
 
 # Translatomatic
 
-Translates text files from one language to another.  The following file formats
-are currently supported:
+Translates text files from one language to another, or from one format to another.  The following file formats are currently supported:
 
-* [Properties](https://en.wikipedia.org/wiki/.properties)
-* RESW (Windows resources file)
-* [Property lists](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
-* HTML
-* XML
-* [Markdown](https://en.wikipedia.org/wiki/Markdown)
-* [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
-* [YAML](http://yaml.org/)
-* Text files
+| File format | Extensions |
+|---|---|
+| [Properties](https://en.wikipedia.org/wiki/.properties)| `.properties`|
+| Windows resource files | `.resw, .resx` |
+| [Property lists](https://en.wikipedia.org/wiki/Property_list) (OSX plist) | `.plist` |
+| [PO files](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [XCode strings](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [YAML](http://yaml.org/) | `.yaml` |
+| HTML | `.html, .htm, .shtml` |
+| XML | `.xml` |
+| [Markdown](https://en.wikipedia.org/wiki/Markdown) | `.md` |
+| Text files | `.txt` |
 
 The following translation APIs can be used with Translatomatic:
 
@@ -28,6 +30,7 @@ The following translation APIs can be used with Translatomatic:
 
 Translated strings are saved in a database and reused.
 
+---
 ## Installation
 
 Add this line to your application's `Gemfile`:
@@ -44,6 +47,7 @@ Or install it yourself as:
 
     $ gem install translatomatic
 
+---
 ## Usage
 
 This gem provides an executable called `translatomatic`. The `translatomatic` command has a number of functions, not all of which are documented here. For help on available commands and options, execute:
@@ -55,19 +59,21 @@ And for help on a command, execute:
     $ translatomatic translate help
     $ translatomatic translate help file
 
+---
 ## Setup
 
 Check for available translation services and options with the `services` command:
 
     $ translatomatic services
 
-Options can be specified on the command line, in environment variables, or in translatomatic's configuration file. The configuration file can be modified using translatomatic's internal `config` command. To list all available configuration settings, use:
+Options can be specified on the command line, in environment variables, or in translatomatic's configuration files. The configuration files can be modified using translatomatic's internal `config` command. To list all available configuration settings, use:
 
     $ translatomatic config list
     $ translatomatic config describe
 
-See also the Configuration section below for more information.
+Options can be set at the user level or the project level. See also the Configuration section below for more information.
 
+---
 ## Translating files
 
 When translating files, `translatomatic` translates text one sentence or phrase at a time.  If a file is re-translated, only sentences that have changed since the last translation are sent to the translator, and the rest are sourced from the local database.
@@ -87,13 +93,28 @@ To read and display the `store.description` and `store.name` properties from loc
 
 ### Extracting strings from source files
 
-To extract strings from some source files, use the `strings` command, e.g.
+To extract strings from source files, use the `strings` command, e.g.
 
     $ translatomatic strings file.rb
 
+---
+## Converting files
+
+Translatomatic can be used to convert files from one format to another.
+For example, to convert a Java properties file to an XCode strings file:
+
+    $ translatomatic convert strings.properties Localization.strings
+
+---
 ## Configuration
 
+Translatomatic has a per-user configuration file at `$HOME/.translatomatic/config.yml`, and optionally a per project configuration file `$PROJECT_DIR/.translatomatic/config.yml`.  The `translatomatic config set` command operates on the project level configuration when executed within a project containing a translatomatic configuration file. Otherwise the user level configuration file is changed. The `--context` option can be used to specify `user` or `project` level configuration. The effective value of a configuration option is determined by reading from the environment, the user level configuration file, the project level configuration file (if present), and from the command line. The last value found takes precedence over values read earlier.
+
 ### Translatomatic configuration examples
+
+To set `google_api_key` within the user configuration file, use:
+
+    $ translatomatic config set google_api_key value --context user
 
 To set one or more translation services to use:
 
@@ -128,14 +149,17 @@ The database configuration can be changed by creating a `database.yml` file unde
       username: username
       password: password
 
+---
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/smugglys/translatomatic. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
+---
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
+---
 ## Code of Conduct
 
 Everyone interacting with the Translatomatic project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).

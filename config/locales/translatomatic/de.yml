@@ -1,4 +1,4 @@
-# Created by Translatomatic 0.1.2 Sat, 06 Jan 2018 12:18:54 +1030
+# Erstellt von Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:20 +1030
 
 de:
   translatomatic:
@@ -17,9 +17,7 @@ de:
         value: Wert
         desc: Beschreibung
         context: Konfigurations-Contexts
-      convert:
-        subcommand: Ressource-Dateien von einem Format in ein anderes konvertieren
-        convert: Quelldatei in Ziel-Datei-Format konvertieren
+      convert: Quelldatei in Ziel-Datei-Format konvertieren
       translate:
         subcommand: Dateien oder Zeichenfolgen übersetzen
         file: Eine Datei zum Ziel Gebietsschemas zu übersetzen

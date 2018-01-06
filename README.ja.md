@@ -2,17 +2,20 @@
 
 # Translatomatic
 
-変換テキストファイルから一言語ます。 以下のファイル形式 は現在サポートされているのは、
+別に 1 つの言語または別の 1 つの形式からテキスト ファイルに変換します。 次のファイル形式がサポートされています。
 
-- [特性](https://en.wikipedia.org/wiki/.properties)
-- RESW(Windows資源ファイル)
-- [物件リスト](https://en.wikipedia.org/wiki/Property_list) (OSX plist)
-- HTML
-- XML
-- [値下げ](https://en.wikipedia.org/wiki/Markdown)
-- [XCodeの文字列](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html)
-- [YAML](http://yaml.org/)
-- テキストファイル
+| ファイルの形式 | 拡張機能 |
+| --- | --- |
+| [特性](https://en.wikipedia.org/wiki/.properties) | `.properties` |
+| Windows リソース ファイル | `.resw, .resx` |
+| [物件リスト](https://en.wikipedia.org/wiki/Property_list) (OSX plist) | `.plist` |
+| [PO ファイル](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [XCodeの文字列](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [YAML](http://yaml.org/) | `.yaml` |
+| HTML | `.html, .htm, .shtml` |
+| XML | `.xml` |
+| [値下げ](https://en.wikipedia.org/wiki/Markdown) | `.md` |
+| テキストファイル | `.txt` |
 
 次の翻訳 Api は、Translatomatic で使用できます。
 
@@ -24,7 +27,9 @@
 
 翻訳文字列に保存されたデータベースの再利用されます。
 
-## 設置
+* * *
+
+## インストール
 
 この機能を追加ラインの中から必要なものを選んで使用 `Gemfile`:
 
@@ -40,7 +45,9 @@ gem 'translatomatic'
 
     $ gem install translatomatic
 
-## 用途
+* * *
+
+## の使用
 
 この宝石と呼ばれる実行可能ファイルを提供します。 `translatomatic`ます。 、 `translatomatic` コマンドは、いくつかのここに記載されているすべての機能を持ちます。 利用可能なコマンドとオプションに関するヘルプを実行します。
 
@@ -51,20 +58,24 @@ gem 'translatomatic'
     $ translatomatic translate help
     $ translatomatic translate help file
 
+* * *
+
 ## セットアップ
 
 利用可能な翻訳サービスとオプションを確認、 `services` コマンド:
 
     $ translatomatic services
 
-オプションは、コマンドライン、環境変数、または translatomatic の構成ファイルで指定することができます。 使用して構成ファイルを変更することができます translatomatic の内部 `config` コマンドです。 すべての利用可能な構成設定を一覧表示するには、使用します。
+オプションは、コマンドライン、環境変数、または translatomatic の構成ファイルで指定することができます。 Translatomatic を使用してファイルを変更することができます構成の内部 `config` コマンドです。 すべての利用可能な構成設定を一覧表示するには、使用します。
 
     $ translatomatic config list
     $ translatomatic config describe
 
-詳細については、後述の構成も参照してください。
+オプションは、ユーザー レベルまたはプロジェクト レベルで設定することができます。 詳細については、後述の構成も参照してください。
 
-## 翻訳ファイル
+* * *
+
+## ファイルの翻訳
 
 ファイルを変換するとき `translatomatic` 変換テキストの文章や言葉です。 ファイルが再翻訳された場合、最後の翻訳から変更されている唯一の文は翻訳者に送信され、残りの部分は、ローカル データベースから供給されます。
 
@@ -83,13 +94,29 @@ gem 'translatomatic'
 
 ### 抽出から文字列をソースファイル
 
-いくつかのソース ファイルから文字列を抽出するを使用、 `strings` コマンド例。
+ソース ファイルから文字列を抽出するを使用、 `strings` コマンド例。
 
     $ translatomatic strings file.rb
 
+* * *
+
+## ファイルを変換します。
+
+Translatomatic を使用して、1 つの形式から別のファイルを変換できます。 たとえば、Java に変換する、XCode をプロパティ ファイル文字列ファイル。
+
+    $ translatomatic convert strings.properties Localization.strings
+
+* * *
+
 ## 構成
 
+Translatomatic は、ユーザーごとの構成ファイル `$HOME/.translatomatic/config.yml`、および必要に応じて、プロジェクト構成ファイルあたり `$PROJECT_DIR/.translatomatic/config.yml`ます。 、e `translatomatic config set` コマンドは、プロジェクト レベルの構成 translatomatic 構成ファイルを含むプロジェクト内で実行されたときに動作します。tそうでなければユーザー レベルの構成ファイルが変更されます。he `--context` 指定するオプションを使用できます。 `user` または `project` レベルの構成。 構成オプションの有効な値は、環境、ユーザー レベルの構成ファイル、プロジェクト レベルの構成ファイル (存在する場合)、およびコマンド ・ ラインからの読書によって決まります。 最後の値は、以前に読み取られた値よりも優先されます。
+
 ### Translatomatic の設定例
+
+設定するのには `google_api_key` ユーザー構成ファイル内で使用します。
+
+    $ translatomatic config set google_api_key value --context user
 
 使用する 1 つまたは複数の翻訳サービスを設定: する
 
@@ -122,16 +149,22 @@ gem 'translatomatic'
       username: username
       password: password
 
-## の貢献
+* * *
+
+## 貢献
 
 バグ報告を引き要請を歓迎GitHubでhttps://github.com/smugglys/translatomaticます。 このプロジェクトなどに対応できるようになっても安全で快適なスペースのための協力者が付着し [執筆規約](http://contributor-covenant.org) 行動規範です。
+
+* * *
 
 ## ライセンス
 
 の逸品をご用意してオープンソースの条件の下での [MITライセンス](https://opensource.org/licenses/MIT)ます。
 
+* * *
+
 ## 行動規範
 
 皆様との交流のTranslatomaticプロジェクトのcodebases、ラッカー、チャットルームやメーリングリストで入力してください [行動規範](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)ます。
 
-_Translatomatic 0.1.1 Mon, 01 Jan 2018 21:36:20 +1030 によって作成されました。_
+_Translatomatic 0.1.2 Sat, 06 Jan 2018 13:04:32 +1030 によって作成されました。_
