@@ -1,5 +1,7 @@
 module Helpers
-  TEST_SETTINGS_PATH = File.join(File.dirname(__FILE__), "..", "tmp", "config.yml")
+  TMP_PATH = File.join(File.dirname(__FILE__), "..", "tmp")
+  TEST_USER_SETTINGS_PATH = File.join(TMP_PATH, "config.yml")
+  TEST_PROJ_SETTINGS_PATH = File.join(TMP_PATH, "project_config.yml")
   FIXTURES_PATH = File.join(File.dirname(__FILE__), '..', 'fixtures')
 
   def create_test_database
@@ -16,9 +18,12 @@ module Helpers
   end
 
   def use_test_config
-    File.delete(TEST_SETTINGS_PATH) if File.exist?(TEST_SETTINGS_PATH)
+    [TEST_USER_SETTINGS_PATH, TEST_PROJ_SETTINGS_PATH].each do |file|
+      File.delete(file) if File.exist?(file)
+    end
     config = Translatomatic::Config.instance
-    config.send(:user_settings_path=, TEST_SETTINGS_PATH)
+    config.send(:user_settings_path=, TEST_USER_SETTINGS_PATH)
+    config.send(:project_settings_path=, TEST_PROJ_SETTINGS_PATH)
   end
 
   def fixture_read(path, crlf = false)
