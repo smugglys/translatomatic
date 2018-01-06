@@ -3,9 +3,11 @@ RSpec.describe Translatomatic::CLI::Config do
   let(:config) { Translatomatic.config }
 
   KEY_CLI_TEST = "target_locales"
+  KEY_CLI_DEBUG = "debug"
 
   before(:each) do
     # TODO: test with project level config also
+    config.reset
     cli.options = { context: "user" }
   end
 
@@ -20,6 +22,19 @@ RSpec.describe Translatomatic::CLI::Config do
       expect {
         cli.set(key, "value")
       }.to raise_error(t("config.invalid_key", key: key))
+    end
+  end
+
+  describe :add do
+    it "adds a value to a list" do
+      config.set(KEY_CLI_TEST, "de")
+      config.add(KEY_CLI_TEST, "fr")
+      expect(config.get(KEY_CLI_TEST)).to eq(['de', 'fr'])
+    end
+
+    it "sets a value when used on non-list types" do
+      config.add(KEY_CLI_DEBUG, true)
+      expect(config.get(KEY_CLI_DEBUG)).to eq(true)
     end
   end
 
