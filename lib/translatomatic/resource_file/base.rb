@@ -153,9 +153,17 @@ class Translatomatic::ResourceFile::Base
   end
 
   def created_by
-    t("file.created_by", app: "Translatomatic",
-      version: Translatomatic::VERSION, date: I18n.l(DateTime.now),
-      locale: locale.language
+    options = {
+      app: "Translatomatic",
+      version: Translatomatic::VERSION,
+      date: I18n.l(DateTime.now),
+    }
+    # use created by string in current file's locale, fall back to
+    # english locale if translation is missing.
+    t("file.created_by", options.merge({
+      locale: locale.language,
+      default: t("file.created_by", options.merge(locale: "en"))
+      })
     )
   end
 
