@@ -4,10 +4,10 @@ module Translatomatic::CLI
   class Translate < Base
 
     default_task :file
-    
+
     define_options(
       { name: :translator, type: :array, aliases: "-t",
-        desc: t("converter.translator"),
+        desc: t("cli.translate.translator"),
         enum: Translatomatic::Translator.names
       },
       { name: :source_locale, desc: t("cli.source_locale") },
@@ -51,7 +51,7 @@ module Translatomatic::CLI
     desc "file filename locale...", t("cli.translate.file")
     thor_options(self, Translatomatic::CLI::CommonOptions)
     thor_options(self, Translatomatic::CLI::Translate)
-    thor_options(self, Translatomatic::Converter)
+    thor_options(self, Translatomatic::FileTranslator)
     thor_options(self, Translatomatic::Database)
     thor_options(self, Translatomatic::Translator.modules)
     # Translate files to target locales
@@ -67,40 +67,40 @@ module Translatomatic::CLI
 
         # check source file(s) exist and they can be loaded
         source_files = parse_list(cli_option(:source_files), file)
-        source_files.each do |file|
-          file = source_path(file)
-          raise t("cli.file_not_found", file: file) unless File.exist?(file)
-          source = Translatomatic::ResourceFile.load(file, @source_locale)
-          raise t("cli.file_unsupported", file: file) unless source
+        source_files.each do |source_file|
+          path = source_path(source_file)
+          raise t("file.not_found", file: path) unless File.exist?(path)
+          source = Translatomatic::ResourceFile.load(path, @source_locale)
+          raise t("file.unsupported", file: path) unless source
         end
 
         # set up database
         Translatomatic::Database.new(options)
 
-        # set up converter
+        # set up file translatiln
         translation_count = calculate_translation_count(source_files, @target_locales)
-        converter_options = options.merge(
+        ft_options = options.merge(
           translator: @translators,
           listener: progress_updater(translation_count)
         )
-        converter = Translatomatic::Converter.new(converter_options)
+        ft = Translatomatic::FileTranslator.new(ft_options)
 
-        source_files.each do |file|
+        source_files.each do |path|
           # read source file
-          source = Translatomatic::ResourceFile.load(file, @source_locale)
+          source = Translatomatic::ResourceFile.load(path, @source_locale)
 
           # convert source to locale(s) and write files
           @target_locales.each do |i|
             to_locale = locale(i)
             next if to_locale.language == source.locale.language
-            converter.translate_to_file(source, to_locale)
+            ft.translate_to_file(source, to_locale)
           end
         end
 
-        log.info converter.stats
+        log.info ft.stats
         finish_log
 
-        share_translations(converter) if cli_option(:share)
+        share_translations(ft) if cli_option(:share)
       end
     end
 
@@ -132,10 +132,10 @@ module Translatomatic::CLI
       count
     end
 
-    def share_translations(converter)
-      return if converter.db_translations.empty?
+    def share_translations(ft)
+      return if ft.db_translations.empty?
 
-      tmx = Translatomatic::TMX::Document.from_texts(converter.db_translations)
+      tmx = Translatomatic::TMX::Document.from_texts(ft.db_translations)
       available = Translatomatic::Translator.available(options)
       available.each do |translator|
         if translator.respond_to?(:upload)
@@ -145,7 +145,7 @@ module Translatomatic::CLI
       end
 
       ActiveRecord::Base.transaction do
-        converter.db_translations.each do |text|
+        ft.db_translations.each do |text|
           text.update(shared: true) if text.is_translated?
         end
       end
