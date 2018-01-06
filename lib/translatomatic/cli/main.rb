@@ -3,8 +3,6 @@ module Translatomatic::CLI
   # Main command line interface
   class Main < Base
 
-    default_task :translate
-
     begin
       I18n.default_locale = Translatomatic.config.default_locale
     end

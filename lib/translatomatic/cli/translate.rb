@@ -68,7 +68,7 @@ module Translatomatic::CLI
         determine_target_locales(locales)
 
         # check source file(s) exist and they can be loaded
-        source_files = parse_list(cli_option(:source_files), file)
+        source_files = parse_list(file, cli_option(:source_files))
         source_files.each do |source_file|
           path = source_path(source_file)
           raise t("file.not_found", file: path) unless File.exist?(path)
