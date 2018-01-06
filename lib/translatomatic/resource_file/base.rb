@@ -205,6 +205,10 @@ class Translatomatic::ResourceFile::Base
     elsif valid_locale?(path.parent.basename)
       # try to match on parent directory, e.g. strings/en-US/text.resw
       tag = path.parent.basename
+    elsif path.parent.basename.to_s.match(/-([-\w]+)/) && valid_locale?($1)
+      # try to match on trailing part of parent directory,
+      # e.g. res/values-en/strings.xml
+      tag = $1
     end
 
     tag ? Translatomatic::Locale.parse(tag, true) : nil

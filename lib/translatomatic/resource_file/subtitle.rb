@@ -28,6 +28,7 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path, options = {})
+      add_created_by unless options[:no_created_by] || has_created_by?
       export(target)
     end
 
@@ -52,6 +53,14 @@ module Translatomatic::ResourceFile
         @keynum += 1
         @subtitle_map[key] = subtitle
       end
+    end
+
+    def add_created_by
+      # TODO
+    end
+
+    def has_created_by?
+      false # TODO
     end
 
     def init_properties

@@ -20,8 +20,18 @@ module Translatomatic::ResourceFile
     # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path, options = {})
       if @doc
-        add_created_by unless options[:no_created_by]
+        add_created_by unless options[:no_created_by] || has_created_by?
         target.write(@doc.to_xml(indent: 2))
+      end
+    end
+
+    def locale_path(locale)
+      if path.to_s.match(/\bres\/values([-\w]+)?\/.+$/)
+        # android strings
+        filename = path.basename
+        path.parent.parent + ("values-" + locale) + filename
+      else
+        super(locale)
       end
     end
 
@@ -41,6 +51,10 @@ module Translatomatic::ResourceFile
 
     def comment(text)
       @doc.create_comment(text)
+    end
+
+    def has_created_by?
+      false # TODO
     end
 
     def add_created_by
