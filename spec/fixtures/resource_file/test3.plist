@@ -5,8 +5,6 @@
     <dict>
       <key>property1</key>
       <string>value 1</string>
-      <key>property2</key>
-      <string>value 2</string>
     </dict>
   </array>
 </plist>
