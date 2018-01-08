@@ -32,17 +32,35 @@ class Translatomatic::Config
   # @param context [Symbol] configuration context
   # @return [Object] the new value
   def set(key, value, context = nil)
-    add_or_set(key, value, context, :set)
+    set_or_add(key, value, context, :set)
   end
 
-  # If key is an array type, adds the value to the existing value.
-  # For non array types, behaves the same as set.
+  # Remove a configuration setting
+  # @param key [String] configuration key to remove
+  # @param context [Symbol] configuration context
+  # @return [void]
+  def unset(key, context = nil)
+    unset_or_subtract(key, nil, context, :unset)
+  end
+
+  # If key is an array type, adds the value to the existing list.
+  # Raises an error for non array types.
   # @param key [String] configuration key
-  # @param value [Object] new value for the configuration
+  # @param value [Object] value to add to the list
   # @param context [Symbol] configuration context
   # @return [Object] the new value
   def add(key, value, context = nil)
-    add_or_set(key, value, context, :add)
+    set_or_add(key, value, context, :add)
+  end
+
+  # If key is an array type, removes the value from the existing list.
+  # Raises an error for non array types.
+  # @param key [String] configuration key
+  # @param value [Object] value to remove from the list
+  # @param context [Symbol] configuration context
+  # @return [Object] the new value
+  def subtract(key, value, context = nil)
+    unset_or_subtract(key, value, context, :subtract)
   end
 
   # Get a configuration setting
@@ -74,18 +92,6 @@ class Translatomatic::Config
 
     # cast value to expected type
     cast(value, option.type)
-  end
-
-  # Remove a configuration setting
-  # @param key [String] configuration key to remove
-  # @param context [Symbol] configuration context
-  # @return [void]
-  def remove(key, context = nil)
-    key = check_valid_key(key)
-    context ||= default_context
-    context = check_valid_context(context)
-    @settings[context].delete(key)
-    save
   end
 
   # Test if configuration includes the given key
@@ -154,7 +160,37 @@ class Translatomatic::Config
   # valid context list in order of precedence
   CONTEXTS = [:project, :user, :env]
 
-  def add_or_set(key, value, context, mode)
+  def set_or_add(key, value, context, mode)
+    update(key, context, mode) do |option, ctx|
+      key = option.name
+      casted_value = cast(value, option.type)
+      if mode == :add
+        current_value = @settings[ctx][key] || []
+        casted_value = current_value + casted_value
+      end
+      @settings[ctx][key] = casted_value
+      save
+      @settings[ctx][key]
+    end
+  end
+
+  def unset_or_subtract(key, value, context, mode)
+    update(key, context, mode) do |option, ctx|
+      key = option.name
+      if mode == :subtract
+        casted_value = cast(value, option.type)
+        current_value = @settings[ctx][key] || []
+        casted_value = current_value - casted_value
+        @settings[ctx][key] = casted_value
+      else
+        @settings[ctx].delete(key)
+      end
+      save
+    end
+  end
+
+  # common checks for set/unset/add/subtract methods
+  def update(key, context, mode)
     key = check_valid_key(key)
     option = option(key)
     raise t("config.command_line_only") if option.command_line_only
@@ -162,14 +198,11 @@ class Translatomatic::Config
     context = :user if option.user_context_only || key.to_s.match(/api_key/)
     context = check_valid_context(context)
 
-    casted_value = cast(value, option.type)
-    if mode == :add && option.type == :array
-      current_value = @settings[context][key] || []
-      casted_value = current_value + casted_value
+    if (mode == :add || mode == :subtract) && option.type != :array
+      raise t("config.non_array_key", key: key)
     end
-    @settings[context][key] = casted_value
-    save
-    @settings[context][key]
+
+    yield option, context
   end
 
   def save_context(context, path)

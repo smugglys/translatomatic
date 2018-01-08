@@ -25,6 +25,15 @@ RSpec.describe Translatomatic::CLI::Config do
     end
   end
 
+  context :unset do
+    it "removes a configuration option" do
+      key = KEY_CLI_TEST
+      cli.set(key, "de")
+      cli.unset(key)
+      expect(config.include?(key, :user)).to be_falsey
+    end
+  end
+
   describe :add do
     it "adds a value to a list" do
       cli.set(KEY_CLI_TEST, "de")
@@ -32,18 +41,24 @@ RSpec.describe Translatomatic::CLI::Config do
       expect(config.get(KEY_CLI_TEST)).to eq(['de', 'fr'])
     end
 
-    it "sets a value when used on non-list types" do
-      cli.add(KEY_CLI_DEBUG, true)
-      expect(config.get(KEY_CLI_DEBUG)).to eq(true)
+    it "fails on non list types" do
+      expect {
+        cli.add(KEY_CLI_DEBUG, true)
+      }.to raise_error(t("config.non_array_key", key: KEY_CLI_DEBUG))
     end
   end
 
-  context :remove do
-    it "removes a configuration option" do
-      key = KEY_CLI_TEST
-      cli.set(key, "de")
-      cli.remove(key)
-      expect(config.include?(key, :user)).to be_falsey
+  describe :subtract do
+    it "removes a value from a list" do
+      cli.set(KEY_CLI_TEST, ["de", "fr"])
+      cli.subtract(KEY_CLI_TEST, "fr")
+      expect(config.get(KEY_CLI_TEST)).to eq(['de'])
+    end
+
+    it "fails on non list types" do
+      expect {
+        cli.add(KEY_CLI_DEBUG, true)
+      }.to raise_error(t("config.non_array_key", key: KEY_CLI_DEBUG))
     end
   end
 

@@ -7,8 +7,9 @@ en:
         context_configuration: Configuration for context '%{context}'
         no_config: No configuration found
         set: Change a configuration setting
-        add: Add to a configuration setting
-        remove: Remove a configuration setting
+        unset: Remove a configuration setting
+        add: Add a configuration value to a list
+        subtract: Remove a configuration value from a list
         list: List current configuration settings
         describe: Describe available configuration settings
         name: Name
@@ -99,6 +100,7 @@ en:
       invalid_context: "Unrecognised configuration context: '%{context}'"
       invalid_key: "Unrecognised configuration key: '%{key}'"
       command_line_only: "Configuration '%{key}' cannot be saved"
+      non_array_key: "Configuration is not an array type: '%{key}'"
       types:
         string: String
         hash: Hash

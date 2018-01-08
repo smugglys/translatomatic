@@ -3,7 +3,7 @@ RSpec.describe Translatomatic::CLI::Translate do
   let(:config) { Translatomatic.config }
 
   before(:each) do
-    config.remove(:translator)
+    config.unset(:translator)
     @cli = Translatomatic::CLI::Translate.new
     @cli.options = { database_env: "test" }
   end

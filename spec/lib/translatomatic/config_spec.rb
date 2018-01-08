@@ -35,24 +35,11 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe :add do
-    it "adds a value to a list" do
-      config.set(KEY_LOCALES, "de")
-      config.add(KEY_LOCALES, "fr")
-      expect(config.get(KEY_LOCALES)).to eq(['de', 'fr'])
-    end
-
-    it "sets a value when used on non-list types" do
-      config.add(KEY_DEBUG, true)
-      expect(config.get(KEY_DEBUG)).to eq(true)
-    end
-  end
-
-  describe :remove do
+  describe :unset do
     it "writes configuration to file" do
       config.set(KEY_LOCALES, "de")
       expect(config.get(KEY_LOCALES)).to eq(["de"])
-      config.remove(KEY_LOCALES)
+      config.unset(KEY_LOCALES)
       config.load
       expect(config.get(KEY_LOCALES)).to be_empty
     end
@@ -60,8 +47,36 @@ RSpec.describe Translatomatic::Config do
     it "removes a boolean setting" do
       config.set(KEY_DEBUG, "false")
       expect(config.get(KEY_DEBUG)).to eq(false)
-      config.remove(KEY_DEBUG)
+      config.unset(KEY_DEBUG)
       expect(config.get(KEY_DEBUG)).to eq(false)  # default setting
+    end
+  end
+
+  describe :add do
+    it "adds a value to a list" do
+      config.set(KEY_LOCALES, "de")
+      config.add(KEY_LOCALES, "fr")
+      expect(config.get(KEY_LOCALES)).to eq(['de', 'fr'])
+    end
+
+    it "fails on non-list types" do
+      expect {
+        config.add(KEY_DEBUG, true)
+      }.to raise_error(t("config.non_array_key", key: KEY_DEBUG))
+    end
+  end
+
+  describe :subtract do
+    it "removes a value from a list" do
+      config.set(KEY_LOCALES, ["de", "fr"])
+      config.subtract(KEY_LOCALES, "fr")
+      expect(config.get(KEY_LOCALES)).to eq(['de'])
+    end
+
+    it "fails on non list types" do
+      expect {
+        config.subtract(KEY_DEBUG, true)
+      }.to raise_error(t("config.non_array_key", key: KEY_DEBUG))
     end
   end
 

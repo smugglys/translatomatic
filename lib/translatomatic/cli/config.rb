@@ -21,25 +21,36 @@ module Translatomatic::CLI
       run { conf.set(key, value, cli_option(:context)) }
     end
 
-    desc "add key value", t("cli.config.add")
-    thor_options(self, Translatomatic::CLI::CommonOptions)
-    thor_options(self, Translatomatic::CLI::Config)
-    # Change a configuration setting
-    # @param key [String] configuration key
-    # @param value [String] value to add to the configuration
-    # @return [String] the new value
-    def add(key, *value)
-      run { conf.add(key, value, cli_option(:context)) }
-    end
-
-    desc "remove key", t("cli.config.remove")
+    desc "unset key", t("cli.config.unset")
     thor_options(self, Translatomatic::CLI::CommonOptions)
     thor_options(self, Translatomatic::CLI::Config)
     # Remove a configuration setting
     # @param key [String] configuration key to remove
     # @return [void]
-    def remove(key)
-      run { conf.remove(key, cli_option(:context)) }
+    def unset(key)
+      run { conf.unset(key, cli_option(:context)) }
+    end
+
+    desc "add key value", t("cli.config.add")
+    thor_options(self, Translatomatic::CLI::CommonOptions)
+    thor_options(self, Translatomatic::CLI::Config)
+    # Add a configuration setting to a list
+    # @param key [String] configuration key
+    # @param value [String] value to add
+    # @return [String] the new value
+    def add(key, *value)
+      run { conf.add(key, value, cli_option(:context)) }
+    end
+
+    desc "subtract key value", t("cli.config.subtract")
+    thor_options(self, Translatomatic::CLI::CommonOptions)
+    thor_options(self, Translatomatic::CLI::Config)
+    # Remove a configuration setting from a list
+    # @param key [String] configuration key
+    # @param value [String] value to remove
+    # @return [void]
+    def subtract(key, value)
+      run { conf.subtract(key, value, cli_option(:context)) }
     end
 
     desc "list", t("cli.config.list")
