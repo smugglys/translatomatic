@@ -20,19 +20,6 @@ module Translatomatic::ResourceFile
       true
     end
 
-    # (see Translatomatic::ResourceFile::Base#locale_path)
-    # @note localization files in rails use the following file name
-    #   convention: config/locales/en.yml.
-    def locale_path(locale)
-      if path.to_s.match(/config\/locales\/[-\w]+.yml$/)
-        # rails style
-        filename = locale.to_s + path.extname
-        path.dirname + filename
-      else
-        super(locale)
-      end
-    end
-
     # (see Translatomatic::ResourceFile::Base#set)
     def set(key, value)
       super(key, value)

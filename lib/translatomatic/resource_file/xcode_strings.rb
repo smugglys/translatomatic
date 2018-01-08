@@ -1,26 +1,8 @@
 module Translatomatic::ResourceFile
 
-  # @!visibility private
-  module XCodeStringsLocalePath
-
-    # (see Translatomatic::ResourceFile::Base#locale_path)
-    # @note localization files in XCode use the following file name
-    #   convention: locale.lproj/filename
-    def locale_path(locale)
-      if path.to_s.match(/\b([-\w]+).lproj\/.+$/)
-        # xcode style
-        filename = path.basename
-        path.parent.parent + (locale.to_s + ".lproj") + filename
-      else
-        super(locale)
-      end
-    end
-  end
-
   # XCode strings resource file
   # @see https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html
   class XCodeStrings < Base
-    include Translatomatic::ResourceFile::XCodeStringsLocalePath
 
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions

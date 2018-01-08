@@ -6,8 +6,6 @@ module Translatomatic::ResourceFile
     # array, dict, string, data, date, integer, real, boolean
     # boolean is <true /> or <false />
 
-    include Translatomatic::ResourceFile::XCodeStringsLocalePath
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
       %w{plist}

@@ -1,6 +1,6 @@
 require 'fileutils'
 
-RSpec.shared_examples "a resource file" do |config|
+RSpec.shared_examples "a resource file" do |config = {}|
   include Helpers
 
   TEST_LOCALE_LIST ||= [
@@ -8,6 +8,25 @@ RSpec.shared_examples "a resource file" do |config|
     "de-DE",
     "en-US",
     "zh-Hans"
+  ]
+
+  PATH_CONVERSIONS ||= [
+    # locale after _ in basename
+    PathConversion.new("path/file.$EXT", "path/file_$LOC.$EXT"),
+    PathConversion.new("path/file_$LOC.$EXT", "path/file_$LOC.$EXT"),
+    # locale in extension list
+    PathConversion.new("path/file.$EXT.$LOC", "path/file.$EXT.$LOC"),
+    PathConversion.new("path/file.$LOC.$EXT", "path/file.$LOC.$EXT"),
+    # xcode localised files
+    PathConversion.new("$LOC.lproj/file.$EXT", "$LOC.lproj/file.$EXT"),
+    # locale in parent directory name
+    PathConversion.new("$LOC/file.$EXT", "$LOC/file.$EXT"),
+    # locale in values- path (android)
+    PathConversion.new("res/values/file.$EXT", "res/values-$LOC/file.$EXT"),
+    PathConversion.new("res/values-$LOC/file.$EXT", "res/values-$LOC/file.$EXT"),
+    # file basename is locale
+    PathConversion.new("config/locales/$LOC.$EXT", "config/locales/$LOC.$EXT"),
+    PathConversion.new("config/locales/test/$LOC.$EXT", "config/locales/test/$LOC.$EXT"),
   ]
 
   def self.test_file
@@ -35,22 +54,6 @@ RSpec.shared_examples "a resource file" do |config|
     file = described_class.new
     expect(file).to be
   end
-
-=begin
-  # skip resource file types that will accept any kind of input
-  unless described_class == Translatomatic::ResourceFile::Text ||
-    described_class == Translatomatic::ResourceFile::Markdown ||
-    described_class == Translatomatic::ResourceFile::HTML
-
-    it "raises an exception when the existing content cannot be parsed" do
-      ext = described_class.extensions.first
-      fixture = ext == "properties" ? "test.html" : "test.properties"
-      expect {
-        described_class.load(fixture_path(fixture))
-      }.to raise_error
-    end
-  end
-=end
 
   it "saves a file" do
     file = load_test_file
@@ -87,12 +90,13 @@ RSpec.shared_examples "a resource file" do |config|
     file.save(save_path)
   end
 
-  config[:locale_path_conversions].each do |conversion|
+  PATH_CONVERSIONS.each do |conversion|
     TEST_LOCALE_LIST.each do |source_locale|
       TEST_LOCALE_LIST.each do |target_locale|
         described_class.extensions.each do |ext|
           source = conversion.source(ext, source_locale)
           target = conversion.target(ext, target_locale)
+          next if source == target
           it "changes filename '#{source}' to '#{target}'" do
             file = described_class.new(source)
             expect(file.locale_path(target_locale).to_s).to eq(target)
@@ -102,7 +106,7 @@ RSpec.shared_examples "a resource file" do |config|
     end
   end
 
-  config[:locale_path_conversions].each do |conversion|
+  PATH_CONVERSIONS.each do |conversion|
     TEST_LOCALE_LIST.each do |locale|
       described_class.extensions.each do |ext|
         path = conversion.target(ext, locale)

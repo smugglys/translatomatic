@@ -7,24 +7,6 @@ module Translatomatic::ResourceFile
       %w{html htm shtml}
     end
 
-    # (see Translatomatic::ResourceFile::Base#locale_path)
-    def locale_path(locale)
-      extlist = extension_list
-      if extlist.length >= 2 && loc_idx = find_locale(extlist)
-        # part of the extension is the locale
-        # replace that part with the new locale
-        extlist[loc_idx] = locale.to_s
-        new_extension = extlist.join(".")
-        return strip_extensions.sub_ext("." + new_extension)
-      else
-        # add locale extension
-        ext = path.extname
-        # TODO: need configurable order for locale & ext here?
-        #path.sub_ext("#{ext}." + locale.to_s)
-        path.sub_ext("." + locale.to_s + ext)
-      end
-    end
-
     # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path, options = {})
       if @doc

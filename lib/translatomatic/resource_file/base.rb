@@ -61,24 +61,34 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Create a path for the current resource file with a given locale
-  # @param locale [String] The target locale
+  # @param target_locale [String] The target locale
   # @return [Pathname] The path of this resource file modified for the given locale
-  def locale_path(locale)
-    basename = path.sub_ext('').basename.to_s
+  def locale_path(target_locale)
+    basename = basename_stripped
 
     extlist = extension_list
     if extlist.length >= 2 && loc_idx = find_locale(extlist)
       # extension(s) contains locale, replace it
-      extlist[loc_idx] = locale.to_s
+      extlist[loc_idx] = target_locale.to_s
+      filename = basename + '.' + extlist.join('.')
+      path.dirname + filename
     elsif valid_locale?(basename)
       # basename is a locale name, replace it
-      path.dirname + (locale.to_s + path.extname)
+      path.dirname + (target_locale.to_s + path.extname)
+    elsif basename.match(/_([-\w]+)\Z/) && valid_locale?($1)
+      # basename contains locale, e.g. basename_$locale.ext
+      add_basename_locale(target_locale)
+    elsif valid_locale?(path.parent.basename(path.parent.extname))
+      # parent directory contains locale, e.g. strings/en-US/text.resw
+      # or project/en.lproj/Strings.strings
+      path.parent.parent + (target_locale.to_s + path.parent.extname) + path.basename
+    elsif path.to_s.match(/\bres\/values([-\w]+)?\/.+$/)
+      # android strings
+      filename = path.basename
+      path.parent.parent + ("values-" + target_locale.to_s) + filename
     else
-      # remove any underscore and trailing text from basename
-      deunderscored = basename.sub(/_.*?$/, '')
-      # add _locale.ext
-      filename = deunderscored + "_" + locale.to_s + path.extname
-      path.dirname + filename
+      # default behaviour, add locale after underscore in basename
+      add_basename_locale(target_locale)
     end
   end
 
@@ -189,7 +199,7 @@ class Translatomatic::ResourceFile::Base
     directory = path.dirname.basename.to_s
     extlist = extension_list
 
-    if basename.match(/_([-\w]{2,})$/i)
+    if basename.match(/_([-\w]{2,})$/) && valid_locale?($1)
       # locale after underscore in filename
       tag = $1
     elsif directory.match(/^([-\w]+)\.lproj$/)
@@ -214,6 +224,14 @@ class Translatomatic::ResourceFile::Base
     tag ? Translatomatic::Locale.parse(tag, true) : nil
   end
 
+  def add_basename_locale(target_locale)
+    # remove any underscore and trailing text from basename
+    deunderscored = basename_stripped.sub(/_.*?\Z/, '')
+    # add _locale.ext
+    filename = deunderscored + "_" + target_locale.to_s + path.extname
+    path.dirname + filename
+  end
+
   def valid_locale?(tag)
     Translatomatic::Locale.new(tag).valid?
   end
@@ -225,10 +243,10 @@ class Translatomatic::ResourceFile::Base
   end
 
   # ext_sub() only removes the last extension
-  def strip_extensions
+  def basename_stripped
     filename = path.basename.to_s
     filename.sub!(/\..*$/, '')
-    path.parent + filename
+    filename
   end
 
   # for index.html.de, returns ['html', 'de']

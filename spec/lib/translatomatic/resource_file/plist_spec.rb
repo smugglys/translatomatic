@@ -1,11 +1,5 @@
 RSpec.describe Translatomatic::ResourceFile::Plist do
-  include_examples "a resource file", {
-    locale_path_conversions: [
-      PathConversion.new("$LOC.lproj/file.$EXT", "$LOC.lproj/file.$EXT"),
-      PathConversion.new("path/to/file.$EXT", "path/to/file_$LOC.$EXT"),
-      PathConversion.new("path/to/file_$LOC.$EXT", "path/to/file_$LOC.$EXT"),
-    ]
-  }
+  include_examples "a resource file"
 
   # plist2 has all the available data types of a plist
   it "loads test2.plist" do

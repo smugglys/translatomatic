@@ -12,13 +12,6 @@ module Translatomatic::ResourceFile
       true
     end
 
-    # (see Translatomatic::ResourceFile::Base#locale_path)
-    def locale_path(locale)
-      # e.g. strings/en-US/resources.resw
-      dir = path.dirname
-      dir.parent + locale.to_s + path.basename
-    end
-
     private
 
     def init_nodemap

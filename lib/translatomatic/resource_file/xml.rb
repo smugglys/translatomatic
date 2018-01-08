@@ -25,16 +25,6 @@ module Translatomatic::ResourceFile
       end
     end
 
-    def locale_path(locale)
-      if path.to_s.match(/\bres\/values([-\w]+)?\/.+$/)
-        # android strings
-        filename = path.basename
-        path.parent.parent + ("values-" + locale) + filename
-      else
-        super(locale)
-      end
-    end
-
     private
 
     def init
