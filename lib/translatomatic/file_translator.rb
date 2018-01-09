@@ -55,6 +55,7 @@ class Translatomatic::FileTranslator
       untranslated: result.untranslated.length))
     @listener.untranslated_texts(result.untranslated) if @listener
 
+    result.apply!
     file.properties = result.properties
     file.locale = to_locale
     file
@@ -168,7 +169,7 @@ class Translatomatic::FileTranslator
         end
       end
 
-      result.update_strings(translations)
+      result.add_translations(translations)
       @listener.translated_texts(db_texts) if @listener
     end
     db_texts
@@ -185,15 +186,21 @@ class Translatomatic::FileTranslator
         result.from_locale, result.to_locale
       )
 
+      # sanity check: we should have a translation for each string
+      unless translated.length == untranslated.length
+        raise t("translator.invalid_response")
+      end
+
       # create list of translations, filtering out invalid translations
       translations = []
       untranslated.zip(translated).each do |from, to|
+        next unless to
         translation = translation(from, to, false)
         restore_variables(result, translation)
         translations << translation
       end
 
-      result.update_strings(translations)
+      result.add_translations(translations)
       unless database_disabled?
         save_database_translations(result, translations)
       end

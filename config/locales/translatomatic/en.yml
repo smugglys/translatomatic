@@ -43,6 +43,7 @@ en:
       aborted: Aborted
       file_source: 'File: %{file}'
       sentences: 'Sentences:'
+      error: An error has occurred
       database:
         subcommand: Database commands
         search: Search database for text matching the given string.
@@ -77,6 +78,7 @@ en:
       unavailable: Translator %{name} is unavailable.
       no_translators: No translators are configured.
       password: Password
+      invalid_response: Unexpected response from translator
     file_translator:
       total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_translator} from translator, %{untranslated} untranslated)'
       untranslated: "Untranslated strings:"

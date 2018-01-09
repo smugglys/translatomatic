@@ -67,6 +67,21 @@ RSpec.describe Translatomatic::FileTranslator do
       expect(result.properties[:key]).to eq("Satz eins. Satz zwei.")
     end
 
+    # TODO: newlines aren't being preserved in text files because we
+    # are splitting on sentence boundaries and some translators don't
+    # preserve newlines. could split on newline boundaries optionally?
+=begin
+    it "preserves newlines" do
+      translator = test_translator
+
+      t = create_file_translator(translator: translator)
+      file = create_test_file
+      file.properties = { key: "- value 1\n- value 2" }
+      result = t.translate(file, "de")
+      expect(result.properties[:key]).to eq("- Wert 1\n-Wert 2")
+    end
+=end
+
     it "uses multiple translators" do
       translator1 = test_translator
       translator2 = test_translator
@@ -79,20 +94,41 @@ RSpec.describe Translatomatic::FileTranslator do
     it "uses existing translations from the database" do
       skip if database_disabled?
 
-      translator = test_translator
+      translator = TestTranslator.new
+      expect(translator).to_not receive(:translate)
 
       # add a translation to the database
-      en_text = create_text(value: "yoghurt", locale: "en")
-      create_text(value: "yoplait", locale: "fr",
+      en_text = create_text(value: "chicken", locale: "en")
+      create_text(value: "buckerk", locale: "de",
         from_text: en_text, translator: translator.name)
 
-      expect(translator).to_not receive(:translate)
       t = create_file_translator(translator: translator)
       file = create_test_file
-      file.properties = { key: "yoghurt" }
-      result = t.translate(file, "fr")
+      file.properties = { key: "chicken" }
+      result = t.translate(file, "de")
       expect(result).to be
-      expect(result.properties[:key]).to eq("yoplait")
+      expect(result.properties[:key]).to eq("buckerk")
+    end
+
+    # exercises bug in translation result: "index 30 out of string".
+    # caused by calling update_strings multiple times without updating
+    # substring offsets.
+    it "uses translations from database and translator" do
+      skip if database_disabled?
+
+      translator = test_translator("hello." => "hallo.")
+
+      # add a translation to the database
+      en_text = create_text(value: "this is a very long sentence.", locale: "en")
+      create_text(value: "short!", locale: "de",
+        from_text: en_text, translator: translator.name)
+
+      t = create_file_translator(translator: translator)
+      file = create_test_file
+      file.properties = { key: "this is a very long sentence. hello." }
+      result = t.translate(file, "de")
+      expect(result).to be
+      expect(result.properties[:key]).to eq("short! hallo.")
     end
 
     it "saves translations to the database" do

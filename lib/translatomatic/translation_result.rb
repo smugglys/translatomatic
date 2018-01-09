@@ -26,6 +26,7 @@ module Translatomatic
       @file = file
       @value_to_keys = {}
       @untranslated = Set.new
+      @translations = []
       @from_locale = file.locale
       @to_locale = to_locale
 
@@ -46,26 +47,30 @@ module Translatomatic
     # Update result with a list of translated strings.
     # @param translations [Array<Translatomatic::Translation>] Translations
     # @return [void]
-    def update_strings(translations)
+    def add_translations(translations)
+      translations.each do |t|
+        @translations << t
+        @untranslated.delete(t.original) unless t.result.nil?
+      end
+    end
+
+    # Apply translations to the result properties.
+    def apply!
       # sort translation list by largest offset first so that we replace
       # from the end of the string to the front, so substring offsets
       # are correct in the target string.
-
-      #translations.sort_by! do |translation|
-      #  t1 = translation.original
-      #  t1.respond_to?(:offset) ? -t1.offset : 0
-      #end
-      translations.sort_by! { |t| -t.original.offset }
-
-      translations.each do |translation|
+      list = @translations.sort_by { |t| -t.original.offset }
+      list.each do |translation|
         update(translation.original, translation.result)
       end
+      @translations = []
     end
 
     private
 
     include Translatomatic::Util
 
+    # update properties
     def update(original, translated)
       keys = @value_to_keys[original.to_s]
       raise "no key mapping for text '#{original}'" unless keys
@@ -79,8 +84,6 @@ module Translatomatic
           @properties[key] = translated
         end
       end
-
-      @untranslated.delete(original) unless translated.nil?
     end
   end
 end

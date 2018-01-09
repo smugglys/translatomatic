@@ -5,19 +5,17 @@ RSpec.describe Translatomatic::TranslationResult do
   let(:locale_fr) { locale('fr') }
   let(:locale_ja) { locale('ja') }
 
-  context :new do
     it "creates a result object" do
       result = create_result({}, locale_en, locale_fr)
       expect(result).to be
     end
-  end
 
-  context :update_strings do
     it "updates strings from translator" do
       properties = { key1: "Yoghurt" }
       result = create_result(properties, locale_en, locale_fr)
       translations = create_translations(result.untranslated, %w{Yoplait})
-      result.update_strings(translations)
+      result.add_translations(translations)
+      result.apply!
       expect(result.untranslated).to be_empty
       expect(result.properties[:key1]).to eq("Yoplait")
     end
@@ -30,7 +28,8 @@ RSpec.describe Translatomatic::TranslationResult do
       expect(untranslated.length).to eq(1)
       expect(untranslated.to_a[0].to_s).to eq("Yoghurt")
       translations = create_translations(untranslated, %w{Yoplait})
-      result.update_strings(translations)
+      result.add_translations(translations)
+      result.apply!
       expect(result.untranslated).to be_empty
       expect(result.properties).to eq({ key1: "Yoplait", key2: "Yoplait" })
     end
@@ -42,7 +41,8 @@ RSpec.describe Translatomatic::TranslationResult do
       untranslated = result.untranslated
       expect(untranslated.length).to eq(2)
       translations = create_translations([untranslated.to_a[0]], ['Satz eins.'])
-      result.update_strings(translations)
+      result.add_translations(translations)
+      result.apply!
       expect(result.properties[:key1]).to eq("Satz eins. Sentence two.")
     end
 
@@ -53,10 +53,10 @@ RSpec.describe Translatomatic::TranslationResult do
       result = create_result(properties, locale_en, locale_ja)
       untranslated = result.untranslated
       translations = create_translations(untranslated.to_a, output)
-      result.update_strings(translations)
+      result.add_translations(translations)
+      result.apply!
       #p result.properties
     end
-  end
 
   private
 
