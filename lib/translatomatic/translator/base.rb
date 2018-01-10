@@ -1,4 +1,3 @@
-require 'bing_translator'
 
 module Translatomatic
   module Translator

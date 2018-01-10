@@ -1,13 +1,1 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-  xmlns:v2="http://api.microsofttranslator.com/V2">
-  <soapenv:Header/>
-  <soapenv:Body>
-    <v2:TranslateArrayResponse>
-      <v2:TranslateArrayResult>
-        <v2:TranslateArrayResponse>
-          <v2:TranslatedText>Bier</v2:TranslatedText>
-        </v2:TranslateArrayResponse>
-      </v2:TranslateArrayResult>
-    </v2:TranslateArrayResponse>
-  </soapenv:Body>
-</soapenv:Envelope>
+<ArrayOfTranslateArrayResponse xmlns="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><TranslateArrayResponse><From>en</From><OriginalTextSentenceLengths xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><a:int>4</a:int></OriginalTextSentenceLengths><TranslatedText>Bier</TranslatedText><TranslatedTextSentenceLengths xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><a:int>4</a:int></TranslatedTextSentenceLengths></TranslateArrayResponse></ArrayOfTranslateArrayResponse>

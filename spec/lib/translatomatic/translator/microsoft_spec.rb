@@ -14,27 +14,22 @@ RSpec.describe Translatomatic::Translator::Microsoft do
 
   it "translates strings" do
 
-    token_response = { token: "123" }
-    stub_request(:post, "https://api.cognitive.microsoft.com/sts/v1.0/issueToken").
-           with(headers: expected_headers('Ocp-Apim-Subscription-Key'=>'dummy')).
-           to_return(status: 200, body: token_response.to_json, headers: {})
+    post_body = fixture_read("translator/microsoft_post.xml").chomp
+    post_headers = test_http_headers.merge(
+      'Content-Type'=>'application/xml',
+      'Host'=>'api.microsofttranslator.com',
+      'Ocp-Apim-Subscription-Key'=>'dummy'
+    )
+    expected_response = fixture_read("translator/microsoft_response.xml")
 
-    # feel the power of soap
-    response1 = fixture_read("translator/microsoft.wsdl.xml").strip
-    stub_request(:get, "http://api.microsofttranslator.com/V2/soap.svc?wsdl").
-             with(headers: expected_headers).
-             to_return(status: 200, body: response1, headers: {})
-
-    post_body = fixture_read("translator/microsoft_post.xml").strip
-    response2 = fixture_read("translator/microsoft_response.xml")
-    stub_request(:post, "http://api.microsofttranslator.com/V2/soap.svc").
-      with(body: post_body,
-          headers: expected_headers(
-             'Authorization'=>'Bearer {"token":"123"}',
-             'Content-Length'=>'564', 'Content-Type'=>'text/xml;charset=UTF-8',
-             'Soapaction'=>'"http://api.microsofttranslator.com/V2/LanguageService/TranslateArray"')).
-               to_return(status: 200, body: response2, headers: {})
-
+    stub_request(:post, "https://api.microsofttranslator.com/V2/Http.svc/TranslateArray").with(
+      body: post_body,
+      headers: post_headers
+    ).to_return(
+      status: 200,
+      body: expected_response,
+      headers: {}
+    )
     t = described_class.new(microsoft_api_key: "dummy")
     results = t.translate("Beer", "en", "de")
     expect(results).to eq(["Bier"])

@@ -22,21 +22,20 @@ Gem::Specification.new do |spec|
 
   spec.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
 
-  spec.add_development_dependency "bundler", "~> 1.16"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rspec-mocks", "~> 3.0"
+  spec.add_development_dependency "bundler", "~> 1"
+  spec.add_development_dependency "rake", "~> 10"
+  spec.add_development_dependency "rspec", "~> 3"
+  spec.add_development_dependency "rspec-mocks", "~> 3"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "webmock"
   spec.add_development_dependency "factory_bot"  # RIP girl
 
   spec.add_dependency "thor", "~> 0.20"
   spec.add_dependency "easy_translate"
-  spec.add_dependency "bing_translator", "~> 5.1.0"
-  spec.add_dependency "activerecord", "~> 5.0"
+  spec.add_dependency "activerecord", "~> 5"
   spec.add_dependency "i18n"
   spec.add_dependency "i18n_data"
-  spec.add_dependency "rails-i18n", '~> 5.0.0' # For 5.0.x and 5.1.x
+  spec.add_dependency "rails-i18n", '~> 5' # For 5.0.x and 5.1.x
   spec.add_dependency "nokogiri"
   spec.add_dependency "ruby-progressbar"
   spec.add_dependency "kramdown"           # markdown -> html
