@@ -139,7 +139,6 @@ To display the current configuration, execute
 ### Database configuration
 
 By default, `translatomatic` uses an sqlite3 database in `$HOME/.translatomatic/translatomatic.sqlite3` to store translated strings.
-To store translations in a database, you should have an appropriate database adapter installed, such as the `sqlite3` gem. Translatomatic does not install database adapters automatically.
 The database configuration can be changed by creating a `database.yml` file under `$HOME/.translatomatic/database.yml` for the `production` environment, e.g.
 
     production:
@@ -148,6 +147,7 @@ The database configuration can be changed by creating a `database.yml` file unde
       database: translatomatic
       pool: 5
       encoding: utf8
+      collation: utf8_bin
       username: username
       password: password
 
