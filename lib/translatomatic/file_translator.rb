@@ -27,7 +27,7 @@ class Translatomatic::FileTranslator
 
   # @return [Translatomatic::TranslationStats] Translation statistics
   def stats
-    @stats ||= Translatomatic::TranslationStats.new(@translations)
+    Translatomatic::TranslationStats.new(@translations)
   end
 
   # Translate properties of source_file to the target locale.
@@ -50,9 +50,7 @@ class Translatomatic::FileTranslator
     # send remaining unknown strings to translator
     each_translator(result) { translate_properties_with_translator(result) }
 
-    log.debug(t("file_translator.stats", from_db: stats.from_db,
-      from_translator: stats.from_translator,
-      untranslated: result.untranslated.length))
+    log.debug(stats)
     @listener.untranslated_texts(result.untranslated) if @listener
 
     result.apply!
@@ -170,7 +168,8 @@ class Translatomatic::FileTranslator
       end
 
       result.add_translations(translations)
-      @listener.translated_texts(db_texts) if @listener
+      log.debug("found #{translations.length} translations in database")
+      @listener.translated_texts(translations) if @listener
     end
     db_texts
   end
@@ -181,7 +180,7 @@ class Translatomatic::FileTranslator
     translated = []
     if !untranslated.empty? && !@dry_run
       untranslated_strings = untranslated.collect { |i| i.to_s }
-      log.debug("translating: #{untranslated_strings}")
+      log.debug("translating: #{untranslated_strings} with #{@current_translator.name}")
       translated = @current_translator.translate(untranslated_strings,
         result.from_locale, result.to_locale
       )
