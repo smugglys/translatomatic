@@ -12,9 +12,11 @@ module Translatomatic
 
     # @param url [String,URI] URL of the request
     # @return [Translatomatic::HTTPRequest] Create a new request
-    def initialize(url)
+    def initialize(url, options = {})
       @uri = url.respond_to?(:host) ? url : URI.parse(url)
       @multipart_boundary = SecureRandom.hex(16)
+      @redirects = options[:redirects] || 0
+      raise "Maximum redirects exceeded" if @redirects > MAX_REDIRECTS
     end
 
     # Start the HTTP request. Yields a http object.
@@ -34,14 +36,14 @@ module Translatomatic
     # Send a HTTP GET request
     # @param query [Hash<String,String>] Optional query parameters
     # @return [Net::HTTP::Response]
-    def get(query = nil)
+    def get(query = nil, options = {})
       uri = @uri
       if query
         uri = @uri.dup
         uri.query = URI.encode_www_form(query)
       end
       request = Net::HTTP::Get.new(uri)
-      request['User-Agent'] = USER_AGENT
+      configure_request(request, options)
       send_request(request)
     end
 
@@ -50,20 +52,7 @@ module Translatomatic
     # @return [Net::HTTP::Response]
     def post(body, options = {})
       request = Net::HTTP::Post.new(@uri)
-      request['User-Agent'] = USER_AGENT
-      content_type = options[:content_type]
-
-      if options[:multipart]
-        content_type = "multipart/form-data; boundary=#{@multipart_boundary}"
-        request.body = multipartify(body)
-      elsif body.kind_of?(Hash)
-        # set_form_data does url encoding
-        request.set_form_data(body)
-      else
-        request.body = body
-      end
-      request.content_type = content_type if content_type
-
+      configure_request(request, options.merge(body: body))
       send_request(request)
     end
 
@@ -82,6 +71,7 @@ module Translatomatic
     private
 
     USER_AGENT = "Translatomatic #{VERSION} (+#{URL})"
+    MAX_REDIRECTS = 5
 
     # Formats a basic string key/value pair for a multipart post
     class Param
@@ -148,14 +138,53 @@ module Translatomatic
       string_parts.join("") + "--" + @multipart_boundary + "--\r\n"
     end
 
+    def configure_request(request, options)
+      request['User-Agent'] = USER_AGENT
+
+      (options[:headers] || {}).each do |key, value|
+        request[key] = value
+      end
+
+      content_type = options[:content_type]
+      body = options[:body]
+
+      if body
+        if options[:multipart]
+          content_type = "multipart/form-data; boundary=#{@multipart_boundary}"
+          request.body = multipartify(body)
+        elsif body.kind_of?(Hash)
+          # set_form_data does url encoding
+          request.set_form_data(body)
+        elsif
+          request.body = body
+        end
+      end
+
+      request.content_type = content_type if content_type
+    end
+
     def send_request(req)
       if @http
         response = @http.request(req)
       else
-        response = start { |http| http.request(req) }
+        response = start { |http| send_request(req) }
       end
-      raise response.body unless response.kind_of? Net::HTTPSuccess
-      response
+      handle_response(response)
+    end
+
+    def handle_response(response)
+      case response
+      when Net::HTTPSuccess
+        response
+      when Net::HTTPRedirection
+        location = URI.parse(response['Location'])
+        puts location
+        new_uri = location.relative? ? @uri + response.location : location
+        self.class.new(location, redirects: @redirects + 1).get
+      else
+        # error
+        raise response.body
+      end
     end
 
   end # class
