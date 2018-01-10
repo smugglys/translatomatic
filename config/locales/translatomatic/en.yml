@@ -47,6 +47,7 @@ en:
       database:
         subcommand: Database commands
         search: Search database for text matching the given string.
+        drop: Drop the database
     file:
       not_found: 'File not found: %{file}'
       unsupported: 'Unsupported file type: %{file}'
@@ -87,7 +88,6 @@ en:
       database_disabled: Database is disabled.
       translator_required: Translator required.
       translating: Translating %{source} (%{source_locale}) to %{target} (%{target_locale})
-      stats: 'Translations from database: %{from_db}, translator: %{from_translator}, untranslated: %{untranslated}'
     database:
       no_environment: No environment '%{env}' in %{file}
       migrated: Database migrated.
