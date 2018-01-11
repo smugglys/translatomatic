@@ -20,7 +20,7 @@ RSpec.describe Translatomatic::TMX::Document do
   end
 
   it "creates a document from database translations" do
-    skip unless Translatomatic::Database.enabled?
+    skip if database_disabled?
     locale_en = create_locale("en")
     locale_fr = create_locale("fr")
     text1 = FactoryBot.create(:text_model, locale: locale_en, value: "Yoghurt")
