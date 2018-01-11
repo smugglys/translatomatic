@@ -22,26 +22,23 @@ module Translatomatic::CLI
 
     desc "display file [key...]", t("cli.display_values")
     thor_options(self, Translatomatic::CLI::CommonOptions)
-    method_option :locales, type: :string, desc: t("cli.locales_to_display")
+    method_option :target_locales, type: :string, desc: t("cli.locales_to_display")
     method_option :sentences, type: :boolean, desc: t("cli.display_sentences")
     # Display values from a resource bundle
     # @param file [String] Path to resource file
     # @param keys [Array<String>] Optional list of locales
     # @return [void]
-    def display(file, *keys)
+    def display(file = nil, *keys)
       run do
-        source = Translatomatic::ResourceFile.load(file)
-        keys = source.properties.keys if keys.empty?
-        display_keys(source, keys)
-
-        # TODO: if locales not specified, determine the list of locales from
-        # all the files in the resource bundle.
-        locales = parse_list(options[:locales])
-        locales << Translatomatic::Locale.default.to_s if locales.empty?
-        locales.each do |tag|
-          locale = locale(tag)
-          next if locale == source.locale
-          display_properties(source, keys, locale)
+        locales = cli_option(:target_locales)
+        source_files = parse_list(file, cli_option(:source_files))
+        source_files.each do |path|
+          raise t("file.not_found", file: path) unless File.exist?(path)
+          source = Translatomatic::ResourceFile.load(path)
+          locales.each do |locale|
+            path = source.locale_path(locale)
+            display_properties(path, keys) if path.exist?
+          end
         end
       end
     end
@@ -92,17 +89,15 @@ module Translatomatic::CLI
 
     private
 
-    def display_properties(source, keys, locale)
-      path = source.locale_path(locale)
-      if path.exist?
-        resource = Translatomatic::ResourceFile.load(path)
-        display_keys(resource, keys)
-      end
+    def display_properties(path, keys)
+      resource = Translatomatic::ResourceFile.load(path)
+      display_keys(resource, keys)
     end
 
     def display_keys(source, keys)
       puts t("cli.file_source", file: source)
       rows = []
+      keys = source.properties.keys if keys.empty?
       keys.each do |key|
         value = source.get(key)
         rows << [key + ":", value]

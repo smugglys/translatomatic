@@ -118,7 +118,7 @@ class Translatomatic::ResourceFile::Base
 
   # @return [String] String representation of this file
   def to_s
-    path.basename.to_s
+    path.relative_path_from(Pathname.new(Dir.pwd)).to_s
   end
 
   def type
