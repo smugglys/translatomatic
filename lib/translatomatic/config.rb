@@ -91,7 +91,7 @@ class Translatomatic::Config
     end
 
     # cast value to expected type
-    cast(value, option.type, context)
+    cast_get(value, option.type, context)
   end
 
   # Test if configuration includes the given key
@@ -263,8 +263,9 @@ class Translatomatic::Config
     end
   end
 
+  # cast value, used on get and set
   def cast(value, type, context)
-    value = value[0] if value.kind_of?(Array) && type != :array
+    value = value[0] if value.kind_of?(Array) && ![:path_array, :array].include?(type)
 
     case type
     when :boolean
@@ -273,12 +274,7 @@ class Translatomatic::Config
       return value ? true : false
     when :string
       return value.nil? ? value : value.to_s
-    when :path_array
-      value = cast(value, :array, context)
-      value = value.collect { |i| cast(i, :path, context) }
-    when :path
-      cast_path(value, context)
-    when :array
+    when :array, :path_array
       if value.nil?
         value = []
       else
@@ -287,6 +283,22 @@ class Translatomatic::Config
       end
     else
       # no casting
+      value
+    end
+  end
+
+  # cast used on get only.
+  # we only resolve paths for get because we want to keep relative paths
+  # in the config file.
+  def cast_get(value, type, context)
+    value = cast(value, type, context)
+
+    case type
+    when :path_array
+      value = value.collect { |i| cast_path(i, context) }
+    when :path
+      cast_path(value, context)
+    else
       value
     end
   end
