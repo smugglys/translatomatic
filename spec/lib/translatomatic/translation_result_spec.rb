@@ -47,8 +47,8 @@ RSpec.describe Translatomatic::TranslationResult do
     end
 
     it "updates long strings with shorter ones" do
-      input = "Translates text files from one language to another.  The following file formats\nare currently supported:"
-      output = ["変換テキストファイルから一言語ます。", "以下のファイル形式\nは現在サポートされているのは、"]
+      input = "Translates text files from one language to another.  The following file formats are currently supported:"
+      output = ["変換テキストファイルから一言語ます。", "以下のファイル形式は現在サポートされているのは、"]
       properties = { key1: input }
       result = create_result(properties, locale_en, locale_ja)
       untranslated = result.untranslated

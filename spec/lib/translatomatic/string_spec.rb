@@ -12,6 +12,10 @@ RSpec.describe Translatomatic::String do
     ["en", :phrase, "display the *store.description* property"],
     ["en", :phrase, "http://www.google.com/"],
 
+    # text containing newlines
+    ["en", :paragraph, "FEATURES:\n- feature 1\n- feature 2",
+    ["FEATURES:", "- feature 1", "- feature 2"]],
+
     # english sentences
     ["en", :paragraph, "sentence one. sentence two.",
       ["sentence one.", "sentence two."]],
@@ -34,7 +38,7 @@ RSpec.describe Translatomatic::String do
       ["sentence one.", "sentence two"]],
     # sentence with newline mid-sentence
     ["en", :paragraph, "  sentence one. sentence\ntwo",
-      ["sentence one.", "sentence\ntwo"]],
+      ["sentence one.", "sentence", "two"]],
   ]
 
   context :new do
