@@ -56,6 +56,7 @@ module Translatomatic::CLI
     desc "list", t("cli.config.list")
     thor_options(self, Translatomatic::CLI::CommonOptions)
     thor_options(self, Translatomatic::CLI::Config)
+    option :skip_blanks, type: :boolean, desc: "Skip blank values"
     # List current configuration settings
     def list
       run do
@@ -88,39 +89,33 @@ module Translatomatic::CLI
     def print_config_table(options)
       columns = options[:columns]
       context = options[:context]
-      rows = []
 
+      print_config_table_intro(context)
+      print_config_table_body(columns, context)
+    end
+
+    def display_option?(option, context)
+      key = option.name.to_s
+      return false if option.command_line_only
+      return false if options[:skip_blanks] && !conf.include?(key, context)
+      true
+    end
+
+    def print_config_table_intro(context)
       if context
         puts t("cli.config.context_configuration", context: context)
       else
         puts t("cli.config.configuration")
       end
       puts
-      Translatomatic::Config.options.each do |option|
-        key = option.name.to_s
-        next if option.command_line_only
-        next if options[:skip_blanks] && !conf.include?(key, context)
-        value = conf.get(key, context)
-        data = []
-        columns.each do |column|
-          data << case column
-          when :key
-            key
-          when :value
-            value.nil? ? "-" : value
-          when :type
-            t("config.types.#{option.type}")
-          when :desc
-            option.description
-          end
-        end
-        rows << data
-      end
+    end
+
+    def print_config_table_body(columns, context)
+      rows = config_table_rows(columns, context)
 
       if rows.empty?
         puts t("cli.config.no_config")
       else
-        rows.sort_by { |i| i[0] }
         headings = columns.collect { |i| CONFIG_HEADING_MAP[i] }
         rows.unshift headings.collect { |i| i.gsub(/\w/, '=') }
         rows.unshift headings
@@ -128,5 +123,34 @@ module Translatomatic::CLI
       end
       puts
     end
+
+    def config_table_rows(columns, context)
+      opts = Translatomatic::Config.options.select do |i|
+        display_option?(i, context)
+      end
+      rows = opts.collect { |i| option_to_table_row(i, columns, context) }
+      rows.sort_by { |i| i[0] }
+      rows
+    end
+
+    def option_to_table_row(option, columns, context)
+      key = option.name.to_s
+      row = []
+      columns.each do |column|
+        row << case column
+        when :key
+          key
+        when :value
+          value = conf.get(key, context)
+          value.nil? ? "-" : value
+        when :type
+          t("config.types.#{option.type}")
+        when :desc
+          option.description
+        end
+      end
+      row
+    end
+
   end
 end
