@@ -1,8 +1,9 @@
 module Helpers
-  TMP_PATH = File.join(File.dirname(__FILE__), "..", "tmp")
-  TEST_USER_SETTINGS_PATH = File.join(TMP_PATH, "config.yml")
-  TEST_PROJ_SETTINGS_PATH = File.join(TMP_PATH, "project_config.yml")
-  FIXTURES_PATH = File.join(File.dirname(__FILE__), '..', 'fixtures')
+  TMP_PATH = File.join(__dir__, "..", "tmp")
+  CONFIG_PATH = File.join(".translatomatic/config.yml")
+  TEST_USER_SETTINGS_PATH = File.join(TMP_PATH, CONFIG_PATH)
+  TEST_PROJ_SETTINGS_PATH = File.join(TMP_PATH, "project", CONFIG_PATH)
+  FIXTURES_PATH = File.join(__dir__, '..', 'fixtures')
 
   def create_test_database
     #log.debug "Setting up test database"

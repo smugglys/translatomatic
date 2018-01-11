@@ -18,7 +18,7 @@ module Translatomatic::CLI
         type: :array
       },
       { name: :source_files, desc: t("cli.source_files"),
-        type: :array
+        type: :path_array
       },
       )
 
@@ -69,8 +69,7 @@ module Translatomatic::CLI
 
         # check source file(s) exist and they can be loaded
         source_files = parse_list(file, cli_option(:source_files))
-        source_files.each do |source_file|
-          path = source_path(source_file)
+        source_files.each do |path|
           raise t("file.not_found", file: path) unless File.exist?(path)
           source = Translatomatic::ResourceFile.load(path, @source_locale)
           raise t("file.unsupported", file: path) unless source
@@ -151,16 +150,6 @@ module Translatomatic::CLI
           text.update(shared: true) if text.is_translated?
         end
       end
-    end
-
-    # convert the given path to an absolute path if necessary, relative
-    # to project root.
-    def source_path(path)
-      if path.start_with?("~/")
-        # replace ~/ with home directory
-        path = path.sub(/\A~\//, Dir.home + "/")
-      end
-      File.absolute_path(path, conf.project_path)
     end
 
     # create a progress bar and progress updater

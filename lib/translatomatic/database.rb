@@ -112,7 +112,7 @@ class Translatomatic::Database
 
   define_options(
     { name: :database_config, desc: t("database.config_file"),
-      default: DEFAULT_CONFIG },
+      default: DEFAULT_CONFIG, type: :path },
     { name: :database_env, desc: t("database.env"),
       default: DEFAULT_ENV })
 

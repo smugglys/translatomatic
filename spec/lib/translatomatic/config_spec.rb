@@ -1,6 +1,7 @@
 RSpec.describe Translatomatic::Config do
 
   KEY_LOCALES = "target_locales"
+  KEY_DB_CONFIG = "database_config"
   KEY_DEBUG = "debug"
 
   let(:config) { Translatomatic.config }
@@ -81,10 +82,25 @@ RSpec.describe Translatomatic::Config do
   end
 
   describe :get do
-    it "gets a configuration key" do
+    it "returns a configuration key" do
       config.set(KEY_LOCALES, "de")
       expect(config.get(KEY_LOCALES)).to eq(["de"])
     end
+
+    it "returns paths relative to the user config file" do
+      user_db = "path1/file.txt"
+      config.set(KEY_DB_CONFIG, user_db, :user)
+      expected_path = File.absolute_path(File.join(File.join(File.dirname(config.user_settings_path), ".."), user_db))
+      expect(config.get(KEY_DB_CONFIG, :user)).to eq(expected_path)
+    end
+
+    it "returns paths relative to the project config file" do
+      proj_db = "path2/file.txt"
+      config.set(KEY_DB_CONFIG, proj_db, :project)
+      expected_path = File.absolute_path(File.join(File.join(File.dirname(config.project_settings_path), "..", proj_db)))
+      expect(config.get(KEY_DB_CONFIG, :project)).to eq(expected_path)
+    end
+
   end
 
   describe :include? do

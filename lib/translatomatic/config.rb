@@ -91,7 +91,7 @@ class Translatomatic::Config
     end
 
     # cast value to expected type
-    cast(value, option.type)
+    cast(value, option.type, context)
   end
 
   # Test if configuration includes the given key
@@ -143,7 +143,7 @@ class Translatomatic::Config
   #   path is unknown.
   def project_path
     if @project_settings_path
-      File.realpath(File.join(File.dirname(@project_settings_path), ".."))
+      File.absolute_path(File.join(File.dirname(@project_settings_path), ".."))
     else
       nil
     end
@@ -163,7 +163,7 @@ class Translatomatic::Config
   def set_or_add(key, value, context, mode)
     update(key, context, mode) do |option, ctx|
       key = option.name
-      casted_value = cast(value, option.type)
+      casted_value = cast(value, option.type, context)
       if mode == :add
         current_value = @settings[ctx][key] || []
         casted_value = current_value + casted_value
@@ -178,7 +178,7 @@ class Translatomatic::Config
     update(key, context, mode) do |option, ctx|
       key = option.name
       if mode == :subtract
-        casted_value = cast(value, option.type)
+        casted_value = cast(value, option.type, context)
         current_value = @settings[ctx][key] || []
         casted_value = current_value - casted_value
         @settings[ctx][key] = casted_value
@@ -263,7 +263,7 @@ class Translatomatic::Config
     end
   end
 
-  def cast(value, type)
+  def cast(value, type, context)
     value = value[0] if value.kind_of?(Array) && type != :array
 
     case type
@@ -272,8 +272,12 @@ class Translatomatic::Config
       return false if ["false", "f", "no", "off"].include?(value)
       return value ? true : false
     when :string
-      value = value[0] if value.kind_of?(Array)
       return value.nil? ? value : value.to_s
+    when :path_array
+      value = cast(value, :array, context)
+      value = value.collect { |i| cast(i, :path, context) }
+    when :path
+      cast_path(value, context)
     when :array
       if value.nil?
         value = []
@@ -281,8 +285,37 @@ class Translatomatic::Config
         value = [value] unless value.kind_of?(Array)
         value = value.collect { |i| i.split(/[, ]/) }.flatten.compact
       end
+    else
+      # no casting
+      value
     end
-    value
+  end
+
+  def cast_path(value, context)
+    return nil if value.nil?
+    File.absolute_path(homeify(value.to_s), context_path(context))
+  end
+
+  def homeify(path)
+    parts = File.split(path)
+    if parts[0] && parts[0] == '~'
+      # replace ~ with home directory
+      parts[0] = Dir.home
+      path = File.join(parts)
+    end
+    path
+  end
+
+  # return path relative to the given context configuration file
+  def context_path(context)
+    case context
+    when :user
+      File.join(File.dirname(user_settings_path), "..")
+    when :project
+      project_path
+    else
+      nil
+    end
   end
 
   def option(key)

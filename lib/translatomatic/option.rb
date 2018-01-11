@@ -50,12 +50,9 @@ module Translatomatic
     end
 
     def to_thor
-      # use internal ',' splitting for array types on command line
-      type = @type == :array ? :string : @type
-
       { name: @name,
         required: @required,
-        type: type,
+        type: thor_type,
         desc: @description,
         default: @default,
         aliases: @aliases,
@@ -80,6 +77,18 @@ module Translatomatic
         end
       end
       options
+    end
+
+    private
+
+    def thor_type
+      case @type
+      when :array, :path_array, :string, :path
+        # use internal ',' splitting for array types on command line
+        :string
+      else
+        @type
+      end
     end
   end
 end

@@ -109,6 +109,8 @@ en:
         array: Array
         numeric: Numeric
         boolean: Boolean
+        path: Path
+        path_array: Array of Paths
       context:
         env: Environment
         project: Project

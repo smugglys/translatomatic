@@ -42,6 +42,8 @@ module Translatomatic
           keylist << key
         end
       end
+
+      p @untranslated
     end
 
     # Update result with a list of translated strings.
