@@ -1,4 +1,10 @@
 RSpec.describe Translatomatic::Database do
+
+  after(:all) do
+    # reconnect to the test database
+    use_test_database
+  end
+
   it "should create a database" do
     skip if database_disabled?
 

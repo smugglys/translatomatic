@@ -38,7 +38,8 @@ RSpec.describe Translatomatic::Translator::MyMemory do
     expect(Translatomatic::HTTPRequest).to receive(:new).and_return(request)
     expect(request).to receive(:send_request).and_return(response)
 
-    tmx = build(:tmx_document)
+    tmx = double(:tmx_document)
+    expect(tmx).to receive(:to_xml).and_return("<xml />")
     t = described_class.new
     t.upload(tmx)
   end

@@ -5,19 +5,6 @@ module Helpers
   TEST_PROJ_SETTINGS_PATH = File.join(TMP_PATH, "project", CONFIG_PATH)
   FIXTURES_PATH = File.join(__dir__, '..', 'fixtures')
 
-  def create_test_database
-    #log.debug "Setting up test database"
-    options = { database_env: "test" }
-    if Translatomatic::Database.enabled?(options)
-      db = Translatomatic::Database.new(options)
-      db.drop
-      db.migrate
-    else
-      #log.debug "database is disabled"
-      TestConfig.instance.database_disabled = true
-    end
-  end
-
   def use_test_config
     [TEST_USER_SETTINGS_PATH, TEST_PROJ_SETTINGS_PATH].each do |file|
       File.delete(file) if File.exist?(file)
@@ -40,10 +27,6 @@ module Helpers
     f2 = File.join(FIXTURES_PATH, "resource_file", path)
     return f2 if File.exist?(f2)
     raise "fixture #{path} not found"
-  end
-
-  def database_disabled?
-    TestConfig.instance.database_disabled
   end
 
   def test_http_headers(options = {})

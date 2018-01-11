@@ -28,7 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-mocks", "~> 3"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "webmock"
-  spec.add_development_dependency "factory_bot"  # RIP girl
 
   spec.add_dependency "thor", "~> 0.20"
   spec.add_dependency "easy_translate"

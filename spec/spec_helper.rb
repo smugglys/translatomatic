@@ -6,7 +6,6 @@ end
 ENV['TEST'] = "1"
 require 'rubygems'
 require "bundler/setup"
-require 'factory_bot'
 require 'webmock/rspec'
 include WebMock::API
 
@@ -15,9 +14,9 @@ require "translatomatic"
 SPEC_DIR = File.dirname(__FILE__)
 Dir[File.join(SPEC_DIR, "support/**/*.rb")].sort.each { |f| require f }
 include Helpers
+include DatabaseHelpers
 
 RSpec.configure do |config|
-  config.include FactoryBot::Syntax::Methods
   config.include Translatomatic::Util
 
   # Enable flags like --only-failures and --next-failure
@@ -31,7 +30,6 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    FactoryBot.find_definitions
     create_test_database
     use_test_config
   end
