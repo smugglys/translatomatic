@@ -198,7 +198,7 @@ class Translatomatic::Config
     context = :user if option.user_context_only || key.to_s.match(/api_key/)
     context = check_valid_context(context)
 
-    if (mode == :add || mode == :subtract) && option.type != :array
+    if (mode == :add || mode == :subtract) && !is_array_type?(option.type)
       raise t("config.non_array_key", key: key)
     end
 
@@ -263,9 +263,13 @@ class Translatomatic::Config
     end
   end
 
+  def is_array_type?(type)
+    [:path_array, :array].include?(type)
+  end
+
   # cast value, used on get and set
   def cast(value, type, context)
-    value = value[0] if value.kind_of?(Array) && ![:path_array, :array].include?(type)
+    value = value[0] if value.kind_of?(Array) && !is_array_type?(type)
 
     case type
     when :boolean
