@@ -1,14 +1,10 @@
 module Translatomatic::CLI
   # Configuration functions for the command line interface
   class Config < Base
-    define_options(
-      {
-        name: :context, type: :string, aliases: '-c',
+    define_option :context, type: :string, aliases: '-c',
         desc: t('cli.config.context'),
         enum: Translatomatic::Config::CONTEXTS,
         command_line_only: true
-      }
-    )
 
     desc 'set key value', t('cli.config.set')
     thor_options(self, Translatomatic::CLI::CommonOptions)

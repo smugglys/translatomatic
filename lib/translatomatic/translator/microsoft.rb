@@ -5,10 +5,8 @@ module Translatomatic
     # Interface to the Microsoft translation API
     # @see https://www.microsoft.com/en-us/translator/translatorapi.aspx
     class Microsoft < Base
-      define_options(
-        { name: :microsoft_api_key, desc: t('translator.microsoft_api_key'),
-          use_env: true }
-      )
+      define_option :microsoft_api_key,
+        desc: t('translator.microsoft_api_key'), use_env: true
 
       # Create a new Microsoft translator instance
       def initialize(options = {})

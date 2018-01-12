@@ -6,9 +6,7 @@ module Translatomatic::CLI
     include Translatomatic::DefineOptions
     include Translatomatic::Util
 
-    define_options(
-      { name: :debug, type: :boolean, default: false, desc: t('cli.debug') },
-      { name: :wank, type: :boolean, default: true, desc: t('cli.wank') }
-    )
+    define_option :debug, type: :boolean, default: false, desc: t('cli.debug')
+    define_option :wank, type: :boolean, default: true, desc: t('cli.wank')
   end
 end

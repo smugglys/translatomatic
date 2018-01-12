@@ -140,5 +140,5 @@ EOM
         node
       end
     end
-  end # class
-end   # module
+  end
+end

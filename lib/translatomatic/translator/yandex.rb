@@ -3,9 +3,8 @@ module Translatomatic
     # Interface to the Yandex translation API
     # @see https://tech.yandex.com/translate/
     class Yandex < Base
-      define_options(
-        { name: :yandex_api_key, desc: t('translator.yandex_api_key'), use_env: true }
-      )
+      define_option :yandex_api_key, use_env: true,
+        desc: t('translator.yandex_api_key')
 
       # Create a new Yandex translator instance
       def initialize(options = {})

@@ -1,46 +1,50 @@
-# Utility functions, used internally
-module Translatomatic::Util
-  private
+module Translatomatic
+  # Utility functions, used internally
+  module Util
 
-  # @!visibility private
-  module CommonMethods
-    private
-
-    def t(key, options = {})
-      tkey = "translatomatic.#{key}"
-      raise "missing translation: #{tkey}" unless I18n.exists?(tkey)
-      I18n.t(tkey, options)
+    # @!visibility private
+    def self.included(klass)
+      klass.extend(ClassMethods)
     end
-  end
 
-  include CommonMethods
-
-  # @!visibility private
-  module ClassMethods
     private
+
+    # @!visibility private
+    module CommonMethods
+      private
+
+      def t(key, options = {})
+        tkey = "translatomatic.#{key}"
+        raise "missing translation: #{tkey}" unless I18n.exists?(tkey)
+        I18n.t(tkey, options)
+      end
+    end
 
     include CommonMethods
-  end
 
-  def self.included(klass)
-    klass.extend(ClassMethods)
-  end
+    # @!visibility private
+    module ClassMethods
+      private
 
-  def log
-    Translatomatic.config.logger
-  end
+      include CommonMethods
+    end
 
-  def locale(tag)
-    Translatomatic::Locale.parse(tag)
-  end
+    def log
+      Translatomatic.config.logger
+    end
 
-  def string(value, locale)
-    Translatomatic::String.new(value, locale)
-  end
+    def locale(tag)
+      Translatomatic::Locale.parse(tag)
+    end
 
-  def hashify(list)
-    hash = {}
-    list.each { |i| hash[i.to_s] = i }
-    hash
+    def string(value, locale)
+      Translatomatic::String.new(value, locale)
+    end
+
+    def hashify(list)
+      hash = {}
+      list.each { |i| hash[i.to_s] = i }
+      hash
+    end
   end
 end

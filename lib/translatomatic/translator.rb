@@ -63,7 +63,7 @@ module Translatomatic::Translator
       begin
         translator = mod.new(options)
         available << translator
-      rescue Exception
+      rescue StandardError
         log.debug(t('translator.unavailable', name: mod.name.demodulize))
       end
     end

@@ -8,21 +8,23 @@ require 'active_support/dependencies/autoload'
 
 # Module containing all of the translation goodness
 module Translatomatic
-  # @return [Translatomatic::Config] configuration
-  def self.config
-    @config ||= Translatomatic::Config.new
+  class << self
+    # @return [Translatomatic::Config] configuration
+    def config
+      @config ||= Translatomatic::Config.new
+    end
+
+    private
+
+    def init_i18n(lib_path)
+      locale_path = File.join(File.dirname(lib_path), '..', 'config', 'locales')
+      I18n.load_path += Dir[File.join(locale_path, '**', '*.yml')]
+    end
   end
 
-  private
-
-  def self.init_i18n(lib_path)
-    locale_path = File.join(File.dirname(lib_path), '..', 'config', 'locales')
-    I18n.load_path += Dir[File.join(locale_path, '**', '*.yml')]
+  begin
+    init_i18n(__FILE__)
   end
-end
-
-begin
-  Translatomatic.init_i18n(__FILE__)
 end
 
 require 'translatomatic/version'
@@ -34,6 +36,7 @@ require 'translatomatic/translation'
 require 'translatomatic/util'
 require 'translatomatic/version'
 require 'translatomatic/logger'
+require 'translatomatic/type_cast'
 require 'translatomatic/config'
 require 'translatomatic/database'
 require 'translatomatic/escaped_unicode'

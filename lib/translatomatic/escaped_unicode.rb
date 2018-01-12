@@ -1,87 +1,88 @@
-# Module to encode and decode unicode chars.
-# This code is highly influced by Florian Frank's JSON gem
-# @see https://github.com/jnbt/java-properties
-# @see https://github.com/flori/json/
-
-module Translatomatic::EscapedUnicode
-  # Decodes all unicode chars from escape sequences
-  # @param text [String]
-  # @return [String] The encoded text for chaining
-  def self.unescape(text)
-    string = text.dup
-    string = string.gsub(/(?:\\[uU](?:[A-Fa-f\d]{4}))+/) do |c|
-      c.downcase!
-      bytes = EMPTY_8BIT_STRING.dup
-      i = 0
-      while c[6 * i] == '\\' && c[6 * i + 1] == 'u'
-        bytes << c[6 * i + 2, 2].to_i(16) << c[6 * i + 4, 2].to_i(16)
-        i += 1
-      end
-      bytes.encode('utf-8', 'utf-16be')
-    end
-    string.force_encoding(::Encoding::UTF_8)
-
-    text.replace string
-    text
-  end
-
-  # Decodes all unicode chars into escape sequences
-  # @param text [String]
-  # @return [String] The decoded text for chaining
-  def self.escape(text)
-    string = text.dup
-    string.force_encoding(::Encoding::ASCII_8BIT)
-    string.gsub!(/["\\\x0-\x1f]/n) { |c| MAP[c] || c }
-    string.gsub!(/(
-      (?:
-        [\xc2-\xdf][\x80-\xbf]    |
-        [\xe0-\xef][\x80-\xbf]{2} |
-        [\xf0-\xf4][\x80-\xbf]{3}
-        )+ |
-        [\x80-\xc1\xf5-\xff]       # invalid
-        )/nx) do |c|
-          (c.size == 1) && raise(t('unicode.invalid_byte', byte: c))
-          s = c.encode('utf-16be', 'utf-8').unpack('H*')[0]
-          s.force_encoding(::Encoding::ASCII_8BIT)
-          s.gsub!(/.{4}/n, '\\\\u\&')
-          s.force_encoding(::Encoding::UTF_8)
+module Translatomatic
+  # Class to encode and decode unicode chars.
+  # This code is highly influenced by Florian Frank's JSON gem
+  # @see https://github.com/jnbt/java-properties
+  # @see https://github.com/flori/json/
+  class EscapedUnicode
+    # Decodes all unicode chars from escape sequences
+    # @param text [String]
+    # @return [String] The encoded text for chaining
+    def self.unescape(text)
+      string = text.dup
+      string = string.gsub(/(?:\\[uU](?:[A-Fa-f\d]{4}))+/) do |c|
+        c.downcase!
+        bytes = EMPTY_8BIT_STRING.dup
+        i = 0
+        while c[6 * i] == '\\' && c[6 * i + 1] == 'u'
+          bytes << c[6 * i + 2, 2].to_i(16) << c[6 * i + 4, 2].to_i(16)
+          i += 1
         end
-    string.force_encoding(::Encoding::UTF_8)
-    text.replace string
-    text
+        bytes.encode('utf-8', 'utf-16be')
+      end
+      string.force_encoding(::Encoding::UTF_8)
+
+      text.replace string
+      text
+    end
+
+    # Decodes all unicode chars into escape sequences
+    # @param text [String]
+    # @return [String] The decoded text for chaining
+    def self.escape(text)
+      string = text.dup
+      string.force_encoding(::Encoding::ASCII_8BIT)
+      string.gsub!(/["\\\x0-\x1f]/n) { |c| MAP[c] || c }
+      string.gsub!(/(
+        (?:
+          [\xc2-\xdf][\x80-\xbf]    |
+          [\xe0-\xef][\x80-\xbf]{2} |
+          [\xf0-\xf4][\x80-\xbf]{3}
+          )+ |
+          [\x80-\xc1\xf5-\xff]       # invalid
+          )/nx) do |c|
+        (c.size == 1) && raise(t('unicode.invalid_byte', byte: c))
+        s = c.encode('utf-16be', 'utf-8').unpack('H*')[0]
+        s.force_encoding(::Encoding::ASCII_8BIT)
+        s.gsub!(/.{4}/n, '\\\\u\&')
+        s.force_encoding(::Encoding::UTF_8)
+      end
+      string.force_encoding(::Encoding::UTF_8)
+      text.replace string
+      text
+    end
+
+    private
+
+    MAP = {
+      "\x0" => '\u0000',
+      "\x1" => '\u0001',
+      "\x2" => '\u0002',
+      "\x3" => '\u0003',
+      "\x4" => '\u0004',
+      "\x5" => '\u0005',
+      "\x6" => '\u0006',
+      "\x7" => '\u0007',
+      "\xb" => '\u000b',
+      "\xe" => '\u000e',
+      "\xf" => '\u000f',
+      "\x10" => '\u0010',
+      "\x11" => '\u0011',
+      "\x12" => '\u0012',
+      "\x13" => '\u0013',
+      "\x14" => '\u0014',
+      "\x15" => '\u0015',
+      "\x16" => '\u0016',
+      "\x17" => '\u0017',
+      "\x18" => '\u0018',
+      "\x19" => '\u0019',
+      "\x1a" => '\u001a',
+      "\x1b" => '\u001b',
+      "\x1c" => '\u001c',
+      "\x1d" => '\u001d',
+      "\x1e" => '\u001e',
+      "\x1f" => '\u001f'
+    }.freeze
+
+    EMPTY_8BIT_STRING = ''.force_encoding(::Encoding::ASCII_8BIT).freeze
   end
-
-  private
-
-  MAP = {
-    "\x0" => '\u0000',
-    "\x1" => '\u0001',
-    "\x2" => '\u0002',
-    "\x3" => '\u0003',
-    "\x4" => '\u0004',
-    "\x5" => '\u0005',
-    "\x6" => '\u0006',
-    "\x7" => '\u0007',
-    "\xb" => '\u000b',
-    "\xe" => '\u000e',
-    "\xf" => '\u000f',
-    "\x10" => '\u0010',
-    "\x11" => '\u0011',
-    "\x12" => '\u0012',
-    "\x13" => '\u0013',
-    "\x14" => '\u0014',
-    "\x15" => '\u0015',
-    "\x16" => '\u0016',
-    "\x17" => '\u0017',
-    "\x18" => '\u0018',
-    "\x19" => '\u0019',
-    "\x1a" => '\u001a',
-    "\x1b" => '\u001b',
-    "\x1c" => '\u001c',
-    "\x1d" => '\u001d',
-    "\x1e" => '\u001e',
-    "\x1f" => '\u001f'
-  }.freeze
-
-  EMPTY_8BIT_STRING = ''.force_encoding(::Encoding::ASCII_8BIT).freeze
 end

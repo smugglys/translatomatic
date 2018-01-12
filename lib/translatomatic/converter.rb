@@ -1,43 +1,44 @@
-# Converts files from one format to another
-class Translatomatic::Converter
-  def initialize(options = {})
-    @options = options
-  end
-
-  # Convert a resource file from one format to another.
-  # @param source [String] Path to source file. File must exist
-  # @param target [String] Path to target file. File will be created
-  #   or overwritten if it already exists.
-  # @return [Translatomatic::ResourceFile] The converted file.
-  def convert(source, target)
-    source_path = Pathname.new(source.to_s)
-    target_path = Pathname.new(target.to_s)
-    raise t('file.not_found', file: source.to_s) unless source_path.file?
-    raise t('file.directory', file: target.to_s) if target_path.directory?
-
-    source_file = load_file(source_path)
-    target_file = load_file(target_path)
-
-    if source_file.type == target_file.type
-      # if same file type, modify source.
-      # this retains internal structure
-      target_file = source_file
-    else
-      # different file type, copy properties from source file to target
-      target_file.properties = source_file.properties
+module Translatomatic
+  # Converts files from one format to another
+  class Converter
+    def initialize(options = {})
+      @options = options
     end
 
-    target_file.save(target_path, @options)
-    target_file
-  end
+    # Convert a resource file from one format to another.
+    # @param source [String] Path to source file. File must exist
+    # @param target [String] Path to target file. File will be created
+    #   or overwritten if it already exists.
+    # @return [Translatomatic::ResourceFile] The converted file.
+    def convert(source, target)
+      source_file = load_file(source)
+      target_file = load_file(target)
+      raise t('file.not_found', file: target_file) unless source_file.path.file?
 
-  private
+      if source_file.type == target_file.type
+        # if same file type, modify source.
+        # this retains internal structure
+        target_file = source_file
+      else
+        # different file type, copy properties from source file to target
+        target_file.properties = source_file.properties
+      end
 
-  include Translatomatic::Util
+      target_file.save(target, @options)
+      target_file
+    end
 
-  def load_file(path)
-    file = Translatomatic::ResourceFile.load(path)
-    raise t('file.unsupported', file: path) unless file
-    file
+    private
+
+    include Translatomatic::Util
+
+    def load_file(path)
+      path = Pathname.new(path.to_s)
+      raise t('file.directory', file: path) if path.directory?
+
+      file = Translatomatic::ResourceFile.load(path)
+      raise t('file.unsupported', file: path) unless file
+      file
+    end
   end
 end

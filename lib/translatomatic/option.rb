@@ -50,32 +50,30 @@ module Translatomatic
     end
 
     def to_thor
-      { name: @name,
+      {
+        name: @name,
         required: @required,
         type: thor_type,
         desc: @description,
         default: @default,
         aliases: @aliases,
-        enum: @enum ? @enum.collect(&:to_s) : nil }
+        enum: @enum ? @enum.collect(&:to_s) : nil
+      }
     end
 
     # Retrieve all options from an object or list of objects.
     # @param object [#options,Array<#options>] Options source
     # @return [Array<Translatomatic::Option>] options
     def self.options_from_object(object)
-      options = []
-      if object.respond_to?(:options)
-        options += options_from_object(object.options)
+      if object.is_a?(Translatomatic::Option)
+        [object]
+      elsif object.respond_to?(:options)
+        options_from_object(object.options)
       elsif object.is_a?(Array)
-        object.each do |item|
-          if item.is_a?(Translatomatic::Option)
-            options << item
-          elsif item.respond_to?(:options)
-            options += options_from_object(item.options)
-          end
-        end
+        object.collect { |i| options_from_object(i) }.flatten
+      else
+        []
       end
-      options
     end
 
     private

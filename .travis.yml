@@ -11,7 +11,7 @@ os:
 
 # Specify which ruby versions you wish to run your tests on, each version will be used
 rvm:
-  - 2.2
+  - 2.1
   - 2.3
   - 2.4
 #  - jruby     # Unknown ruby string (do not know how to handle): jruby-9.1.15.0200

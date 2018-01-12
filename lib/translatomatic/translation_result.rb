@@ -29,18 +29,7 @@ module Translatomatic
       @from_locale = file.locale
       @to_locale = to_locale
 
-      # duplicate strings
-      @properties = file.properties.transform_values(&:dup)
-
-      @properties.each do |key, value|
-        # split property value into sentences
-        string = string(value, from_locale)
-        string.sentences.each do |sentence|
-          @untranslated << sentence
-          keylist = (@value_to_keys[sentence.to_s] ||= [])
-          keylist << key
-        end
-      end
+      init_properties
     end
 
     # Update result with a list of translated strings.
@@ -68,6 +57,21 @@ module Translatomatic
     private
 
     include Translatomatic::Util
+
+    def init_properties
+      # duplicate strings
+      @properties = @file.properties.transform_values(&:dup)
+
+      @properties.each do |key, value|
+        # split property value into sentences
+        string = string(value, from_locale)
+        string.sentences.each do |sentence|
+          @untranslated << sentence
+          keylist = (@value_to_keys[sentence.to_s] ||= [])
+          keylist << key
+        end
+      end
+    end
 
     # update properties
     def update(original, translated)

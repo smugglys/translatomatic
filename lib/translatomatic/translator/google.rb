@@ -5,11 +5,8 @@ module Translatomatic
     # Interface to the Google translation API
     # @see https://cloud.google.com/translate/
     class Google < Base
-      define_options(
-        { name: :google_api_key,
+      define_option :google_api_key,
           desc: t('translator.google_api_key'), use_env: true
-        }
-      )
 
       # Create a new Google translator instance
       def initialize(options = {})
@@ -31,6 +28,6 @@ module Translatomatic
           EasyTranslate.translate(strings, from: from.language, to: to.language)
         end
       end
-    end # class
-  end   # module
+    end
+  end
 end
