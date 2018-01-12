@@ -78,7 +78,8 @@ class Translatomatic::ResourceFile::Base
     elsif basename.match(/_([-\w]+)\Z/) && valid_locale?($1)
       # basename contains locale, e.g. basename_$locale.ext
       add_basename_locale(target_locale)
-    elsif valid_locale?(path.parent.basename(path.parent.extname))
+    elsif valid_locale?(path.parent.basename(path.parent.extname)) ||
+      path.parent.basename.to_s == "Base.lproj"
       # parent directory contains locale, e.g. strings/en-US/text.resw
       # or project/en.lproj/Strings.strings
       path.parent.parent + (target_locale.to_s + path.parent.extname) + path.basename

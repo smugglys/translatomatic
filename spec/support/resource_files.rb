@@ -19,6 +19,7 @@ RSpec.shared_examples "a resource file" do |config = {}|
     PathConversion.new("path/file.$LOC.$EXT", "path/file.$LOC.$EXT"),
     # xcode localised files
     PathConversion.new("$LOC.lproj/file.$EXT", "$LOC.lproj/file.$EXT"),
+    PathConversion.new("Base.lproj/file.$EXT", "$LOC.lproj/file.$EXT"),
     # locale in parent directory name
     PathConversion.new("$LOC/file.$EXT", "$LOC/file.$EXT"),
     # locale in values- path (android)
