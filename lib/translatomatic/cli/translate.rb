@@ -4,25 +4,21 @@ require 'ruby-progressbar'
 module Translatomatic::CLI
   # Translation functions for the command line interface
   class Translate < Base
-
     default_task :file
 
     define_options(
-      { name: :translator, type: :array, aliases: "-t",
-        desc: t("cli.translate.translator"),
-        enum: Translatomatic::Translator.names
-      },
-      { name: :source_locale, desc: t("cli.source_locale") },
-      { name: :share, desc: t("cli.share"), default: false },
-      { name: :target_locales, desc: t("cli.target_locales"),
-        type: :array
-      },
-      { name: :source_files, desc: t("cli.source_files"),
-        type: :path_array
-      },
-      )
+      { name: :translator, type: :array, aliases: '-t',
+        desc: t('cli.translate.translator'),
+        enum: Translatomatic::Translator.names },
+      { name: :source_locale, desc: t('cli.source_locale') },
+      { name: :share, desc: t('cli.share'), default: false },
+      { name: :target_locales, desc: t('cli.target_locales'),
+        type: :array },
+      { name: :source_files, desc: t('cli.source_files'),
+        type: :path_array }
+    )
 
-    desc "string text locale...", t("cli.translate.string")
+    desc 'string text locale...', t('cli.translate.string')
     thor_options(self, Translatomatic::CLI::CommonOptions)
     thor_options(self, Translatomatic::CLI::Translate)
     thor_options(self, Translatomatic::Translator.modules)
@@ -36,12 +32,12 @@ module Translatomatic::CLI
         setup_translation
         determine_target_locales(locales)
 
-        puts "(%s) %s" % [@source_locale, text]
+        puts format('(%s) %s', @source_locale, text)
         @translators.each do |translator|
-          puts t("cli.using_translator", name: translator.name)
+          puts t('cli.using_translator', name: translator.name)
           @target_locales.each do |target_locale|
             result = translator.translate([text], @source_locale, target_locale)
-            puts "  -> (%s) %s" % [target_locale, result]
+            puts format('  -> (%s) %s', target_locale, result)
           end
           puts
         end
@@ -50,7 +46,7 @@ module Translatomatic::CLI
       end
     end
 
-    desc "file filename locale...", t("cli.translate.file")
+    desc 'file filename locale...', t('cli.translate.file')
     thor_options(self, Translatomatic::CLI::CommonOptions)
     thor_options(self, Translatomatic::CLI::Translate)
     thor_options(self, Translatomatic::FileTranslator)
@@ -70,9 +66,9 @@ module Translatomatic::CLI
         # check source file(s) exist and they can be loaded
         source_files = parse_list(file, cli_option(:source_files))
         source_files.each do |path|
-          raise t("file.not_found", file: path) unless File.exist?(path)
+          raise t('file.not_found', file: path) unless File.exist?(path)
           source = Translatomatic::ResourceFile.load(path, @source_locale)
-          raise t("file.unsupported", file: path) unless source
+          raise t('file.unsupported', file: path) unless source
         end
 
         # set up database
@@ -117,7 +113,7 @@ module Translatomatic::CLI
 
     def determine_target_locales(locales)
       @target_locales = parse_list(locales, cli_option(:target_locales))
-      raise t("cli.locales_required") if @target_locales.empty?
+      raise t('cli.locales_required') if @target_locales.empty?
     end
 
     def determine_source_locale
@@ -140,7 +136,7 @@ module Translatomatic::CLI
       available = Translatomatic::Translator.available(options)
       available.each do |translator|
         if translator.respond_to?(:upload)
-          log.info(t("cli.uploading_tmx", name: translator.name))
+          log.info(t('cli.uploading_tmx', name: translator.name))
           translator.upload(tmx)
         end
       end
@@ -157,14 +153,13 @@ module Translatomatic::CLI
       return nil unless cli_option(:wank)
       # set up progress bar
       progressbar = ProgressBar.create(
-        title: t("cli.translating"),
-        format: "%t: |%B| %E ",
+        title: t('cli.translating'),
+        format: '%t: |%B| %E ',
         autofinish: false,
         total: translation_count
       )
       conf.logger.progressbar = progressbar
       Translatomatic::ProgressUpdater.new(progressbar)
     end
-
   end # class
 end   # module

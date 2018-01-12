@@ -20,12 +20,12 @@ class Translatomatic::TranslationStats
     @translations = translations.values
     @from_db = @translations.count { |i| i.from_database && i.result }
     @from_translator = @translations.count { |i| !i.from_database && i.result }
-    @untranslated = @translations.count { |i| i.result == nil }
+    @untranslated = @translations.count { |i| i.result.nil? }
   end
 
   def to_s
-    t("file_translator.total_translations", total: @translations.length,
-      from_db: @from_db, from_translator: @from_translator,
-      untranslated: @untranslated)
+    t('file_translator.total_translations', total: @translations.length,
+                                            from_db: @from_db, from_translator: @from_translator,
+                                            untranslated: @untranslated)
   end
 end

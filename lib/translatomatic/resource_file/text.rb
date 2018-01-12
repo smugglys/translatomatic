@@ -1,14 +1,13 @@
 module Translatomatic::ResourceFile
   # Text resource file
   class Text < Base
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{txt text}
+      %w[txt text]
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
-    def save(target = path, options = {})
+    def save(target = path, _options = {})
       values = @properties.values.collect { |i| i.strip + "\n" }
       target.write(values.join)
     end
@@ -17,8 +16,7 @@ module Translatomatic::ResourceFile
 
     def load
       text = read_contents(@path)
-      @properties = { "text" => text }
+      @properties = { 'text' => text }
     end
-
   end
 end

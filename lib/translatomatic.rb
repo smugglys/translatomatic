@@ -8,7 +8,6 @@ require 'active_support/dependencies/autoload'
 
 # Module containing all of the translation goodness
 module Translatomatic
-
   # @return [Translatomatic::Config] configuration
   def self.config
     @config ||= Translatomatic::Config.new
@@ -17,8 +16,8 @@ module Translatomatic
   private
 
   def self.init_i18n(lib_path)
-    locale_path = File.join(File.dirname(lib_path), "..", "config", "locales")
-    I18n.load_path += Dir[File.join(locale_path, "**", "*.yml")]
+    locale_path = File.join(File.dirname(lib_path), '..', 'config', 'locales')
+    I18n.load_path += Dir[File.join(locale_path, '**', '*.yml')]
   end
 end
 

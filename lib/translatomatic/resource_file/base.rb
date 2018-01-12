@@ -1,7 +1,6 @@
 # Base class for resource file implementations
 # @abstract Subclasses implement different types of resource files
 class Translatomatic::ResourceFile::Base
-
   attr_accessor :locale
   attr_accessor :path
 
@@ -15,7 +14,7 @@ class Translatomatic::ResourceFile::Base
 
   # @return [Array<String>] File extensions supported by this resource file
   def self.extensions
-    raise "extensions must be implemented by subclass"
+    raise 'extensions must be implemented by subclass'
   end
 
   # @return [boolean] True if the file format consists of keys and values
@@ -37,11 +36,11 @@ class Translatomatic::ResourceFile::Base
   # @param options [Hash<Symbol,String>] Options
   # @return [Translatomatic::ResourceFile::Base] the resource file.
   def initialize(path = nil, options = {})
-    raise "expected options hash" if options && !options.kind_of?(Hash)
-    raise t("file.unsupported", file: path) unless self.class.enabled?
+    raise 'expected options hash' if options && !options.is_a?(Hash)
+    raise t('file.unsupported', file: path) unless self.class.enabled?
     @options = options || {}
     @properties = {}
-    @path = path.nil? || path.kind_of?(Pathname) ? path : Pathname.new(path)
+    @path = path.nil? || path.is_a?(Pathname) ? path : Pathname.new(path)
     update_locale
     init
     load if @path && @path.exist?
@@ -51,8 +50,8 @@ class Translatomatic::ResourceFile::Base
   # @param target [Pathname] The destination path
   # @param options [Hash<Symbol, Object>] Output format options
   # @return [void]
-  def save(target = path, options = {})
-    raise "save(path) must be implemented by subclass"
+  def save(_target = path, _options = {})
+    raise 'save(path) must be implemented by subclass'
   end
 
   # @return [String] The format of this resource file, e.g. "Properties"
@@ -75,18 +74,18 @@ class Translatomatic::ResourceFile::Base
     elsif valid_locale?(basename)
       # basename is a locale name, replace it
       path.dirname + (target_locale.to_s + path.extname)
-    elsif basename.match(/_([-\w]+)\Z/) && valid_locale?($1)
+    elsif basename.match(/_([-\w]+)\Z/) && valid_locale?(Regexp.last_match(1))
       # basename contains locale, e.g. basename_$locale.ext
       add_basename_locale(target_locale)
     elsif valid_locale?(path.parent.basename(path.parent.extname)) ||
-      path.parent.basename.to_s == "Base.lproj"
+          path.parent.basename.to_s == 'Base.lproj'
       # parent directory contains locale, e.g. strings/en-US/text.resw
       # or project/en.lproj/Strings.strings
       path.parent.parent + (target_locale.to_s + path.parent.extname) + path.basename
-    elsif path.to_s.match(/\bres\/values([-\w]+)?\/.+$/)
+    elsif path.to_s =~ /\bres\/values([-\w]+)?\/.+$/
       # android strings
       filename = path.basename
-      path.parent.parent + ("values-" + target_locale.to_s) + filename
+      path.parent.parent + ('values-' + target_locale.to_s) + filename
     else
       # default behaviour, add locale after underscore in basename
       add_basename_locale(target_locale)
@@ -139,15 +138,15 @@ class Translatomatic::ResourceFile::Base
   # Create an interpolated variable string.
   # @return [String] A string representing the interpolated variable, or
   #   nil if this resource file doesn't support variable interpolation.
-  def create_variable(name)
+  def create_variable(_name)
     return nil unless supports_variable_interpolation?
-    raise "create_variable(name) must be implemented by subclass"
+    raise 'create_variable(name) must be implemented by subclass'
   end
 
   # @return [Regexp] A regexp used to match interpolated variables
   def variable_regex
     return nil unless supports_variable_interpolation?
-    raise "variable_regex must be implemented by subclass"
+    raise 'variable_regex must be implemented by subclass'
   end
 
   private
@@ -155,41 +154,39 @@ class Translatomatic::ResourceFile::Base
   include Translatomatic::Util
 
   # called by constructor before load
-  def init
-  end
+  def init; end
 
   # load contents from @path
   def load
-    raise "load must be implemented by subclass"
+    raise 'load must be implemented by subclass'
   end
 
   def update_locale
     locale = @options[:locale] || detect_locale || Translatomatic::Locale.default
     @locale = Translatomatic::Locale.parse(locale)
-    raise t("file.unknown_locale") unless @locale && @locale.language
+    raise t('file.unknown_locale') unless @locale && @locale.language
   end
 
   def created_by
     options = {
-      app: "Translatomatic",
+      app: 'Translatomatic',
       version: Translatomatic::VERSION,
-      date: I18n.l(DateTime.now),
+      date: I18n.l(DateTime.now)
     }
     # use created by string in current file's locale, fall back to
     # english locale if translation is missing.
-    t("file.created_by", options.merge({
-      locale: locale.language,
-      default: t("file.created_by", options.merge(locale: "en"))
-      })
-    )
+    t('file.created_by', options.merge(
+                           locale: locale.language,
+                           default: t('file.created_by', options.merge(locale: 'en'))
+    ))
   end
 
   def read_contents(path)
-    File.read(path.to_s, mode: "r:bom|utf-8")
+    File.read(path.to_s, mode: 'r:bom|utf-8')
   end
 
   def parsing_error(error)
-    raise Exception.new(error)
+    raise Exception, error
   end
 
   # detect locale from filename
@@ -200,12 +197,12 @@ class Translatomatic::ResourceFile::Base
     directory = path.dirname.basename.to_s
     extlist = extension_list
 
-    if basename.match(/_([-\w]{2,})$/) && valid_locale?($1)
+    if basename.match(/_([-\w]{2,})$/) && valid_locale?(Regexp.last_match(1))
       # locale after underscore in filename
-      tag = $1
-    elsif directory.match(/^([-\w]+)\.lproj$/)
+      tag = Regexp.last_match(1)
+    elsif directory =~ /^([-\w]+)\.lproj$/
       # xcode localized strings
-      tag = $1
+      tag = Regexp.last_match(1)
     elsif extlist.length >= 2 && loc_idx = find_locale(extlist)
       # multiple parts to extension, e.g. index.html.en
       tag = extlist[loc_idx]
@@ -216,10 +213,10 @@ class Translatomatic::ResourceFile::Base
     elsif valid_locale?(path.parent.basename)
       # try to match on parent directory, e.g. strings/en-US/text.resw
       tag = path.parent.basename
-    elsif path.parent.basename.to_s.match(/-([-\w]+)/) && valid_locale?($1)
+    elsif path.parent.basename.to_s.match(/-([-\w]+)/) && valid_locale?(Regexp.last_match(1))
       # try to match on trailing part of parent directory,
       # e.g. res/values-en/strings.xml
-      tag = $1
+      tag = Regexp.last_match(1)
     end
 
     tag ? Translatomatic::Locale.parse(tag, true) : nil
@@ -229,7 +226,7 @@ class Translatomatic::ResourceFile::Base
     # remove any underscore and trailing text from basename
     deunderscored = basename_stripped.sub(/_.*?\Z/, '')
     # add _locale.ext
-    filename = deunderscored + "_" + target_locale.to_s + path.extname
+    filename = deunderscored + '_' + target_locale.to_s + path.extname
     path.dirname + filename
   end
 
@@ -261,13 +258,13 @@ class Translatomatic::ResourceFile::Base
   def flatten(data)
     result = {}
 
-    if data.kind_of?(Hash)
+    if data.is_a?(Hash)
       data.each do |key, value|
         flatten_add(result, key, value)
       end
-    elsif data.kind_of?(Array)
+    elsif data.is_a?(Array)
       data.each_with_index do |value, i|
-        key = "key" + i.to_s
+        key = 'key' + i.to_s
         flatten_add(result, key, value)
       end
     end
@@ -279,7 +276,7 @@ class Translatomatic::ResourceFile::Base
     if needs_flatten?(value)
       children = flatten(value)
       children.each do |ck, cv|
-        result[key + "." + ck] = cv
+        result[key + '.' + ck] = cv
       end
     else
       result[key] = value
@@ -287,6 +284,6 @@ class Translatomatic::ResourceFile::Base
   end
 
   def needs_flatten?(value)
-    value.kind_of?(Array) || value.kind_of?(Hash)
+    value.is_a?(Array) || value.is_a?(Hash)
   end
 end

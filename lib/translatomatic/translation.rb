@@ -23,8 +23,7 @@ module Translatomatic
     private
 
     def string(string)
-      string.kind_of?(Translatomatic::String) ? string : Translatomatic::String.new(string)
+      string.is_a?(Translatomatic::String) ? string : Translatomatic::String.new(string)
     end
-
   end
 end

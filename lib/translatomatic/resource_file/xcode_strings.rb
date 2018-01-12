@@ -1,12 +1,10 @@
 module Translatomatic::ResourceFile
-
   # XCode strings resource file
   # @see https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html
   class XCodeStrings < Base
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{strings}
+      %w[strings]
     end
 
     # (see Translatomatic::ResourceFile::Base.is_key_value?)
@@ -16,12 +14,12 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path, options = {})
-      out = ""
+      out = ''
       out += comment(created_by) unless options[:no_created_by]
       properties.each do |key, value|
         key = escape(key)
         value = escape(value)
-        out += %Q{"#{key}" = "#{value}";\n}
+        out += %("#{key}" = "#{value}";\n)
       end
       target.write(out)
     end
@@ -52,6 +50,5 @@ module Translatomatic::ResourceFile
     def escape(string)
       string ? string.gsub(/["']/) { |i| "\\#{i}" } : ''
     end
-
   end
 end

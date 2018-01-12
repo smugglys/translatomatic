@@ -1,7 +1,6 @@
 
 module Translatomatic
   module Translator
-
     # Base class for interfaces to translation APIs
     # @abstract
     class Base
@@ -31,7 +30,7 @@ module Translatomatic
       # @return [Array<String>] Translated strings
       def translate(strings, from, to)
         @updated_listener = false
-        strings = [strings] unless strings.kind_of?(Array)
+        strings = [strings] unless strings.is_a?(Array)
         from = locale(from)
         to = locale(to)
         return strings if from.language == to.language
@@ -55,12 +54,12 @@ module Translatomatic
         translated = []
         untranslated = strings.dup
         request = Translatomatic::HTTPRequest.new(url)
-        fail_count = 0  # number of consecutive translation failures
+        fail_count = 0 # number of consecutive translation failures
 
-        while !untranslated.empty?  # request start block
+        until untranslated.empty? # request start block
 
-          request.start do |http|
-            while !untranslated.empty?
+          request.start do |_http|
+            until untranslated.empty?
               # get next string to translate
               string = untranslated[0]
               begin
@@ -68,17 +67,16 @@ module Translatomatic
                 result = fetch_translation(request, string, from, to)
 
                 # successful translation
-                fail_count = 0  # reset fail count
+                fail_count = 0 # reset fail count
                 translated << result
                 update_translated(result)
                 untranslated.shift
-
               rescue Exception => e
                 # translation error
                 log.error(e)
                 fail_count += 1
                 if fail_count >= TRANSLATION_RETRIES
-                  raise e  # re-raise exception
+                  raise e # re-raise exception
                 else
                   # need to restart http connection
                   # break back out to request.start block
@@ -92,18 +90,18 @@ module Translatomatic
         translated
       end
 
-      def fetch_translation(request, strings, from, to)
-        raise "subclass must implement fetch_translation"
+      def fetch_translation(_request, _strings, _from, _to)
+        raise 'subclass must implement fetch_translation'
       end
 
       def update_translated(texts)
-        texts = [texts] unless texts.kind_of?(Array)
+        texts = [texts] unless texts.is_a?(Array)
         @updated_listener = true
         @listener.translated_texts(texts) if @listener
       end
 
-      def perform_translate(strings, from, to)
-        raise "subclass must implement perform_translate"
+      def perform_translate(_strings, _from, _to)
+        raise 'subclass must implement perform_translate'
       end
 
       # Attempt to run a block of code up to retries times.
@@ -121,7 +119,6 @@ module Translatomatic
           raise e
         end
       end
-
     end
   end
 end

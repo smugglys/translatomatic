@@ -2,28 +2,27 @@
 module Translatomatic::CLI
   # Main command line interface
   class Main < Base
-
     begin
       I18n.default_locale = Translatomatic.config.default_locale
     end
 
-    package_name "Translatomatic"
-    map %W[-v --version] => :version
-    map %W[-L --list] => :translators
+    package_name 'Translatomatic'
+    map %w[-v --version] => :version
+    map %w[-L --list] => :translators
 
-    desc "translate", t("cli.translate.subcommand")
-    subcommand "translate", Translate
+    desc 'translate', t('cli.translate.subcommand')
+    subcommand 'translate', Translate
 
-    desc "database", t("cli.database.subcommand")
-    subcommand "database", Database
+    desc 'database', t('cli.database.subcommand')
+    subcommand 'database', Database
 
-    desc "config", t("cli.config.subcommand")
-    subcommand "config", Config
+    desc 'config', t('cli.config.subcommand')
+    subcommand 'config', Config
 
-    desc "display file [key...]", t("cli.display_values")
+    desc 'display file [key...]', t('cli.display_values')
     thor_options(self, Translatomatic::CLI::CommonOptions)
-    method_option :target_locales, type: :string, desc: t("cli.locales_to_display")
-    method_option :sentences, type: :boolean, desc: t("cli.display_sentences")
+    method_option :target_locales, type: :string, desc: t('cli.locales_to_display')
+    method_option :sentences, type: :boolean, desc: t('cli.display_sentences')
     # Display values from a resource bundle
     # @param file [String] Path to resource file
     # @param keys [Array<String>] Optional list of locales
@@ -33,7 +32,7 @@ module Translatomatic::CLI
         locales = cli_option(:target_locales)
         source_files = parse_list(file, cli_option(:source_files))
         source_files.each do |path|
-          raise t("file.not_found", file: path) unless File.exist?(path)
+          raise t('file.not_found', file: path) unless File.exist?(path)
           source = Translatomatic::ResourceFile.load(path)
           locales.each do |locale|
             path = source.locale_path(locale)
@@ -43,7 +42,7 @@ module Translatomatic::CLI
       end
     end
 
-    desc "strings file [file...]", t("cli.extract_strings")
+    desc 'strings file [file...]', t('cli.extract_strings')
     thor_options(self, Translatomatic::CLI::CommonOptions)
     # Extract strings from non-resource files
     # @param files [Array<String>] List of paths to files
@@ -59,7 +58,7 @@ module Translatomatic::CLI
       end
     end
 
-    desc "convert source target", t("cli.convert")
+    desc 'convert source target', t('cli.convert')
     # Convert a resource file from one format to another
     # @param source [String] An existing resource file
     # @param target [String] The name of a target resource file
@@ -71,7 +70,7 @@ module Translatomatic::CLI
       end
     end
 
-    desc "services", t("cli.list_backends")
+    desc 'services', t('cli.list_backends')
     thor_options(self, Translatomatic::CLI::CommonOptions)
     # List available translator services
     # @return [void]
@@ -79,7 +78,7 @@ module Translatomatic::CLI
       run { puts Translatomatic::Translator.list }
     end
 
-    desc 'version', t("cli.display_version")
+    desc 'version', t('cli.display_version')
     thor_options(self, Translatomatic::CLI::CommonOptions)
     # Display version number
     # @return [void]
@@ -95,24 +94,23 @@ module Translatomatic::CLI
     end
 
     def display_keys(source, keys)
-      puts t("cli.file_source", file: source)
+      puts t('cli.file_source', file: source)
       rows = []
       keys = source.properties.keys if keys.empty?
       keys.each do |key|
         value = source.get(key)
-        rows << [key + ":", value]
+        rows << [key + ':', value]
       end
       print_table(rows, indent: 2)
 
       if options[:sentences]
-        puts t("cli.sentences")
+        puts t('cli.sentences')
         source.sentences.each do |sentence|
-          puts "- " + sentence.to_s
+          puts '- ' + sentence.to_s
         end
       end
 
       puts
     end
-
   end # class
 end   # module

@@ -1,7 +1,6 @@
 # Represents a locale
 # @see https://en.wikipedia.org/wiki/Locale_(computer_software)
 class Translatomatic::Locale
-
   # @return [String] ISO 639-1 language
   attr_reader :language
 
@@ -19,8 +18,8 @@ class Translatomatic::Locale
     return nil if tag.nil?
 
     locale = tag
-    unless tag.kind_of?(Translatomatic::Locale)
-      tag = tag.to_s.gsub(/_/, '-')
+    unless tag.is_a?(Translatomatic::Locale)
+      tag = tag.to_s.tr('_', '-')
       locale = new(tag)
     end
     validate && !locale.valid? ? nil : locale
@@ -48,14 +47,14 @@ class Translatomatic::Locale
 
   # @return [String] Locale as a string
   def to_s
-    [language, script, region].compact.join("-")
+    [language, script, region].compact.join('-')
   end
 
   # @param other [Object] Another object
   # @return [boolean] true if the other object is a {Translatomatic::Locale}
   #   object and has equal language, script and region.
   def eql?(other)
-    other.kind_of?(Translatomatic::Locale) && other.hash == hash
+    other.is_a?(Translatomatic::Locale) && other.hash == hash
   end
 
   # (see #eql?)
@@ -71,6 +70,5 @@ class Translatomatic::Locale
   private
 
   # list of 2 letter country codes
-  VALID_LANGUAGES = ::I18nData.languages.keys.collect { |i| i.downcase }.sort
-
+  VALID_LANGUAGES = ::I18nData.languages.keys.collect(&:downcase).sort
 end

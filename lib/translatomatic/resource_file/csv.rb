@@ -3,15 +3,14 @@ require 'csv'
 module Translatomatic::ResourceFile
   # CSV resource file
   class CSV < Base
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{csv}
+      %w[csv]
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
-    def save(target = path, options = {})
-      ::CSV.open(target, "wb") do |csv|
+    def save(target = path, _options = {})
+      ::CSV.open(target, 'wb') do |csv|
         @properties.each do |key, value|
           csv << [key, value]
         end
@@ -32,6 +31,5 @@ module Translatomatic::ResourceFile
         @properties[key] = value
       end
     end
-
   end
 end

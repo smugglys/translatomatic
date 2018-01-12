@@ -1,34 +1,33 @@
 RSpec.describe Translatomatic::FileTranslator do
-
-  let(:locale_en) { locale("en") }
-  let(:locale_de) { locale("de") }
+  let(:locale_en) { locale('en') }
+  let(:locale_de) { locale('de') }
 
   context :new do
-    it "creates a new instance" do
-      translator = TestTranslator.new("test")
+    it 'creates a new instance' do
+      translator = TestTranslator.new('test')
       t = create_file_translator(translator: translator)
       expect(t).to be
     end
 
-    it "resolves a translator by name" do
-      t = create_file_translator(translator: "Yandex", yandex_api_key: "123")
+    it 'resolves a translator by name' do
+      t = create_file_translator(translator: 'Yandex', yandex_api_key: '123')
       expect(t).to be
     end
 
-    it "allows specifying multiple translators" do
-      t = create_file_translator(translator: ["Microsoft", "Yandex"],
-        yandex_api_key: "123", microsoft_api_key: "456")
+    it 'allows specifying multiple translators' do
+      t = create_file_translator(translator: %w[Microsoft Yandex],
+                                 yandex_api_key: '123', microsoft_api_key: '456')
       expect(t).to be
     end
   end
 
   context :translate_to_file do
-    it "translates a properties file to a target language" do
-      translator = TestTranslator.new("Bier")
-      contents = "key = Beer"
-      path = create_tempfile("test.properties", contents)
+    it 'translates a properties file to a target language' do
+      translator = TestTranslator.new('Bier')
+      contents = 'key = Beer'
+      path = create_tempfile('test.properties', contents)
       t = create_file_translator(translator: translator)
-      target = t.translate_to_file(path, "de-DE")
+      target = t.translate_to_file(path, 'de-DE')
       expect(target.path.basename.sub_ext('').to_s).to match(/_de-DE$/)
       expect(strip_comments(target.path.read)).to eq("key = Bier\n")
     end
@@ -36,167 +35,164 @@ RSpec.describe Translatomatic::FileTranslator do
     it "doesn't write files or translate strings when using dry run" do
       translator = test_translator
       expect(translator).to_not receive(:translate)
-      path = create_tempfile("test.properties", "key = Beer")
+      path = create_tempfile('test.properties', 'key = Beer')
       t = create_file_translator(translator: translator, dry_run: true)
-      target = t.translate_to_file(path, "de-DE")
+      target = t.translate_to_file(path, 'de-DE')
       expect(target.path).to_not exist
     end
   end
 
   context :translate do
-    it "works with equal source and target languages" do
+    it 'works with equal source and target languages' do
       translator = test_translator
       expect(translator).to_not receive(:translate)
       t = create_file_translator(translator: translator)
       file = create_test_file
-      file.properties = { key: "yoghurt" }
-      result = t.translate(file, "en-US")
-      expect(result.properties[:key]).to eq("yoghurt")
+      file.properties = { key: 'yoghurt' }
+      result = t.translate(file, 'en-US')
+      expect(result.properties[:key]).to eq('yoghurt')
     end
 
-    it "translates multiple sentences separately" do
+    it 'translates multiple sentences separately' do
       translator = test_translator
-      expect(translator).to receive(:translate).
-      with(["Sentence one.", "Sentence two."], locale_en, locale_de).
-      and_return(["Satz eins.", "Satz zwei."])
+      expect(translator).to receive(:translate)
+        .with(['Sentence one.', 'Sentence two.'], locale_en, locale_de)
+        .and_return(['Satz eins.', 'Satz zwei.'])
 
       t = create_file_translator(translator: translator)
       file = create_test_file
-      file.properties = { key: "Sentence one. Sentence two." }
-      result = t.translate(file, "de")
-      expect(result.properties[:key]).to eq("Satz eins. Satz zwei.")
+      file.properties = { key: 'Sentence one. Sentence two.' }
+      result = t.translate(file, 'de')
+      expect(result.properties[:key]).to eq('Satz eins. Satz zwei.')
     end
 
     # TODO: newlines aren't being preserved in text files because we
     # are splitting on sentence boundaries and some translators don't
     # preserve newlines. could split on newline boundaries optionally?
-=begin
-    it "preserves newlines" do
-      translator = test_translator
+    #     it "preserves newlines" do
+    #       translator = test_translator
+    #
+    #       t = create_file_translator(translator: translator)
+    #       file = create_test_file
+    #       file.properties = { key: "- value 1\n- value 2" }
+    #       result = t.translate(file, "de")
+    #       expect(result.properties[:key]).to eq("- Wert 1\n-Wert 2")
+    #     end
 
-      t = create_file_translator(translator: translator)
-      file = create_test_file
-      file.properties = { key: "- value 1\n- value 2" }
-      result = t.translate(file, "de")
-      expect(result.properties[:key]).to eq("- Wert 1\n-Wert 2")
-    end
-=end
-
-    it "uses multiple translators" do
+    it 'uses multiple translators' do
       translator1 = test_translator
       translator2 = test_translator
       t = create_file_translator(translator: [translator1, translator2])
       file = create_test_file
-      file.properties = { key: "yoghurt" }
-      t.translate(file, "en-US")
+      file.properties = { key: 'yoghurt' }
+      t.translate(file, 'en-US')
     end
 
-    it "uses existing translations from the database" do
+    it 'uses existing translations from the database' do
       skip if database_disabled?
 
       translator = TestTranslator.new
       expect(translator).to_not receive(:translate)
 
       # add a translation to the database
-      en_text = create_text(value: "chicken", locale: "en")
-      create_text(value: "buckerk", locale: "de",
-        from_text: en_text, translator: translator.name)
+      en_text = create_text(value: 'chicken', locale: 'en')
+      create_text(value: 'buckerk', locale: 'de',
+                  from_text: en_text, translator: translator.name)
 
       t = create_file_translator(translator: translator)
       file = create_test_file
-      file.properties = { key: "chicken" }
-      result = t.translate(file, "de")
+      file.properties = { key: 'chicken' }
+      result = t.translate(file, 'de')
       expect(result).to be
-      expect(result.properties[:key]).to eq("buckerk")
+      expect(result.properties[:key]).to eq('buckerk')
     end
 
     # exercises bug in translation result: "index 30 out of string".
     # caused by calling update_strings multiple times without updating
     # substring offsets.
-    it "uses translations from database and translator" do
+    it 'uses translations from database and translator' do
       skip if database_disabled?
 
-      translator = test_translator("hello." => "hallo.")
+      translator = test_translator('hello.' => 'hallo.')
 
       # add a translation to the database
-      en_text = create_text(value: "this is a very long sentence.", locale: "en")
-      create_text(value: "short!", locale: "de",
-        from_text: en_text, translator: translator.name)
+      en_text = create_text(value: 'this is a very long sentence.', locale: 'en')
+      create_text(value: 'short!', locale: 'de',
+                  from_text: en_text, translator: translator.name)
 
       t = create_file_translator(translator: translator)
       file = create_test_file
-      file.properties = { key: "this is a very long sentence. hello." }
-      result = t.translate(file, "de")
+      file.properties = { key: 'this is a very long sentence. hello.' }
+      result = t.translate(file, 'de')
       expect(result).to be
-      expect(result.properties[:key]).to eq("short! hallo.")
+      expect(result.properties[:key]).to eq('short! hallo.')
     end
 
-    it "saves translations to the database" do
+    it 'saves translations to the database' do
       skip if database_disabled?
 
-      translator = test_translator("Bier")
+      translator = test_translator('Bier')
       t = create_file_translator(translator: translator)
       file = create_test_file
-      file.properties = { key: "Beer" }
+      file.properties = { key: 'Beer' }
       Translatomatic::Model::Text.destroy_all
-      expect {
-        t.translate(file, "de")
+      expect do
+        t.translate(file, 'de')
         # should add original and translated text to database (2 records)
-      }.to change(Translatomatic::Model::Text, :count).by(2)
+      end.to change(Translatomatic::Model::Text, :count).by(2)
     end
   end
 
   # test preservation of interpolation variable names
   Translatomatic::ResourceFile.types.each do |type|
     type_string = type.to_s.demodulize
-    if type.supports_variable_interpolation?
+    next unless type.supports_variable_interpolation?
 
-      describe "#{type_string} files variable interpolation" do
-        it "preserves variable names" do
-          file = create_test_file(type)
-          original_variable = file.create_variable("var1")
-          translated_variable = file.create_variable("translated_var1")
-          file.properties = {
-            key1: "rah #{original_variable} rah"
-          }
-          translated_text = "zomg #{translated_variable} zomg"
-          translator = test_translator(translated_text)
-          t = create_file_translator(translator: translator, use_database: false)
-          t.translate(file, "de")
-          expected_result = "zomg #{original_variable} zomg"
-          expect(file.properties[:key1]).to eq(expected_result)
-        end
+    describe "#{type_string} files variable interpolation" do
+      it 'preserves variable names' do
+        file = create_test_file(type)
+        original_variable = file.create_variable('var1')
+        translated_variable = file.create_variable('translated_var1')
+        file.properties = {
+          key1: "rah #{original_variable} rah"
+        }
+        translated_text = "zomg #{translated_variable} zomg"
+        translator = test_translator(translated_text)
+        t = create_file_translator(translator: translator, use_database: false)
+        t.translate(file, 'de')
+        expected_result = "zomg #{original_variable} zomg"
+        expect(file.properties[:key1]).to eq(expected_result)
+      end
 
-        it "rejects translations with malformed variable names" do
-          file = create_test_file(type)
-          translator = setup_failed_variable_restore(file)
-          t = create_file_translator(translator: translator, use_database: false)
-          t.translate(file, "de")
-          expect(file.properties[:key1]).to eq(nil)
-        end
+      it 'rejects translations with malformed variable names' do
+        file = create_test_file(type)
+        translator = setup_failed_variable_restore(file)
+        t = create_file_translator(translator: translator, use_database: false)
+        t.translate(file, 'de')
+        expect(file.properties[:key1]).to eq(nil)
+      end
 
-        it "does not save rejected translations to the database" do
-          skip if database_disabled?
+      it 'does not save rejected translations to the database' do
+        skip if database_disabled?
 
-          file = create_test_file(type)
-          translator = setup_failed_variable_restore(file)
-          t = create_file_translator(translator: translator)
-          expect {
-            t.translate(file, "de")
-          }.to_not change(Translatomatic::Model::Text, :count)
-        end
+        file = create_test_file(type)
+        translator = setup_failed_variable_restore(file)
+        t = create_file_translator(translator: translator)
+        expect do
+          t.translate(file, 'de')
+        end.to_not change(Translatomatic::Model::Text, :count)
+      end
 
-        private
+      private
 
-        def setup_failed_variable_restore(file)
-          original_variable = file.create_variable("var1")
-          translated_variable = "MUNGED"
-          file.properties = {
-            key1: "rah #{original_variable} rah"
-          }
-          translated_text = "zomg #{translated_variable} zomg"
-          test_translator(translated_text)
-        end
+      def setup_failed_variable_restore(file)
+        original_variable = file.create_variable('var1')
+        translated_variable = 'MUNGED'
+        file.properties = {
+          key1: "rah #{original_variable} rah"
+        }
+        translated_text = "zomg #{translated_variable} zomg"
+        test_translator(translated_text)
       end
     end
   end
@@ -221,7 +217,7 @@ RSpec.describe Translatomatic::FileTranslator do
   end
 
   def create_text(attributes)
-    if attributes[:locale].kind_of?(String)
+    if attributes[:locale].is_a?(String)
       attributes[:locale] = create_locale(attributes[:locale])
     end
     Translatomatic::Model::Text.create!(attributes)

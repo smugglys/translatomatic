@@ -4,21 +4,20 @@
 # @see https://github.com/flori/json/
 
 module Translatomatic::EscapedUnicode
-
   # Decodes all unicode chars from escape sequences
   # @param text [String]
   # @return [String] The encoded text for chaining
   def self.unescape(text)
     string = text.dup
-    string = string.gsub(%r((?:\\[uU](?:[A-Fa-f\d]{4}))+)) do |c|
+    string = string.gsub(/(?:\\[uU](?:[A-Fa-f\d]{4}))+/) do |c|
       c.downcase!
       bytes = EMPTY_8BIT_STRING.dup
       i = 0
-      while c[6 * i] == ?\\ && c[6 * i + 1] == ?u
+      while c[6 * i] == '\\' && c[6 * i + 1] == 'u'
         bytes << c[6 * i + 2, 2].to_i(16) << c[6 * i + 4, 2].to_i(16)
         i += 1
       end
-      bytes.encode("utf-8", "utf-16be")
+      bytes.encode('utf-8', 'utf-16be')
     end
     string.force_encoding(::Encoding::UTF_8)
 
@@ -40,13 +39,13 @@ module Translatomatic::EscapedUnicode
         [\xf0-\xf4][\x80-\xbf]{3}
         )+ |
         [\x80-\xc1\xf5-\xff]       # invalid
-        )/nx) { |c|
-          c.size == 1 and raise t("unicode.invalid_byte", byte: c)
-          s = c.encode("utf-16be", "utf-8").unpack('H*')[0]
+        )/nx) do |c|
+          (c.size == 1) && raise(t('unicode.invalid_byte', byte: c))
+          s = c.encode('utf-16be', 'utf-8').unpack('H*')[0]
           s.force_encoding(::Encoding::ASCII_8BIT)
           s.gsub!(/.{4}/n, '\\\\u\&')
           s.force_encoding(::Encoding::UTF_8)
-        }
+        end
     string.force_encoding(::Encoding::UTF_8)
     text.replace string
     text
@@ -81,10 +80,8 @@ module Translatomatic::EscapedUnicode
     "\x1c" => '\u001c',
     "\x1d" => '\u001d',
     "\x1e" => '\u001e',
-    "\x1f" => '\u001f',
-  }
+    "\x1f" => '\u001f'
+  }.freeze
 
-  EMPTY_8BIT_STRING = ''
-  EMPTY_8BIT_STRING.force_encoding(::Encoding::ASCII_8BIT)
-
+  EMPTY_8BIT_STRING = ''.force_encoding(::Encoding::ASCII_8BIT).freeze
 end

@@ -1,7 +1,6 @@
 module Translatomatic
   # @!visibility private
   module DefineOptions
-
     # @!visibility private
     module ClassMethods
       attr_reader :options

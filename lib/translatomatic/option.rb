@@ -56,8 +56,7 @@ module Translatomatic
         desc: @description,
         default: @default,
         aliases: @aliases,
-        enum: @enum ? @enum.collect { |i| i.to_s } : nil
-      }
+        enum: @enum ? @enum.collect(&:to_s) : nil }
     end
 
     # Retrieve all options from an object or list of objects.
@@ -67,9 +66,9 @@ module Translatomatic
       options = []
       if object.respond_to?(:options)
         options += options_from_object(object.options)
-      elsif object.kind_of?(Array)
+      elsif object.is_a?(Array)
         object.each do |item|
-          if item.kind_of?(Translatomatic::Option)
+          if item.is_a?(Translatomatic::Option)
             options << item
           elsif item.respond_to?(:options)
             options += options_from_object(item.options)

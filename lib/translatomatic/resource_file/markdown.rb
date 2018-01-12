@@ -4,10 +4,9 @@ require 'reverse_markdown'
 module Translatomatic::ResourceFile
   # Markdown resource file
   class Markdown < HTML
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{md}
+      %w[md]
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
@@ -38,13 +37,10 @@ module Translatomatic::ResourceFile
       else
         html = Kramdown::Document.new(markdown).to_html
         # parse html with nokogiri
-        doc = Nokogiri::HTML(html) do |config|
-          config.noblanks
-        end
+        doc = Nokogiri::HTML(html, &:noblanks)
         parse_error(doc.errors[0]) if doc.errors.present?
         doc
       end
     end
-
   end  # class
 end    # module

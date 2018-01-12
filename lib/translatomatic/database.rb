@@ -2,7 +2,6 @@ require 'active_record'
 
 # Database functions
 class Translatomatic::Database
-
   class << self
     # @param options [Hash<Symbol,Object>] Database options
     # @return [boolean] True if we can connect to the database
@@ -15,8 +14,10 @@ class Translatomatic::Database
     @env = options[:database_env] || DEFAULT_ENV
     @db_config = database_config(@env, options)
     @env_config = @db_config
-    raise t("database.no_environment",
-      env: @env, file: db_config_path) unless @env_config[@env]
+    unless @env_config[@env]
+      raise t('database.no_environment',
+              env: @env, file: db_config_path)
+    end
     @env_config = @env_config[@env] || {}
 
     ActiveRecord::Base.configurations = @db_config
@@ -31,12 +32,10 @@ class Translatomatic::Database
   # Connect to the database
   # @return [boolean] True if the connection was established
   def connect
-    begin
-      ActiveRecord::Base.establish_connection(@env_config)
-      true
-    rescue LoadError
-      false
-    end
+    ActiveRecord::Base.establish_connection(@env_config)
+    true
+  rescue LoadError
+    false
   end
 
   # Disconnect from the database
@@ -52,7 +51,7 @@ class Translatomatic::Database
       return true if sqlite_database_exists?
       return false unless connect
       ActiveRecord::Base.connection.tables
-    rescue
+    rescue StandardError
       return false
     end
     true
@@ -64,21 +63,19 @@ class Translatomatic::Database
     return false unless connect
     ActiveRecord::Migrator.migrate(MIGRATIONS_PATH)
     ActiveRecord::Base.clear_cache!
-    log.debug t("database.migrated")
+    log.debug t('database.migrated')
   end
 
   # Create the database
   # @return [boolean] True if the database was created
   def create
-    begin
-      ActiveRecord::Tasks::DatabaseTasks.create(@env_config)
-      log.debug t("database.created")
-      true
-    rescue LoadError => e
-      log.debug t("database.could_not_create")
-      log.error e.message
-      false
-    end
+    ActiveRecord::Tasks::DatabaseTasks.create(@env_config)
+    log.debug t('database.created')
+    true
+  rescue LoadError => e
+    log.debug t('database.could_not_create')
+    log.error e.message
+    false
   end
 
   # Drop the database
@@ -86,7 +83,7 @@ class Translatomatic::Database
   def drop
     disconnect
     ActiveRecord::Tasks::DatabaseTasks.drop(@env_config)
-    log.debug t("database.deleted")
+    log.debug t('database.deleted')
   end
 
   private
@@ -102,26 +99,27 @@ class Translatomatic::Database
     File.realpath(File.join(*parts))
   end
 
-  DB_PATH = join_path(File.dirname(__FILE__), "..", "..", "db")
-  INTERNAL_CONFIG = File.join(DB_PATH, "database.yml")
-  CUSTOM_CONFIG = File.join(Dir.home, ".translatomatic", "database.yml")
+  DB_PATH = join_path(File.dirname(__FILE__), '..', '..', 'db')
+  INTERNAL_CONFIG = File.join(DB_PATH, 'database.yml')
+  CUSTOM_CONFIG = File.join(Dir.home, '.translatomatic', 'database.yml')
   DEFAULT_CONFIG = File.exist?(CUSTOM_CONFIG) ? CUSTOM_CONFIG : INTERNAL_CONFIG
-  MIGRATIONS_PATH = File.join(DB_PATH, "migrate")
-  GEM_ROOT = join_path(File.dirname(__FILE__), "..", "..")
-  DEFAULT_ENV = "production"
+  MIGRATIONS_PATH = File.join(DB_PATH, 'migrate')
+  GEM_ROOT = join_path(File.dirname(__FILE__), '..', '..')
+  DEFAULT_ENV = 'production'.freeze
 
   define_options(
-    { name: :database_config, desc: t("database.config_file"),
+    { name: :database_config, desc: t('database.config_file'),
       default: DEFAULT_CONFIG, type: :path },
-    { name: :database_env, desc: t("database.env"),
-      default: DEFAULT_ENV })
+    { name: :database_env, desc: t('database.env'),
+      default: DEFAULT_ENV }
+  )
 
   # return path to database config
   def database_config_path(options)
-    if options[:database_env] == "test"
-      INTERNAL_CONFIG  # rspec
+    if options[:database_env] == 'test'
+      INTERNAL_CONFIG # rspec
     elsif options[:database_config]
-      return options[:database_config]
+      options[:database_config]
     else
       DEFAULT_CONFIG
     end
@@ -129,7 +127,7 @@ class Translatomatic::Database
 
   # return database config as a hash
   def database_config(env, options)
-    if options[:database_config].kind_of?(Hash)
+    if options[:database_config].is_a?(Hash)
       return { env => options[:database_config] }
     end
 
@@ -137,7 +135,6 @@ class Translatomatic::Database
     dbconfig = File.read(db_config_path)
     dbconfig.gsub!(/\$HOME/, Dir.home)
     dbconfig.gsub!(/\$GEM_ROOT/, GEM_ROOT)
-    YAML::load(dbconfig) || {}
+    YAML.safe_load(dbconfig) || {}
   end
-
 end

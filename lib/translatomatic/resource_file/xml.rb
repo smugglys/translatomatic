@@ -1,10 +1,9 @@
 module Translatomatic::ResourceFile
   # XML resource file
   class XML < Base
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{xml}
+      %w[xml]
     end
 
     # (see Translatomatic::ResourceFile::Base#set)
@@ -64,9 +63,7 @@ module Translatomatic::ResourceFile
     end
 
     def read_doc
-      doc = Nokogiri::XML(@path.open) do |config|
-        config.noblanks
-      end
+      doc = Nokogiri::XML(@path.open, &:noblanks)
       parsing_error(doc.errors[0]) if doc.errors.present?
       doc
     end
@@ -93,7 +90,7 @@ module Translatomatic::ResourceFile
     end
 
     def empty_doc
-      Nokogiri::XML("<root />")
+      Nokogiri::XML('<root />')
     end
 
     def text_nodes_xpath
@@ -101,7 +98,7 @@ module Translatomatic::ResourceFile
     end
 
     def whitespace?(text)
-      text == nil || text.strip.length == 0
+      text.nil? || text.strip.empty?
     end
   end # class
 end   # module

@@ -1,6 +1,5 @@
 # Converts files from one format to another
 class Translatomatic::Converter
-
   def initialize(options = {})
     @options = options
   end
@@ -13,8 +12,8 @@ class Translatomatic::Converter
   def convert(source, target)
     source_path = Pathname.new(source.to_s)
     target_path = Pathname.new(target.to_s)
-    raise t("file.not_found", file: source.to_s) unless source_path.file?
-    raise t("file.directory", file: target.to_s) if target_path.directory?
+    raise t('file.not_found', file: source.to_s) unless source_path.file?
+    raise t('file.directory', file: target.to_s) if target_path.directory?
 
     source_file = load_file(source_path)
     target_file = load_file(target_path)
@@ -38,8 +37,7 @@ class Translatomatic::Converter
 
   def load_file(path)
     file = Translatomatic::ResourceFile.load(path)
-    raise t("file.unsupported", file: path) unless file
+    raise t('file.unsupported', file: path) unless file
     file
   end
-
 end

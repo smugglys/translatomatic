@@ -2,10 +2,9 @@ module Translatomatic::ResourceFile
   # Subtitle resource file.
   # requires 'titlekit' gem
   class Subtitle < Base
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{srt ass ssa}
+      %w[srt ass ssa]
     end
 
     # (see Translatomatic::ResourceFile::Base.enabled?)
@@ -21,9 +20,7 @@ module Translatomatic::ResourceFile
     # (see Translatomatic::ResourceFile::Base#set)
     def set(key, value)
       super(key, value)
-      if @subtitle_map.include?(key)
-        @subtitle_map[key][:lines] = value
-      end
+      @subtitle_map[key][:lines] = value if @subtitle_map.include?(key)
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
@@ -48,7 +45,7 @@ module Translatomatic::ResourceFile
     def init_subtitle_map
       # map of key1 => subtitle, key2 => subtitle, ...
       @keynum = 1
-      @subtitles.each_with_index do |subtitle, i|
+      @subtitles.each_with_index do |subtitle, _i|
         key = "key#{@keynum}"
         @keynum += 1
         @subtitle_map[key] = subtitle
@@ -71,7 +68,7 @@ module Translatomatic::ResourceFile
       import_export_class(path).import(read_contents(path))
     end
 
-    def export(target, options = {})
+    def export(target, _options = {})
       content = import_export_class(target).export(@subtitles) || ''
       target.write(content.chomp)
     end

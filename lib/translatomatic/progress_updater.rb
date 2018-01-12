@@ -15,5 +15,4 @@ class Translatomatic::ProgressUpdater
   def untranslated_texts(texts)
     @progressbar.total -= texts.length
   end
-
 end

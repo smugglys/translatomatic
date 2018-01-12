@@ -1,5 +1,4 @@
 module DatabaseHelpers
-
   def create_locale(attributes = {})
     Translatomatic::Model::Locale.find_or_create_by!(attributes)
   end
@@ -16,12 +15,12 @@ module DatabaseHelpers
   # connects to test database.
   # returns translatomatic database object, or nil if disabled
   def use_test_database
-    #log.debug "Setting up test database"
-    options = { database_env: "test" }
+    # log.debug "Setting up test database"
+    options = { database_env: 'test' }
     if Translatomatic::Database.enabled?(options)
       Translatomatic::Database.new(options)
     else
-      #log.debug "database is disabled"
+      # log.debug "database is disabled"
       TestConfig.instance.database_disabled = true
       nil
     end
@@ -34,5 +33,4 @@ module DatabaseHelpers
       db.migrate
     end
   end
-
 end

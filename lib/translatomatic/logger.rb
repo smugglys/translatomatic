@@ -1,6 +1,5 @@
 # Logging
 class Translatomatic::Logger
-
   # @return [ProgressBar] A progress bar
   attr_accessor :progressbar
 
@@ -8,7 +7,7 @@ class Translatomatic::Logger
   def initialize
     @logger = Logger.new(STDOUT)
     @logger.level = ENV['DEBUG'] ? Logger::DEBUG : Logger::INFO
-    @logger.formatter = proc do |severity, datetime, progname, msg|
+    @logger.formatter = proc do |_severity, _datetime, _progname, msg|
       "#{msg}\n"
     end
   end
@@ -32,5 +31,4 @@ class Translatomatic::Logger
     @logger.send(name, *args)
     @progressbar.refresh(force: true) if @progressbar && !@progressbar.stopped?
   end
-
 end

@@ -3,7 +3,6 @@ require 'thor'
 module Translatomatic::CLI
   # Base class for command line interface classes
   class Base < Thor
-
     private
 
     include Translatomatic::Util
@@ -20,7 +19,7 @@ module Translatomatic::CLI
     def parse_list(list, default = [])
       # use the default list if the list is empty
       list = default if list.nil? || list.empty?
-      list = [list] unless list.kind_of?(Array)
+      list = [list] unless list.is_a?(Array)
       # split list entries on ','
       list.compact.collect { |i| i.split(/[, ]/) }.flatten.compact
     end
@@ -28,24 +27,22 @@ module Translatomatic::CLI
     # run the give code block, display exceptions.
     # return true if the code ran without exceptions
     def run
-      begin
-        merge_options_and_config
-        @dry_run = cli_option(:dry_run)
-        conf.logger.level = Logger::DEBUG if cli_option(:debug)
-        log.info(t("cli.dry_run")) if @dry_run
+      merge_options_and_config
+      @dry_run = cli_option(:dry_run)
+      conf.logger.level = Logger::DEBUG if cli_option(:debug)
+      log.info(t('cli.dry_run')) if @dry_run
 
-        yield
-        true
-      rescue Interrupt
-        puts "\n" + t("cli.aborted")
-        false
-      rescue Exception => e
-        finish_log
-        log.error(e.message)
-        log.debug(e.backtrace.join("\n"))
-        raise e if ENV["TEST"] # reraise exceptions in test
-        false
-      end
+      yield
+      true
+    rescue Interrupt
+      puts "\n" + t('cli.aborted')
+      false
+    rescue Exception => e
+      finish_log
+      log.error(e.message)
+      log.debug(e.backtrace.join("\n"))
+      raise e if ENV['TEST'] # reraise exceptions in test
+      false
     end
 
     def finish_log
@@ -64,7 +61,7 @@ module Translatomatic::CLI
     # create @options from options and config
     def merge_options_and_config
       # start with command line options
-      @options = options.transform_keys { |i| i.to_sym }
+      @options = options.transform_keys(&:to_sym)
       # fill missing entries with config values
       Translatomatic::Config.options.each do |option|
         unless @options.include?(option.name)
@@ -74,8 +71,7 @@ module Translatomatic::CLI
     end
 
     def empty_array?(value)
-      value.kind_of?(Array) && value.empty?
+      value.is_a?(Array) && value.empty?
     end
-
   end
 end

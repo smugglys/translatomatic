@@ -4,11 +4,11 @@ class TestTranslator < Translatomatic::Translator::Base
     @mapping = result
   end
 
-  def perform_translate(strings, from, to)
-    if @mapping.kind_of?(Hash)
+  def perform_translate(strings, _from, _to)
+    if @mapping.is_a?(Hash)
       strings.collect { |i| @mapping[i] }
     else
-      strings.collect { |i| @mapping }
+      strings.collect { |_i| @mapping }
     end
   end
 end

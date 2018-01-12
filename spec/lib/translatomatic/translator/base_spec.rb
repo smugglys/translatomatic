@@ -1,8 +1,6 @@
 RSpec.describe Translatomatic::Translator::Base do
-
   class DummyTranslator < Translatomatic::Translator::Base
-
-    ERROR_MESSAGE = "translation error"
+    ERROR_MESSAGE = 'translation error'.freeze
 
     attr_accessor :raise_error_count
     attr_accessor :use_perform_fetch_translations
@@ -10,14 +8,14 @@ RSpec.describe Translatomatic::Translator::Base do
 
     def perform_translate(strings, from, to)
       if use_perform_fetch_translations
-        uri = URI.parse("http://www.example.com")
+        uri = URI.parse('http://www.example.com')
         perform_fetch_translations(uri, strings, from, to)
       else
-        return ["Result"]
+        ['Result']
       end
     end
 
-    def fetch_translation(request, strings, from, to)
+    def fetch_translation(_request, _strings, _from, _to)
       @errors ||= 0
       @fetch_count ||= 0
       @fetch_count += 1
@@ -26,44 +24,42 @@ RSpec.describe Translatomatic::Translator::Base do
         raise ERROR_MESSAGE
       end
 
-      return ["Result"]
+      ['Result']
     end
-
   end
 
   context :languages do
-    it "returns an empty language list by default" do
+    it 'returns an empty language list by default' do
       t = DummyTranslator.new
       expect(t.languages).to be_empty
     end
   end
 
   context :name do
-    it "returns the translator name" do
+    it 'returns the translator name' do
       t = DummyTranslator.new
       expect(t.name).to eq(DummyTranslator.to_s)
     end
   end
 
   context :perform_fetch_translations do
-    it "retries 3 times on error" do
+    it 'retries 3 times on error' do
       t = DummyTranslator.new
       t.raise_error_count = 2
       t.use_perform_fetch_translations = true
-      expect {
-        t.translate("String", "en", "de")
-      }.to_not raise_error
+      expect do
+        t.translate('String', 'en', 'de')
+      end.to_not raise_error
     end
 
-    it "stops after failing 3 times" do
+    it 'stops after failing 3 times' do
       t = DummyTranslator.new
       t.raise_error_count = 3
       t.use_perform_fetch_translations = true
-      expect {
-        t.translate("String", "en", "de")
-      }.to raise_error(DummyTranslator::ERROR_MESSAGE)
+      expect do
+        t.translate('String', 'en', 'de')
+      end.to raise_error(DummyTranslator::ERROR_MESSAGE)
       expect(t.fetch_count).to eq(3)
     end
   end
-
 end

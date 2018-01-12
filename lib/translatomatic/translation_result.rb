@@ -3,7 +3,6 @@ require 'set'
 module Translatomatic
   # Stores results of a translation
   class TranslationResult
-
     # @return [Translatomatic::ResourceFile::Base] The resource file
     attr_reader :file
 
@@ -31,7 +30,7 @@ module Translatomatic
       @to_locale = to_locale
 
       # duplicate strings
-      @properties = file.properties.transform_values { |i| i.dup }
+      @properties = file.properties.transform_values(&:dup)
 
       @properties.each do |key, value|
         # split property value into sentences
@@ -75,12 +74,12 @@ module Translatomatic
       keys = @value_to_keys[original.to_s]
       raise "no key mapping for text '#{original}'" unless keys
       keys.each do |key|
-        #value = @properties[key]
-        if original.kind_of?(Translatomatic::String) && original.substring?
-          #log.debug("#{value[original.offset, original.length]} -> #{translated}")
+        # value = @properties[key]
+        if original.is_a?(Translatomatic::String) && original.substring?
+          # log.debug("#{value[original.offset, original.length]} -> #{translated}")
           @properties[key][original.offset, original.length] = translated
         else
-          #log.debug("#{key} -> #{translated}")
+          # log.debug("#{key} -> #{translated}")
           @properties[key] = translated
         end
       end

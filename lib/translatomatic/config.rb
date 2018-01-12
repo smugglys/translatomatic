@@ -12,7 +12,6 @@ require 'singleton'
 # taking precedence over values read earlier.
 
 class Translatomatic::Config
-
   # @return [Logger] The logger instance
   attr_accessor :logger
 
@@ -72,7 +71,7 @@ class Translatomatic::Config
   def get(key, context = nil)
     key = check_valid_key(key)
     option = option(key)
-    value = option.default  # set to default value
+    value = option.default # set to default value
 
     if context.nil?
       # find the first setting in the following order
@@ -85,9 +84,7 @@ class Translatomatic::Config
     else
       # context is set
       context = check_valid_context(context)
-      if @settings[context].include?(key)
-        value = @settings[context][key]
-      end
+      value = @settings[context][key] if @settings[context].include?(key)
     end
 
     # cast value to expected type
@@ -133,7 +130,7 @@ class Translatomatic::Config
 
   # @return [Array<Translatomatic::Option] all available options
   def self.options
-    self.config_options.values
+    config_options.values
   end
 
   # The project path is found by searching for a '.translatomatic' directory
@@ -143,9 +140,7 @@ class Translatomatic::Config
   #   path is unknown.
   def project_path
     if @project_settings_path
-      File.absolute_path(File.join(File.dirname(@project_settings_path), ".."))
-    else
-      nil
+      File.absolute_path(File.join(File.dirname(@project_settings_path), '..'))
     end
   end
 
@@ -153,12 +148,12 @@ class Translatomatic::Config
 
   include Translatomatic::Util
 
-  SETTINGS_DIR = ".translatomatic"
-  SETTINGS_PATH = File.join(SETTINGS_DIR, "config.yml")
+  SETTINGS_DIR = '.translatomatic'.freeze
+  SETTINGS_PATH = File.join(SETTINGS_DIR, 'config.yml')
   USER_SETTINGS_PATH = File.join(Dir.home, SETTINGS_PATH)
 
   # valid context list in order of precedence
-  CONTEXTS = [:project, :user, :env]
+  CONTEXTS = %i[project user env].freeze
 
   def set_or_add(key, value, context, mode)
     update(key, context, mode) do |option, ctx|
@@ -193,13 +188,13 @@ class Translatomatic::Config
   def update(key, context, mode)
     key = check_valid_key(key)
     option = option(key)
-    raise t("config.command_line_only") if option.command_line_only
+    raise t('config.command_line_only') if option.command_line_only
     context ||= default_context
     context = :user if option.user_context_only || key.to_s.match(/api_key/)
     context = check_valid_context(context)
 
     if (mode == :add || mode == :subtract) && !is_array_type?(option.type)
-      raise t("config.non_array_key", key: key)
+      raise t('config.non_array_key', key: key)
     end
 
     yield option, context
@@ -208,7 +203,7 @@ class Translatomatic::Config
   def save_context(context, path)
     return unless path
     FileUtils.mkdir_p(File.dirname(path))
-    File.open(path, "w") { |f| f.puts @settings[context].to_yaml }
+    File.open(path, 'w') { |f| f.puts @settings[context].to_yaml }
   end
 
   # load configuration from the yaml file at path
@@ -264,17 +259,17 @@ class Translatomatic::Config
   end
 
   def is_array_type?(type)
-    [:path_array, :array].include?(type)
+    %i[path_array array].include?(type)
   end
 
   # cast value, used on get and set
-  def cast(value, type, context)
-    value = value[0] if value.kind_of?(Array) && !is_array_type?(type)
+  def cast(value, type, _context)
+    value = value[0] if value.is_a?(Array) && !is_array_type?(type)
 
     case type
     when :boolean
-      return true if ["true", "t", "yes", "on"].include?(value)
-      return false if ["false", "f", "no", "off"].include?(value)
+      return true if %w[true t yes on].include?(value)
+      return false if %w[false f no off].include?(value)
       return value ? true : false
     when :string
       return value.nil? ? value : value.to_s
@@ -282,7 +277,7 @@ class Translatomatic::Config
       if value.nil?
         value = []
       else
-        value = [value] unless value.kind_of?(Array)
+        value = [value] unless value.is_a?(Array)
         value = value.collect { |i| i.split(/[, ]/) }.flatten.compact
       end
     else
@@ -326,11 +321,9 @@ class Translatomatic::Config
   def context_path(context)
     case context
     when :user
-      File.join(File.dirname(user_settings_path), "..")
+      File.join(File.dirname(user_settings_path), '..')
     when :project
       project_path
-    else
-      nil
     end
   end
 
@@ -340,14 +333,14 @@ class Translatomatic::Config
 
   def check_valid_key(key)
     key = key ? key.to_sym : nil
-    raise t("config.invalid_key", key: key) unless valid_key?(key)
+    raise t('config.invalid_key', key: key) unless valid_key?(key)
     key
   end
 
   def check_valid_context(context)
     context = context ? context.to_sym : nil
     valid = valid_context?(context)
-    raise t("config.invalid_context", context: context) unless valid
+    raise t('config.invalid_context', context: context) unless valid
     context
   end
 
@@ -376,7 +369,7 @@ class Translatomatic::Config
   def initialize
     @logger = Translatomatic::Logger.new
     lang = (ENV['LANG'] || '').split(/\./)[0]
-    @default_locale = Translatomatic::Locale.parse(lang).language || "en"
+    @default_locale = Translatomatic::Locale.parse(lang).language || 'en'
     @user_settings_path = USER_SETTINGS_PATH
     @project_settings_path = find_project_settings
     reset

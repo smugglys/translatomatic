@@ -4,10 +4,9 @@ module Translatomatic::ResourceFile
   # YAML resource file
   # @see http://www.yaml.org/
   class YAML < Base
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{yml yaml}
+      %w[yml yaml]
     end
 
     # (see Translatomatic::ResourceFile::Base.is_key_value?)
@@ -45,7 +44,7 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#create_variable)
     def create_variable(name)
-      return "%{#{name}}"
+      "%{#{name}}"
     end
 
     # (see Translatomatic::ResourceFile::Base#variable_regex)
@@ -76,6 +75,5 @@ module Translatomatic::ResourceFile
     def comment(text)
       "# #{text}\n"
     end
-
   end
 end

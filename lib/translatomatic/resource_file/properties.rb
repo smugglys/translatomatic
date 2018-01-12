@@ -4,10 +4,9 @@ module Translatomatic::ResourceFile
   # Properties resource file
   # @see https://docs.oracle.com/javase/tutorial/essential/environment/properties.html
   class Properties < Base
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{properties}
+      %w[properties]
     end
 
     # (see Translatomatic::ResourceFile::Base.is_key_value?)
@@ -22,11 +21,11 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#save)
     def save(target = path, options = {})
-      out = ""
+      out = ''
       out += add_created_by unless options[:no_created_by]
       properties.each do |key, value|
         # TODO: maintain original line ending format?
-        value = value.gsub("\n", "\\n") if value  # convert newlines to \n
+        value = value.gsub("\n", '\\n') if value # convert newlines to \n
         out += "#{key} = #{value}\n"
       end
       # escape unicode characters
@@ -36,7 +35,7 @@ module Translatomatic::ResourceFile
 
     # (see Translatomatic::ResourceFile::Base#create_variable)
     def create_variable(name)
-      return "{#{name}}"
+      "{#{name}}"
     end
 
     # (see Translatomatic::ResourceFile::Base#variable_regex)
@@ -63,16 +62,16 @@ module Translatomatic::ResourceFile
       # convert escaped unicode characters into unicode
       contents = Translatomatic::EscapedUnicode.unescape(contents)
       result = {}
-      contents.gsub!(/\\\s*\n\s*/m, '')  # put multi line strings on one line
+      contents.gsub!(/\\\s*\n\s*/m, '') # put multi line strings on one line
       lines = contents.split("\n")
 
       lines.each do |line|
         line.strip!
-        next if line.length == 0
-        equal_idx = line.index("=")
-        colon_idx = line.index(":")
+        next if line.empty?
+        equal_idx = line.index('=')
+        colon_idx = line.index(':')
 
-        if line[0] == ?! || line[0] == ?#
+        if line[0] == '!' || line[0] == '#'
           # comment
           # TODO: translate comments or keep originals?
           next
@@ -81,11 +80,10 @@ module Translatomatic::ResourceFile
           return {}
         end
         name, value = line.split(/\s*[=:]\s*/, 2)
-        value = value.gsub("\\n", "\n")      # convert \n to newlines
+        value = value.gsub('\\n', "\n") # convert \n to newlines
         result[name] = value
       end
       result
     end
-
   end
 end

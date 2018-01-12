@@ -4,10 +4,9 @@ module Translatomatic::ResourceFile
   # Property list resource file
   # @see https://en.wikipedia.org/wiki/Property_list
   class PO < Base
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{po pot}
+      %w[po pot]
     end
 
     # (see Translatomatic::ResourceFile::Base.is_key_value?)
@@ -19,15 +18,7 @@ module Translatomatic::ResourceFile
     def set(key, value)
       super(key, value)
 
-      unless @pomap.include?(key)
-        # new key, create po entry
-        po << {
-          msgid: key,
-          msgstr: value
-        }
-        entry = po.entries[-1]
-        add_entry(entry, :msgid, 0)
-      else
+      if @pomap.include?(key)
         po_property = @pomap[key]
         entry = po_property.entry
         if entry.plural?
@@ -37,6 +28,14 @@ module Translatomatic::ResourceFile
         else
           entry.msgstr = value
         end
+      else
+        # new key, create po entry
+        po << {
+          msgid: key,
+          msgstr: value
+        }
+        entry = po.entries[-1]
+        add_entry(entry, :msgid, 0)
       end
     end
 
@@ -95,13 +94,12 @@ module Translatomatic::ResourceFile
     end
 
     def pomap_to_properties
-      @pomap.transform_values { |i| i.value }
+      @pomap.transform_values(&:value)
     end
 
     def add_entry(entry, key, index)
       untranslated = entry.send(key)
       @pomap[untranslated] = PoProperty.new(entry, index) if untranslated
     end
-
   end # class
 end   # module

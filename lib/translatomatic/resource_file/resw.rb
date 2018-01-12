@@ -1,10 +1,9 @@
 module Translatomatic::ResourceFile
   # Windows resources file (XML)
   class RESW < XML
-
     # (see Translatomatic::ResourceFile::Base.extensions)
     def self.extensions
-      %w{resw resx}
+      %w[resw resx]
     end
 
     # (see Translatomatic::ResourceFile::Base.is_key_value?)
@@ -27,9 +26,9 @@ module Translatomatic::ResourceFile
 
     def create_node(key, value)
       # add xml: <data name="key"><value>value</value></data>
-      data_node = Nokogiri::XML::Node.new("data", @doc)
-      data_node["name"] = key
-      value_node = Nokogiri::XML::Node.new("value", @doc)
+      data_node = Nokogiri::XML::Node.new('data', @doc)
+      data_node['name'] = key
+      value_node = Nokogiri::XML::Node.new('value', @doc)
       text_node = Nokogiri::XML::Text.new(value, @doc)
       value_node.add_child(text_node)
       data_node.add_child(value_node)
@@ -39,6 +38,5 @@ module Translatomatic::ResourceFile
       @nodemap[key] = text_node
       @properties[key] = value
     end
-
   end # class
 end   # module

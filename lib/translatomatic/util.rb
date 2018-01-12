@@ -1,11 +1,11 @@
 # Utility functions, used internally
 module Translatomatic::Util
-
   private
 
   # @!visibility private
   module CommonMethods
     private
+
     def t(key, options = {})
       tkey = "translatomatic.#{key}"
       raise "missing translation: #{tkey}" unless I18n.exists?(tkey)
@@ -18,6 +18,7 @@ module Translatomatic::Util
   # @!visibility private
   module ClassMethods
     private
+
     include CommonMethods
   end
 

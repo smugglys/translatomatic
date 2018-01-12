@@ -1,7 +1,6 @@
 module Translatomatic
   # A string object with an associated locale.
   class String
-
     # @return [String] The string
     attr_reader :value
 
@@ -57,7 +56,7 @@ module Translatomatic
         :paragraph
       else
         script = script_data
-        @value.strip.match(/#{script.delimiter}\s*$/) ? :sentence : :phrase
+        @value.strip =~ /#{script.delimiter}\s*$/ ? :sentence : :phrase
       end
     end
 
@@ -75,12 +74,12 @@ module Translatomatic
       matches.each do |match|
         substring = match.to_s
         # find leading and trailing whitespace
-        next if substring.length == 0
+        next if substring.empty?
 
         parts = substring.match(/\A(\s*)(.*?)(\s*)\z/m).to_a
         value = parts[2]
         offset = match.offset(0)[0]
-        offset += parts[1].length  # leading whitespace
+        offset += parts[1].length # leading whitespace
         strings << self.class.new(value, locale, offset: offset, parent: self)
       end
 
@@ -91,7 +90,7 @@ module Translatomatic
     # @return [boolean] true if other is a {Translatomatic::String} with
     #   the same value and locale.
     def eql?(other)
-      other.kind_of?(Translatomatic::String) && other.hash == hash
+      other.is_a?(Translatomatic::String) && other.hash == hash
     end
 
     # (see #eql?)
@@ -118,31 +117,31 @@ module Translatomatic
         @delimiter = delimiter
         @trailing_space = trailing_space
         @left_to_right = direction == :ltr
-        raise "invalid direction" unless [:ltr, :rtl].include?(direction)
+        raise 'invalid direction' unless %i[ltr rtl].include?(direction)
       end
     end
 
     SCRIPT_DATA = [
       # [language, delimiter, trailing space, direction]
       # japanese, no space after
-      ["ja", "\u3002", false, :ltr],
+      ['ja', "\u3002", false, :ltr],
       # chinese, no space after
-      ["zh", "\u3002", false, :ltr],  # can be written any direction
-       # armenian, space after
-      ["hy", ":", true, :ltr],
+      ['zh', "\u3002", false, :ltr], # can be written any direction
+      # armenian, space after
+      ['hy', ':', true, :ltr],
       # hindi, space after
-      ["hi", "।", true, :ltr],
+      ['hi', '।', true, :ltr],
       # urdu, space after, right to left
-      ["ur", "\u06d4", true, :rtl],
+      ['ur', "\u06d4", true, :rtl],
       # thai, spaces used to separate sentences
-      ["th", "\\s", false, :ltr],
+      ['th', '\\s', false, :ltr],
       # arabic, right to left
-      ["ar", "\\.", true, :rtl],
+      ['ar', '\\.', true, :rtl],
       # hebrew, right to left
-      ["he", "\\.", true, :rtl],
+      ['he', '\\.', true, :rtl],
       # all other languages
-      ["default", "\\.", true, :ltr],
-    ]
+      ['default', '\\.', true, :ltr]
+    ].freeze
 
     class << self
       attr_reader :script_data
@@ -152,7 +151,7 @@ module Translatomatic
       script_data = {}
       SCRIPT_DATA.each do |lang, delimiter, trailing, ltr|
         script = Script.new(language: lang, delimiter: delimiter,
-          trailing_space: trailing, direction: ltr)
+                            trailing_space: trailing, direction: ltr)
         script_data[lang] = script
       end
       @script_data = script_data
@@ -161,7 +160,7 @@ module Translatomatic
     def matches(s, re)
       start_at = 0
       matches = []
-      while(m = s.match(re, start_at))
+      while (m = s.match(re, start_at))
         break if m.to_s.empty?
         matches.push(m)
         start_at = m.end(0)
@@ -171,18 +170,17 @@ module Translatomatic
 
     def sentence_regex
       script = script_data
-      if script.trailing_space
-        regex = /.*?(?:#{script.delimiter}\s+|\z|\n)/m
-      else
-        # no trailing space after delimiter
-        regex = /.*?(?:#{script.delimiter}|\z|\n)/m
-      end
+      regex = if script.trailing_space
+                /.*?(?:#{script.delimiter}\s+|\z|\n)/m
+              else
+                # no trailing space after delimiter
+                /.*?(?:#{script.delimiter}|\z|\n)/m
+              end
     end
 
     def script_data
       data = self.class.script_data
-      data[locale.language] || data["default"]
+      data[locale.language] || data['default']
     end
-
   end
 end

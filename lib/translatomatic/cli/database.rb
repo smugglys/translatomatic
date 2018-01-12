@@ -1,8 +1,7 @@
 module Translatomatic::CLI
   # Database functions for the command line interface
   class Database < Base
-
-    desc "search string [locale]", t("cli.database.search")
+    desc 'search string [locale]', t('cli.database.search')
     thor_options(self, Translatomatic::CLI::CommonOptions)
     thor_options(self, Translatomatic::Database)
     # Search database for the given string
@@ -17,20 +16,19 @@ module Translatomatic::CLI
         texts = texts.where(locale: db_locale)
       end
       texts.find_each do |text|
-        puts "(%s) %s" % [text.locale, text.value]
+        puts format('(%s) %s', text.locale, text.value)
         text.translations.each do |translation|
-          puts "  -> (%s) %s" % [translation.locale, translation.value]
+          puts format('  -> (%s) %s', translation.locale, translation.value)
         end
         puts
       end
     end
 
-    desc "drop", t("cli.database.drop")
+    desc 'drop', t('cli.database.drop')
     thor_options(self, Translatomatic::CLI::CommonOptions)
     thor_options(self, Translatomatic::Database)
     def drop
       Translatomatic::Database.new(options).drop
     end
-
   end
 end

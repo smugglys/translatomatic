@@ -8,14 +8,13 @@ require 'translatomatic/translator/my_memory'
 # Provides methods to access and create instances of
 # interfaces to translation APIs.
 module Translatomatic::Translator
-
   class << self
     include Translatomatic::Util
   end
 
   # @return [Class] The translator class corresponding to the given name
   def self.find(name)
-    name && !name.empty? ? self.const_get(name) : nil
+    name && !name.empty? ? const_get(name) : nil
   end
 
   # Resolve the given list of translator names to a list of translators.
@@ -24,7 +23,7 @@ module Translatomatic::Translator
   # @param options [Hash<String,String>] Translator options
   # @return [Array<Translatomatic::Translator::Base>] Translators
   def self.resolve(list, options = {})
-    list = [list] unless list.kind_of?(Array)
+    list = [list] unless list.is_a?(Array)
     list = list.compact.collect do |translator|
       if translator.respond_to?(:translate)
         translator
@@ -38,16 +37,14 @@ module Translatomatic::Translator
     if list.empty?
       # find all available translators that work with the given options
       list = Translatomatic::Translator.available(options)
-      if list.empty?
-        raise t("cli.no_translators")
-      end
+      raise t('cli.no_translators') if list.empty?
     end
     list
   end
 
   # @return [List<Class>] A list of all translator classes
   def self.modules
-    self.constants.collect { |c| self.const_get(c) }.select do |klass|
+    constants.collect { |c| const_get(c) }.select do |klass|
       klass.is_a?(Class) && klass != Translatomatic::Translator::Base
     end
   end
@@ -67,7 +64,7 @@ module Translatomatic::Translator
         translator = mod.new(options)
         available << translator
       rescue Exception
-        log.debug(t("translator.unavailable", name: mod.name.demodulize))
+        log.debug(t('translator.unavailable', name: mod.name.demodulize))
       end
     end
     available
@@ -75,26 +72,24 @@ module Translatomatic::Translator
 
   # @return [String] A description of all translators and options
   def self.list
-    out = t("translator.translators") + "\n"
+    out = t('translator.translators') + "\n"
     configured_options = {}
     modules.each do |mod|
       out += "\n" + mod.name.demodulize + ":\n"
       opts = mod.options
       opts.each do |opt|
         configured_options[opt.name] = config.get(opt.name)
-        optname = opt.name.to_s.gsub("_", "-")
-        out += "  --%-18s  %18s  %10s  %15s\n" % [optname, opt.description,
-          opt.required ? t("translator.required_option") : "",
-          opt.env_name ? "ENV[#{opt.env_name}]" : ""]
+        optname = opt.name.to_s.tr('_', '-')
+        out += format("  --%-18s  %18s  %10s  %15s\n", optname, opt.description, opt.required ? t('translator.required_option') : '', opt.env_name ? "ENV[#{opt.env_name}]" : '')
       end
     end
     out += "\n"
-    out += t("translator.configured") + "\n"
+    out += t('translator.configured') + "\n"
     configured = available(configured_options)
     configured.each do |translator|
-      out += "  " + translator.name + "\n"
+      out += '  ' + translator.name + "\n"
     end
-    out += t("translator.no_translators") if configured.empty?
+    out += t('translator.no_translators') if configured.empty?
     out + "\n"
   end
 
@@ -103,5 +98,4 @@ module Translatomatic::Translator
   def self.config
     Translatomatic.config
   end
-
 end

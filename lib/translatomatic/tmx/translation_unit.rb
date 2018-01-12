@@ -4,7 +4,6 @@ module Translatomatic::TMX
   # document.
   # @see Translatomatic::TMX::Document
   class TranslationUnit
-
     # @return [Array<Translatomatic::String>] Strings in this translation unit
     attr_reader :strings
 
