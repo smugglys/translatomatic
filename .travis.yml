@@ -9,14 +9,16 @@ os:
   - linux
   - osx
 
-# Specify which ruby versions you wish to run your tests on, each version will be used
+# Specify which ruby versions you wish to run your tests on,
+# each version will be used.
 rvm:
-  - 2.1
+  - 2.2
   - 2.3
   - 2.4
-#  - jruby     # Unknown ruby string (do not know how to handle): jruby-9.1.15.0200
+#  - jruby     # Unknown ruby string (do not know how to handle)
 #  - ruby-head # cannot load such file -- bundler/dep_proxy (?)
 #  - 1.9       # incompatible with activesupport 5
+#  - 2.1       # incompatible with activesupport 5
 
 env:
   global:
