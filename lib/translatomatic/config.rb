@@ -161,7 +161,7 @@ module Translatomatic
           Translatomatic::CLI::Config,
           Translatomatic::Translator.modules,
           Translatomatic::Database,
-          Translatomatic::Converter
+          Translatomatic::Converter,
         ].freeze
       end
 
@@ -270,7 +270,7 @@ module Translatomatic
 
       case type
       when :path_array
-        value.collect { |i| cast_path(i, context) }
+        value.collect { |i| cast_get(i, :path, context) }
       when :path
         File.absolute_path(cast_path(value), context_path(context))
       else
