@@ -6,7 +6,7 @@ module Translatomatic
     # @see https://cloud.google.com/translate/
     class Google < Base
       define_option :google_api_key,
-          desc: t('translator.google_api_key'), use_env: true
+                    desc: t('translator.google_api_key'), use_env: true
 
       # Create a new Google translator instance
       def initialize(options = {})

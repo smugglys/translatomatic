@@ -1,7 +1,6 @@
 module Translatomatic
   # A string object with an associated locale.
   class String
-
     # @return [String] The string
     attr_reader :value
 

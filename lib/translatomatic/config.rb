@@ -161,7 +161,7 @@ module Translatomatic
           Translatomatic::CLI::Config,
           Translatomatic::Translator.modules,
           Translatomatic::Database,
-          Translatomatic::Converter,
+          Translatomatic::Converter
         ].freeze
       end
 

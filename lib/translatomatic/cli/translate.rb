@@ -7,14 +7,14 @@ module Translatomatic::CLI
     default_task :file
 
     define_option :translator, type: :array, aliases: '-t',
-      desc: t('cli.translate.translator'),
-      enum: Translatomatic::Translator.names
+                               desc: t('cli.translate.translator'),
+                               enum: Translatomatic::Translator.names
     define_option :source_locale, desc: t('cli.source_locale')
     define_option :share, desc: t('cli.share'), default: false
     define_option :target_locales, desc: t('cli.target_locales'),
-      type: :array
+                                   type: :array
     define_option :source_files, desc: t('cli.source_files'),
-      type: :path_array
+                                 type: :path_array
 
     desc 'string text locale...', t('cli.translate.string')
     thor_options(self, Translatomatic::CLI::CommonOptions)

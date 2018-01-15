@@ -5,9 +5,9 @@ module Translatomatic
     # @see https://mymemory.translated.net/doc/
     class MyMemory < Base
       define_option :mymemory_api_key, use_env: true,
-        desc: t('translator.mymemory_api_key')
+                                       desc: t('translator.mymemory_api_key')
       define_option :mymemory_email, use_env: true,
-        desc: t('translator.email_address')
+                                     desc: t('translator.email_address')
 
       # Create a new MyMemory translator instance
       def initialize(options = {})

@@ -1,7 +1,6 @@
 module Translatomatic
   # Type casting functions used by Translatomatic::Config
   module TypeCast
-
     def cast(value, type)
       value = value[0] if value.is_a?(Array) && !array_type?(type)
 
@@ -55,6 +54,5 @@ module Translatomatic
       return false if %w[false f no off].include?(value)
       value ? true : false
     end
-
   end
 end

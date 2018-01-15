@@ -32,21 +32,14 @@ module Translatomatic
     attr_reader :user_context_only
 
     # Create a new option
-    # @param data [Hash<Symbol,Object>] Attributes as above
+    # @param attributes [Hash<Symbol,Object>] Attributes as above
     # @return [Translatomatic::Option] A new option instance
-    def initialize(data = {})
-      @name = data[:name]
-      @required = data[:required]
-      @description = data[:desc]
-      @use_env = data[:use_env]
-      @hidden = data[:hidden]
-      @type = data[:type] || :string
-      @default = data[:default]
-      @aliases = data[:aliases]
-      @enum = data[:enum]
-      @user_context_only = data[:user_context_only]
-      @command_line_only = data[:command_line_only]
-      @env_name = data[:env_name] || (@use_env ? @name.to_s.upcase : nil)
+    def initialize(attributes = {})
+      attributes.each do |k, v|
+        raise "unrecognised attribute #{k}" unless constructor_option?(k)
+        instance_variable_set("@#{k}", v)
+      end
+      @env_name ||= @use_env && @name ? @name.to_s.upcase : nil
     end
 
     def to_thor
@@ -77,6 +70,14 @@ module Translatomatic
     end
 
     private
+
+    CONSTRUCTOR_OPTIONS = %i[name required desc use_env hidden type default
+                             aliases enum user_context_only
+                             command_line_only env_name].freeze
+
+    def constructor_option?(key)
+      CONSTRUCTOR_OPTIONS.include?(key)
+    end
 
     def thor_type
       case @type

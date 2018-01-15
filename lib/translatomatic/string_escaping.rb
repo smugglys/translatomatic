@@ -19,8 +19,8 @@ module Translatomatic
       # @return [String] The string with special characters escaped.
       def escape(value, skip = '')
         value.gsub(/\\/, '\\\\\\')
-        .gsub(/"/, '\\"')
-        .gsub(/([\x00-\x1f])/) do
+             .gsub(/"/, '\\"')
+             .gsub(/([\x00-\x1f])/) do
           skip[$&] || ESCAPES[ $&.unpack('C')[0] ]
         end
       end

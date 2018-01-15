@@ -4,7 +4,7 @@ module Translatomatic
     # @see https://tech.yandex.com/translate/
     class Yandex < Base
       define_option :yandex_api_key, use_env: true,
-        desc: t('translator.yandex_api_key')
+                                     desc: t('translator.yandex_api_key')
 
       # Create a new Yandex translator instance
       def initialize(options = {})

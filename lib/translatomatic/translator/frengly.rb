@@ -6,11 +6,11 @@ module Translatomatic
     # @see http://www.frengly.com/api
     class Frengly < Base
       define_option :frengly_api_key, use_env: true,
-                    desc: t('translator.frengly_api_key')
+                                      desc: t('translator.frengly_api_key')
       define_option :frengly_email, use_env: true,
-                    desc: t('translator.email_address')
+                                    desc: t('translator.email_address')
       define_option :frengly_password, use_env: true,
-                    desc: t('translator.password')
+                                       desc: t('translator.password')
 
       # Create a new Frengly translator instance
       def initialize(options = {})

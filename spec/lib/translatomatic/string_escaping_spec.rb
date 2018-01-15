@@ -1,12 +1,11 @@
 RSpec.describe Translatomatic::StringEscaping do
-
-  context "#escape" do
+  context '#escape' do
     it "converts newlines to '\\n'" do
       expect(escape("\n")).to eq('\n')
     end
   end
 
-  context "#unescape" do
+  context '#unescape' do
     it "converts '\\n' to newlines" do
       expect(unescape('\n')).to eq("\n")
     end

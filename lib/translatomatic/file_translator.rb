@@ -88,9 +88,9 @@ module Translatomatic
     include Translatomatic::DefineOptions
 
     define_option :dry_run, type: :boolean, aliases: '-n',
-              desc: t('file_translator.dry_run'), command_line_only: true
+                            desc: t('file_translator.dry_run'), command_line_only: true
     define_option :use_database, type: :boolean, default: true,
-              desc: t('file_translator.use_database')
+                                 desc: t('file_translator.use_database')
 
     def each_translator(result)
       @translators.each do |translator|

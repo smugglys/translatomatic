@@ -1,7 +1,6 @@
 module Translatomatic
   # Utility functions, used internally
   module Util
-
     # @!visibility private
     def self.included(klass)
       klass.extend(ClassMethods)

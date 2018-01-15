@@ -4,54 +4,62 @@ module Translatomatic
   # @see https://github.com/jnbt/java-properties
   # @see https://github.com/flori/json/
   class EscapedUnicode
-    # Decodes all unicode chars from escape sequences
-    # @param text [String]
-    # @return [String] The encoded text for chaining
-    def self.unescape(text)
-      string = text.dup
-      string = string.gsub(/(?:\\[uU](?:[A-Fa-f\d]{4}))+/) do |c|
+    class << self
+      # Decodes all unicode chars from escape sequences
+      # @param text [String]
+      # @return [String] The encoded text
+      def unescape(text)
+        string = text.gsub(/(?:\\[uU](?:[A-Fa-f\d]{4}))+/) do |c|
+          unescape_char(c)
+        end
+        string.force_encoding(::Encoding::UTF_8)
+        string
+      end
+
+      # Decodes all unicode chars into escape sequences
+      # @param text [String]
+      # @return [String] The decoded text
+      def escape(text)
+        string = text.dup
+        string.force_encoding(::Encoding::ASCII_8BIT)
+        string.gsub!(/["\\\x0-\x1f]/n) { |c| MAP[c] || c }
+        string.gsub!(ESCAPE_REGEX) { |c| escape_char(c) }
+        string.force_encoding(::Encoding::UTF_8)
+        string
+      end
+
+      private
+
+      def unescape_char(c)
         c.downcase!
         bytes = EMPTY_8BIT_STRING.dup
         i = 0
-        while c[6 * i] == '\\' && c[6 * i + 1] == 'u'
-          bytes << c[6 * i + 2, 2].to_i(16) << c[6 * i + 4, 2].to_i(16)
-          i += 1
+        while c[i] == '\\' && c[i + 1] == 'u'
+          (1..2).each do |j|
+            bytes << c[i + j * 2, 2].to_i(16)
+          end
+          i += 6
         end
         bytes.encode('utf-8', 'utf-16be')
       end
-      string.force_encoding(::Encoding::UTF_8)
 
-      text.replace string
-      text
-    end
-
-    # Decodes all unicode chars into escape sequences
-    # @param text [String]
-    # @return [String] The decoded text for chaining
-    def self.escape(text)
-      string = text.dup
-      string.force_encoding(::Encoding::ASCII_8BIT)
-      string.gsub!(/["\\\x0-\x1f]/n) { |c| MAP[c] || c }
-      string.gsub!(/(
-        (?:
-          [\xc2-\xdf][\x80-\xbf]    |
-          [\xe0-\xef][\x80-\xbf]{2} |
-          [\xf0-\xf4][\x80-\xbf]{3}
-          )+ |
-          [\x80-\xc1\xf5-\xff]       # invalid
-          )/nx) do |c|
+      def escape_char(c)
         (c.size == 1) && raise(t('unicode.invalid_byte', byte: c))
         s = c.encode('utf-16be', 'utf-8').unpack('H*')[0]
         s.force_encoding(::Encoding::ASCII_8BIT)
         s.gsub!(/.{4}/n, '\\\\u\&')
         s.force_encoding(::Encoding::UTF_8)
       end
-      string.force_encoding(::Encoding::UTF_8)
-      text.replace string
-      text
     end
 
-    private
+    ESCAPE_REGEX = /(
+      (?:
+        [\xc2-\xdf][\x80-\xbf]    |
+        [\xe0-\xef][\x80-\xbf]{2} |
+        [\xf0-\xf4][\x80-\xbf]{3}
+        )+ |
+        [\x80-\xc1\xf5-\xff]       # invalid
+        )/nx
 
     MAP = {
       "\x0" => '\u0000',
