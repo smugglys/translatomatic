@@ -182,7 +182,7 @@ class Translatomatic::ResourceFile::Base
   end
 
   def read_contents(path)
-    File.read(path.to_s, mode: 'r:bom|utf-8')
+    Translatomatic::Slurp.read(path.to_s)
   end
 
   def parsing_error(error)

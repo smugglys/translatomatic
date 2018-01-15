@@ -15,7 +15,7 @@ module Helpers
   end
 
   def fixture_read(path, crlf = false)
-    contents = File.read(fixture_path(path))
+    contents = Translatomatic::Slurp.read(fixture_path(path))
     contents.gsub!(/\r\n/, "\n")
     contents.gsub!(/\n/, "\r\n") if crlf
     contents

@@ -1,6 +1,17 @@
+
+#gem :rchardet19, provided_by: :rchardet
+# titlekit has rchardet19 dependency, but we don't want that
+dependency = Gem::Dependency.new('rchardet19')
+specs = dependency.matching_specs
+if specs
+  path = File.join(specs[0].full_gem_path, "lib")
+  $LOAD_PATH.delete(path)
+end
+
 require 'pathname'
 require 'active_support/core_ext/hash'
 require 'active_support/dependencies/autoload'
+require 'rchardet'
 
 # Module containing all of the translation goodness
 module Translatomatic
@@ -14,6 +25,7 @@ end
 
 require 'translatomatic/version'
 require 'translatomatic/locale'
+require 'translatomatic/slurp'
 require 'translatomatic/i18n'
 require 'translatomatic/option'
 require 'translatomatic/define_options'
