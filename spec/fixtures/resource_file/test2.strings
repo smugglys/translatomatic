@@ -1,0 +1,9 @@
+/* test that newlines are unescaped */
+"property1" = "line1\nline2";
+
+/* test that multi-line strings are supported */
+"property2" = "line1
+line2";
+
+/* test that escaped quotes don't break the parser */
+"property3" = "line with \"quoted text\"";

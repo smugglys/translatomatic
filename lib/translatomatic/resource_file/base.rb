@@ -50,7 +50,7 @@ class Translatomatic::ResourceFile::Base
   # @param target [Pathname] The destination path
   # @param options [Hash<Symbol, Object>] Output format options
   # @return [void]
-  def save(_target = path, _options = {})
+  def save(target = path, options = {})
     raise 'save(path) must be implemented by subclass'
   end
 

@@ -35,7 +35,6 @@ module Translatomatic::ResourceFile
         key, value = entry
         result[unescape(key)] = unescape(value)
       end
-
       @properties = result
     end
 
@@ -44,11 +43,24 @@ module Translatomatic::ResourceFile
     end
 
     def unescape(string)
-      string ? string.gsub(/\\(["'])/) { |i| i } : ''
+      return '' if string.blank?
+      # remove quoted double quotes inside the string
+      value = unescape_quotes(string)
+      # unescape newlines etc
+      Translatomatic::StringEscaping.unescape(value)
     end
 
     def escape(string)
-      string ? string.gsub(/["']/) { |i| "\\#{i}" } : ''
+      return '' if string.blank?
+      escape_quotes(Translatomatic::StringEscaping.escape(string))
+    end
+
+    def unescape_quotes(string)
+      string.gsub(/\\"/, '"')
+    end
+
+    def escape_quotes(string)
+      string.gsub(/"/, '\\"')
     end
   end
 end

@@ -1,4 +1,3 @@
-require 'date'
 
 module Translatomatic::ResourceFile
   # Properties resource file
@@ -24,8 +23,9 @@ module Translatomatic::ResourceFile
       out = ''
       out += add_created_by unless options[:no_created_by]
       properties.each do |key, value|
-        # TODO: maintain original line ending format?
-        value = value.gsub("\n", '\\n') if value # convert newlines to \n
+        next if value.nil?
+        # escape newlines etc in the value
+        value = Translatomatic::StringEscaping.escape(value)
         out += "#{key} = #{value}\n"
       end
       # escape unicode characters
@@ -80,7 +80,8 @@ module Translatomatic::ResourceFile
           return {}
         end
         name, value = line.split(/\s*[=:]\s*/, 2)
-        value = value.gsub('\\n', "\n") # convert \n to newlines
+        # convert escaped newlines to newlines
+        value = Translatomatic::StringEscaping.unescape(value)
         result[name] = value
       end
       result

@@ -1,6 +1,7 @@
 module Translatomatic
   # A string object with an associated locale.
   class String
+
     # @return [String] The string
     attr_reader :value
 
@@ -101,6 +102,20 @@ module Translatomatic
     # @!visibility private
     def hash
       [value, locale].hash
+    end
+
+    # Escape unprintable characters such as newlines.
+    # @return [Translatomatic::String] The string with
+    #   special characters escaped.
+    def escape(skip = '')
+      self.class.new(StringEscaping.escape(@value, skip), locale)
+    end
+
+    # Unescape character escapes such as "\n" to their character equivalents.
+    # @return [Translatomatic::String] The string with
+    #   escaped characters replaced with actual characters.
+    def unescape
+      self.class.new(StringEscaping.unescape(@value), locale)
     end
 
     private

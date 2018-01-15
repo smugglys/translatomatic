@@ -9,7 +9,7 @@ module Translatomatic::ResourceFile
     end
 
     # (see Translatomatic::ResourceFile::Base#save)
-    def save(target = path, _options = {})
+    def save(target = path, options = {})
       ::CSV.open(target, 'wb') do |csv|
         @properties.each do |key, value|
           csv << [key, value]
