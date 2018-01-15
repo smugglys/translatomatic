@@ -3,21 +3,23 @@ module Translatomatic
   # resource files, and the database to convert files from one
   # language to another.
   class FileTranslator
-    # @return [Array<Translatomatic::Model::Text>] A list of translations saved to the database
+    # @return [Array<Translatomatic::Model::Text>] A list of
+    #   translations saved to the database
     attr_reader :db_translations
 
     # Create a converter to translate files
     #
-    # @param options [Hash<Symbol,Object>] converter and/or translator options.
+    # @param options [Hash<Symbol,Object>] converter and/or
+    #   translator options.
     def initialize(options = {})
       @dry_run = options[:dry_run]
       @listener = options[:listener]
-      @translators = Translatomatic::Translator.resolve(options[:translator], options)
+      @translators = resolve_translators(options)
       raise t('file_translator.translator_required') if @translators.empty?
       @translators.each { |i| i.listener = @listener } if @listener
 
       # use database by default if we're connected to a database
-      use_db = options.include?(:use_database) ? options[:use_database] : true
+      use_db = options.fetch(:use_database, true)
       @use_db = use_db && ActiveRecord::Base.connected?
       log.debug(t('file_translator.database_disabled')) unless @use_db
 
@@ -58,8 +60,9 @@ module Translatomatic
       file
     end
 
-    # Translates a resource file and writes results to a target resource file.
-    # The path of the target resource file is automatically determined.
+    # Translates a resource file and writes results to a target
+    # resource file. The path of the target resource file is
+    # automatically determined.
     #
     # @param source [Translatomatic::ResourceFile] The source
     # @param to_locale [String] The target locale, e.g. "fr"
@@ -72,7 +75,8 @@ module Translatomatic
       target.path = source.locale_path(to_locale)
 
       log.info(t('file_translator.translating', source: source,
-                                                source_locale: source.locale, target: target,
+                                                source_locale: source.locale,
+                                                target: target,
                                                 target_locale: to_locale))
       translate(target, to_locale)
       unless @dry_run
@@ -88,7 +92,8 @@ module Translatomatic
     include Translatomatic::DefineOptions
 
     define_option :dry_run, type: :boolean, aliases: '-n',
-                            desc: t('file_translator.dry_run'), command_line_only: true
+                            desc: t('file_translator.dry_run'),
+                            command_line_only: true
     define_option :use_database, type: :boolean, default: true,
                                  desc: t('file_translator.use_database')
 
@@ -138,7 +143,7 @@ module Translatomatic
     end
 
     def resource_file(path)
-      if path.kind_of?(Translatomatic::ResourceFile::Base)
+      if path.kind_of?(Translatomatic::ResourceFile::Base) # rubocop:disable Style/ClassCheck
         path
       else
         file = Translatomatic::ResourceFile.load(path)
@@ -175,9 +180,10 @@ module Translatomatic
       translated = []
       if !untranslated.empty? && !@dry_run
         untranslated_strings = untranslated.collect(&:to_s)
-        log.debug("translating: #{untranslated_strings} with #{@current_translator.name}")
-        translated = @current_translator.translate(untranslated_strings,
-                                                   result.from_locale, result.to_locale)
+        translator = @current_translator
+        log.debug("translating: #{untranslated} with #{translator.name}")
+        translated = translator.translate(untranslated_strings,
+                                          result.from_locale, result.to_locale)
 
         # sanity check: we should have a translation for each string
         unless translated.length == untranslated.length
@@ -194,10 +200,10 @@ module Translatomatic
         end
 
         result.add_translations(translations)
-        save_database_translations(result, translations) unless database_disabled?
-        end
-      translated
+        save_database_translations(result, translations)
       end
+      translated
+    end
 
     def translation(from, to, from_database = false)
       translator = @current_translator.name
@@ -220,6 +226,7 @@ module Translatomatic
     end
 
     def save_database_translations(result, translations)
+      return if database_disabled?
       ActiveRecord::Base.transaction do
         from = db_locale(result.from_locale)
         to = db_locale(result.to_locale)
@@ -259,6 +266,10 @@ module Translatomatic
           value: untranslated.collect(&:to_s)
         }
       ).joins(:from_text)
+    end
+
+    def resolve_translators(options)
+      Translatomatic::Translator.resolve(options[:translator], options)
     end
 
     def db_locale(locale)

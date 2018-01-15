@@ -1,4 +1,5 @@
 module Translatomatic
+  # Class for slurping files
   class Slurp
     class << self
       # Slurp a file, convert to UTF-8
@@ -23,9 +24,7 @@ module Translatomatic
         encoding = cd['encoding']
         confidence = cd['confidence']
 
-        if encoding && confidence >= 0.5
-          Encoding.find(encoding)
-        end
+        Encoding.find(encoding) if encoding && confidence >= 0.5
       end
     end
   end

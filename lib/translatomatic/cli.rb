@@ -1,4 +1,7 @@
-module Translatomatic::CLI; end
+module Translatomatic
+  # Command line functions
+  module CLI; end
+end
 
 require 'translatomatic/cli/common_options'
 require 'translatomatic/cli/base'

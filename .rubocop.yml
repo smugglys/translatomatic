@@ -1,4 +1,6 @@
 AllCops:
   Exclude:
+    - translatomatic.gemspec
     - 'db/**/*'
-    - 'config/*/**'
+    - 'config/**/*'
+    - 'spec/**/*'

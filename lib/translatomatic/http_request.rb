@@ -5,7 +5,6 @@ module Translatomatic
   # HTTP request
   # wrapper for Net::HTTP functionality
   class HTTPRequest
-
     # @return [String] the text to use to denote multipart boundaries. By
     #   default, a random hexadecimal string is used.
     attr_accessor :multipart_boundary
@@ -16,14 +15,14 @@ module Translatomatic
       @uri = url.respond_to?(:host) ? url : URI.parse(url)
       @multipart_boundary = SecureRandom.hex(16)
       @redirects = options[:redirects] || 0
-      raise "Maximum redirects exceeded" if @redirects > MAX_REDIRECTS
+      raise 'Maximum redirects exceeded' if @redirects > MAX_REDIRECTS
     end
 
     # Start the HTTP request. Yields a http object.
     # @param options [Hash<Symbol,Object>] Request options
     # @return [Object] Result of the block
     def start(options = {})
-      options = options.merge(use_ssl: @uri.scheme == "https")
+      options = options.merge(use_ssl: @uri.scheme == 'https')
       result = nil
       Net::HTTP.start(@uri.host, @uri.port, options) do |http|
         @http = http
@@ -70,7 +69,7 @@ module Translatomatic
 
     private
 
-    USER_AGENT = "Translatomatic #{VERSION} (+#{URL})"
+    USER_AGENT = "Translatomatic #{VERSION} (+#{URL})".freeze
     MAX_REDIRECTS = 5
 
     # Formats a basic string key/value pair for a multipart post
@@ -80,7 +79,7 @@ module Translatomatic
       # @return [String] Representation of this parameter as it appears
       #   within a multipart post request.
       def to_s
-        return header(header_data) + "\r\n#{value}\r\n"
+        header(header_data) + "\r\n#{value}\r\n"
       end
 
       private
@@ -91,19 +90,19 @@ module Translatomatic
       end
 
       def header_data
-        name = CGI::escape(key.to_s)
-        { "Content-Disposition": "form-data", name: %Q("#{name}") }
+        name = CGI.escape(key.to_s)
+        { 'Content-Disposition' => 'form-data', name: %("#{name}") }
       end
 
       def header(options)
         out = []
         idx = 0
         options.each do |key, value|
-          separator = idx == 0 ? ": " : "="
+          separator = idx.zero? ? ': ' : '='
           out << "#{key}#{separator}#{value}"
           idx += 1
         end
-        out.join("; ") + "\r\n"
+        out.join('; ') + "\r\n"
       end
     end
 
@@ -113,8 +112,8 @@ module Translatomatic
 
       # (see Param#to_s)
       def to_s
-        return header(header_data) +
-          header("Content-Type": mime_type) + "\r\n#{content}\r\n"
+        header(header_data) +
+          header('Content-Type' => mime_type) + "\r\n#{content}\r\n"
       end
 
       private
@@ -127,15 +126,15 @@ module Translatomatic
       end
 
       def header_data
-        super.merge({ filename: %Q("#{filename}") })
+        super.merge(filename: %("#{filename}"))
       end
     end
 
     def multipartify(parts)
       string_parts = parts.collect do |p|
-        "--" + @multipart_boundary + "\r\n" + p.to_s
+        '--' + @multipart_boundary + "\r\n" + p.to_s
       end
-      string_parts.join("") + "--" + @multipart_boundary + "--\r\n"
+      string_parts.join('') + '--' + @multipart_boundary + "--\r\n"
     end
 
     def configure_request(request, options)
@@ -150,9 +149,10 @@ module Translatomatic
 
       if body
         if options[:multipart]
-          content_type = "multipart/form-data; boundary=#{@multipart_boundary}"
+          boundary = "boundary=#{@multipart_boundary}"
+          content_type = 'multipart/form-data; ' + boundary
           request.body = multipartify(body)
-        elsif body.kind_of?(Hash)
+        elsif body.is_a?(Hash)
           # set_form_data does url encoding
           request.set_form_data(body)
         elsif
@@ -164,11 +164,11 @@ module Translatomatic
     end
 
     def send_request(req)
-      if @http
-        response = @http.request(req)
-      else
-        response = start { |http| send_request(req) }
-      end
+      response = if @http
+                   @http.request(req)
+                 else
+                   start { |_http| send_request(req) }
+                 end
       handle_response(response)
     end
 
@@ -180,12 +180,11 @@ module Translatomatic
         location = URI.parse(response['Location'])
         puts location
         new_uri = location.relative? ? @uri + response.location : location
-        self.class.new(location, redirects: @redirects + 1).get
+        self.class.new(new_uri, redirects: @redirects + 1).get
       else
         # error
         raise response.body
       end
     end
-
-  end # class
-end   # module
+  end
+end

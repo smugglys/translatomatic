@@ -23,7 +23,11 @@ module Translatomatic
     private
 
     def string(string)
-      string.is_a?(Translatomatic::String) ? string : Translatomatic::String.new(string)
+      if string.is_a?(Translatomatic::String)
+        string
+      else
+        Translatomatic::String.new(string)
+      end
     end
   end
 end

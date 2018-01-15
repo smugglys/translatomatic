@@ -1,5 +1,7 @@
-# Contains classes that interface to records in the translatomatic database
-module Translatomatic::Model; end
+module Translatomatic
+  # Active record model classes
+  module Model; end
+end
 
 require 'translatomatic/model/locale'
 require 'translatomatic/model/text'

@@ -10,7 +10,7 @@ def gem_installed?(args)
 end
 
 def optional_gem(*args)
-  gem *args if gem_installed?(args)
+  gem(*args) if gem_installed?(args)
 end
 
 # database adapters

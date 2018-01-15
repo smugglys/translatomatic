@@ -80,7 +80,6 @@ module Translatomatic
       keys.each do |key|
         # value = @properties[key]
         if original.is_a?(Translatomatic::String) && original.substring?
-          # log.debug("#{value[original.offset, original.length]} -> #{translated}")
           @properties[key][original.offset, original.length] = translated
         else
           # log.debug("#{key} -> #{translated}")

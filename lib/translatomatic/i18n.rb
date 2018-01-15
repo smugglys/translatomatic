@@ -1,6 +1,7 @@
 require 'i18n'
 
 module Translatomatic
+  # I18n initialisation and translation fallback handling
   class I18n
     class << self
 
@@ -13,7 +14,7 @@ module Translatomatic
 
       private
 
-      FALLBACK_LOCALE = "en"
+      FALLBACK_LOCALE = 'en'.freeze
 
       def init_i18n(root_path)
         locale_path = File.join(root_path, 'config', 'locales')
@@ -28,7 +29,7 @@ module Translatomatic
     end
 
     begin
-      init_i18n(File.join(__dir__, "..", ".."))
+      init_i18n(File.join(__dir__, '..', '..'))
     end
   end
 end

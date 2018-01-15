@@ -55,13 +55,13 @@ module Translatomatic::ResourceFile
       Nokogiri::XML(EMPTY_DOC)
     end
 
-    EMPTY_DOC = <<EOM.freeze
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-  </dict>
-</plist>
+    EMPTY_DOC = <<EOM.strip_heredoc.freeze
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  <plist version="1.0">
+    <dict>
+    </dict>
+  </plist>
 EOM
 
     PlistNode = Struct.new(:node, :content) do

@@ -71,7 +71,7 @@ module Translatomatic
                 translated << result
                 update_translated(result)
                 untranslated.shift
-              rescue Exception => e
+              rescue StandardError => e
                 # translation error
                 log.error(e)
                 fail_count += 1
@@ -82,10 +82,10 @@ module Translatomatic
                   # break back out to request.start block
                   break
                 end
-              end  # exception
-            end    # while untranslated
-          end      # request.start
-        end        # while untranslated
+              end
+            end
+          end
+        end
 
         translated
       end

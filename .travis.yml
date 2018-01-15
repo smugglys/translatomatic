@@ -5,10 +5,6 @@ cache:
   directories:
     - tmp/cache/codeclimate
 
-os:
-  - linux
-  - osx
-
 # Specify which ruby versions you wish to run your tests on,
 # each version will be used.
 rvm:

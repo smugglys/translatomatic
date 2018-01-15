@@ -50,7 +50,7 @@ class Translatomatic::ResourceFile::Base
   # @param target [Pathname] The destination path
   # @param options [Hash<Symbol, Object>] Output format options
   # @return [void]
-  def save(_target = path, _options = {})
+  def save(target = path, options = {})
     raise 'save(path) must be implemented by subclass'
   end
 
@@ -136,9 +136,10 @@ class Translatomatic::ResourceFile::Base
   end
 
   # Create an interpolated variable string.
+  # @param name [String] The variable name
   # @return [String] A string representing the interpolated variable, or
   #   nil if this resource file doesn't support variable interpolation.
-  def create_variable(_name)
+  def create_variable(name)
     return nil unless supports_variable_interpolation?
     raise 'create_variable(name) must be implemented by subclass'
   end

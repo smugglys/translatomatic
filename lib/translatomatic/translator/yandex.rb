@@ -47,6 +47,6 @@ module Translatomatic
         data = JSON.parse(response.body)
         data['text']
       end
-    end # class
-  end   # module
+    end
+  end
 end

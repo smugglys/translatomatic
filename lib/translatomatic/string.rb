@@ -184,12 +184,12 @@ module Translatomatic
 
     def sentence_regex
       script = script_data
-      regex = if script.trailing_space
-                /.*?(?:#{script.delimiter}\s+|\z|\n)/m
-              else
-                # no trailing space after delimiter
-                /.*?(?:#{script.delimiter}|\z|\n)/m
-              end
+      if script.trailing_space
+        /.*?(?:#{script.delimiter}\s+|\z|\n)/m
+      else
+        # no trailing space after delimiter
+        /.*?(?:#{script.delimiter}|\z|\n)/m
+      end
     end
 
     def script_data

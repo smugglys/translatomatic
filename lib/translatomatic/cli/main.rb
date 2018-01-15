@@ -2,7 +2,6 @@
 module Translatomatic::CLI
   # Main command line interface
   class Main < Base
-
     package_name 'Translatomatic'
     map %w[-v --version] => :version
     map %w[-L --list] => :translators
