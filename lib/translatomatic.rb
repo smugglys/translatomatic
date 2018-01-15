@@ -1,7 +1,3 @@
-require 'i18n'
-require 'rails-i18n'
-require 'i18n_data'
-
 require 'pathname'
 require 'active_support/core_ext/hash'
 require 'active_support/dependencies/autoload'
@@ -13,24 +9,14 @@ module Translatomatic
     def config
       @config ||= Translatomatic::Config.new
     end
-
-    private
-
-    def init_i18n(lib_path)
-      locale_path = File.join(File.dirname(lib_path), '..', 'config', 'locales')
-      I18n.load_path += Dir[File.join(locale_path, '**', '*.yml')]
-    end
-  end
-
-  begin
-    init_i18n(__FILE__)
   end
 end
 
 require 'translatomatic/version'
+require 'translatomatic/locale'
+require 'translatomatic/i18n'
 require 'translatomatic/option'
 require 'translatomatic/define_options'
-require 'translatomatic/locale'
 require 'translatomatic/string_escaping'
 require 'translatomatic/string'
 require 'translatomatic/translation'

@@ -24,10 +24,10 @@ RSpec.describe Translatomatic::FileTranslator do
   context :translate_to_file do
     it 'translates a properties file to a target language' do
       translator = TestTranslator.new('Bier')
-      contents = 'key = Beer'
-      path = create_tempfile('test.properties', contents)
+      path = create_tempfile('test.properties', 'key = Beer')
+      file = Translatomatic::ResourceFile.load(path, "en")
       t = create_file_translator(translator: translator)
-      target = t.translate_to_file(path, 'de-DE')
+      target = t.translate_to_file(file, 'de-DE')
       expect(target.path.basename.sub_ext('').to_s).to match(/_de-DE$/)
       expect(strip_comments(target.path.read)).to eq("key = Bier\n")
     end
@@ -36,8 +36,9 @@ RSpec.describe Translatomatic::FileTranslator do
       translator = test_translator
       expect(translator).to_not receive(:translate)
       path = create_tempfile('test.properties', 'key = Beer')
+      file = Translatomatic::ResourceFile.load(path, "en")
       t = create_file_translator(translator: translator, dry_run: true)
-      target = t.translate_to_file(path, 'de-DE')
+      target = t.translate_to_file(file, 'de-DE')
       expect(target.path).to_not exist
     end
   end
@@ -204,7 +205,7 @@ RSpec.describe Translatomatic::FileTranslator do
   end
 
   def create_test_file(klass = Translatomatic::ResourceFile::Properties)
-    klass.new
+    klass.new(nil, locale: "en")
   end
 
   def strip_comments(text)

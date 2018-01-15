@@ -4,7 +4,7 @@ RSpec.describe Translatomatic::CLI::Translate do
   before(:each) do
     config.unset(:translator)
     @cli = Translatomatic::CLI::Translate.new
-    @cli.options = { database_env: 'test' }
+    @cli.options = { database_env: 'test', source_locale: "en" }
   end
 
   context :string do

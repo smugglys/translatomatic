@@ -103,6 +103,8 @@ module Translatomatic::CLI
 
     def setup_translation
       @source_locale = determine_source_locale
+      log.debug("using source locale: #{@source_locale}")
+
       # resolve translators
       @translators = Translatomatic::Translator.resolve(
         cli_option(:translator), options
@@ -115,7 +117,7 @@ module Translatomatic::CLI
     end
 
     def determine_source_locale
-      cli_option(:source_locale) || conf.default_locale
+      cli_option(:source_locale) || Translatomatic::Locale.default.to_s
     end
 
     def calculate_translation_count(source_files, locales)

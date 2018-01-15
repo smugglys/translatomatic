@@ -2,9 +2,6 @@
 module Translatomatic::CLI
   # Main command line interface
   class Main < Base
-    begin
-      I18n.default_locale = Translatomatic.config.default_locale
-    end
 
     package_name 'Translatomatic'
     map %w[-v --version] => :version

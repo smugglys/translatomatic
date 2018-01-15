@@ -36,9 +36,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'kramdown'           # markdown -> html
   spec.add_dependency 'nokogiri'
   spec.add_dependency 'PoParser'
-  spec.add_dependency 'rails-i18n', '~> 5' # For 5.0.x and 5.1.x
   spec.add_dependency 'reverse_markdown'   # html -> markdown
   spec.add_dependency 'ruby-progressbar'
   spec.add_dependency 'thor', '~> 0.20'
   spec.add_dependency 'titlekit'
+  spec.add_dependency 'builder'
 end

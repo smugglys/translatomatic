@@ -42,7 +42,6 @@ module Translatomatic
 
       # do nothing if target language is the same as source language
       return file if file.locale.language == to_locale.language
-
       result = Translatomatic::TranslationResult.new(file, to_locale)
 
       # translate using strings from the database first
@@ -69,6 +68,7 @@ module Translatomatic
       # Automatically determines the target filename based on target locale.
       source = resource_file(source)
       target = Translatomatic::ResourceFile.load(source.path)
+      target.locale = source.locale
       target.path = source.locale_path(to_locale)
 
       log.info(t('file_translator.translating', source: source,
@@ -138,7 +138,7 @@ module Translatomatic
     end
 
     def resource_file(path)
-      if path.is_a?(Translatomatic::ResourceFile::Base)
+      if path.kind_of?(Translatomatic::ResourceFile::Base)
         path
       else
         file = Translatomatic::ResourceFile.load(path)

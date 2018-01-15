@@ -11,11 +11,8 @@ module Translatomatic
     # @!visibility private
     module CommonMethods
       private
-
       def t(key, options = {})
-        tkey = "translatomatic.#{key}"
-        raise "missing translation: #{tkey}" unless I18n.exists?(tkey)
-        I18n.t(tkey, options)
+        Translatomatic::I18n.t(key, options)
       end
     end
 
