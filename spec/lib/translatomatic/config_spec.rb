@@ -9,7 +9,7 @@ RSpec.describe Translatomatic::Config do
     config.reset
   end
 
-  describe :set do
+  describe '#set' do
     it 'sets a configuration key' do
       config.set(KEY_LOCALES, 'de')
       expect(config.get(KEY_LOCALES)).to eq(['de'])
@@ -35,7 +35,7 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe :unset do
+  describe '#unset' do
     it 'writes configuration to file' do
       config.set(KEY_LOCALES, 'de')
       expect(config.get(KEY_LOCALES)).to eq(['de'])
@@ -52,7 +52,7 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe :add do
+  describe '#add' do
     it 'adds a value to a list' do
       config.set(KEY_LOCALES, 'de')
       config.add(KEY_LOCALES, 'fr')
@@ -66,7 +66,7 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe :subtract do
+  describe '#subtract' do
     it 'removes a value from a list' do
       config.set(KEY_LOCALES, %w[de fr])
       config.subtract(KEY_LOCALES, 'fr')
@@ -80,7 +80,7 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe :get do
+  describe '#get' do
     it 'returns a configuration key' do
       config.set(KEY_LOCALES, 'de')
       expect(config.get(KEY_LOCALES)).to eq(['de'])
@@ -101,21 +101,31 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe :include? do
+  describe '#all' do
+    it 'returns all configuration settings' do
+      config.set(KEY_LOCALES, 'de')
+      settings = config.all
+      expect(settings).to be_a(Hash)
+      expect(settings).to be_present
+      expect(settings[KEY_LOCALES.to_sym]).to eq(%w[de])
+    end
+  end
+
+  describe '#include?' do
     it 'tests if a configuration is set' do
       config.set(KEY_LOCALES, 'de')
       expect(config.include?(KEY_LOCALES)).to be_truthy
     end
   end
 
-  describe :save do
+  describe '#save' do
     it 'saves settings to the config file' do
       config.set(KEY_LOCALES, 'de')
       config.save
     end
   end
 
-  describe :load do
+  describe '#load' do
     it 'loads settings from the config file' do
       config.load
     end

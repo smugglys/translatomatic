@@ -86,6 +86,15 @@ module Translatomatic
       cast_get(value, option.type, context)
     end
 
+    # Get all configuration settings
+    def all(context = nil)
+      settings = {}
+      self.class.options.each do |option|
+        settings[option.name] = get(option.name, context)
+      end
+      settings
+    end
+
     # Test if configuration includes the given key
     # @param key [String] configuration key
     # @return [String] The configuration value. If context is nil, checks

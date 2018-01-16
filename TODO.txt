@@ -3,3 +3,4 @@ TODO
 - translation contexts
 - subproject configuration
 - fix c style string parsing
+- target_locales: auto ?

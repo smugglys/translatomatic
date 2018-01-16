@@ -63,9 +63,10 @@ module Translatomatic::CLI
       # start with command line options
       @options = options.transform_keys(&:to_sym)
       # fill missing entries with config values
-      Translatomatic::Config.options.each do |option|
-        unless @options.include?(option.name)
-          @options[option.name] = conf.get(option.name)
+      settings = conf.all
+      settings.each do |key, value|
+        unless @options.include?(key)
+          @options[key] = value
         end
       end
     end

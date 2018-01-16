@@ -72,7 +72,7 @@ module Translatomatic::CLI
         # set up database
         Translatomatic::Database.new(options)
 
-        # set up file translatiln
+        # set up file translation
         translation_count = calculate_translation_count(source_files, @target_locales)
         ft_options = options.merge(
           translator: @translators,
@@ -87,7 +87,6 @@ module Translatomatic::CLI
           # convert source to locale(s) and write files
           @target_locales.each do |i|
             to_locale = locale(i)
-            next if to_locale.language == source.locale.language
             ft.translate_to_file(source, to_locale)
           end
         end
@@ -140,7 +139,6 @@ module Translatomatic::CLI
           translator.upload(tmx)
         end
       end
-
       ActiveRecord::Base.transaction do
         ft.db_translations.each do |text|
           text.update(shared: true) if text.translated?

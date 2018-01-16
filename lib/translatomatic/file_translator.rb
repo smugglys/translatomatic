@@ -73,6 +73,7 @@ module Translatomatic
       target = Translatomatic::ResourceFile.load(source.path)
       target.locale = source.locale
       target.path = source.locale_path(to_locale)
+      return if target.path == source.path
 
       log.info(t('file_translator.translating', source: source,
                                                 source_locale: source.locale,

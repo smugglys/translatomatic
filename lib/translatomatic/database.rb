@@ -92,14 +92,6 @@ module Translatomatic
       def join_path(*parts)
         File.realpath(File.join(*parts))
       end
-
-      def default_config
-        if File.exist?(CUSTOM_CONFIG)
-          CUSTOM_CONFIG
-        else
-          INTERNAL_CONFIG
-        end
-      end
     end
 
     def init_active_record
@@ -115,25 +107,26 @@ module Translatomatic
     end
 
     DB_PATH = join_path(File.dirname(__FILE__), '..', '..', 'db')
-    INTERNAL_CONFIG = File.join(DB_PATH, 'database.yml')
-    CUSTOM_CONFIG = File.join(Dir.home, '.translatomatic', 'database.yml')
+    INTERNAL_CONF = File.join(DB_PATH, 'database.yml')
+    CUSTOM_CONF = File.join(Dir.home, '.translatomatic', 'database.yml')
+    DEFAULT_CONF = File.exist?(CUSTOM_CONF) ? CUSTOM_CONF : INTERNAL_CONF
     MIGRATIONS_PATH = File.join(DB_PATH, 'migrate')
     GEM_ROOT = join_path(File.dirname(__FILE__), '..', '..')
     DEFAULT_ENV = 'production'.freeze
 
     define_option :database_config, desc: t('database.config_file'),
-                                    default: default_config, type: :path
+                                    default: DEFAULT_CONF, type: :path
     define_option :database_env, desc: t('database.env'),
                                  default: DEFAULT_ENV
 
     # return path to database config
     def database_config_path(options)
       if options[:database_env] == 'test'
-        INTERNAL_CONFIG # rspec
+        INTERNAL_CONF # used for rspec
       elsif options[:database_config]
         options[:database_config]
       else
-        DEFAULT_CONFIG
+        DEFAULT_CONF
       end
     end
 
