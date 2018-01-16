@@ -1,0 +1,9 @@
+
+msgid "property1"
+msgstr "value 1"
+
+msgid "property2"
+msgstr "value 2"
+
+msgid "property3"
+msgstr "value 3"

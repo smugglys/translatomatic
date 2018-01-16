@@ -1,0 +1,15 @@
+# test plural form
+msgid "found %d fatal error"
+msgid_plural "found %d fatal errors"
+msgstr[0] "s'ha trobat %d error fatal"
+msgstr[1] "s'han trobat %d errors fatals"
+
+# test with msgctxt (message context)
+msgctxt "correct"
+msgid "right"
+msgstr "recht"
+
+# same id as above but different context
+msgctxt "direction"
+msgid "right"
+msgstr "rechts"

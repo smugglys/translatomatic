@@ -30,11 +30,11 @@ module Translatomatic::ResourceFile
         end
       else
         # new key, create po entry
-        po << {
+        @po << {
           msgid: key,
           msgstr: value
         }
-        entry = po.entries[-1]
+        entry = @po.entries[-1]
         add_entry(entry, :msgid, 0)
       end
     end
@@ -75,7 +75,7 @@ module Translatomatic::ResourceFile
     def load
       content = read_contents(@path)
       @po = PoParser.parse(content)
-      @pomap = init_pomap(@po)
+      init_pomap(@po)
       @properties = pomap_to_properties
     end
 
@@ -85,21 +85,23 @@ module Translatomatic::ResourceFile
 
     # create mapping from key to PoProperty
     def init_pomap(po)
-      pomap = {}
       po.entries.each do |entry|
         add_entry(entry, :msgid, 0)
         add_entry(entry, :msgid_plural, 1) if entry.plural?
       end
-      pomap
     end
 
     def pomap_to_properties
-      @pomap.transform_values(&:value)
+      @pomap.transform_values { |i| i.value.to_s }
     end
 
     def add_entry(entry, key, index)
-      untranslated = entry.send(key)
-      @pomap[untranslated] = PoProperty.new(entry, index) if untranslated
+      map_key = entry.send(key).to_s
+      return unless map_key
+
+      context = entry.msgctxt
+      map_key = map_key + "." + context.to_s if context
+      @pomap[map_key] = PoProperty.new(entry, index)
     end
   end # class
 end   # module
