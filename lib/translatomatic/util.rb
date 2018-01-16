@@ -11,6 +11,7 @@ module Translatomatic
     # @!visibility private
     module CommonMethods
       private
+
       def t(key, options = {})
         Translatomatic::I18n.t(key, options)
       end
@@ -20,8 +21,6 @@ module Translatomatic
 
     # @!visibility private
     module ClassMethods
-      private
-
       include CommonMethods
     end
 

@@ -81,6 +81,14 @@ module Translatomatic
       log.debug t('database.deleted')
     end
 
+    def text
+      Translatomatic::Model::Text
+    end
+
+    def locale
+      Translatomatic::Model::Locale
+    end
+
     private
 
     include Translatomatic::Util
@@ -103,7 +111,8 @@ module Translatomatic
     end
 
     def sqlite_database_exists?
-      @env_config['adapter'] == 'sqlite3' && File.exist?(@env_config['database'])
+      @env_config['adapter'] == 'sqlite3' &&
+        File.exist?(@env_config['database'])
     end
 
     DB_PATH = join_path(File.dirname(__FILE__), '..', '..', 'db')

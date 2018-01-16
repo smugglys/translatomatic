@@ -1,6 +1,6 @@
 RSpec.describe Translatomatic::Converter do
   def self.sane_conversion?(source, target)
-    source != target && source.is_key_value? && target.is_key_value?
+    source != target && source.key_value? && target.key_value?
   end
 
   Translatomatic::ResourceFile.types.each do |source_type|

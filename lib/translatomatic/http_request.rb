@@ -155,7 +155,7 @@ module Translatomatic
         elsif body.is_a?(Hash)
           # set_form_data does url encoding
           request.set_form_data(body)
-        elsif
+        else
           request.body = body
         end
       end

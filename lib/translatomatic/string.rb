@@ -22,21 +22,6 @@ module Translatomatic
       @parent = options[:parent]
     end
 
-    # @return [String] The value of the string
-    def to_s
-      @value
-    end
-
-    # @return [Number] The length of the string
-    def length
-      @value.length
-    end
-
-    # @return [boolean] True if the string is empty
-    def empty?
-      @value.empty?
-    end
-
     # Invokes value.match
     # @param pattern [Regexp,String] The regex pattern to match
     # @return [MatchData] Object describing the match, or nil if no match
@@ -47,6 +32,11 @@ module Translatomatic
     # @return [boolean] true if this string is a substring of another string
     def substring?
       @parent ? true : false
+    end
+
+    # @return [String] The value of the string
+    def to_s
+      @value
     end
 
     # @return [Symbol] The type of string, corresponding to TMX segtype.
@@ -195,6 +185,18 @@ module Translatomatic
     def script_data
       data = self.class.script_data
       data[locale.language] || data['default']
+    end
+
+    def respond_to_missing?(name, include_private = false)
+      @value.respond_to?(name) || super
+    end
+
+    def method_missing(name, *args)
+      if @value.respond_to?(name)
+        @value.send(name, *args)
+      else
+        super
+      end
     end
   end
 end

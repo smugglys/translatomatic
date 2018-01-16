@@ -32,7 +32,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activerecord', '~> 5'
   spec.add_dependency 'easy_translate'
   spec.add_dependency 'i18n'
-  spec.add_dependency 'i18n_data'
+  spec.add_dependency 'i18n_data'          # iso country/language codes
+  spec.add_dependency 'rails-i18n', '~> 5' # date/time/currency formats
   spec.add_dependency 'kramdown'           # markdown -> html
   spec.add_dependency 'nokogiri'
   spec.add_dependency 'PoParser'

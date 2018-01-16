@@ -114,37 +114,19 @@ module Translatomatic
     def restore_variables(result, translation)
       file = result.file
       return unless file.class.supports_variable_interpolation?
-
-      # find variables in the original string
-      variables = string_variables(translation.original, file.locale, file)
-      # find variables in the translated string
-      translated_variables = string_variables(translation.result, result.to_locale, file)
-
-      if variables.length == translated_variables.length
-        # we can restore variables. sort by largest offset first.
-        # not using translation() method as that adds to @translations hash.
-        conversions = variables.zip(translated_variables).collect do |v1, v2|
-          Translatomatic::Translation.new(v1, v2)
-        end
-        conversions.sort_by! { |t| -t.original.offset }
-        conversions.each do |conversion|
-          v1 = conversion.original
-          v2 = conversion.result
-          translation.result[v2.offset, v2.length] = v1.value
-        end
-      else
+      unless translation.restore_variables(file.variable_regex)
         # unable to restore interpolated variable names
-        log.debug("#{@current_translator.name}: unable to restore variables: #{translation.result}")
+        translator = @current_translator.name
+        failed_string = translation.result
+        msg = "#{translator}: unable to restore variables: #{failed_string}"
+        log.debug(msg)
         translation.result = nil # mark result as invalid
       end
     end
 
-    def string_variables(value, locale, file)
-      string(value, locale).substrings(file.variable_regex)
-    end
-
+    # rubocop:disable Style/ClassCheck
     def resource_file(path)
-      if path.kind_of?(Translatomatic::ResourceFile::Base) # rubocop:disable Style/ClassCheck
+      if path.kind_of?(Translatomatic::ResourceFile::Base)
         path
       else
         file = Translatomatic::ResourceFile.load(path)
@@ -162,8 +144,9 @@ module Translatomatic
         db_texts = find_database_translations(result, result.untranslated.to_a)
         db_texts.each do |db_text|
           from_text = db_text.from_text.value
-          next unless untranslated[from_text]
-          translation = translation(untranslated[from_text], db_text.value, true)
+          original = untranslated[from_text]
+          next unless original
+          translation = translation(original, db_text.value, true)
           restore_variables(result, translation)
           translations << translation
         end
@@ -210,7 +193,6 @@ module Translatomatic
       translator = @current_translator.name
       t = Translatomatic::Translation.new(from, to, translator, from_database)
       @translations[from] = t
-      t
     end
 
     def database_disabled?

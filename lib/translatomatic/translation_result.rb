@@ -77,13 +77,13 @@ module Translatomatic
     def update(original, translated)
       keys = @value_to_keys[original.to_s]
       raise "no key mapping for text '#{original}'" unless keys
+      new_value = translated.nil? ? nil : translated.to_s
       keys.each do |key|
-        # value = @properties[key]
         if original.is_a?(Translatomatic::String) && original.substring?
-          @properties[key][original.offset, original.length] = translated
+          @properties[key][original.offset, original.length] = new_value
         else
           # log.debug("#{key} -> #{translated}")
-          @properties[key] = translated
+          @properties[key] = new_value
         end
       end
     end

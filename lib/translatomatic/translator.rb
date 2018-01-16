@@ -98,9 +98,7 @@ module Translatomatic
       out + "\n"
     end
 
-    private
-
-    def self.config
+    private_class_method def self.config
       Translatomatic.config
     end
   end

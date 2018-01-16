@@ -18,14 +18,16 @@ module Translatomatic
         self.class.name.demodulize
       end
 
-      # @return [Array<String>] A list of languages supported by this translator.
+      # @return [Array<String>] A list of languages
+      #   supported by this translator.
       def languages
         []
       end
 
       # Translate strings from one locale to another
       # @param strings [Array<String>] A list of strings to translate.
-      # @param from [String, Translatomatic::Locale] The locale of the given strings.
+      # @param from [String, Translatomatic::Locale] The locale of the
+      #   given strings.
       # @param to [String, Translatomatic::Locale] The locale to translate to.
       # @return [Array<String>] Translated strings
       def translate(strings, from, to)
@@ -75,13 +77,11 @@ module Translatomatic
                 # translation error
                 log.error(e)
                 fail_count += 1
-                if fail_count >= TRANSLATION_RETRIES
-                  raise e # re-raise exception
-                else
-                  # need to restart http connection
-                  # break back out to request.start block
-                  break
-                end
+                raise e if fail_count >= TRANSLATION_RETRIES
+
+                # need to restart http connection
+                # break back out to request.start block
+                break
               end
             end
           end
@@ -112,7 +112,7 @@ module Translatomatic
         fail_count = 0
         begin
           yield
-        rescue Exception => e
+        rescue StandardError => e
           log.error(e.message)
           fail_count += 1
           retry if fail_count < retries

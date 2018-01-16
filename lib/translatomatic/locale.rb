@@ -70,10 +70,9 @@ module Translatomatic
       [language, script, region].hash
     end
 
-    private
-
     # list of 2 letter country codes
-    VALID_LANGUAGES = ::I18nData.languages.keys.collect(&:downcase).sort
+    VALID_LANGUAGES = ::I18nData.languages.keys.collect(&:downcase).sort.freeze
+    private_constant :VALID_LANGUAGES
 
     begin
       # get default locale from the environment

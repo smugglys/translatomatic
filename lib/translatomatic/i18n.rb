@@ -1,15 +1,19 @@
 require 'i18n'
+require 'rails_i18n'  # date/time/currency formats
 
 module Translatomatic
   # I18n initialisation and translation fallback handling
   class I18n
     class << self
-
       def t(key, options = {})
         tkey = "translatomatic.#{key}"
         raise "missing translation: #{tkey}" unless ::I18n.exists?(tkey)
 
         ::I18n.t(tkey, options.merge(locale: t_locale(options)))
+      end
+
+      def l(key, options = {})
+        ::I18n.l(key, options)
       end
 
       private

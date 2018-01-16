@@ -26,7 +26,7 @@ module Translatomatic
     private
 
     def respond_to_missing?(name, include_private = false)
-      @logger.respond_to?(name) || super
+      @logger.respond_to?(name, include_private) || super
     end
 
     def method_missing(name, *args)

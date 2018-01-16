@@ -1,5 +1,5 @@
-# Translation statistics
 module Translatomatic
+  # Translation statistics
   class TranslationStats
     include Translatomatic::Util
 
@@ -26,9 +26,10 @@ module Translatomatic
     end
 
     def to_s
-      t('file_translator.total_translations', total: @translations.length,
-        from_db: @from_db, from_translator: @from_translator,
-        untranslated: @untranslated)
-      end
+      key = 'file_translator.total_translations'
+      t(key, total: @translations.length,
+             from_db: @from_db, from_translator: @from_translator,
+             untranslated: @untranslated)
     end
   end
+end

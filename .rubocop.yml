@@ -1,6 +1,17 @@
+
 AllCops:
   Exclude:
     - translatomatic.gemspec
     - 'db/**/*'
     - 'config/**/*'
     - 'spec/**/*'
+
+# Offense count: 5
+# Cop supports --auto-correct.
+# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
+# need to keep those parameters for documentation purposes
+Lint/UnusedMethodArgument:
+  Exclude:
+    - 'lib/translatomatic/resource_file/base.rb'
+    - 'lib/translatomatic/resource_file/csv.rb'
+    - 'lib/translatomatic/resource_file/text.rb'

@@ -10,7 +10,7 @@ RSpec.describe Translatomatic::Translator::Google do
   end
 
   it "translates strings" do
-    api_endpoint = "https://www.googleapis.com/language/translate/v2?key=dummy&prettyPrint=false&source=en&target=de"
+    api_endpoint = "https://translation.googleapis.com/language/translate/v2?key=dummy&prettyPrint=false&source=en&target=de"
     expected_response = {
       "data": {
         "translations": [ { "translatedText": "Bier" } ]
