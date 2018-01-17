@@ -19,7 +19,7 @@ module Translatomatic
       desc 'string text locale...', t('cli.translate.string')
       thor_options(self, Translatomatic::CLI::CommonOptions)
       thor_options(self, Translatomatic::CLI::Translate)
-      thor_options(self, Translatomatic::Translator.modules)
+      thor_options(self, Translatomatic::Translator.types)
       # Translate a string to target locales
       # @param text [String] String to translate
       # @param locales [Array<String>] List of target locales, can also be set
@@ -50,7 +50,8 @@ module Translatomatic
       thor_options(self, Translatomatic::CLI::Translate)
       thor_options(self, Translatomatic::FileTranslator)
       thor_options(self, Translatomatic::Database)
-      thor_options(self, Translatomatic::Translator.modules)
+      thor_options(self, Translatomatic::Translator.types)
+      thor_options(self, Translatomatic::ResourceFile.types)
       # Translate files to target locales
       # @param file [String] Resource file to translate, can also be set
       #   with the --source-files option.

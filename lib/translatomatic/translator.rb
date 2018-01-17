@@ -44,7 +44,7 @@ module Translatomatic
     end
 
     # @return [List<Class>] A list of all translator classes
-    def self.modules
+    def self.types
       constants.collect { |c| const_get(c) }.select do |klass|
         klass.is_a?(Class) && klass != Translatomatic::Translator::Base
       end
@@ -52,7 +52,7 @@ module Translatomatic
 
     # @return [List<String>] A list of all translators
     def self.names
-      modules.collect { |i| i.name.demodulize }
+      types.collect { |i| i.name.demodulize }
     end
 
     # Find all configured translators
@@ -60,7 +60,7 @@ module Translatomatic
     # @return [Array<#translate>] A list of translator instances
     def self.available(options = {})
       available = []
-      modules.each do |mod|
+      types.each do |mod|
         begin
           translator = mod.new(options)
           available << translator
@@ -75,7 +75,7 @@ module Translatomatic
     def self.list
       out = t('translator.translators') + "\n"
       configured_options = {}
-      modules.each do |mod|
+      types.each do |mod|
         out += "\n" + mod.name.demodulize + ":\n"
         opts = mod.options
         opts.each do |opt|

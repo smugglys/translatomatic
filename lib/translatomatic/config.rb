@@ -165,7 +165,8 @@ module Translatomatic
           Translatomatic::CLI::CommonOptions,
           Translatomatic::CLI::Translate,
           Translatomatic::CLI::Config,
-          Translatomatic::Translator.modules,
+          Translatomatic::Translator.types,
+          Translatomatic::ResourceFile.types,
           Translatomatic::Database,
           Translatomatic::Converter
         ].freeze
