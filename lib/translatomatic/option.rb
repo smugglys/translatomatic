@@ -39,19 +39,26 @@ module Translatomatic
         raise "unrecognised attribute #{k}" unless constructor_option?(k)
         instance_variable_set("@#{k}", v)
       end
+      @description = @desc
+      @type ||= :string
+      raise "invalid type: #{@type}" unless VALID_TYPES.include?(@type)
       @env_name ||= @use_env && @name ? @name.to_s.upcase : nil
     end
 
     def to_thor
       {
-        name: @name,
         required: @required,
         type: thor_type,
         desc: @description,
         default: @default,
         aliases: @aliases,
+        banner: type_name,
         enum: @enum ? @enum.collect(&:to_s) : nil
       }
+    end
+
+    def type_name
+      t("config.types.#{type}")
     end
 
     # Retrieve all options from an object or list of objects.
@@ -71,9 +78,12 @@ module Translatomatic
 
     private
 
+    include Util
+
     CONSTRUCTOR_OPTIONS = %i[name required desc use_env hidden type default
                              aliases enum user_context_only
                              command_line_only env_name].freeze
+    VALID_TYPES = %i[array path_array string path boolean numeric]
 
     def constructor_option?(key)
       CONSTRUCTOR_OPTIONS.include?(key)

@@ -147,7 +147,7 @@ module Translatomatic
           value = conf.get(key, context)
           value.nil? ? '-' : value
         when :type
-          t("config.types.#{option.type}")
+          option.type_name
         when :desc
           option.description
         else
