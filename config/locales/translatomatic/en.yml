@@ -27,7 +27,7 @@ en:
       target_locales: Locales to translate to
       source_files: Files to translate
       debug: Enable debugging output
-      wank: Enable translation progress bar
+      no_wank: Disable translation progress bar
       share: Share translations with translators
       dry_run: 'Dry run: files will not be translated or written'
       locales_required: One or more target locales required
@@ -57,6 +57,11 @@ en:
       loading: Attempting to load %{file} using %{name}
       directory: "File is a directory: %{file}"
       invalid: "File is invalid: %{file}"
+      csv:
+        headers: Treat the first row of CSV files as a row of headers.
+        columns: Names or indices of CSV columns to translate
+        key_column: A CSV column name to to be used for property keys
+        value_column: A CSV column name to be used for property values
     tmx:
       multiple_origins: Multiple origins in texts.
       multiple_locales: Multiple source locales in texts.
@@ -84,7 +89,7 @@ en:
       total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_translator} from translator, %{untranslated} untranslated)'
       untranslated: "Untranslated strings:"
       dry_run: Print actions without performing translations or writing files.
-      use_database: Store and retrieve translations from the database.
+      no_database: Do not store translations to the database.
       database_disabled: Database is disabled.
       translator_required: Translator required.
       translating: Translating %{source} (%{source_locale}) to %{target} (%{target_locale})

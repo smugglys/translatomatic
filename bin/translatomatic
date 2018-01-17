@@ -5,4 +5,5 @@ $LOAD_PATH.unshift File.join(__dir__, '..', 'lib')
 require 'bundler/setup'
 require 'translatomatic'
 
+Thor::Option.prepend Translatomatic::CLI::ThorPatch::NoNo
 Translatomatic::CLI::Main.start

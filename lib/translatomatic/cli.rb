@@ -3,6 +3,7 @@ module Translatomatic
   module CLI; end
 end
 
+require 'translatomatic/cli/thor'
 require 'translatomatic/cli/common_options'
 require 'translatomatic/cli/base'
 require 'translatomatic/cli/translate'

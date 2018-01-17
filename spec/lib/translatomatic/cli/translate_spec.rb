@@ -11,7 +11,7 @@ RSpec.describe Translatomatic::CLI::Translate do
     it 'translates a string' do
       translator = test_translator
       expect(translator).to receive(:translate).and_return(['Bier'])
-      add_cli_options(use_database: false, target_locales: 'de')
+      add_cli_options(no_database: true, target_locales: 'de')
       @cli.string('Beer')
     end
 
@@ -29,7 +29,7 @@ RSpec.describe Translatomatic::CLI::Translate do
       path = create_tempfile('test.properties', 'key = Beer')
       translator = test_translator
       expect(translator).to receive(:translate).and_return(['Bier'])
-      add_cli_options(use_database: false, wank: true, target_locales: 'de')
+      add_cli_options(no_database: true, target_locales: 'de')
       @cli.file(path.to_s)
     end
 
@@ -38,7 +38,7 @@ RSpec.describe Translatomatic::CLI::Translate do
       translator = test_translator
       expect(translator).to_not receive(:translate)
       # don't use database results
-      add_cli_options(use_database: false, target_locales: 'de')
+      add_cli_options(no_database: true, target_locales: 'de')
       expect do
         @cli.file(path.to_s)
       end.to raise_exception(t('file.unsupported', file: path))
@@ -55,7 +55,7 @@ RSpec.describe Translatomatic::CLI::Translate do
 
       path = create_tempfile('test.properties', 'key = Beer')
       # don't use database results
-      add_cli_options(use_database: false, target_locales: 'de')
+      add_cli_options(no_database: true, target_locales: 'de')
       @cli.file(path.to_s)
     end
 

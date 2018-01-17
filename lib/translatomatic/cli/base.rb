@@ -16,7 +16,8 @@ module Translatomatic
         def thor_options(klass, object)
           Translatomatic::Option.options_from_object(object).each do |option|
             next if option.hidden
-            klass.method_option option.name, option.to_thor
+            name = option.name.to_s.dasherize
+            klass.method_option name, option.to_thor
           end
         end
       end

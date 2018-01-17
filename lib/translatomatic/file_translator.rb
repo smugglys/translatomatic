@@ -19,8 +19,7 @@ module Translatomatic
       @translators.each { |i| i.listener = @listener } if @listener
 
       # use database by default if we're connected to a database
-      use_db = options.fetch(:use_database, true)
-      @use_db = use_db && ActiveRecord::Base.connected?
+      @use_db = !options[:no_database] && ActiveRecord::Base.connected?
       log.debug(t('file_translator.database_disabled')) unless @use_db
 
       @db_translations = []
@@ -95,8 +94,8 @@ module Translatomatic
     define_option :dry_run, type: :boolean, aliases: '-n',
                             desc: t('file_translator.dry_run'),
                             command_line_only: true
-    define_option :use_database, type: :boolean, default: true,
-                                 desc: t('file_translator.use_database')
+    define_option :no_database, type: :boolean, default: false,
+                                desc: t('file_translator.no_database')
 
     def each_translator(result)
       @translators.each do |translator|

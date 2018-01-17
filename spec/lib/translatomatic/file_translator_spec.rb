@@ -159,7 +159,7 @@ RSpec.describe Translatomatic::FileTranslator do
         }
         translated_text = "zomg #{translated_variable} zomg"
         translator = test_translator(translated_text)
-        t = create_file_translator(translator: translator, use_database: false)
+        t = create_file_translator(translator: translator, no_database: true)
         t.translate(file, 'de')
         expected_result = "zomg #{original_variable} zomg"
         expect(file.properties[:key1]).to eq(expected_result)
@@ -168,7 +168,7 @@ RSpec.describe Translatomatic::FileTranslator do
       it 'rejects translations with malformed variable names' do
         file = create_test_file(type)
         translator = setup_failed_variable_restore(file)
-        t = create_file_translator(translator: translator, use_database: false)
+        t = create_file_translator(translator: translator, no_database: true)
         t.translate(file, 'de')
         expect(file.properties[:key1]).to eq(nil)
       end
