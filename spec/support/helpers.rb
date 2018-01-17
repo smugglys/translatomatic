@@ -21,12 +21,13 @@ module Helpers
     contents
   end
 
-  def fixture_path(path)
+  def fixture_path(path, options = {})
     f1 = File.join(FIXTURES_PATH, path)
     return f1 if File.exist?(f1)
     f2 = File.join(FIXTURES_PATH, 'resource_file', path)
     return f2 if File.exist?(f2)
-    raise "fixture #{path} not found"
+    raise "fixture #{path} not found" unless options[:allow_missing]
+    nil
   end
 
   def test_http_headers(options = {})

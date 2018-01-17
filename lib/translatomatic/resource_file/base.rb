@@ -3,6 +3,8 @@ module Translatomatic
     # Base class for resource file implementations
     # @abstract Subclasses implement different types of resource files
     class Base
+      include DefineOptions
+
       attr_accessor :locale
       attr_accessor :path
 

@@ -87,7 +87,11 @@ module Translatomatic
 
       # create mapping from key to PoProperty
       def init_pomap(po)
-        po.entries.each do |entry|
+        po.entries.each_with_index do |entry, i|
+          # skip PO file header if present
+          # TODO: update PO-Revision-Date, Last-Translator ?
+          next if entry.msgid == "" && i == 0
+
           add_entry(entry, :msgid, 0)
           add_entry(entry, :msgid_plural, 1) if entry.plural?
         end

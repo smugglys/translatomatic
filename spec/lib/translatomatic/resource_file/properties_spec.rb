@@ -1,6 +1,5 @@
 RSpec.describe Translatomatic::ResourceFile::Properties do
-  include_examples 'a resource file',
-                   test_files: %w[test.properties test2.properties]
+  include_examples 'a resource file'
 
   it 'converts \\n to newline and back' do
     path = fixture_path('test_multiline.properties')
