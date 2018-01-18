@@ -33,9 +33,12 @@ module Translatomatic
           source_files.each do |path|
             raise t('file.not_found', file: path) unless File.exist?(path)
             source = Translatomatic::ResourceFile.load(path)
+            display_properties(source, keys)
             locales.each do |locale|
               path = source.locale_path(locale)
-              display_properties(path, keys) if path.exist?
+              next if path == source.path || !path.exist?
+              resource = Translatomatic::ResourceFile.load(path)
+              display_properties(resource, keys)
             end
           end
         end
@@ -87,12 +90,7 @@ module Translatomatic
 
       private
 
-      def display_properties(path, keys)
-        resource = Translatomatic::ResourceFile.load(path)
-        display_keys(resource, keys)
-      end
-
-      def display_keys(source, keys)
+      def display_properties(source, keys)
         puts t('cli.file_source', file: source)
         rows = []
         keys = source.properties.keys if keys.empty?

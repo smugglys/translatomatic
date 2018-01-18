@@ -127,7 +127,7 @@ module Translatomatic
 
       # @return [String] String representation of this file
       def to_s
-        path.relative_path_from(Pathname.new(Dir.pwd)).to_s
+        relative_path.to_s
       end
 
       def type
@@ -298,6 +298,14 @@ module Translatomatic
 
       def needs_flatten?(value)
         value.is_a?(Array) || value.is_a?(Hash)
+      end
+
+      def relative_path
+        if path.relative?
+          path
+        else
+          path.relative_path_from(Pathname.pwd)
+        end
       end
     end
   end
