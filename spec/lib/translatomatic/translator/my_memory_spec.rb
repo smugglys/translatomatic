@@ -24,7 +24,7 @@ RSpec.describe Translatomatic::Translator::MyMemory do
 
   it "shares translated strings" do
 
-    # webmock doesn't support regex body match
+    # WebMock does not support matching body for multipart/form-data requests yet :(
 =begin
     stub_request(:post, "https://api.mymemory.translated.net/tmx/import").
     with(headers: test_http_headers('Host'=>'api.mymemory.translated.net',
@@ -32,15 +32,17 @@ RSpec.describe Translatomatic::Translator::MyMemory do
         request.body.match(/.*/)
       }
 =end
-    request = Translatomatic::HTTPRequest.new("http://example.com")
-    response = double(:response)
-    allow(response).to receive(:body).and_return("")
-    expect(Translatomatic::HTTPRequest).to receive(:new).and_return(request)
-    expect(request).to receive(:send_request).and_return(response)
+    t = described_class.new
 
     tmx = double(:tmx_document)
     expect(tmx).to receive(:to_xml).and_return("<xml />")
-    t = described_class.new
+
+    client = double(:client)
+    response = double(:response)
+    allow(response).to receive(:body).and_return("")
+    expect(t).to receive(:http_client).and_return(client)
+    expect(client).to receive(:post).and_return(response)
+
     t.upload(tmx)
   end
 end

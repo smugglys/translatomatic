@@ -28,17 +28,14 @@ module Translatomatic
       # @param tmx [Translatomatic::TMX::Document] TMX document
       # @return [void]
       def upload(tmx)
-        request = Translatomatic::HTTPRequest.new(UPLOAD_URL)
-        request.start do |_http|
-          body = [
-            request.file(key: :tmx, filename: 'import.tmx',
-                         content: tmx.to_xml, mime_type: 'application/xml'),
-            request.param(key: :private, value: 0)
-          ]
-          response = request.post(body, multipart: true)
-          log.debug(t('translator.share_response',
-                      response: response.body.inspect))
-        end
+        body = [
+          { key: :tmx, filename: 'import.tmx',
+            content: tmx.to_xml, mime_type: 'application/xml' },
+          { key: :private, value: 0 }
+        ]
+        response = http_client.post(UPLOAD_URL, body)
+        log.debug(t('translator.share_response',
+                    response: response.body.inspect))
       end
 
       private
@@ -50,13 +47,27 @@ module Translatomatic
         perform_fetch_translations(GET_URL, strings, from, to)
       end
 
-      def fetch_translation(request, string, from, to)
-        response = request.get({
+      def fetch_translation(string, from, to)
+        response = http_client.get(GET_URL, {
           langpair: from.to_s + '|' + to.to_s,
           q: string # multiple q strings not supported (tested 20180101)
         }.merge(@query_options))
+
+        log.debug("#{name} response: #{response.body}")
         data = JSON.parse(response.body)
+        #matches = data['matches'] # all translations
+        #matches.collect { |i| match_data(i) }
         data['responseData']['translatedText']
+      end
+
+      # https://mymemory.translated.net/doc/features.php
+      def match_data(match)
+        {
+          translation: match['translation'],
+          quality: match['quality'],
+          usage_count: match['usage-count'],
+          match: match['match'], # partial matches, see features.php above
+        }
       end
     end
   end

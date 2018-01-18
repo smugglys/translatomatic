@@ -16,8 +16,7 @@ module Translatomatic
       # (see Translatomatic::Translator::Base#languages)
       def languages
         @languages ||= begin
-          request = Translatomatic::HTTPRequest.new(LANGUAGES_URL)
-          response = request.post(key: @api_key, ui: 'en')
+          response = http_client.post(LANGUAGES_URL, key: @api_key, ui: 'en')
           data = JSON.parse(response.body) || {}
           langs = data['langs'] || {}
           langs.keys.flatten.uniq
@@ -36,14 +35,14 @@ module Translatomatic
       end
 
       def fetch_translations(strings, from, to)
-        request = Translatomatic::HTTPRequest.new(TRANSLATE_URL)
         body = {
           key: @api_key,
           text: strings,
           lang: from.language + '-' + to.language,
           format: 'plain'
         }
-        response = request.post(body)
+        response = http_client.post(TRANSLATE_URL, body)
+        log.debug("#{name} response: #{response.body}")
         data = JSON.parse(response.body)
         data['text']
       end

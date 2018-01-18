@@ -15,7 +15,7 @@ RSpec.describe Translatomatic::Translator::Base do
       end
     end
 
-    def fetch_translation(_request, _strings, _from, _to)
+    def fetch_translation(_strings, _from, _to)
       @errors ||= 0
       @fetch_count ||= 0
       @fetch_count += 1

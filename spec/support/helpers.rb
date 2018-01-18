@@ -12,6 +12,10 @@ module Helpers
     config = Translatomatic.config
     config.send(:user_settings_path=, TEST_USER_SETTINGS_PATH)
     config.send(:project_settings_path=, TEST_PROJ_SETTINGS_PATH)
+
+    # patch http request so we can match multipart bodies
+    # WebMock does not support matching body for multipart/form-data requests yet :(
+    # Translatomatic::HTTP::Request.prepend Helpers::MultipartPatch
   end
 
   def fixture_read(path, crlf = false)

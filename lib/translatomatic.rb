@@ -40,7 +40,7 @@ require 'translatomatic/database'
 require 'translatomatic/escaped_unicode'
 require 'translatomatic/model'
 require 'translatomatic/resource_file'
-require 'translatomatic/http_request'
+require 'translatomatic/http'
 require 'translatomatic/converter'
 require 'translatomatic/translator'
 require 'translatomatic/translation_result'
@@ -50,3 +50,6 @@ require 'translatomatic/extractor'
 require 'translatomatic/progress_updater'
 require 'translatomatic/tmx'
 require 'translatomatic/cli'
+
+# monkey patches
+Thor::Option.prepend Translatomatic::CLI::ThorPatch::NoNo

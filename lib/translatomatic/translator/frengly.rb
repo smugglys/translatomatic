@@ -35,7 +35,7 @@ module Translatomatic
         perform_fetch_translations(URL, strings, from, to)
       end
 
-      def fetch_translation(request, string, from, to)
+      def fetch_translation(string, from, to)
         body = {
           src: from.language,
           dest: to.language,
@@ -46,7 +46,7 @@ module Translatomatic
         }.to_json
 
         # TODO: work out what the response looks like
-        response = request.post(body, content_type: 'application/json')
+        response = http_client.post(URL, body, content_type: 'application/json')
         data = JSON.parse(response.body)
         data['text']
       end

@@ -47,6 +47,10 @@ module Translatomatic
 
       TRANSLATION_RETRIES = 3
 
+      def http_client(*args)
+        @http_client ||= Translatomatic::HTTP::Client.new(*args)
+      end
+
       # Fetch translations for the given strings, one at a time, by
       # opening a http connection to the given url and calling
       # fetch_translation() on each string. Error handling and recovery
@@ -55,18 +59,16 @@ module Translatomatic
       def perform_fetch_translations(url, strings, from, to)
         translated = []
         untranslated = strings.dup
-        request = Translatomatic::HTTPRequest.new(url)
         fail_count = 0 # number of consecutive translation failures
 
         until untranslated.empty? # request start block
-
-          request.start do |_http|
+          http_client.start(url) do |_http|
             until untranslated.empty?
               # get next string to translate
               string = untranslated[0]
               begin
                 # fetch translation
-                result = fetch_translation(request, string, from, to)
+                result = fetch_translation(string, from, to)
 
                 # successful translation
                 fail_count = 0 # reset fail count
@@ -90,7 +92,7 @@ module Translatomatic
         translated
       end
 
-      def fetch_translation(_request, _strings, _from, _to)
+      def fetch_translation(_string, _from, _to)
         raise 'subclass must implement fetch_translation'
       end
 
