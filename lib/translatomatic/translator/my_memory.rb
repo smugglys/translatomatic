@@ -55,8 +55,8 @@ module Translatomatic
 
         log.debug("#{name} response: #{response.body}")
         data = JSON.parse(response.body)
-        #matches = data['matches'] # all translations
-        #matches.collect { |i| match_data(i) }
+        # matches = data['matches'] # all translations
+        # matches.collect { |i| match_data(i) }
         data['responseData']['translatedText']
       end
 

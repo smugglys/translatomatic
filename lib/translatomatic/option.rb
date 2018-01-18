@@ -83,7 +83,7 @@ module Translatomatic
     CONSTRUCTOR_OPTIONS = %i[name required desc use_env hidden type default
                              aliases enum user_context_only
                              command_line_only env_name].freeze
-    VALID_TYPES = %i[array path_array string path boolean numeric]
+    VALID_TYPES = %i[array path_array string path boolean numeric].freeze
 
     def constructor_option?(key)
       CONSTRUCTOR_OPTIONS.include?(key)

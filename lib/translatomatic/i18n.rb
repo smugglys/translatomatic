@@ -1,5 +1,5 @@
 require 'i18n'
-require 'rails_i18n'  # date/time/currency formats
+require 'rails_i18n' # date/time/currency formats
 
 module Translatomatic
   # I18n initialisation and translation fallback handling

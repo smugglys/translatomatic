@@ -90,7 +90,7 @@ module Translatomatic
         po.entries.each_with_index do |entry, i|
           # skip PO file header if present
           # TODO: update PO-Revision-Date, Last-Translator ?
-          next if entry.msgid == "" && i == 0
+          next if entry.msgid == '' && i == 0
 
           add_entry(entry, :msgid, 0)
           add_entry(entry, :msgid_plural, 1) if entry.plural?
@@ -106,7 +106,7 @@ module Translatomatic
         return unless map_key
 
         context = entry.msgctxt
-        map_key = map_key + "." + context.to_s if context
+        map_key = map_key + '.' + context.to_s if context
         @pomap[map_key] = PoProperty.new(entry, index)
       end
     end

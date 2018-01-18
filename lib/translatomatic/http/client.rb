@@ -4,7 +4,6 @@ module Translatomatic
   module HTTP
     # HTTP client
     class Client
-
       def initialize(options = {})
         @redirects = 0
         @jar = ::HTTP::CookieJar.new
@@ -60,8 +59,9 @@ module Translatomatic
       private
 
       MAX_REDIRECTS = 5
-      RETRIABLE = [Net::HTTPServerError, Net::HTTPTooManyRequests]
+      RETRIABLE = [Net::HTTPServerError, Net::HTTPTooManyRequests].freeze
 
+      # Retry requests on server errors
       class HttpRetryExecutor < RetryExecutor
         def retriable?(exception)
           exception.is_a?(Translatomatic::HTTP::Exception) &&
@@ -109,7 +109,7 @@ module Translatomatic
         else
           # error
           @redirects = 0
-          raise Translatomatic::HTTP::Exception.new(response)
+          raise Translatomatic::HTTP::Exception, response
         end
       end
 

@@ -14,7 +14,7 @@ module Translatomatic
       # (see Param#to_s)
       def to_s
         header(header_data) +
-        header('Content-Type' => mime_type) + "\r\n#{content}\r\n"
+          header('Content-Type' => mime_type) + "\r\n#{content}\r\n"
       end
 
       private

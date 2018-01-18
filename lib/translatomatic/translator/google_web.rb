@@ -6,7 +6,6 @@ module Translatomatic
     # supports multiple translations
     # @see https://translate.google.com.au
     class GoogleWeb < Base
-
       # Create a new GoogleWeb translator instance
       def initialize(options = {})
         super(options)
@@ -26,7 +25,6 @@ module Translatomatic
       def fetch_translation(_request, _strings, _from, _to)
         raise 'subclass must implement fetch_translation'
       end
-
     end
   end
 end

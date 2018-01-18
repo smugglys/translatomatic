@@ -4,7 +4,6 @@ module Translatomatic
   module ResourceFile
     # CSV resource file
     class CSV < Base
-
       # (see Base.extensions)
       def self.extensions
         %w[csv]
@@ -24,28 +23,28 @@ module Translatomatic
       def save(target = path, _options = {})
         use_headers = @options[:csv_headers]
         csv_options = { write_headers: use_headers }
-        csv_options.merge!(headers: @headers) if use_headers
+        csv_options[:headers] = @headers if use_headers
 
         ::CSV.open(target, 'wb', csv_options) do |csv|
           @rows.each do |row|
-            csv << row.collect { |i| i.value }
+            csv << row.collect(&:value)
           end
         end
       end
 
       private
 
-      DEFAULT_KEY_COLUMN = 'key'
-      DEFAULT_VALUE_COLUMN = 'value'
+      DEFAULT_KEY_COLUMN = 'key'.freeze
+      DEFAULT_VALUE_COLUMN = 'value'.freeze
 
       define_option :csv_headers, type: :boolean, default: false,
-                    desc: t('file.csv.headers')
+                                  desc: t('file.csv.headers')
       define_option :csv_columns, type: :array,
-                    desc: t('file.csv.columns')
+                                  desc: t('file.csv.columns')
       define_option :csv_key_column, default: DEFAULT_KEY_COLUMN,
-                    desc: t('file.csv.key_column')
+                                     desc: t('file.csv.key_column')
       define_option :csv_value_column, default: DEFAULT_VALUE_COLUMN,
-                    desc: t('file.csv.value_column')
+                                       desc: t('file.csv.value_column')
 
       Cell = Struct.new(:header, :key, :value, :translate)
 

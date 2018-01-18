@@ -15,3 +15,9 @@ Lint/UnusedMethodArgument:
     - 'lib/translatomatic/resource_file/base.rb'
     - 'lib/translatomatic/resource_file/csv.rb'
     - 'lib/translatomatic/resource_file/text.rb'
+
+# these need to use kind_of?, not is_a?
+Style/ClassCheck:
+  Exclude:
+    - 'lib/translatomatic/http/client.rb'
+    - 'lib/translatomatic/retry_executor.rb'

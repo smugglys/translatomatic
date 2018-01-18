@@ -52,8 +52,8 @@ module Translatomatic
       end
 
       def paramify(object)
-        return object if object.kind_of?(Param)
-        raise "invalid multipart parameter" unless object.is_a?(Hash)
+        return object if object.is_a?(Param) || object.is_a?(FileParam)
+        raise 'invalid multipart parameter' unless object.is_a?(Hash)
         object[:filename] ? FileParam.new(object) : Param.new(object)
       end
 
@@ -86,7 +86,6 @@ module Translatomatic
         request.content_type = content_type if content_type
         request
       end
-
     end
   end
 end
