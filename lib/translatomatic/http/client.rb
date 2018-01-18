@@ -6,9 +6,9 @@ module Translatomatic
     class Client
 
       def initialize(options = {})
-        @options = options
         @redirects = 0
         @jar = ::HTTP::CookieJar.new
+        @retry_delay = options[:retry_delay] || 2
       end
 
       # Send an HTTP GET request
@@ -60,6 +60,14 @@ module Translatomatic
       private
 
       MAX_REDIRECTS = 5
+      RETRIABLE = [Net::HTTPServerError, Net::HTTPTooManyRequests]
+
+      class HttpRetryExecutor < RetryExecutor
+        def retriable?(exception)
+          exception.is_a?(Translatomatic::HTTP::Exception) &&
+            RETRIABLE.any? { |i| exception.response.kind_of?(i) }
+        end
+      end
 
       def send_request_with_method(method, url, options = {})
         cookies = ::HTTP::Cookie.cookie_value(@jar.cookies(url))
@@ -69,7 +77,8 @@ module Translatomatic
       end
 
       def send_request(req)
-        handle_response(send_request_http(req))
+        executor = HttpRetryExecutor.new(retry_delay: @retry_delay)
+        executor.run { handle_response(send_request_http(req)) }
       end
 
       def send_request_http(req)
@@ -100,7 +109,7 @@ module Translatomatic
         else
           # error
           @redirects = 0
-          raise response.body
+          raise Translatomatic::HTTP::Exception.new(response)
         end
       end
 

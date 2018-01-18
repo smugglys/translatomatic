@@ -1,51 +1,44 @@
 RSpec.describe Translatomatic::Translator::Base do
   class DummyTranslator < Translatomatic::Translator::Base
-    ERROR_MESSAGE = 'translation error'.freeze
-
-    attr_accessor :raise_error_count
     attr_accessor :use_perform_fetch_translations
-    attr_reader :fetch_count
+
+    def initialize(url)
+      @url = url
+      http_client(retry_delay: 0)  # initialize client with no retry delay
+    end
 
     def perform_translate(strings, from, to)
       if use_perform_fetch_translations
-        uri = URI.parse('http://www.example.com')
-        perform_fetch_translations(uri, strings, from, to)
+        perform_fetch_translations(@url, strings, from, to)
       else
-        ['Result']
+        [http_client.get(@url).body]
       end
     end
 
     def fetch_translation(_strings, _from, _to)
-      @errors ||= 0
-      @fetch_count ||= 0
-      @fetch_count += 1
-      if raise_error_count && @errors < raise_error_count
-        @errors += 1
-        raise ERROR_MESSAGE
-      end
-
-      ['Result']
+      http_client.get(@url).body
     end
   end
 
   context :languages do
     it 'returns an empty language list by default' do
-      t = DummyTranslator.new
+      t = DummyTranslator.new(nil)
       expect(t.languages).to be_empty
     end
   end
 
   context :name do
     it 'returns the translator name' do
-      t = DummyTranslator.new
+      t = DummyTranslator.new(nil)
       expect(t.name).to eq(DummyTranslator.to_s)
     end
   end
 
   context :perform_fetch_translations do
-    it 'retries 3 times on error' do
-      t = DummyTranslator.new
-      t.raise_error_count = 2
+    it 'succeeds after 2 retriable errors' do
+      url = 'http://www.example.com'
+      t = DummyTranslator.new(url)
+      stub_request_failures(url, 2)
       t.use_perform_fetch_translations = true
       expect do
         t.translate('String', 'en', 'de')
@@ -53,13 +46,32 @@ RSpec.describe Translatomatic::Translator::Base do
     end
 
     it 'stops after failing 3 times' do
-      t = DummyTranslator.new
-      t.raise_error_count = 3
+      url = 'http://www.example.com'
+      t = DummyTranslator.new(url)
+      stub_request_failures(url, 3)
       t.use_perform_fetch_translations = true
       expect do
         t.translate('String', 'en', 'de')
-      end.to raise_error(DummyTranslator::ERROR_MESSAGE)
-      expect(t.fetch_count).to eq(3)
+      end.to raise_error(Translatomatic::HTTP::Exception)
     end
+  end
+
+  private
+
+  def stub_request_failures(url, count)
+    response_body = 'Result'
+
+    @failures ||= {} # url -> fail count
+    stub_request(:get, url)
+      .with(headers: test_http_headers)
+      .to_return(lambda { |request|
+        @failures[request.uri] ||= 0
+        fail_count = @failures[request.uri] += 1
+        if fail_count <= count
+          { status: 500, body: '', headers: {} }
+        else
+          { status: 200, body: response_body, headers: {} }
+        end
+      })
   end
 end

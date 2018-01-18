@@ -59,32 +59,19 @@ module Translatomatic
       def perform_fetch_translations(url, strings, from, to)
         translated = []
         untranslated = strings.dup
-        fail_count = 0 # number of consecutive translation failures
 
-        until untranslated.empty? # request start block
-          http_client.start(url) do |_http|
-            until untranslated.empty?
-              # get next string to translate
-              string = untranslated[0]
-              begin
-                # fetch translation
-                result = fetch_translation(string, from, to)
+        http_client.start(url) do |_http|
+          until untranslated.empty?
+            # get next string to translate
+            string = untranslated[0]
+            begin
+              # fetch translation
+              result = fetch_translation(string, from, to)
 
-                # successful translation
-                fail_count = 0 # reset fail count
-                translated << result
-                update_translated(result)
-                untranslated.shift
-              rescue StandardError => e
-                # translation error
-                log.error(e)
-                fail_count += 1
-                raise e if fail_count >= TRANSLATION_RETRIES
-
-                # need to restart http connection
-                # break back out to request.start block
-                break
-              end
+              # successful translation
+              translated << result
+              update_translated(result)
+              untranslated.shift
             end
           end
         end
@@ -111,14 +98,8 @@ module Translatomatic
       # @param retries [Number] The maximum number of times to run
       # @return [Object] the return value of the block
       def attempt_with_retries(retries)
-        fail_count = 0
-        begin
+        RetryExecutor.run(max_retries: retries) do
           yield
-        rescue StandardError => e
-          log.error(e.message)
-          fail_count += 1
-          retry if fail_count < retries
-          raise e
         end
       end
     end
