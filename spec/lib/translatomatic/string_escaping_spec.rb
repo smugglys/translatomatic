@@ -9,6 +9,14 @@ RSpec.describe Translatomatic::StringEscaping do
     it "converts '\\n' to newlines" do
       expect(unescape('\n')).to eq("\n")
     end
+
+    it "converts \u00a9 to copyright" do
+      expect(unescape('\u00a9')).to eq("\u00a9")
+    end
+
+    it "converts \x41 to 'A'" do
+      expect(unescape('\x41')).to eq("A")
+    end
   end
 
   def escape(value, skip = '')

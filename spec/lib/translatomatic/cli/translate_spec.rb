@@ -7,6 +7,13 @@ RSpec.describe Translatomatic::CLI::Translate do
     @cli.options = { database_env: 'test', source_locale: "en" }
   end
 
+  context :help do
+    it 'displays usage' do
+      # exercise some code that displays usage text
+      @cli.help('file')
+    end
+  end
+
   context :string do
     it 'translates a string' do
       translator = test_translator
