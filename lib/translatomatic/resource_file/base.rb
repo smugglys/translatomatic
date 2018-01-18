@@ -69,35 +69,7 @@ module Translatomatic
       # @return [Pathname] The path of this resource file modified
       #   for the given locale
       def locale_path(target_locale)
-        basename = basename_stripped
-
-        extlist = extension_list
-        if extlist.length >= 2 && loc_idx = find_locale(extlist)
-          # extension(s) contains locale, replace it
-          extlist[loc_idx] = target_locale.to_s
-          filename = basename + '.' + extlist.join('.')
-          path.dirname + filename
-        elsif valid_locale?(basename)
-          # basename is a locale name, replace it
-          path.dirname + (target_locale.to_s + path.extname)
-        elsif basename.match(/_([-\w]+)\Z/) &&
-              valid_locale?(Regexp.last_match(1))
-          # basename contains locale, e.g. basename_$locale.ext
-          add_basename_locale(target_locale)
-        elsif valid_locale?(path.parent.basename(path.parent.extname)) ||
-              path.parent.basename.to_s == 'Base.lproj'
-          # parent directory contains locale, e.g. strings/en-US/text.resw
-          # or project/en.lproj/Strings.strings
-          path.parent.parent + (target_locale.to_s +
-            path.parent.extname) + path.basename
-        elsif path.to_s =~ %r{\bres/values([-\w]+)?/.+$}
-          # android strings
-          filename = path.basename
-          path.parent.parent + ('values-' + target_locale.to_s) + filename
-        else
-          # default behaviour, add locale after underscore in basename
-          add_basename_locale(target_locale)
-        end
+        modify_path_locale(path, target_locale)
       end
 
       # Set all properties
@@ -127,7 +99,7 @@ module Translatomatic
 
       # @return [String] String representation of this file
       def to_s
-        relative_path.to_s
+        relative_path(path).to_s
       end
 
       def type
@@ -162,6 +134,8 @@ module Translatomatic
       private
 
       include Translatomatic::Util
+      include Translatomatic::Flattenation
+      include Translatomatic::PathUtils
 
       # called by constructor before load
       def init; end
@@ -172,8 +146,8 @@ module Translatomatic
       end
 
       def update_locale
-        default_locale = Translatomatic::Locale.default
-        locale = @options[:locale] || detect_locale || default_locale
+        default = Translatomatic::Locale.default
+        locale = @options[:locale] || detect_path_locale(path) || default
         @locale = Translatomatic::Locale.parse(locale)
         raise t('file.unknown_locale') unless @locale && @locale.language
       end
@@ -188,125 +162,10 @@ module Translatomatic
         t('file.created_by', options)
       end
 
-      def read_contents(path)
-        Translatomatic::Slurp.read(path.to_s)
-      end
-
       def parsing_error(error)
-        raise Exception, error
+        raise StandardError, error
       end
 
-      # detect locale from filename
-      def detect_locale
-        return nil unless path
-        tag = nil
-        basename = path.sub_ext('').basename.to_s
-        directory = path.dirname.basename.to_s
-        extlist = extension_list
-
-        if basename.match(/_([-\w]{2,})$/) &&
-           valid_locale?(Regexp.last_match(1))
-          # locale after underscore in filename
-          tag = Regexp.last_match(1)
-        elsif directory =~ /^([-\w]+)\.lproj$/
-          # xcode localized strings
-          tag = Regexp.last_match(1)
-        elsif extlist.length >= 2 && (loc_idx = find_locale(extlist))
-          # multiple parts to extension, e.g. index.html.en
-          tag = extlist[loc_idx]
-        elsif valid_locale?(basename)
-          # try to match on entire basename
-          # (support for rails en.yml)
-          tag = basename
-        elsif valid_locale?(path.parent.basename)
-          # try to match on parent directory, e.g. strings/en-US/text.resw
-          tag = path.parent.basename
-        elsif path.parent.basename.to_s.match(/-([-\w]+)/) &&
-              valid_locale?(Regexp.last_match(1))
-          # try to match on trailing part of parent directory,
-          # e.g. res/values-en/strings.xml
-          tag = Regexp.last_match(1)
-        end
-
-        tag ? Translatomatic::Locale.parse(tag, true) : nil
-      end
-
-      def add_basename_locale(target_locale)
-        # remove any underscore and trailing text from basename
-        deunderscored = basename_stripped.sub(/_.*?\Z/, '')
-        # add _locale.ext
-        filename = deunderscored + '_' + target_locale.to_s + path.extname
-        path.dirname + filename
-      end
-
-      def valid_locale?(tag)
-        Translatomatic::Locale.new(tag).valid?
-      end
-
-      # test if the list of strings contains a valid locale
-      # return the index to the locale, or nil if no locales found
-      def find_locale(list)
-        list.find_index { |i| valid_locale?(i) }
-      end
-
-      # ext_sub() only removes the last extension
-      def basename_stripped
-        filename = path.basename.to_s
-        filename.sub!(/\..*$/, '')
-        filename
-      end
-
-      # for index.html.de, returns ['html', 'de']
-      def extension_list
-        filename = path.basename.to_s
-        idx = filename.index('.')
-        if idx && idx < filename.length - 1
-          filename[idx + 1..-1].split('.')
-        else
-          []
-        end
-      end
-
-      # flatten hash or array of hashes to a hash of key => value pairs
-      def flatten(data)
-        result = {}
-
-        if data.is_a?(Hash)
-          data.each do |key, value|
-            flatten_add(result, key, value)
-          end
-        elsif data.is_a?(Array)
-          data.each_with_index do |value, i|
-            key = 'key' + i.to_s
-            flatten_add(result, key, value)
-          end
-        end
-
-        result
-      end
-
-      def flatten_add(result, key, value)
-        if needs_flatten?(value)
-          children = flatten(value)
-          children.each do |ck, cv|
-            result[key + '.' + ck] = cv
-          end
-        else
-          result[key] = value
-        end
-      end
-
-      def needs_flatten?(value)
-        value.is_a?(Array) || value.is_a?(Hash)
-      end
-
-      def relative_path
-        if path.relative?
-          path
-        else
-          path.relative_path_from(Pathname.pwd)
-        end
-      end
     end
   end
 end

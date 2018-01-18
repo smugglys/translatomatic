@@ -65,22 +65,23 @@ module Translatomatic
         result = {}
         contents.gsub!(/\\\s*\n\s*/m, '') # put multi line strings on one line
         lines = contents.split("\n")
-
-        lines.each do |line|
-          line.strip!
-          next if line.empty?
-
-          # comment - TODO: keep comments
-          next if line[0] == '!' || line[0] == '#'
-
-          name, value = line.split(/\s*[=:]\s*/, 2)
-          next unless name && value
-
-          # convert escaped newlines to newlines
-          value = Translatomatic::StringEscaping.unescape(value)
-          result[name] = value
-        end
+        lines.each { |line| parse_line(line, result) }
         result
+      end
+
+      def parse_line(line, result)
+        line.strip!
+        return if line.empty?
+
+        # comment - TODO: keep comments
+        return if line[0] == '!' || line[0] == '#'
+
+        name, value = line.split(/\s*[=:]\s*/, 2)
+        return unless name && value
+
+        # convert escaped newlines to newlines
+        value = Translatomatic::StringEscaping.unescape(value)
+        result[name] = value
       end
     end
   end
