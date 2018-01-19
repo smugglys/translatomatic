@@ -44,4 +44,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'titlekit'
   spec.add_dependency 'builder'
   spec.add_dependency 'http-cookie', '~> 1'
+  spec.add_dependency 'google_web_translate'
 end

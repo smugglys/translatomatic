@@ -22,7 +22,7 @@ module Translatomatic
         raise t('translator.password_required') unless @password
       end
 
-      # (see Translatomatic::Translator::Base#languages)
+      # (see Base#languages)
       def languages
         %w[en fr de es pt it nl tl fi el iw pl ru sv]
       end

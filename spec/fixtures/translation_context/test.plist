@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <!-- NOTE: xcode strips xml comments -->
+    <!-- tm.context: you are right -->
+    <key>property1</key>
+    <string>right</string>
+    <!-- tm.context: go right -->
+    <key>property2</key>
+    <string>right</string>
+  </dict>
+</plist>

@@ -47,6 +47,16 @@ module Translatomatic
 
       TRANSLATION_RETRIES = 3
 
+      # all subclasses must implement this
+      def perform_translate(_strings, _from, _to)
+        raise 'subclass must implement perform_translate'
+      end
+
+      # subclasses that call perform_fetch_translations must implement this
+      def fetch_translation(_string, _from, _to)
+        raise 'subclass must implement fetch_translation'
+      end
+
       def http_client(*args)
         @http_client ||= Translatomatic::HTTP::Client.new(*args)
       end
@@ -79,18 +89,10 @@ module Translatomatic
         translated
       end
 
-      def fetch_translation(_string, _from, _to)
-        raise 'subclass must implement fetch_translation'
-      end
-
       def update_translated(texts)
         texts = [texts] unless texts.is_a?(Array)
         @updated_listener = true
         @listener.translated_texts(texts) if @listener
-      end
-
-      def perform_translate(_strings, _from, _to)
-        raise 'subclass must implement perform_translate'
       end
 
       # Attempt to run a block of code up to retries times.

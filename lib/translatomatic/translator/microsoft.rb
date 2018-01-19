@@ -16,7 +16,7 @@ module Translatomatic
         raise t('translator.microsoft_key_required') if @key.nil?
       end
 
-      # (see Translatomatic::Translator::Base#languages)
+      # (see Base#languages)
       def languages
         @languages ||= fetch_languages
       end

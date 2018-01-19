@@ -71,7 +71,7 @@ module Translatomatic
 
       def send_request_with_method(method, url, options = {})
         cookies = ::HTTP::Cookie.cookie_value(@jar.cookies(url))
-        options = options.merge(cookies: cookies)
+        options = options.merge(cookies: cookies) if cookies.present?
         request = Request.new(method, url, options)
         send_request(request)
       end

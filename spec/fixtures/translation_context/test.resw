@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="property1">
+    <comment>tm.context: you are right</comment>
+    <value>right</value>
+  </data>
+  <data name="property2">
+    <comment>tm.context: go right</comment>
+    <value>right</value>
+  </data>
+</root>

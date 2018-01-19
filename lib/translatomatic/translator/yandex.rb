@@ -13,7 +13,7 @@ module Translatomatic
         raise t('translator.yandex_key_required') if @api_key.nil?
       end
 
-      # (see Translatomatic::Translator::Base#languages)
+      # (see Base#languages)
       def languages
         @languages ||= begin
           response = http_client.post(LANGUAGES_URL, key: @api_key, ui: 'en')

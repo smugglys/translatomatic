@@ -20,7 +20,7 @@ module Translatomatic
       end
 
       # TODO: implement language list
-      # (see Translatomatic::Translator::Base#languages)
+      # (see Base#languages)
       # def languages
       # end
 

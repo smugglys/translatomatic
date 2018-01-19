@@ -1,5 +1,5 @@
 RSpec.describe Translatomatic::Translator::Base do
-  class DummyTranslator < Translatomatic::Translator::Base
+  class DummyTranslator < described_class
     attr_accessor :use_perform_fetch_translations
 
     def initialize(url)

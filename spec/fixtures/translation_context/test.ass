@@ -1,0 +1,6 @@
+[Events]
+Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text
+Comment: tm.context: you are right
+Dialogue: 0,0:01:41.70,0:01:46.84,Default,,0000,0000,0000,,value 1
+Comment: tm.context: go right
+Dialogue: 0,0:02:00.99,0:02:02.87,Default,,0000,0000,0000,,value 2

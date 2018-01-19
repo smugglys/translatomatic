@@ -1,0 +1,5 @@
+/* Class = "IBUIViewController"; Note = "tm.context: you are right"; */
+"property1" = "right";
+
+/* Class = "IBUINavigationItem"; Note = "tm.context: go right"; */
+"property2" = "right";

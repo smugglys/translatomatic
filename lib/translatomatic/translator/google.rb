@@ -16,7 +16,7 @@ module Translatomatic
         EasyTranslate.api_key = key
       end
 
-      # (see Translatomatic::Translator::Base#languages)
+      # (see Base#languages)
       def languages
         EasyTranslate::LANGUAGES.keys
       end

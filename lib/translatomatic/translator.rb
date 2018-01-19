@@ -1,6 +1,7 @@
 require 'translatomatic/translator/base'
 require 'translatomatic/translator/yandex'
 require 'translatomatic/translator/google'
+require 'translatomatic/translator/google_web'
 require 'translatomatic/translator/microsoft'
 require 'translatomatic/translator/frengly'
 require 'translatomatic/translator/my_memory'
@@ -78,6 +79,7 @@ module Translatomatic
       types.each do |mod|
         out += "\n" + mod.name.demodulize + ":\n"
         opts = mod.options
+        next unless opts
         opts.each do |opt|
           configured_options[opt.name] = config.get(opt.name)
           args = []

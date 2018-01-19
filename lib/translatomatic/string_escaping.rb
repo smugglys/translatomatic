@@ -40,6 +40,14 @@ module Translatomatic
           end
         end
       end
+
+      def unquote(value)
+        if value && value[0] == value[-1] && %w[' "].include?(value[0])
+          value[1...-1]
+        else
+          value
+        end
+      end
     end
   end
 end

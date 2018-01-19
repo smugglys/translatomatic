@@ -1,0 +1,7 @@
+1
+00:00:02,364 --> 00:00:07,300
+right {\tm.context: you are right}
+
+2
+00:00:24,000 --> 00:00:37,800
+right {\tm.context: go right}

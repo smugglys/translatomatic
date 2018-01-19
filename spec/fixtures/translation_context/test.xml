@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:tm="http://www.smugglys.com/2018/translatomatic">
+  <node tm:context="you are right">right</node>
+  <node tm:context="go right">right</node>
+</root>
