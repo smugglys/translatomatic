@@ -2,9 +2,11 @@ module Translatomatic
   module CLI
     # Configuration functions for the command line interface
     class Config < Base
-      define_option :context, type: :string, aliases: '-c',
-                              desc: t('cli.config.context'),
-                              enum: Translatomatic::Config::CONTEXTS,
+      define_option :user, type: :boolean,
+                           desc: t('cli.config.user'),
+                           command_line_only: true
+      define_option :project, type: :boolean,
+                              desc: t('cli.config.project'),
                               command_line_only: true
 
       desc 'set key value', t('cli.config.set')
@@ -15,7 +17,7 @@ module Translatomatic
       # @param value [String] new value for the configuration
       # @return [String] the new value
       def set(key, *value)
-        run { conf.set(key, value, cli_option(:context)) }
+        run { conf.set(key, value, config_location) }
       end
 
       desc 'unset key', t('cli.config.unset')
@@ -25,7 +27,7 @@ module Translatomatic
       # @param key [String] configuration key to remove
       # @return [void]
       def unset(key)
-        run { conf.unset(key, cli_option(:context)) }
+        run { conf.unset(key, config_location) }
       end
 
       desc 'add key value', t('cli.config.add')
@@ -36,7 +38,7 @@ module Translatomatic
       # @param value [String] value to add
       # @return [String] the new value
       def add(key, *value)
-        run { conf.add(key, value, cli_option(:context)) }
+        run { conf.add(key, value, config_location) }
       end
 
       desc 'subtract key value', t('cli.config.subtract')
@@ -47,7 +49,7 @@ module Translatomatic
       # @param value [String] value to remove
       # @return [void]
       def subtract(key, value)
-        run { conf.subtract(key, value, cli_option(:context)) }
+        run { conf.subtract(key, value, config_location) }
       end
 
       desc 'list', t('cli.config.list')
@@ -58,7 +60,7 @@ module Translatomatic
       def list
         run do
           print_config_table(columns: %i[key value],
-                             context: cli_option(:context),
+                             location: config_location,
                              skip_blanks: true)
         end
       end
@@ -82,32 +84,44 @@ module Translatomatic
         desc: t('cli.config.desc')
       }.freeze
 
-      def print_config_table(options)
-        columns = options[:columns]
-        context = options[:context]
-
-        print_config_table_intro(context)
-        print_config_table_body(columns, context)
+      def config_location
+        if options[:user] && options[:project]
+          raise t('cli.config.one_at_a_time')
+        elsif options[:user]
+          :user
+        elsif options[:project]
+          :project
+        else
+          nil
+        end
       end
 
-      def display_option?(option, context)
+      def print_config_table(options)
+        columns = options[:columns]
+        location = options[:location]
+
+        print_config_table_intro(location)
+        print_config_table_body(columns, location)
+      end
+
+      def display_option?(option, location)
         key = option.name.to_s
         return false if option.command_line_only
-        return false if options[:skip_blanks] && !conf.include?(key, context)
+        return false if options[:skip_blanks] && !conf.include?(key, location)
         true
       end
 
-      def print_config_table_intro(context)
-        if context
-          puts t('cli.config.context_configuration', context: context)
+      def print_config_table_intro(location)
+        if location
+          puts t('cli.config.location_configuration', location: location)
         else
           puts t('cli.config.configuration')
         end
         puts
       end
 
-      def print_config_table_body(columns, context)
-        rows = config_table_rows(columns, context)
+      def print_config_table_body(columns, location)
+        rows = config_table_rows(columns, location)
 
         if rows.empty?
           puts t('cli.config.no_config')
@@ -120,31 +134,31 @@ module Translatomatic
         puts
       end
 
-      def config_table_rows(columns, context)
+      def config_table_rows(columns, location)
         opts = Translatomatic::Config.options.select do |i|
-          display_option?(i, context)
+          display_option?(i, location)
         end
-        rows = opts.collect { |i| option_to_table_row(i, columns, context) }
+        rows = opts.collect { |i| option_to_table_row(i, columns, location) }
         rows.sort_by { |i| i[0] }
         rows
       end
 
-      def option_to_table_row(option, columns, context)
+      def option_to_table_row(option, columns, location)
         row = []
         columns.each do |column|
-          row << config_table_column_value(option, column, context)
+          row << config_table_column_value(option, column, location)
         end
         row
       end
 
-      def config_table_column_value(option, column, context)
+      def config_table_column_value(option, column, location)
         key = option.name.to_s
 
         case column
         when :key
           key
         when :value
-          value = conf.get(key, context)
+          value = conf.get(key, location)
           value.nil? ? '-' : value
         when :type
           option.type_name

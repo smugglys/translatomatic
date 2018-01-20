@@ -8,7 +8,7 @@ RSpec.describe Translatomatic::CLI::Config do
   before(:each) do
     # TODO: test with project level config also
     config.reset
-    cli.options = { context: 'user' }
+    cli.options = { user: true }
   end
 
   context :set do

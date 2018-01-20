@@ -13,6 +13,10 @@ def optional_gem(*args)
   gem(*args) if gem_installed?(args)
 end
 
+# javascript runtimes
+optional_gem 'therubyracer', platform: :ruby
+optional_gem 'therubyrhino', platform: :jruby
+
 # database adapters
 optional_gem 'mysql2', platform: :ruby
 optional_gem 'postgresql', platform: :ruby

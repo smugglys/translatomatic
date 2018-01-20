@@ -28,8 +28,9 @@ module Translatomatic
     # @return [boolean] True if this option can only be set on the command line
     attr_reader :command_line_only
 
-    # @return [boolean] True if this option can only be set in user context
-    attr_reader :user_context_only
+    # @return [boolean] True if this option can only be set in the
+    #   user configuration file
+    attr_reader :user_location_only
 
     # Create a new option
     # @param attributes [Hash<Symbol,Object>] Attributes as above
@@ -81,7 +82,7 @@ module Translatomatic
     include Util
 
     CONSTRUCTOR_OPTIONS = %i[name required desc use_env hidden type default
-                             aliases enum user_context_only
+                             aliases enum user_location_only
                              command_line_only env_name].freeze
     VALID_TYPES = %i[array path_array string path boolean numeric].freeze
 

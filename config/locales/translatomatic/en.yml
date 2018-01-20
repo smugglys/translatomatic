@@ -4,7 +4,7 @@ en:
       config:
         subcommand: Configuration commands
         configuration: Configuration
-        context_configuration: Configuration for context '%{context}'
+        location_configuration: Configuration for file '%{location}'
         no_config: No configuration found
         set: Change a configuration setting
         unset: Remove a configuration setting
@@ -16,7 +16,9 @@ en:
         type: Type
         value: Value
         desc: Description
-        context: Configuration context
+        user: Use user configuration file
+        project: Use project configuration file
+        one_at_a_time: Only one config file at a time
       convert: Convert source file to target file format
       translate:
         subcommand: Translate files or strings

@@ -19,117 +19,118 @@ module Translatomatic
     # @return [String] The path to the project settings file
     attr_reader :project_settings_path
 
-    # Change a configuration setting.  The default context is project level
-    #   if a project configuration file exists, otherwise user level.
+    # Change a configuration setting.  By default is the project configuration
+    #   file is changed if a project configuration file exists,
+    #   otherwise the user configuration file is changed.
     # @param key [String] configuration key
     # @param value [Object] new value for the configuration
-    # @param context [Symbol] configuration context
+    # @param location [Symbol] configuration location (:user or :project)
     # @return [Object] the new value
-    def set(key, value, context = nil)
-      set_or_add(key, value, context, :set)
+    def set(key, value, location = nil)
+      set_or_add(key, value, location, :set)
     end
 
     # Remove a configuration setting
     # @param key [String] configuration key to remove
-    # @param context [Symbol] configuration context
+    # @param location [Symbol] configuration location (:user or :project)
     # @return [void]
-    def unset(key, context = nil)
-      unset_or_subtract(key, nil, context, :unset)
+    def unset(key, location = nil)
+      unset_or_subtract(key, nil, location, :unset)
     end
 
     # If key is an array type, adds the value to the existing list.
     # Raises an error for non array types.
     # @param key [String] configuration key
     # @param value [Object] value to add to the list
-    # @param context [Symbol] configuration context
+    # @param location [Symbol] configuration location (:user or :project)
     # @return [Object] the new value
-    def add(key, value, context = nil)
-      set_or_add(key, value, context, :add)
+    def add(key, value, location = nil)
+      set_or_add(key, value, location, :add)
     end
 
     # If key is an array type, removes the value from the existing list.
     # Raises an error for non array types.
     # @param key [String] configuration key
     # @param value [Object] value to remove from the list
-    # @param context [Symbol] configuration context
+    # @param location [Symbol] configuration location (:user or :project)
     # @return [Object] the new value
-    def subtract(key, value, context = nil)
-      unset_or_subtract(key, value, context, :subtract)
+    def subtract(key, value, location = nil)
+      unset_or_subtract(key, value, location, :subtract)
     end
 
     # Get a configuration setting
     # @param key [String] configuration key
-    # @param context [Symbol] configuration context. May be nil.
-    # @return [String] The configuration value. If context is nil, returns the
+    # @param location [Symbol] configuration location (:user or :project)
+    # @return [String] The configuration value. If location is nil, returns the
     #   effective value by precedence, otherwise it returns the setting for
-    #   the given context.
-    def get(key, context = nil)
+    #   the given configuration file location.
+    def get(key, location = nil)
       key = check_valid_key(key)
       option = option(key)
       value = option.default # set to default value
 
-      if context.nil?
+      if location.nil?
         # find the first setting in the following order
-        CONTEXTS.each do |ctx|
+        LOCATIONS.each do |ctx|
           if @settings[ctx].include?(key)
             value = @settings[ctx][key]
             break
           end
         end
       else
-        # context is set
-        context = check_valid_context(context)
-        value = @settings[context][key] if @settings[context].include?(key)
+        # location is set
+        location = check_valid_location(location)
+        value = @settings[location][key] if @settings[location].include?(key)
       end
 
       # cast value to expected type
-      cast_get(value, option.type, context)
+      cast_get(value, option.type, location)
     end
 
     # Get all configuration settings
-    def all(context = nil)
+    def all(location = nil)
       settings = {}
       self.class.options.each do |option|
-        settings[option.name] = get(option.name, context)
+        settings[option.name] = get(option.name, location)
       end
       settings
     end
 
     # Test if configuration includes the given key
     # @param key [String] configuration key
-    # @return [String] The configuration value. If context is nil, checks
-    #   all contexts.
+    # @return [String] The configuration value. If location is nil, checks
+    #   all locations.
     # @return [boolean] true if the configuration key is set
-    def include?(key, context = nil)
+    def include?(key, location = nil)
       key = check_valid_key(key)
-      if context.nil?
-        CONTEXTS.each do |ctx|
+      if location.nil?
+        LOCATIONS.each do |ctx|
           return true if @settings[ctx].include?(key)
         end
         false
       else
-        context = check_valid_context(context)
-        @settings[context].include?(key)
+        location = check_valid_location(location)
+        @settings[location].include?(key)
       end
     end
 
     # Save configuration settings
     def save
-      save_with_context(:user, @user_settings_path)
-      save_with_context(:project, @project_settings_path)
+      save_with_location(:user, @user_settings_path)
+      save_with_location(:project, @project_settings_path)
     end
 
     # Load configuration from the config file(s)
     def load
-      load_context_env
-      load_with_context(:user, @user_settings_path)
-      load_with_context(:project, @project_settings_path)
+      load_env
+      load_with_location(:user, @user_settings_path)
+      load_with_location(:project, @project_settings_path)
     end
 
     # Reset all configuration to the defaults
     def reset
       @settings = {}
-      CONTEXTS.each { |context| @settings[context] = {} }
+      LOCATIONS.each { |location| @settings[location] = {} }
     end
 
     # @return [Array<Translatomatic::Option] all available options
@@ -156,8 +157,8 @@ module Translatomatic
     SETTINGS_PATH = File.join(SETTINGS_DIR, 'config.yml')
     USER_SETTINGS_PATH = File.join(Dir.home, SETTINGS_PATH)
 
-    # valid context list in order of precedence
-    CONTEXTS = %i[project user env].freeze
+    # valid location list in order of precedence
+    LOCATIONS = %i[project user env].freeze
 
     class << self
       def config_sources
@@ -190,8 +191,8 @@ module Translatomatic
       end
     end
 
-    def set_or_add(key, value, context, mode)
-      update(key, context, mode) do |option, ctx|
+    def set_or_add(key, value, location, mode)
+      update(key, location, mode) do |option, ctx|
         casted_value = cast(value, option.type)
         if mode == :add
           current_value = @settings[ctx][option.name] || []
@@ -201,8 +202,8 @@ module Translatomatic
       end
     end
 
-    def unset_or_subtract(key, value, context, mode)
-      update(key, context, mode) do |option, ctx|
+    def unset_or_subtract(key, value, location, mode)
+      update(key, location, mode) do |option, ctx|
         if mode == :subtract
           casted_value = cast(value, option.type)
           current_value = @settings[ctx][option.name] || []
@@ -215,15 +216,15 @@ module Translatomatic
     end
 
     # common checks for set/unset/add/subtract methods
-    def update(key, context, mode)
+    def update(key, location, mode)
       key = check_valid_key(key)
       option = option(key)
       check_valid_update(option, mode)
 
-      context ||= default_context
-      context = :user if option.user_context_only || key.to_s.match(/api_key/)
-      context = check_valid_context(context)
-      result = yield option, context
+      location ||= default_location
+      location = :user if option.user_location_only || key.to_s.match(/api_key/)
+      location = check_valid_location(location)
+      result = yield option, location
       save
       result
     end
@@ -236,58 +237,58 @@ module Translatomatic
       end
     end
 
-    def save_with_context(context, path)
+    def save_with_location(location, path)
       return unless path
       FileUtils.mkdir_p(File.dirname(path))
-      File.open(path, 'w') { |f| f.puts @settings[context].to_yaml }
+      File.open(path, 'w') { |f| f.puts @settings[location].to_yaml }
     end
 
     # load configuration from the yaml file at path
-    def load_with_context(context, path)
+    def load_with_location(location, path)
       return unless path && File.exist?(path)
       config = YAML.load_file(path) || {}
-      load_context_config(context, config)
+      load_location_config(location, config)
     end
 
     # load configuration from a hash
-    def load_context_config(context, config = {})
+    def load_location_config(location, config = {})
       config.each do |key, value|
         key = key.to_sym
         next unless valid_key?(key)
-        @settings[context][key] = value
+        @settings[location][key] = value
       end
     end
 
     # load configuration from environment variables
-    def load_context_env
+    def load_env
       config = {}
       self.class.options.each do |option|
         if option.env_name && ENV.include?(option.env_name)
           config[option.name] = ENV[option.env_name]
         end
       end
-      load_context_config(:env, config)
+      load_location_config(:env, config)
     end
 
     # cast used on get only.
     # we only resolve paths for get because we want to keep relative paths
     # in the config file.
-    def cast_get(value, type, context)
+    def cast_get(value, type, location)
       value = cast(value, type)
 
       case type
       when :path_array
-        value.collect { |i| cast_get(i, :path, context) }
+        value.collect { |i| cast_get(i, :path, location) }
       when :path
-        File.absolute_path(cast_path(value), context_path(context))
+        File.absolute_path(cast_path(value), location_path(location))
       else
         value
       end
     end
 
-    # return path relative to the given context configuration file
-    def context_path(context)
-      case context
+    # return path relative to the given configuration file
+    def location_path(location)
+      case location
       when :user
         File.join(File.dirname(user_settings_path), '..')
       when :project
@@ -305,19 +306,19 @@ module Translatomatic
       key
     end
 
-    def check_valid_context(context)
-      context = context ? context.to_sym : nil
-      valid = valid_context?(context)
-      raise t('config.invalid_context', context: context) unless valid
-      context
+    def check_valid_location(location)
+      location = location ? location.to_sym : nil
+      valid = valid_location?(location)
+      raise t('config.invalid_location', location: location) unless valid
+      location
     end
 
     def valid_key?(key)
       self.class.config_options.include?(key)
     end
 
-    def valid_context?(context)
-      CONTEXTS.include?(context)
+    def valid_location?(location)
+      LOCATIONS.include?(location)
     end
 
     # override user settings path, used for testing
@@ -356,8 +357,8 @@ module Translatomatic
       found && found.to_s == @user_settings_path ? nil : found
     end
 
-    def default_context
-      # use project context if we have project configuration
+    def default_location
+      # use project location if we have project configuration
       @project_settings_path ? :project : :user
     end
   end

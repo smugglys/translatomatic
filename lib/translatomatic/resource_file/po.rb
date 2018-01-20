@@ -105,8 +105,8 @@ module Translatomatic
         map_key = entry.send(key).to_s
         return unless map_key
 
-        context = entry.msgctxt
-        map_key = map_key + '.' + context.to_s if context
+        msg_context = entry.msgctxt
+        map_key = map_key + '.' + msg_context.to_s if msg_context
         @pomap[map_key] = PoProperty.new(entry, index)
       end
     end

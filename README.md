@@ -110,13 +110,19 @@ For example, to convert a Java properties file to an XCode strings file:
 ---
 ## Configuration
 
-Translatomatic has a per-user configuration file at `$HOME/.translatomatic/config.yml`, and optionally a per project configuration file `$PROJECT_DIR/.translatomatic/config.yml`.  The `translatomatic config set` command operates on the project level configuration when executed within a project containing a translatomatic configuration file. Otherwise the user level configuration file is changed. The `--context` option can be used to specify `user` or `project` level configuration. The effective value of a configuration option is determined by reading from the environment, the user level configuration file, the project level configuration file (if present), and from the command line. The last value found takes precedence over values read earlier.
+Configuration settings can be read and written using the `config get` and `config set` commands. Translatomatic uses a user configuration file at `$HOME/.translatomatic/config.yml`, and optionally a per project configuration file `$PROJECT_DIR/.translatomatic/config.yml`.
+
+The `--user` and `--project` options can be used to tell the command to read or write to the `user` or `project` configuration.
+
+Configuration settings are read from environment variables, the user configuration file, the project configuration file (if present), and from the command line. The last value found takes precedence over values read earlier.
+
+When writing to the configuration with the `config set` command, the new value is written to the project configuration file when executed within a project containing a translatomatic configuration file, or the user configuration file if there is no project configuration file.
 
 ### Translatomatic configuration examples
 
 To set `google_api_key` within the user configuration file, use:
 
-    $ translatomatic config set google_api_key value --context user
+    $ translatomatic config set google_api_key value --user
 
 To set one or more translation services to use:
 
@@ -132,7 +138,7 @@ With `target_locales` set, files can be translated without specifying target loc
 
     $ translatomatic translate file resources/strings.properties
 
-To display the current configuration, execute
+To display the current configuration, execute:
 
     $ translatomatic config list
 
