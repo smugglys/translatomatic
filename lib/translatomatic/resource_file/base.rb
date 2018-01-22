@@ -45,10 +45,14 @@ module Translatomatic
         raise t('file.unsupported', file: path) unless self.class.enabled?
         @options = options || {}
         @properties = {}
+        @metadata = Metadata.new
         @path = path.nil? || path.is_a?(Pathname) ? path : Pathname.new(path)
         update_locale
         init
-        load if @path && @path.exist?
+        if @path
+          raise 'file.not_found' unless @path.exist?
+          load
+        end
       end
 
       # Save the resource file.
@@ -59,8 +63,8 @@ module Translatomatic
         raise 'save(path) must be implemented by subclass'
       end
 
-      # @return [String] The format of this resource file, e.g. "Properties"
-      def format
+      # @return [Symbol] The type of this resource file, e.g. ":properties"
+      def type
         self.class.name.demodulize.downcase.to_sym
       end
 
@@ -87,6 +91,13 @@ module Translatomatic
       # @return [String] The value of the property
       def get(key)
         @properties[key]
+      end
+
+      # Get context of a property
+      # @param key [String] The name of the property
+      # @return [String] The property context, may be nil
+      def get_context(key)
+        @metadata.get_context(key)
       end
 
       # Set a property
@@ -162,10 +173,13 @@ module Translatomatic
         t('file.created_by', options)
       end
 
+      def have_created_by?
+        @created_by
+      end
+
       def parsing_error(error)
         raise StandardError, error
       end
-
     end
   end
 end

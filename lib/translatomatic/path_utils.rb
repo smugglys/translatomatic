@@ -1,7 +1,5 @@
 module Translatomatic
   module PathUtils
-    private
-
     def read_contents(path)
       Translatomatic::Slurp.read(path.to_s)
     end
@@ -41,6 +39,43 @@ module Translatomatic
         add_basename_locale(path, target_locale)
       end
     end
+
+    # detect locale from path
+    def detect_path_locale(path)
+      return nil unless path
+      tag = nil
+      basename = path.sub_ext('').basename.to_s
+      directory = path.dirname.basename.to_s
+      extlist = extension_list(path)
+
+      if basename.match(/_([-\w]{2,})$/) &&
+         valid_locale?(Regexp.last_match(1))
+        # locale after underscore in filename
+        tag = Regexp.last_match(1)
+      elsif directory =~ /^([-\w]+)\.lproj$/
+        # xcode localized strings
+        tag = Regexp.last_match(1)
+      elsif extlist.length >= 2 && (loc_idx = find_extension_locale(extlist))
+        # multiple parts to extension, e.g. index.html.en
+        tag = extlist[loc_idx]
+      elsif valid_locale?(basename)
+        # try to match on entire basename
+        # (support for rails en.yml)
+        tag = basename
+      elsif valid_locale?(path.parent.basename)
+        # try to match on parent directory, e.g. strings/en-US/text.resw
+        tag = path.parent.basename
+      elsif path.parent.basename.to_s.match(/-([-\w]+)/) &&
+            valid_locale?(Regexp.last_match(1))
+        # try to match on trailing part of parent directory,
+        # e.g. res/values-en/strings.xml
+        tag = Regexp.last_match(1)
+      end
+
+      tag ? Translatomatic::Locale.parse(tag, true) : nil
+    end
+
+    private
 
     # ext_sub() only removes the last extension
     def basename_stripped(path)
@@ -84,41 +119,6 @@ module Translatomatic
 
     def valid_locale?(tag)
       Translatomatic::Locale.new(tag).valid?
-    end
-
-    # detect locale from path
-    def detect_path_locale(path)
-      return nil unless path
-      tag = nil
-      basename = path.sub_ext('').basename.to_s
-      directory = path.dirname.basename.to_s
-      extlist = extension_list(path)
-
-      if basename.match(/_([-\w]{2,})$/) &&
-         valid_locale?(Regexp.last_match(1))
-        # locale after underscore in filename
-        tag = Regexp.last_match(1)
-      elsif directory =~ /^([-\w]+)\.lproj$/
-        # xcode localized strings
-        tag = Regexp.last_match(1)
-      elsif extlist.length >= 2 && (loc_idx = find_extension_locale(extlist))
-        # multiple parts to extension, e.g. index.html.en
-        tag = extlist[loc_idx]
-      elsif valid_locale?(basename)
-        # try to match on entire basename
-        # (support for rails en.yml)
-        tag = basename
-      elsif valid_locale?(path.parent.basename)
-        # try to match on parent directory, e.g. strings/en-US/text.resw
-        tag = path.parent.basename
-      elsif path.parent.basename.to_s.match(/-([-\w]+)/) &&
-            valid_locale?(Regexp.last_match(1))
-        # try to match on trailing part of parent directory,
-        # e.g. res/values-en/strings.xml
-        tag = Regexp.last_match(1)
-      end
-
-      tag ? Translatomatic::Locale.parse(tag, true) : nil
     end
   end
 end

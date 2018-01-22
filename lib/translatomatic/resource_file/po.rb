@@ -24,7 +24,7 @@ module Translatomatic
           entry = po_property.entry
           if entry.plural?
             msgstr = entry.msgstr || []
-            msgstr[po_property.index] = value
+            msgstr[po_property.msgstr_index] = value
             entry.msgstr = msgstr
           else
             entry.msgstr = value
@@ -50,19 +50,21 @@ module Translatomatic
 
       private
 
+      PO_DATE_FORMAT = '%Y-%M-%d %HH:%MM%Z'.freeze
+
       # used to index into PO msgstr[]
       class PoProperty
         attr_reader :entry
-        attr_reader :value_index
+        attr_reader :msgstr_index
 
-        def initialize(entry, value_index)
+        def initialize(entry, msgstr_index)
           @entry = entry
-          @value_index = value_index
+          @msgstr_index = msgstr_index
         end
 
         def value
           if entry.plural?
-            entry.msgstr[value_index]
+            entry.msgstr[msgstr_index]
           else
             entry.msgstr
           end
@@ -75,6 +77,7 @@ module Translatomatic
       end
 
       def load
+        @metadata.reset
         content = read_contents(@path)
         @po = PoParser.parse(content)
         init_pomap(@po)
@@ -82,7 +85,14 @@ module Translatomatic
       end
 
       def add_created_by
-        # TODO
+        header = po_header
+        header['PO-RevisionDate'] = Time.now.strftime(PO_DATE_FORMAT)
+        header['Last-Translator'] = 'Translatomatic ' + VERSION
+      end
+
+      def po_header
+        # TODO: get or create header entry
+        {}
       end
 
       # create mapping from key to PoProperty
@@ -92,8 +102,12 @@ module Translatomatic
           # TODO: update PO-Revision-Date, Last-Translator ?
           next if entry.msgid == '' && i == 0
 
+          if entry.extracted_comment
+            @metadata.parse_comment(entry.extracted_comment.value)
+          end
           add_entry(entry, :msgid, 0)
           add_entry(entry, :msgid_plural, 1) if entry.plural?
+          @metadata.clear_context
         end
       end
 
@@ -101,13 +115,14 @@ module Translatomatic
         @pomap.transform_values { |i| i.value.to_s }
       end
 
-      def add_entry(entry, key, index)
+      def add_entry(entry, key, msgstr_index)
         map_key = entry.send(key).to_s
         return unless map_key
 
         msg_context = entry.msgctxt
         map_key = map_key + '.' + msg_context.to_s if msg_context
-        @pomap[map_key] = PoProperty.new(entry, index)
+        @pomap[map_key] = PoProperty.new(entry, msgstr_index)
+        @metadata.assign_key(map_key, keep_context: true)
       end
     end
   end

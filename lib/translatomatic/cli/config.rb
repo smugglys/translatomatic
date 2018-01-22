@@ -91,8 +91,6 @@ module Translatomatic
           :user
         elsif options[:project]
           :project
-        else
-          nil
         end
       end
 

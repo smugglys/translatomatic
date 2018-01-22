@@ -9,6 +9,9 @@ RSpec.describe Translatomatic::ResourceFile::CSV do
                    save_properties: {
                      'key1,2' => 'saved value 1',
                      'key2,2' => 'saved value 2'
+                   },
+                   context_options: {
+                     csv_headers: true
                    }
 
   it 'handles csv files with headers' do
@@ -34,11 +37,11 @@ RSpec.describe Translatomatic::ResourceFile::CSV do
     test_save(file, fixture_read('test_headers_save.csv'))
   end
 
-  # test selecting columns with the csv_columns option
-  it 'loads only selected columns' do
+  # test selecting columns with the csv_translate_columns option
+  it 'translates only selected columns' do
     options = {
       csv_headers: true,
-      csv_columns: ['header 1', 'header 2']
+      csv_translate_columns: ['header 1', 'header 2']
     }
     file = load_test_file('test_headers.csv', options)
     # 2 columns * 2 rows

@@ -105,7 +105,7 @@ EOM
         end
 
         def valid_node?(node)
-          valid_type?(node.name) || (node.name == 'key')
+          valid_type?(node.name) || node.name == 'key'
         end
 
         def parse_dict(node)

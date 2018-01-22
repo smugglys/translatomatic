@@ -11,6 +11,7 @@ module Translatomatic
         encoding = detect_encoding(data)
         data.force_encoding(encoding) if encoding
         data.encode!(Encoding::UTF_8)
+        data.gsub!(/\A\xEF\xBB\xBF/, '') # kill bom
         data
       end
 

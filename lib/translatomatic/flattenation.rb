@@ -35,6 +35,5 @@ module Translatomatic
     def needs_flatten?(value)
       value.is_a?(Array) || value.is_a?(Hash)
     end
-
   end
 end

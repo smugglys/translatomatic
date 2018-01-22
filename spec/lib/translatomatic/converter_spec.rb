@@ -17,8 +17,8 @@ RSpec.describe Translatomatic::Converter do
 
         # test that the written properties match the expected output
         expected_output = test_resource_file(target_type)
-        puts 'written output:'
-        puts target.read
+        # puts 'written output:'
+        # puts target.read
         output = Translatomatic::ResourceFile.load(target)
         expect(output.properties).to eq(expected_output.properties)
       end

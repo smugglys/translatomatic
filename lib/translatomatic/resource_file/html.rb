@@ -27,7 +27,7 @@ module Translatomatic
       end
 
       def text_nodes_xpath
-        '//*[not(self::code)]/text()'
+        '//*[not(self::code)]/text()|//comment()'
       end
     end
   end

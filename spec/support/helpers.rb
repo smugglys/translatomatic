@@ -25,7 +25,9 @@ module Helpers
     contents
   end
 
-  def fixture_path(path, options = {})
+  def fixture_path(path = nil, options = {})
+    return FIXTURES_PATH if path.nil?
+    return path if File.exist?(path)
     f1 = File.join(FIXTURES_PATH, path)
     return f1 if File.exist?(f1)
     f2 = File.join(FIXTURES_PATH, 'resource_file', path)

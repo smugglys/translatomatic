@@ -15,14 +15,26 @@ module Translatomatic
       private
 
       def init_nodemap
-        result = {}
-        key_values = @doc.search('//data/@name|//text()')
-        key_values.each_slice(2) do |key, value|
-          key = key.value
-          value = value
-          result[key] = value
+        @nodemap = {}
+        nodes = @doc.search('//data/@name|//text()|//comment()')
+        nodes.each do |node|
+          parent = node.parent
+          if node.comment?
+            @metadata.parse_comment(node.content)
+          elsif node.type == Nokogiri::XML::Node::ATTRIBUTE_NODE # data name=""
+            @key = node.content
+          elsif node.text? && parent.name == 'value' # <value>content</value>
+            found_value(node)
+          elsif node.text? && parent.name == 'comment'
+            @metadata.parse_comment(node.content)
+          end
         end
-        @nodemap = result
+      end
+
+      def found_value(value)
+        @nodemap[@key] = value if @key
+        @metadata.assign_key(@key)
+        @key = nil
       end
 
       def create_node(key, value)

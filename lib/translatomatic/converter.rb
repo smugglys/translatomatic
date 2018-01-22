@@ -13,7 +13,7 @@ module Translatomatic
     def convert(source, target)
       source_file = load_file(source)
       target_file = load_file(target)
-      raise t('file.not_found', file: target_file) unless source_file.path.file?
+      raise t('file.not_found', file: source) unless source_file.path.file?
 
       if source_file.type == target_file.type
         # if same file type, modify source.
@@ -36,7 +36,11 @@ module Translatomatic
       path = Pathname.new(path.to_s)
       raise t('file.directory', file: path) if path.directory?
 
-      file = Translatomatic::ResourceFile.load(path)
+      file = if path.exist?
+               Translatomatic::ResourceFile.load(path)
+             else
+               Translatomatic::ResourceFile.create(path)
+             end
       raise t('file.unsupported', file: path) unless file
       file
     end

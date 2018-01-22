@@ -1,11 +1,19 @@
 RSpec.describe Translatomatic::StringEscaping do
   context '#escape' do
+    it "converts nil to nil" do
+      expect(escape(nil)).to eq(nil)
+    end
+
     it "converts newlines to '\\n'" do
       expect(escape("\n")).to eq('\n')
     end
   end
 
   context '#unescape' do
+    it "converts nil to nil" do
+      expect(unescape(nil)).to eq(nil)
+    end
+
     it "converts '\\n' to newlines" do
       expect(unescape('\n')).to eq("\n")
     end
@@ -19,8 +27,8 @@ RSpec.describe Translatomatic::StringEscaping do
     end
   end
 
-  def escape(value, skip = '')
-    described_class.escape(value, skip)
+  def escape(value, include = '')
+    described_class.escape(value, include)
   end
 
   def unescape(value)

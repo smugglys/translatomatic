@@ -11,7 +11,7 @@ module Translatomatic
       # Create a new GoogleWeb translator instance
       def initialize(options = {})
         super(options)
-        @dt = %w{t at}
+        @dt = %w[t at]
       end
 
       # (see Base#languages)
@@ -35,7 +35,6 @@ module Translatomatic
         end
         translated
       end
-
     end
   end
 end

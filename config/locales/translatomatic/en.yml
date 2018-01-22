@@ -61,9 +61,10 @@ en:
       invalid: "File is invalid: %{file}"
       csv:
         headers: Treat the first row of CSV files as a row of headers.
-        columns: Names or indices of CSV columns to translate
+        translate_columns: Names or indices of CSV columns to translate
         key_column: A CSV column name to to be used for property keys
         value_column: A CSV column name to be used for property values
+        comment_column: A CSV column name to be used for comments
     tmx:
       multiple_origins: Multiple origins in texts.
       multiple_locales: Multiple source locales in texts.

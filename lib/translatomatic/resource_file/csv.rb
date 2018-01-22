@@ -36,15 +36,19 @@ module Translatomatic
 
       DEFAULT_KEY_COLUMN = 'key'.freeze
       DEFAULT_VALUE_COLUMN = 'value'.freeze
+      DEFAULT_COMMENT_COLUMN = 'comments'.freeze
+      CONTEXT_COLUMN = 'tm.context'.freeze
 
       define_option :csv_headers, type: :boolean, default: false,
                                   desc: t('file.csv.headers')
-      define_option :csv_columns, type: :array,
-                                  desc: t('file.csv.columns')
+      define_option :csv_translate_columns, type: :array,
+                                            desc: t('file.csv.translate_columns')
       define_option :csv_key_column, default: DEFAULT_KEY_COLUMN,
                                      desc: t('file.csv.key_column')
       define_option :csv_value_column, default: DEFAULT_VALUE_COLUMN,
                                        desc: t('file.csv.value_column')
+      define_option :csv_comment_column, default: DEFAULT_COMMENT_COLUMN,
+                                         desc: t('file.csv.comment_column')
 
       Cell = Struct.new(:header, :key, :value, :translate)
 
@@ -52,9 +56,14 @@ module Translatomatic
         @rows = []
         @cellmap = {} # map of String key -> Cell
         @rownum = 0
-        @key_column = @options[:csv_key_column] || 'key'
-        @value_column = @options[:csv_value_column] || 'value'
-        @columns = @options[:csv_columns]
+        @key_column = option(:csv_key_column, DEFAULT_KEY_COLUMN)
+        @value_column = option(:csv_value_column, DEFAULT_VALUE_COLUMN)
+        @comments_column = option(:csv_comment_column, DEFAULT_COMMENT_COLUMN)
+        @translate = option(:csv_translate_columns)
+      end
+
+      def option(key, default = nil)
+        @options[key] || default
       end
 
       def add_row(key, value)
@@ -111,6 +120,19 @@ module Translatomatic
         end
       end
 
+      # row is an array of values
+      # @return [Array<Cell>] cells
+      def load_array_row(row)
+        cells = []
+        row.each_with_index do |value, i|
+          translate = translate_column?((i + 1).to_s)
+          key = "key#{@rownum},#{i + 1}"
+          cells << Cell.new("column#{i + 1}", key, value, translate)
+        end
+        parse_metadata(cells)
+        cells
+      end
+
       # row is a hash of column -> value
       # @return [Array<Cell>] cells
       def load_hash_row(row)
@@ -119,23 +141,34 @@ module Translatomatic
         colnum = 0
         row.each do |column, value|
           colnum += 1
-          translate = @columns.blank? || @columns.include?(column)
+          translate = translate_column?(column)
           key = "key#{@rownum},#{colnum}"
           cells << Cell.new(column, key, value, translate)
         end
+        parse_metadata(cells)
         cells
       end
 
-      # row is an array of values
-      # @return [Array<Cell>] cells
-      def load_array_row(row)
-        cells = []
-        row.each_with_index do |value, i|
-          translate = @columns.blank? || @columns.include?((i + 1).to_s)
-          key = "key#{@rownum},#{i + 1}"
-          cells << Cell.new("column#{i + 1}", key, value, translate)
+      def translate_column?(column)
+        if @translate.blank?
+          column != @key_column && column != @comments_column
+        else
+          @translate.include?(column)
         end
-        cells
+      end
+
+      def parse_metadata(row)
+        comments_cell = find_cell(row, @comments_column)
+        return unless comments_cell
+        @metadata.parse_comment(comments_cell.value)
+        row.each do |cell|
+          @metadata.assign_key(cell.key, keep_context: true) if cell.translate
+        end
+        @metadata.clear_context
+      end
+
+      def find_cell(row, column_name)
+        row.find { |i| i.header == @comments_column }
       end
     end
   end

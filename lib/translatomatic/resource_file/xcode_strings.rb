@@ -1,67 +1,47 @@
+require 'treetop'
+
 module Translatomatic
   module ResourceFile
     # XCode strings resource file
     # @see https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html
     class XCodeStrings < Base
+      include KeyValueSupport
+
       # (see Base.extensions)
       def self.extensions
         %w[strings]
       end
 
-      # (see Base.key_value?)
-      def self.key_value?
-        true
-      end
-
-      # (see Base#save)
-      def save(target = path, options = {})
-        out = ''
-        out += comment(created_by) unless options[:no_created_by]
-        properties.each do |key, value|
-          key = escape(key)
-          value = escape(value)
-          out += %("#{key}" = "#{value}";\n)
-        end
-        target.write(out)
-      end
-
       private
 
-      def load
-        result = {}
-        content = read_contents(@path)
-        uncommented = content.gsub(%r{/\*.*?\*/}, '')
-        key_values = uncommented.scan(/"(.*?[^\\])"\s*=\s*"(.*?[^\\])"\s*;/m)
-        key_values.each do |entry|
-          key, value = entry
-          result[unescape(key)] = unescape(value)
+      Treetop.load(File.join(__dir__, 'xcode_strings.treetop'))
+      class Parser < XCodeStringsParser; end
+
+      def parse_doc(content)
+        Parser.new.parse(content)
+      end
+
+      def definition_to_s(_definition)
+        format(%("%<key>s" = "%<value>s";\n\n), key: escape(key),
+                                                value: escape(value))
+      end
+
+      def comment_to_s
+        comment = text && text.start_with?(' ') ? text : " #{text} "
+        "/*#{comment}*/\n"
+      end
+
+      def render_element(element)
+        if element.is_a? Comment
+          text = element.text
+          comment = text && text.start_with?(' ') ? text : " #{text} "
+          %(/*#{comment}*/\n)
+        elsif element.is_a? Definition
+          key = element.key
+          value = element.value
+          format(%("%<key>s" = "%<value>s";\n\n), key: escape(key),
+                                                  value: escape(value))
         end
-        @properties = result
-      end
-
-      def comment(text)
-        "/* #{text} */\n"
-      end
-
-      def unescape(string)
-        return '' if string.blank?
-        # remove quoted double quotes inside the string
-        value = unescape_quotes(string)
-        # unescape newlines etc
-        Translatomatic::StringEscaping.unescape(value)
-      end
-
-      def escape(string)
-        return '' if string.blank?
-        escape_quotes(Translatomatic::StringEscaping.escape(string))
-      end
-
-      def unescape_quotes(string)
-        string.gsub(/\\"/, '"')
-      end
-
-      def escape_quotes(string)
-        string.gsub(/"/, '\\"')
       end
     end
   end

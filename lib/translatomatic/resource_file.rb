@@ -22,9 +22,13 @@ module Translatomatic
       end
 
       # Create a new resource file
-      def create(_path, _locale = nil)
-        klass = const_get(klass_name)
-        klass.new
+      def create(path, locale = nil)
+        klass = types_for_path(path).first
+        return nil unless klass
+        file = klass.new
+        file.path = path
+        file.locale = locale
+        file
       end
 
       # Find all resource files under the given directory. Follows symlinks.
@@ -35,6 +39,7 @@ module Translatomatic
         include_dot_directories = options[:include_dot_directories]
         path = Pathname.new(path) unless path.is_a?(Pathname)
         path.find do |file|
+          puts "loading #{file}"
           if !include_dot_directories && file.basename.to_s[0] == '.'
             Find.prune
           else
@@ -49,7 +54,7 @@ module Translatomatic
       # @return [Array<Class>] Available resource file classes
       def types
         @types ||= constants.map { |c| const_get(c) }.select do |klass|
-          klass.is_a?(Class) && klass != Base
+          klass.is_a?(Class) && klass != Base && klass < Base
         end
       end
 
@@ -74,6 +79,7 @@ module Translatomatic
 end
 
 require 'translatomatic/resource_file/base'
+require 'translatomatic/resource_file/key_value_support'
 require 'translatomatic/resource_file/yaml'
 require 'translatomatic/resource_file/properties'
 require 'translatomatic/resource_file/text'

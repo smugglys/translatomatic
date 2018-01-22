@@ -15,20 +15,24 @@ module Translatomatic
     class << self
       # Escape unprintable characters such as newlines.
       # @param value [String] The string to escape
-      # @param skip [String] Characters to not escape
+      # @param include [String] Extra characters to escape
       # @return [String] The string with special characters escaped.
-      def escape(value, skip = '')
-        value.gsub(/\\/, '\\\\\\')
-             .gsub(/"/, '\\"')
-             .gsub(/([\x00-\x1f])/) do
-          skip[$&] || ESCAPES[ $&.unpack('C')[0] ]
+      def escape(value, include = '"')
+        return nil if value.nil?
+        new_value = value.dup
+        new_value.gsub!(/\\/, '\\\\\\')
+        if include.present?
+          new_value.gsub!(/([#{include}])/) { '\\' + Regexp.last_match(1) }
         end
+        new_value.gsub!(/([\x00-\x1f])/) { ESCAPES[ $&.unpack('C')[0] ] }
+        new_value
       end
 
       # Unescape character escapes such as "\n" to their character equivalents.
       # @param value [String] The string to unescape
       # @return [String] The string with special characters unescaped.
       def unescape(value)
+        return nil if value.nil?
         regex = /\\(?:([nevfbart\\])|0?x([0-9a-fA-F]{2})|u([0-9a-fA-F]{4}))/
         value.gsub(regex) do
           if Regexp.last_match(3)
@@ -41,12 +45,13 @@ module Translatomatic
         end
       end
 
-      def unquote(value)
-        if value && value[0] == value[-1] && %w[' "].include?(value[0])
-          value[1...-1]
-        else
-          value
-        end
+      # Unescape as above, and also convert all occurrences of \$char to $char
+      # @param value [String] The string to unescape
+      # @return [String] The string with all characters unescaped.
+      def unescape_all(value)
+        return nil if value.nil?
+        value = unescape(value).gsub(/\\(.)/) { Regexp.last_match(1) }
+        value
       end
     end
   end

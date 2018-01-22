@@ -1,7 +1,7 @@
-#. tm.context: you are right
+#. tm.context: context 1
 msgid "property1"
-msgstr "right"
+msgstr "value"
 
-#. tm.context: go right
+#. tm.context: context 2
 msgid "property2"
-msgstr "right"
+msgstr "value"

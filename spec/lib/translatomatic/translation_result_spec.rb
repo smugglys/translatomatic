@@ -64,7 +64,8 @@ RSpec.describe Translatomatic::TranslationResult do
   end
 
   def create_result(properties, from, to)
-    file = Translatomatic::ResourceFile::Properties.new('dummy', locale: from)
+    file = Translatomatic::ResourceFile::Properties.new
+    file.locale = from
     file.properties = properties
     Translatomatic::TranslationResult.new(file, to)
   end

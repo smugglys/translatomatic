@@ -20,11 +20,13 @@ module Translatomatic
       # (see Base#save)
       def save(target = path, options = {})
         return unless @doc
-        add_created_by unless options[:no_created_by] || added_created_by?
+        add_created_by unless options[:no_created_by] || have_created_by?
         target.write(@doc.to_xml(indent: 2))
       end
 
       private
+
+      TM_NS = 'http://www.smugglys.com/2018/translatomatic'.freeze
 
       def init
         @nodemap = {}
@@ -33,6 +35,7 @@ module Translatomatic
 
       def load
         # parse xml with nokogiri
+        @metadata.reset
         @doc = read_doc
         init_nodemap
         init_properties
@@ -40,10 +43,6 @@ module Translatomatic
 
       def comment(text)
         @doc.create_comment(text)
-      end
-
-      def added_created_by?
-        false # TODO
       end
 
       def add_created_by
@@ -58,7 +57,7 @@ module Translatomatic
       def init_nodemap
         # map of key1 => node, key2 => node, ...
         @keynum = 1
-        text_nodes = @doc.search(text_nodes_xpath)
+        text_nodes = @doc.search(text_nodes_xpath, tm: TM_NS)
         text_nodes.each { |node| add_node(node) }
       end
 
@@ -84,9 +83,21 @@ module Translatomatic
 
       def add_node(node)
         return if whitespace?(node.content)
-        key = "key#{@keynum}"
-        @nodemap[key] = node
-        @keynum += 1
+        if node.comment?
+          @metadata.parse_comment(node.content)
+        elsif context_attribute?(node)
+          @metadata.add_context(node.content)
+        else
+          key = "key#{@keynum}"
+          @nodemap[key] = node
+          @keynum += 1
+          @metadata.assign_key(key)
+        end
+      end
+
+      def context_attribute?(node)
+        node.name == 'context' && node.namespace &&
+          node.namespace.href == TM_NS
       end
 
       def empty_doc
@@ -94,7 +105,7 @@ module Translatomatic
       end
 
       def text_nodes_xpath
-        '//text()'
+        '//text()|//comment()|//@tm:context'
       end
 
       def whitespace?(text)

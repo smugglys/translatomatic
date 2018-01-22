@@ -26,7 +26,7 @@ module Translatomatic
 
       # (see Base#save)
       def save(target = path, options = {})
-        add_created_by unless options[:no_created_by] || added_created_by?
+        add_created_by unless options[:no_created_by] || have_created_by?
         export(target)
       end
 
@@ -38,6 +38,7 @@ module Translatomatic
       end
 
       def load
+        @metadata.reset
         @subtitles = import(@path)
         init_subtitle_map
         init_properties
@@ -50,15 +51,18 @@ module Translatomatic
           key = "key#{@keynum}"
           @keynum += 1
           @subtitle_map[key] = subtitle
+          # process_metadata(key, subtitle)
         end
+      end
+
+      def process_metadata(key, subtitle)
+        lines = subtitle[:lines] || ''
+        context = @metadata.parse_comment(lines)
+        @metadata.assign_key(key) unless context.present?
       end
 
       def add_created_by
         # TODO
-      end
-
-      def added_created_by?
-        false # TODO
       end
 
       def init_properties
@@ -71,7 +75,8 @@ module Translatomatic
 
       def export(target, _options = {})
         content = import_export_class(target).export(@subtitles) || ''
-        target.write(content.chomp)
+        content = content.gsub(/[\r\n]+\Z/, '') + "\n"
+        target.write(content)
       end
 
       def import_export_class(path)

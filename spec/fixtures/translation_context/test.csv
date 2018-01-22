@@ -1,3 +1,3 @@
-key,value,tm.context
-property1,right,you are right
-property2,right,go right
+key,value,comments
+property1,value,tm.context: context 1
+property2,value,tm.context: context 2
