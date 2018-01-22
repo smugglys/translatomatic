@@ -7,13 +7,13 @@ module Translatomatic
     # @see http://docs.microsofttranslator.com/text-translate.html
     class Microsoft < Base
       define_option :microsoft_api_key,
-                    desc: t('translator.microsoft_api_key'), use_env: true
+                    desc: t('translator.microsoft.api_key'), use_env: true
 
       # Create a new Microsoft translator instance
       def initialize(options = {})
         super(options)
         @key = options[:microsoft_api_key] || ENV['MICROSOFT_API_KEY']
-        raise t('translator.microsoft_key_required') if @key.nil?
+        raise t('translator.microsoft.key_required') if @key.nil?
       end
 
       # (see Base#languages)

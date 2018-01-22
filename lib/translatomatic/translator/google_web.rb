@@ -12,15 +12,17 @@ module Translatomatic
       def initialize(options = {})
         super(options)
         @dt = %w[t at]
+        @debug = options[:debug]
       end
 
       # (see Base#languages)
       def languages
-        EasyTranslate::LANGUAGES.keys
+        api.respond_to?(:languages) ? api.languages : []
       end
 
       def api
-        @api ||= GoogleWebTranslate::API.new(debug: options[:debug], dt: @dt)
+        options = { debug: @debug, dt: @dt, http_client: http_client }
+        @api ||= GoogleWebTranslate::API.new(options)
       end
 
       private

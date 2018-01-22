@@ -1,7 +1,7 @@
 RSpec.describe Translatomatic::Translator::Yandex do
   it "requires an api key" do
     ENV["YANDEX_API_KEY"] = nil
-    expect { described_class.new }.to raise_error(t("translator.yandex_key_required"))
+    expect { described_class.new }.to raise_error(t("translator.yandex.key_required"))
   end
 
   it "returns a language list" do

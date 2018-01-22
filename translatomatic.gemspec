@@ -31,8 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock'
 
   # translation
-  spec.add_dependency 'easy_translate'
-  spec.add_dependency 'google_web_translate'
+  spec.add_dependency 'google_web_translate', '~> 0.2.1'
 
   # resource file parsing
   spec.add_dependency 'kramdown'           # markdown -> html

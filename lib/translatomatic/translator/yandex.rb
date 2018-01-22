@@ -4,13 +4,13 @@ module Translatomatic
     # @see https://tech.yandex.com/translate/
     class Yandex < Base
       define_option :yandex_api_key, use_env: true,
-                                     desc: t('translator.yandex_api_key')
+                                     desc: t('translator.yandex.api_key')
 
       # Create a new Yandex translator instance
       def initialize(options = {})
         super(options)
         @api_key = options[:yandex_api_key] || ENV['YANDEX_API_KEY']
-        raise t('translator.yandex_key_required') if @api_key.nil?
+        raise t('translator.yandex.key_required') if @api_key.nil?
       end
 
       # (see Base#languages)

@@ -1,7 +1,11 @@
 RSpec.describe Translatomatic::Translator::GoogleWeb do
   it 'returns a language list' do
+    stub_request(:get, "https://translate.google.com/").
+      with(headers: test_http_headers).
+      to_return(status: 200, body: "['en','de']", headers: {})
+
     t = described_class.new
-    expect(t.languages).to_not be_empty
+    expect(t.languages).to eq(['de', 'en'])
   end
 
   it 'translates to a single string' do

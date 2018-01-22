@@ -71,16 +71,8 @@ en:
     translator:
       email_required: Email address required.
       password_required: Password required.
-      google_key_required: Google API key required.
-      google_api_key: Google API key
-      frengly_api_key: Frengly API key
-      microsoft_api_key: Microsoft API key
-      microsoft_key_required: Microsoft API key required.
-      mymemory_api_key: MyMemory API key
       email_address: Email address
       share_response: 'Share response: %{response}'
-      yandex_api_key: Yandex API key
-      yandex_key_required: Yandex API key required.
       required_option: "(required)"
       translators: 'All Translators:'
       configured: "Configured Translators:"
@@ -88,6 +80,20 @@ en:
       no_translators: No translators are configured.
       password: Password
       invalid_response: Unexpected response from translator
+      google:
+        key_required: Google API key required.
+        api_key: Google API key
+        model: Google translation model
+      frengly:
+        api_key: Frengly API key
+      microsoft:
+        api_key: Microsoft API key
+        key_required: Microsoft API key required.
+      mymemory:
+        api_key: MyMemory API key
+      yandex:
+        api_key: Yandex API key
+        key_required: Yandex API key required.
     file_translator:
       total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_translator} from translator, %{untranslated} untranslated)'
       untranslated: "Untranslated strings:"
