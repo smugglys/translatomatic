@@ -7,7 +7,7 @@ module Translatomatic
       define_option :google_api_key,
                     desc: t('translator.google.api_key'), use_env: true
       define_option :google_model, enum: %i[base nmt],
-                    desc: t('translator.google.model'), use_env: true
+                                   desc: t('translator.google.model'), use_env: true
 
       # Create a new Google translator instance
       def initialize(options = {})
@@ -36,7 +36,7 @@ module Translatomatic
           format: 'text',
           key: @key
         }
-        body.merge!(model: @model) if @model
+        body[:model] = @model if @model
         response = http_client.post(TRANSLATE_URL, body)
         body = JSON.parse(response.body)
         data = body['data'] || {}
@@ -54,7 +54,6 @@ module Translatomatic
         languages = data['languages'] || []
         languages.collect { |i| i['language'] }
       end
-
     end
   end
 end

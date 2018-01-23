@@ -7,6 +7,9 @@ module Translatomatic
     #   translations saved to the database
     attr_reader :db_translations
 
+    # @return [Translatomatic::TranslationStats] Translation statistics
+    attr_reader :stats
+
     # Create a converter to translate files
     #
     # @param options [Hash<Symbol,Object>] converter and/or
@@ -24,11 +27,6 @@ module Translatomatic
 
       @db_translations = []
       @stats = Translatomatic::TranslationStats.new
-    end
-
-    # @return [Translatomatic::TranslationStats] Translation statistics
-    def stats
-      @stats
     end
 
     # Translate properties of source_file to the target locale.
@@ -171,7 +169,7 @@ module Translatomatic
 
         # check for valid response from translator
         translations.each do |t|
-          raise t("translator.invalid_response") unless t.is_a?(Translation)
+          raise t('translator.invalid_response') unless t.is_a?(Translation)
           restore_variables(result, t)
         end
 

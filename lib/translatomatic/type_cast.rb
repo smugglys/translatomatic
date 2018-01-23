@@ -2,6 +2,7 @@ module Translatomatic
   # Type casting functions used by Translatomatic::Config
   module TypeCast
     private
+
     def cast(value, type)
       value = value[0] if value.is_a?(Array) && !array_type?(type)
 
