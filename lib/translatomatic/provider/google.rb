@@ -1,19 +1,19 @@
 
 module Translatomatic
-  module Translator
+  module Provider
     # Interface to the Google translation API
     # @see https://cloud.google.com/translate/
     class Google < Base
       define_option :google_api_key,
-                    desc: t('translator.google.api_key'), use_env: true
+                    desc: t('provider.google.api_key'), use_env: true
       define_option :google_model, enum: %i[base nmt],
-                                   desc: t('translator.google.model'), use_env: true
+                                   desc: t('provider.google.model'), use_env: true
 
-      # Create a new Google translator instance
+      # Create a new Google provider instance
       def initialize(options = {})
         super(options)
         @key = options[:google_api_key] || ENV['GOOGLE_API_KEY']
-        raise t('translator.google.key_required') if @key.nil?
+        raise t('provider.google.key_required') if @key.nil?
         @model = options[:google_model]
       end
 

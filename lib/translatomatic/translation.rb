@@ -7,8 +7,8 @@ module Translatomatic
     # @return [Translatomatic::String] translated string
     attr_accessor :result
 
-    # @return [Symbol] The name of the translator
-    attr_reader :translator
+    # @return [Symbol] The name of the provider
+    attr_reader :provider
 
     # @return [boolean] True if this translation came from the database
     attr_reader :from_database
@@ -16,7 +16,7 @@ module Translatomatic
     def initialize(original, result, options = {})
       @original = string(original)
       @result = string(result)
-      @translator = options[:translator]
+      @provider = options[:provider]
       @from_database = options[:from_database]
     end
 

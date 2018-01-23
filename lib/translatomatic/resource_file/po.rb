@@ -100,7 +100,7 @@ module Translatomatic
       def init_pomap(po)
         po.entries.each_with_index do |entry, i|
           # skip PO file header if present
-          # TODO: update PO-Revision-Date, Last-Translator ?
+          # TODO: update PO-Revision-Date, Last-Provider ?
           next if entry.msgid == '' && i == 0
 
           if entry.extracted_comment

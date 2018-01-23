@@ -22,7 +22,7 @@
 以下翻译 api 可与 Translatomatic 一起使用:
 
 - [谷歌](https://cloud.google.com/translate/)
-- [microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [microsoft](https://www.microsoft.com/en-us/provider/providerapi.aspx)
 - [yandex](https://tech.yandex.com/translate/)
 - [MyMemory](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
@@ -83,7 +83,7 @@ gem 'translatomatic'
 
 使用 Google 翻译器将 Java 属性文件转换为德语和法语:
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 这将创建(或复盖) `strings_de.properties` 和 `strings_fr.properties` 具有翻译的属性。
 
@@ -122,7 +122,7 @@ Translatomatic 的每个用户配置文件位于 `$HOME/.translatomatic/config.y
 
 要设置一个或多个要使用的翻译服务:
 
-    $ translatomatic config set translator Microsoft,Yandex
+    $ translatomatic config set provider Microsoft,Yandex
 
 只有当使用第一个选项时发生翻译错误时, 才能使用辅助翻译器。
 

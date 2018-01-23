@@ -22,7 +22,7 @@
 Следующее перевод интерфейсы API могут использоваться с Translatomatic:
 
 - [Google](https://cloud.google.com/translate/)
-- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Microsoft](https://www.microsoft.com/en-us/provider/providerapi.aspx)
 - [Яндекс](https://tech.yandex.com/translate/)
 - [MyMemory](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
@@ -83,7 +83,7 @@ gem 'translatomatic'
 
 Чтобы перевести файл свойств Java на немецком и французском языках, используя Google Переводчик:
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 Это позволит создать (или заменить) `strings_de.properties` и `strings_fr.properties` с перевод свойства.
 
@@ -122,7 +122,7 @@ Translatomatic имеет файл конфигурации пользовате
 
 Чтобы задать одну или несколько услуг перевода для использования:
 
-    $ translatomatic config set translator Microsoft,Yandex
+    $ translatomatic config set provider Microsoft,Yandex
 
 Вторичные переводчиков будет использоваться только если перевод ошибка возникает при использовании первого выбора.
 

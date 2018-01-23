@@ -31,7 +31,7 @@ module Translatomatic
       def self.from_texts(texts)
         # group texts by from_text_id to create units
         # source_locale: use from_text.locale
-        # origin: use text.translator
+        # origin: use text.provider
         sources = texts.select { |i| i.from_text.nil? }
         source_locales = sources.collect(&:locale).uniq
         raise t('tmx.multiple_locales') if source_locales.length > 1

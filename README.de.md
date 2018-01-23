@@ -22,7 +22,7 @@
 Die folgende Übersetzung APIs kann mit Translatomatic verwendet werden:
 
 - [Google](https://cloud.google.com/translate/)
-- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Microsoft](https://www.microsoft.com/en-us/provider/providerapi.aspx)
 - [Yandex](https://tech.yandex.com/translate/)
 - [MyMemory](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
@@ -83,7 +83,7 @@ Bei der Übersetzung von Dateien `translatomatic` übersetzt den text, ein Satz 
 
 Um eine Java-Properties-Datei auf Deutsch und Französisch mit den Google-Übersetzer übersetzen:
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 Dies würde zu erstellen (oder überschreiben) `strings_de.properties` und `strings_fr.properties` mit übersetzten Eigenschaften.
 
@@ -122,7 +122,7 @@ Festzulegende `google_api_key` innerhalb der Benutzer-Konfiguration-Datei verwen
 
 Eine oder mehrere Übersetzungen zu verwenden, stellen Sie ein:
 
-    $ translatomatic config set translator Microsoft,Yandex
+    $ translatomatic config set provider Microsoft,Yandex
 
 Sekundäre Übersetzer werden nur verwendet, wenn ein Übersetzungsfehler tritt auf, wenn die erste Wahl zu verwenden.
 

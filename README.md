@@ -78,11 +78,11 @@ Options can be set at the user level or the project level. See also the Configur
 ---
 ## Translating files
 
-When translating files, `translatomatic` translates text one sentence or phrase at a time.  If a file is re-translated, only sentences that have changed since the last translation are sent to the translator, and the rest are sourced from the local database.
+When translating files, `translatomatic` translates text one sentence or phrase at a time.  If a file is re-translated, only sentences that have changed since the last translation are sent to the translation provider, and the rest are sourced from the local database.
 
-To translate a Java properties file to German and French using the Google translator:
+To translate a Java properties file to German and French using the Google provider:
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 This would create (or overwrite) `strings_de.properties` and `strings_fr.properties` with translated properties.
 
@@ -126,9 +126,7 @@ To set `google_api_key` within the user configuration file, use:
 
 To set one or more translation services to use:
 
-    $ translatomatic config set translator Microsoft,Yandex
-
-Secondary translators will only be used if a translation error occurs when using the first choice.
+    $ translatomatic config set provider Microsoft,Yandex
 
 To set a default list of target locales:
 

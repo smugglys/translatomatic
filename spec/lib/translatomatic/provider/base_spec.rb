@@ -1,5 +1,5 @@
-RSpec.describe Translatomatic::Translator::Base do
-  class DummyTranslator < described_class
+RSpec.describe Translatomatic::Provider::Base do
+  class DummyProvider < described_class
     attr_accessor :use_perform_fetch_translations
 
     def initialize(url)
@@ -22,22 +22,22 @@ RSpec.describe Translatomatic::Translator::Base do
 
   context :languages do
     it 'returns an empty language list by default' do
-      t = DummyTranslator.new(nil)
+      t = DummyProvider.new(nil)
       expect(t.languages).to be_empty
     end
   end
 
   context :name do
-    it 'returns the translator name' do
-      t = DummyTranslator.new(nil)
-      expect(t.name).to eq(DummyTranslator.to_s)
+    it 'returns the provider name' do
+      t = DummyProvider.new(nil)
+      expect(t.name).to eq(DummyProvider.to_s)
     end
   end
 
   context :perform_fetch_translations do
     it 'succeeds after 2 retriable errors' do
       url = 'http://www.example.com'
-      t = DummyTranslator.new(url)
+      t = DummyProvider.new(url)
       stub_request_failures(url, 2)
       t.use_perform_fetch_translations = true
       expect do
@@ -47,7 +47,7 @@ RSpec.describe Translatomatic::Translator::Base do
 
     it 'stops after failing 3 times' do
       url = 'http://www.example.com'
-      t = DummyTranslator.new(url)
+      t = DummyProvider.new(url)
       stub_request_failures(url, 3)
       t.use_perform_fetch_translations = true
       expect do

@@ -1,7 +1,7 @@
 require 'google_web_translate'
 
 module Translatomatic
-  module Translator
+  module Provider
     # Google translation web interface.
     # supports multiple translations
     # @see https://translate.google.com.au
@@ -13,7 +13,7 @@ module Translatomatic
         true
       end
 
-      # Create a new GoogleWeb translator instance
+      # Create a new GoogleWeb provider instance
       def initialize(options = {})
         super(options)
         @dt = %w[t at]

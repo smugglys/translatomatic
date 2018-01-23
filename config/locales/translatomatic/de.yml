@@ -22,7 +22,7 @@ de:
         subcommand: Dateien oder Zeichenfolgen übersetzen
         file: Eine Datei zum Ziel Gebietsschemas zu übersetzen
         string: Eine Zeichenfolge, die Ziel-Gebietsschemas zu übersetzen
-        translator: Übersetzer-Implementierungen verwenden
+        provider: Übersetzer-Implementierungen verwenden
       source_locale: Das Gebietsschema der Quelldatei
       target_locales: Sprachen zu übersetzen
       source_files: Dateien zu übersetzen
@@ -31,7 +31,7 @@ de:
       share: Übersetzungen mit Übersetzern zu teilen
       dry_run: 'Dry Run: Dateien werden nicht übersetzt oder geschrieben werden'
       locales_required: Eine oder mehrere Ziel-Gebietsschemas erforderlich
-      using_translator: 'Mit Übersetzer: %{name}'
+      using_provider: 'Mit Übersetzer: %{name}'
       display_values: Werte aus einer Ressourcenbündel anzeigen
       locales_to_display: Ländereinstellungen anzeigen
       display_sentences: Display-Sätze
@@ -58,7 +58,7 @@ de:
     tmx:
       multiple_origins: Mehrere Wurzeln in Texten.
       multiple_locales: Mehreren Quelle Gebietsschemas in Texten.
-    translator:
+    provider:
       email_required: E-Mail-Adresse erforderlich.
       password_required: Passwort erforderlich.
       google_key_required: Google-API-Schlüssel erforderlich.
@@ -72,22 +72,22 @@ de:
       yandex_api_key: Yandex-API-Schlüssel
       yandex_key_required: Yandex-API-Schlüssel erforderlich.
       required_option: "(erforderlich)"
-      translators: 'Alle Übersetzer:'
+      providers: 'Alle Übersetzer:'
       configured: 'Konfigurierten Übersetzer:'
       unavailable: Übersetzer-%{name} ist nicht verfügbar.
-      no_translators: Keine Übersetzer konfiguriert sind.
+      no_providers: Keine Übersetzer konfiguriert sind.
       password: Passwort
     file_translator:
       total_translations: 'Total translations: %{total} (%{from_db} aus der Datenbank,
-        %{from_translator} von übersetzer, %{untranslated} unübersetzte)'
+        %{from_provider} von übersetzer, %{untranslated} unübersetzte)'
       untranslated: 'Nicht übersetzte Zeichenfolgen:'
       dry_run: Aktionen ohne Durchführung von Übersetzungen oder Schreiben von Dateien
         zu drucken.
       use_database: Speichern und Abrufen von Übersetzungen aus der Datenbank.
       database_disabled: Datenbank ist deaktiviert.
-      translator_required: Übersetzer erforderlich.
+      provider_required: Übersetzer erforderlich.
       translating: Übersetzung %{source} (%{source_locale}) %{target} (%{target_locale})
-      stats: 'Übersetzungen aus der Datenbank: %{from_db}, translator: %{from_translator},
+      stats: 'Übersetzungen aus der Datenbank: %{from_db}, provider: %{from_provider},
         un: %{untranslated}'
     database:
       no_environment: Keine Umwelt '%{env}' %{file}

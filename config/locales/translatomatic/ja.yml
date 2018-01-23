@@ -22,7 +22,7 @@ ja:
         subcommand: ファイルまたは文字列を翻訳します。
         file: ターゲットのロケールにファイルを翻訳します。
         string: ターゲット ロケールを文字列に変換します。
-        translator: 翻訳の実装を使用するには
+        provider: 翻訳の実装を使用するには
       source_locale: ソース ファイルのロケール
       target_locales: 変換するロケール
       source_files: 翻訳するファイル
@@ -31,7 +31,7 @@ ja:
       share: 翻訳者と翻訳を共有します。
       dry_run: '乾燥を実行: ファイルはない翻訳されるか書かれて'
       locales_required: 必要な 1 つまたは複数のターゲット ロケール
-      using_translator: '翻訳を使用して: %{name}'
+      using_provider: '翻訳を使用して: %{name}'
       display_values: リソース バンドルから値を表示します。
       locales_to_display: 表示するロケール
       display_sentences: 文章を表示します。
@@ -58,7 +58,7 @@ ja:
     tmx:
       multiple_origins: テキストの複数の起源。
       multiple_locales: テキストに複数のソースのロケール。
-    translator:
+    provider:
       email_required: メール アドレスが必要です。
       password_required: パスワードが必要です。
       google_key_required: Google の API キーが必要です。
@@ -72,21 +72,21 @@ ja:
       yandex_api_key: Yandex API キー
       yandex_key_required: Yandex の API キーが必要です。
       required_option: "(必須)"
-      translators: 'すべての翻訳者:'
+      providers: 'すべての翻訳者:'
       configured: '構成された翻訳者:'
       unavailable: 翻訳 %{name} は使用できません。
-      no_translators: 翻訳者は構成されていません。
+      no_providers: 翻訳者は構成されていません。
       password: パスワード
     file_translator:
-      total_translations: '翻訳を合計: %{total} (%{from_db} %{from_translator}、%{untranslated}
+      total_translations: '翻訳を合計: %{total} (%{from_db} %{from_provider}、%{untranslated}
         非翻訳の翻訳者からのデータベースから)'
       untranslated: '未翻訳の文字列:'
       dry_run: 翻訳の実行やファイルの書き込みせずにアクションを印刷します。
       use_database: 保存し、データベースから翻訳を取得します。
       database_disabled: データベースは無効です。
-      translator_required: 必要な翻訳。
+      provider_required: 必要な翻訳。
       translating: 翻訳%{source}(%{source_locale})に%{target}(%{target_locale})
-      stats: 翻訳からデータベース:%{from_db},翻訳:%{from_translator},翻:%{untranslated}
+      stats: 翻訳からデータベース:%{from_db},翻訳:%{from_provider},翻:%{untranslated}
     database:
       no_environment: ない環境 '%{env}' %{file}
       migrated: データベースの移行。

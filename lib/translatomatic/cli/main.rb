@@ -5,7 +5,7 @@ module Translatomatic
     class Main < Base
       package_name 'Translatomatic'
       map %w[-v --version] => :version
-      map %w[-L --list] => :translators
+      map %w[-L --list] => :providers
 
       desc 'translate', t('cli.translate.subcommand')
       subcommand 'translate', Translate
@@ -72,12 +72,12 @@ module Translatomatic
         end
       end
 
-      desc 'services', t('cli.list_backends')
+      desc 'providers', t('cli.providers')
       thor_options(self, Translatomatic::CLI::CommonOptions)
-      # List available translator services
+      # List available translation providers
       # @return [void]
-      def services
-        run { puts Translatomatic::Translator.list }
+      def providers
+        run { puts Translatomatic::Provider.list }
       end
 
       desc 'version', t('cli.display_version')

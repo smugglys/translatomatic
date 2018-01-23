@@ -1,7 +1,5 @@
 module Translatomatic
-  # The file translator ties together functionality from translators,
-  # resource files, and the database to convert files from one
-  # language to another.
+  # Translates resource files from one language to another.
   class FileTranslator
     # @return [Array<Translatomatic::Model::Text>] A list of
     #   translations saved to the database
@@ -13,13 +11,13 @@ module Translatomatic
     # Create a converter to translate files
     #
     # @param options [Hash<Symbol,Object>] converter and/or
-    #   translator options.
+    #   provider options.
     def initialize(options = {})
       @dry_run = options[:dry_run]
       @listener = options[:listener]
-      @translators = resolve_translators(options)
-      raise t('file_translator.translator_required') if @translators.empty?
-      @translators.each { |i| i.listener = @listener } if @listener
+      @providers = resolve_providers(options)
+      raise t('file_translator.provider_required') if @providers.empty?
+      @providers.each { |i| i.listener = @listener } if @listener
 
       # use database by default if we're connected to a database
       @use_db = !options[:no_database] && ActiveRecord::Base.connected?
@@ -44,9 +42,9 @@ module Translatomatic
       result = Translatomatic::TranslationResult.new(file, to_locale)
 
       # translate using strings from the database first
-      each_translator(result) { translate_properties_with_db(result) }
-      # send remaining unknown strings to translator
-      each_translator(result) { translate_properties_with_translator(result) }
+      each_provider(result) { translate_properties_with_db(result) }
+      # send remaining unknown strings to provider
+      each_provider(result) { translate_properties_with_provider(result) }
 
       log.debug(stats)
       @listener.untranslated_texts(result.untranslated) if @listener
@@ -95,10 +93,10 @@ module Translatomatic
     define_option :no_database, type: :boolean, default: false,
                                 desc: t('file_translator.no_database')
 
-    def each_translator(result)
-      @translators.each do |translator|
+    def each_provider(result)
+      @providers.each do |provider|
         break if result.untranslated.empty?
-        @current_translator = translator
+        @current_provider = provider
         yield
       end
     end
@@ -113,9 +111,9 @@ module Translatomatic
       return unless file.class.supports_variable_interpolation?
       unless translation.restore_variables(file.variable_regex)
         # unable to restore interpolated variable names
-        translator = @current_translator.name
+        provider = @current_provider.name
         failed_string = translation.result
-        msg = "#{translator}: unable to restore variables: #{failed_string}"
+        msg = "#{provider}: unable to restore variables: #{failed_string}"
         log.debug(msg)
         translation.result = nil # mark result as invalid
       end
@@ -155,21 +153,21 @@ module Translatomatic
       db_texts
     end
 
-    # update result with translations from the translator.
-    def translate_properties_with_translator(result)
+    # update result with translations from the provider.
+    def translate_properties_with_provider(result)
       untranslated = result.untranslated.to_a.select { |i| translatable?(i) }
       translated = []
       if !untranslated.empty? && !@dry_run
-        translator = @current_translator
-        log.debug("translating: #{untranslated} with #{translator.name}")
-        translations = translator.translate(
+        provider = @current_provider
+        log.debug("translating: #{untranslated} with #{provider.name}")
+        translations = provider.translate(
           untranslated, result.from_locale, result.to_locale
         )
         log.debug("results: #{translations}")
 
-        # check for valid response from translator
+        # check for valid response from provider
         translations.each do |t|
-          raise t('translator.invalid_response') unless t.is_a?(Translation)
+          raise t('provider.invalid_response') unless t.is_a?(Translation)
           restore_variables(result, t)
         end
 
@@ -180,9 +178,9 @@ module Translatomatic
     end
 
     def translation(from, to, from_database = false)
-      translator = @current_translator.name
+      provider = @current_provider.name
       Translatomatic::Translation.new(
-        from, to, translator: translator, from_database: from_database
+        from, to, provider: provider, from_database: from_database
       )
     end
 
@@ -221,7 +219,7 @@ module Translatomatic
         locale: to_locale,
         value: translation.result.to_s,
         from_text: original_text,
-        translator: @current_translator.name
+        provider: @current_provider.name
       )
       @db_translations += [original_text, text]
       text
@@ -233,7 +231,7 @@ module Translatomatic
 
       Translatomatic::Model::Text.where(
         locale: to,
-        translator: @current_translator.name,
+        provider: @current_provider.name,
         from_texts_texts: {
           locale_id: from,
           # convert untranslated set to strings
@@ -242,8 +240,8 @@ module Translatomatic
       ).joins(:from_text)
     end
 
-    def resolve_translators(options)
-      Translatomatic::Translator.resolve(options[:translator], options)
+    def resolve_providers(options)
+      Translatomatic::Provider.resolve(options[:provider], options)
     end
 
     def db_locale(locale)

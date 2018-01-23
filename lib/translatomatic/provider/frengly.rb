@@ -1,25 +1,25 @@
 require 'net/http'
 
 module Translatomatic
-  module Translator
+  module Provider
     # Interface to the Frengly translation API
     # @see http://www.frengly.com/api
     class Frengly < Base
       define_option :frengly_api_key, use_env: true,
-                                      desc: t('translator.frengly.api_key')
+                                      desc: t('provider.frengly.api_key')
       define_option :frengly_email, use_env: true,
-                                    desc: t('translator.email_address')
+                                    desc: t('provider.email_address')
       define_option :frengly_password, use_env: true,
-                                       desc: t('translator.password')
+                                       desc: t('provider.password')
 
-      # Create a new Frengly translator instance
+      # Create a new Frengly provider instance
       def initialize(options = {})
         super(options)
         @key = options[:frengly_api_key] || ENV['FRENGLY_API_KEY'] # optional
         @email = options[:frengly_email]
         @password = options[:frengly_password]
-        raise t('translator.email_required') unless @email
-        raise t('translator.password_required') unless @password
+        raise t('provider.email_required') unless @email
+        raise t('provider.password_required') unless @password
       end
 
       # (see Base#languages)

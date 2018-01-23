@@ -22,7 +22,7 @@ ko:
         subcommand: 파일 또는 문자열 번역
         file: 대상 로케일 파일 번역
         string: 대상 로케일 문자열 번역
-        translator: 번역기 사용 하 여 구현
+        provider: 번역기 사용 하 여 구현
       source_locale: 소스 파일의 로캘
       target_locales: 번역 하는 로캘
       source_files: 번역 파일
@@ -31,7 +31,7 @@ ko:
       share: 번역자와 번역을 공유
       dry_run: '드라이 실행: 파일 또는 번역 될 하지 작성'
       locales_required: 하나 이상의 대상 로케일 필요
-      using_translator: '번역기를 사용 하 여: %{name}'
+      using_provider: '번역기를 사용 하 여: %{name}'
       display_values: 리소스 번들에서 표시 값
       locales_to_display: 로캘을 표시합니다
       display_sentences: 표시 문장
@@ -58,7 +58,7 @@ ko:
     tmx:
       multiple_origins: 텍스트에 여러 개의 기원입니다.
       multiple_locales: 텍스트에 여러 소스 로캘
-    translator:
+    provider:
       email_required: 이메일 주소는 필수입니다.
       password_required: 암호 필요입니다.
       google_key_required: 구글 API 키 필요입니다.
@@ -72,20 +72,20 @@ ko:
       yandex_api_key: Yandex API 키
       yandex_key_required: Yandex API 키 필요입니다.
       required_option: "(필수)"
-      translators: '모든 번역자:'
+      providers: '모든 번역자:'
       configured: '구성된 변환기:'
       unavailable: 번역기 %{name} 불가능합니다.
-      no_translators: 아니 변환기 구성 됩니다.
+      no_providers: 아니 변환기 구성 됩니다.
       password: 암호
     file_translator:
-      total_translations: 총 번역:%{total}(%{from_db}데이터베이스에서,%{from_translator}에서 번역,%{untranslated}맞)
+      total_translations: 총 번역:%{total}(%{from_db}데이터베이스에서,%{from_provider}에서 번역,%{untranslated}맞)
       untranslated: '번역 되지 않은 문자열:'
       dry_run: 번역을 수행 하거나 파일을 작성 하지 않고 작업을 인쇄 합니다.
       use_database: 저장 하 고 데이터베이스에서 번역을 검색 합니다.
       database_disabled: 데이터베이스는 사용할 수 없습니다.
-      translator_required: 통역 필요입니다.
+      provider_required: 통역 필요입니다.
       translating: 번역%{source}(%{source_locale})%{target}(%{target_locale})
-      stats: '번역 데이터베이스: %{from_db}, 번역기: %{from_translator}, 번역된: %{untranslated}'
+      stats: '번역 데이터베이스: %{from_db}, 번역기: %{from_provider}, 번역된: %{untranslated}'
     database:
       no_environment: 아니 환경 %{env}에서 ' %{file}'
       migrated: 데이터베이스 마이그레이션.

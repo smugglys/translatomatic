@@ -22,7 +22,7 @@ ms:
         subcommand: Menterjemahkan fail atau tali
         file: Menterjemahkan fail untuk locales sasaran
         string: Menterjemah rentetan kepada sasaran locales
-        translator: Penterjemah implementasi menggunakan
+        provider: Penterjemah implementasi menggunakan
       source_locale: Dalam fail sumber
       target_locales: Locales untuk diterjemahkan kepada
       source_files: Fail untuk menterjemahkan
@@ -31,7 +31,7 @@ ms:
       share: Berkongsi terjemahan dengan penterjemah
       dry_run: 'Run kering: fail tidak boleh ditukar atau ditulis'
       locales_required: Satu atau lebih locales sasaran yang dikehendaki
-      using_translator: 'Menggunakan penterjemah: %{name}'
+      using_provider: 'Menggunakan penterjemah: %{name}'
       display_values: Memaparkan nilai-nilai dari pakej sumber
       locales_to_display: Locales untuk memaparkan
       display_sentences: Paparan ayat
@@ -58,7 +58,7 @@ ms:
     tmx:
       multiple_origins: Asal-usul pelbagai dalam teks.
       multiple_locales: Pelbagai sumber locales dalam teks.
-    translator:
+    provider:
       email_required: Alamat e-mel yang diperlukan.
       password_required: Kata laluan diperlukan.
       google_key_required: Google API masukkan diperlukan.
@@ -72,21 +72,21 @@ ms:
       yandex_api_key: Kekunci Yandex API
       yandex_key_required: Masukkan Yandex API diperlukan.
       required_option: "(wajib)"
-      translators: 'Semua penterjemah yang terlibat:'
+      providers: 'Semua penterjemah yang terlibat:'
       configured: 'Penterjemah yang dikonfigurasikan dengan betul:'
       unavailable: Tidak ada penterjemah %{name}.
-      no_translators: Penterjemah tidak dikonfigurasikan.
+      no_providers: Penterjemah tidak dikonfigurasikan.
       password: Kata laluan
     file_translator:
       total_translations: 'Jumlah terjemahan: %{total} (%{from_db} dari pangkalan
-        data, %{from_translator} daripada penterjemah, %{untranslated} diterjemahkan)'
+        data, %{from_provider} daripada penterjemah, %{untranslated} diterjemahkan)'
       untranslated: 'Tali yang diterjemahkan:'
       dry_run: Cetak tindakan tanpa melakukan penterjemahan atau menulis fail.
       use_database: Menyimpan dan mendapatkan semula terjemahan dari pangkalan data.
       database_disabled: Pangkalan data telah dinyahdayakan.
-      translator_required: Penterjemah yang diperlukan.
+      provider_required: Penterjemah yang diperlukan.
       translating: Menterjemah %{source} (%{source_locale}) kepada %{target} (%{target_locale})
-      stats: 'Terjemahan dari pangkalan data: %{from_db}, penterjemah: %{from_translator},
+      stats: 'Terjemahan dari pangkalan data: %{from_db}, penterjemah: %{from_provider},
         diterjemahkan: %{untranslated}'
     database:
       no_environment: Persekitaran tidak '%{env}' dalam %{file}

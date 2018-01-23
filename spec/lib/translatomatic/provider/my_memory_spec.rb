@@ -1,5 +1,5 @@
-RSpec.describe Translatomatic::Translator::MyMemory do
-  include_examples 'a translator'
+RSpec.describe Translatomatic::Provider::MyMemory do
+  include_examples 'a provider'
 
   it "shares translated strings" do
     # WebMock does not support matching body for multipart/form-data requests yet :(
@@ -21,7 +21,7 @@ RSpec.describe Translatomatic::Translator::MyMemory do
     described_class.new(frengly_email: 'dummy', frengly_password: 'dummy')
   end
 
-  def mock_translation(translator, strings, from, to, results)
+  def mock_translation(provider, strings, from, to, results)
     api_endpoint = described_class::GET_URL
     strings.zip(results).each do |string, result|
       query = { langpair: "#{from}-#{to}", q: string }

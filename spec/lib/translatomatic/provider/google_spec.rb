@@ -1,9 +1,9 @@
-RSpec.describe Translatomatic::Translator::Google do
-  include_examples 'a translator'
+RSpec.describe Translatomatic::Provider::Google do
+  include_examples 'a provider'
 
   it "requires an api key" do
     ENV["GOOGLE_API_KEY"] = nil
-    expect { described_class.new }.to raise_error(t("translator.google.key_required"))
+    expect { described_class.new }.to raise_error(t("provider.google.key_required"))
   end
 
   def create_instance
@@ -20,7 +20,7 @@ RSpec.describe Translatomatic::Translator::Google do
       to_return(status: 200, body: expected_response.to_json, headers: {})
   end
 
-  def mock_translation(translator, strings, from, to, results)
+  def mock_translation(provider, strings, from, to, results)
     api_endpoint = "https://translation.googleapis.com/language/translate/v2"
     translations = results.collect do |result|
       { "translatedText": result }

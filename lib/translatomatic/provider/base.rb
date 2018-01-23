@@ -1,6 +1,6 @@
 
 module Translatomatic
-  module Translator
+  module Provider
     # Base class for interfaces to translation APIs
     # @abstract
     class Base
@@ -18,13 +18,13 @@ module Translatomatic
         @listener = options[:listener]
       end
 
-      # @return [String] The name of this translator.
+      # @return [String] The name of this provider.
       def name
         self.class.name.demodulize
       end
 
       # @return [Array<String>] A list of languages
-      #   supported by this translator.
+      #   supported by this provider.
       def languages
         []
       end
@@ -105,7 +105,7 @@ module Translatomatic
       def translation(original, translated)
         string1 = Translatomatic::String[original, @from]
         string2 = Translatomatic::String[translated, @to]
-        Translatomatic::Translation.new(string1, string2, translator: name)
+        Translatomatic::Translation.new(string1, string2, provider: name)
       end
 
       # Attempt to run a block of code up to retries times.

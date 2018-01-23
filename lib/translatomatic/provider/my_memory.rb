@@ -1,15 +1,15 @@
 
 module Translatomatic
-  module Translator
+  module Provider
     # Interface to the MyMemory translation API
     # @see https://mymemory.translated.net/doc/
     class MyMemory < Base
       define_option :mymemory_api_key, use_env: true,
-                                       desc: t('translator.mymemory.api_key')
+                                       desc: t('provider.mymemory.api_key')
       define_option :mymemory_email, use_env: true,
-                                     desc: t('translator.email_address')
+                                     desc: t('provider.email_address')
 
-      # Create a new MyMemory translator instance
+      # Create a new MyMemory provider instance
       def initialize(options = {})
         super(options)
         @key = options[:mymemory_api_key] || ENV['MYMEMORY_API_KEY']
@@ -34,7 +34,7 @@ module Translatomatic
           { key: :private, value: 0 }
         ]
         response = http_client.post(UPLOAD_URL, body)
-        log.debug(t('translator.share_response',
+        log.debug(t('provider.share_response',
                     response: response.body.inspect))
       end
 

@@ -22,7 +22,7 @@
 次の翻訳 Api は、Translatomatic で使用できます。
 
 - [Google](https://cloud.google.com/translate/)
-- [マイクロソフト](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [マイクロソフト](https://www.microsoft.com/en-us/provider/providerapi.aspx)
 - [Yandex](https://tech.yandex.com/translate/)
 - [MyMemory](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
@@ -83,7 +83,7 @@ gem 'translatomatic'
 
 ドイツ語とフランス語の Google 翻訳を使用して Java のプロパティ ファイルを翻訳。
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 こうした成(上書き) `strings_de.properties` - `strings_fr.properties` 変換のプロパティを実行します。
 
@@ -122,7 +122,7 @@ Translatomatic は、ユーザーごとの構成ファイル `$HOME/.translatoma
 
 使用する 1 つまたは複数の翻訳サービスを設定: する
 
-    $ translatomatic config set translator Microsoft,Yandex
+    $ translatomatic config set provider Microsoft,Yandex
 
 二次翻訳者は、最初の選択肢を使用する場合、変換エラーが発生した場合にのみ使用されます。
 

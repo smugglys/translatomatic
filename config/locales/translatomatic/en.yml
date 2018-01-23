@@ -24,21 +24,21 @@ en:
         subcommand: Translate files or strings
         file: Translate a file to target locales
         string: Translate a string to target locales
-        translator: Translator implementations to use
+        provider: Provider implementations to use
       source_locale: The locale of the source file
       target_locales: Locales to translate to
       source_files: Files to translate
       debug: Enable debugging output
       no_wank: Disable translation progress bar
-      share: Share translations with translators
+      share: Share translations with providers
       dry_run: 'Dry run: files will not be translated or written'
       locales_required: One or more target locales required
-      using_translator: 'Using translator: %{name}'
+      using_provider: 'Using provider: %{name}'
       display_values: Display values from a resource bundle
       locales_to_display: Locales to display
       display_sentences: Display sentences
       extract_strings: Extract strings from non-resource files
-      list_backends: List available translation services
+      providers: List available translation providers
       display_version: Display version
       uploading_tmx: Uploading TMX to %{name}
       translating: Translating
@@ -68,18 +68,18 @@ en:
     tmx:
       multiple_origins: Multiple origins in texts.
       multiple_locales: Multiple source locales in texts.
-    translator:
+    provider:
       email_required: Email address required.
       password_required: Password required.
       email_address: Email address
       share_response: 'Share response: %{response}'
       required_option: "(required)"
-      translators: 'All Translators:'
-      configured: "Configured Translators:"
-      unavailable: Translator %{name} is unavailable.
-      no_translators: No translators are configured.
+      providers: 'All Providers:'
+      configured: "Configured Providers:"
+      unavailable: Provider %{name} is unavailable.
+      no_providers: No providers are configured.
       password: Password
-      invalid_response: Unexpected response from translator
+      invalid_response: Unexpected response from provider
       google:
         key_required: Google API key required.
         api_key: Google API key
@@ -95,12 +95,12 @@ en:
         api_key: Yandex API key
         key_required: Yandex API key required.
     file_translator:
-      total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_translator} from translator, %{untranslated} untranslated)'
+      total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_provider} from provider, %{untranslated} untranslated)'
       untranslated: "Untranslated strings:"
       dry_run: Print actions without performing translations or writing files.
       no_database: Do not store translations to the database.
       database_disabled: Database is disabled.
-      translator_required: Translator required.
+      provider_required: Provider required.
       translating: Translating %{source} (%{source_locale}) to %{target} (%{target_locale})
     database:
       no_environment: No environment '%{env}' in %{file}

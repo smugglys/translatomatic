@@ -1,5 +1,5 @@
 
-class TestTranslator < Translatomatic::Translator::Base
+class TestProvider < Translatomatic::Provider::Base
   def initialize(result = {})
     @mapping = result
   end

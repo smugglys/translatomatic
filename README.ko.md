@@ -22,7 +22,7 @@
 다음 번역 Api Translatomatic와 함께 사용할 수 있습니다.
 
 - [구글](https://cloud.google.com/translate/)
-- [마이크로 소프트](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [마이크로 소프트](https://www.microsoft.com/en-us/provider/providerapi.aspx)
 - [Yandex](https://tech.yandex.com/translate/)
 - [MyMemory](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
@@ -83,7 +83,7 @@ gem 'translatomatic'
 
 자바 속성 파일을 독일어와 프랑스어 구글 번역기를 사용 하 여 번역:
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 이들(또는 덮어쓰기) `strings_de.properties` 고 `strings_fr.properties` 와 속성을 변환.
 
@@ -122,7 +122,7 @@ Translatomatic는 사용자 구성 파일에 `$HOME/.translatomatic/config.yml`�
 
 설정 하려면 하나 이상의 번역 서비스를 사용 하 여:
 
-    $ translatomatic config set translator Microsoft,Yandex
+    $ translatomatic config set provider Microsoft,Yandex
 
 2 차 번역 번역 오류가 발생 하는 첫 번째 선택을 사용 하는 경우 경우에 사용 됩니다.
 

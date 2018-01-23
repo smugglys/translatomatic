@@ -22,7 +22,7 @@ Converte file di testo da una lingua a altra, o da un formato a altro. Attualmen
 La seguente traduzione API può essere utilizzata con Translatomatic:
 
 - [Google](https://cloud.google.com/translate/)
-- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Microsoft](https://www.microsoft.com/en-us/provider/providerapi.aspx)
 - [Yandex](https://tech.yandex.com/translate/)
 - [MyMemory](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
@@ -83,7 +83,7 @@ Quando si converte il file, `translatomatic` traduce il testo una frase o una fr
 
 Per tradurre un file di proprietà Java in tedesco e francese utilizzando il traduttore di Google:
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 Questo permetterebbe di creare (o sovrascrivere) `strings_de.properties` e `strings_fr.properties` con proprietà tradotta.
 
@@ -122,7 +122,7 @@ Per impostare `google_api_key` all'interno del file di configurazione utente, ut
 
 Per impostare uno o più servizi di traduzione da utilizzare:
 
-    $ translatomatic config set translator Microsoft,Yandex
+    $ translatomatic config set provider Microsoft,Yandex
 
 Traduttori secondari solo essere utilizzati se si verifica un errore di traduzione quando si utilizza la prima scelta.
 

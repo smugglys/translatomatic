@@ -1,7 +1,7 @@
-RSpec.describe Translatomatic::Translator do
+RSpec.describe Translatomatic::Provider do
   describe :available do
-    it 'should find all available translators' do
-      list = Translatomatic::Translator.available
+    it 'should find all available providers' do
+      list = Translatomatic::Provider.available
       expect(list).to be
     end
   end

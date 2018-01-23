@@ -167,7 +167,7 @@ module Translatomatic
           Translatomatic::CLI::CommonOptions,
           Translatomatic::CLI::Translate,
           Translatomatic::CLI::Config,
-          Translatomatic::Translator.types,
+          Translatomatic::Provider.types,
           Translatomatic::ResourceFile.types,
           Translatomatic::Database,
           Translatomatic::Converter

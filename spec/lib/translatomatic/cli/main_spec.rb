@@ -5,8 +5,8 @@ RSpec.describe Translatomatic::CLI::Main do
   end
 
   context :services do
-    it 'lists available translators' do
-      @cli.services
+    it 'lists available providers' do
+      @cli.providers
     end
   end
 

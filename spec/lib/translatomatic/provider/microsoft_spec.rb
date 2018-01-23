@@ -1,15 +1,15 @@
-RSpec.describe Translatomatic::Translator::Microsoft do
-  include_examples 'a translator'
+RSpec.describe Translatomatic::Provider::Microsoft do
+  include_examples 'a provider'
 
   it 'requires an api key' do
     ENV['MICROSOFT_API_KEY'] = nil
-    expect { described_class.new }.to raise_error(t('translator.microsoft.key_required'))
+    expect { described_class.new }.to raise_error(t('provider.microsoft.key_required'))
   end
 
-  def mock_translation(translator, strings, from, to, results)
+  def mock_translation(provider, strings, from, to, results)
     post_headers = test_http_headers(
       'Content-Type' => 'application/xml',
-      'Host' => 'api.microsofttranslator.com',
+      'Host' => 'api.microsoftprovider.com',
       'Ocp-Apim-Subscription-Key' => 'dummy'
     )
     fixture_suffix = nil
@@ -37,15 +37,15 @@ RSpec.describe Translatomatic::Translator::Microsoft do
   end
 
   def read_fixture(type, suffix)
-    xml = fixture_read("translator/microsoft_#{type}#{suffix}.xml")
+    xml = fixture_read("provider/microsoft_#{type}#{suffix}.xml")
     xml = xml.gsub(/\n\s*/, '')
     xml
   end
 
   def mock_languages
-    expected_response = fixture_read('translator/microsoft_languages.xml')
+    expected_response = fixture_read('provider/microsoft_languages.xml')
     request_headers = test_http_headers(
-      'Host' => 'api.microsofttranslator.com',
+      'Host' => 'api.microsoftprovider.com',
       'Ocp-Apim-Subscription-Key' => 'dummy'
     )
     stub_request(:get, described_class::LANGUAGES_URL).

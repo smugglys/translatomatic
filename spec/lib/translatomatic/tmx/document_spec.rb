@@ -25,7 +25,7 @@ RSpec.describe Translatomatic::TMX::Document do
     text1 = create_text(locale: locale_en, value: 'Yoghurt')
     text2 = create_text(
       locale: locale_fr, value: 'Yoplait',
-      from_text: text1, translator: 'Test'
+      from_text: text1, provider: 'Test'
     )
     tmx = described_class.from_texts([text1, text2])
     xml = tmx.to_xml

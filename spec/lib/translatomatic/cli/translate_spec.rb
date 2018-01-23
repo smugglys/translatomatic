@@ -2,7 +2,7 @@ RSpec.describe Translatomatic::CLI::Translate do
   let(:config) { Translatomatic.config }
 
   before(:each) do
-    config.unset(:translator)
+    config.unset(:provider)
     @cli = Translatomatic::CLI::Translate.new
     @cli.options = { database_env: 'test', source_locale: "en" }
   end
@@ -16,16 +16,16 @@ RSpec.describe Translatomatic::CLI::Translate do
 
   context :string do
     it 'translates a string' do
-      test_translator('Bier')
+      test_provider('Bier')
       add_cli_options(no_database: true, target_locales: 'de')
       @cli.string('Beer')
     end
 
     it 'uses command line options in preference to configuration' do
-      config.set(:translator, 'Yandex,Microsoft')
-      add_cli_options(translator: 'Google', target_locales: 'de')
-      expect(Translatomatic::Translator).to receive(:find)
-        .with('Google').and_return(TestTranslator)
+      config.set(:provider, 'Yandex,Microsoft')
+      add_cli_options(provider: 'Google', target_locales: 'de')
+      expect(Translatomatic::Provider).to receive(:find)
+        .with('Google').and_return(TestProvider)
       @cli.string('Beer')
     end
   end
@@ -33,15 +33,15 @@ RSpec.describe Translatomatic::CLI::Translate do
   context :file do
     it 'translates a file' do
       path = create_tempfile('test.properties', 'key = Beer')
-      test_translator('Bier')
+      test_provider('Bier')
       add_cli_options(no_database: true, target_locales: 'de')
       @cli.file(path.to_s)
     end
 
     it 'does not translate unsupported files' do
       path = create_tempfile('test.exe')
-      translator = test_translator
-      expect(translator).to_not receive(:translate)
+      provider = test_provider
+      expect(provider).to_not receive(:translate)
       # don't use database results
       add_cli_options(no_database: true, target_locales: 'de')
       expect do
@@ -49,13 +49,13 @@ RSpec.describe Translatomatic::CLI::Translate do
       end.to raise_exception(t('file.unsupported', file: path))
     end
 
-    it 'uses all available translators' do
-      # create two translators
-      translator1 = test_translator
-      translator2 = test_translator
+    it 'uses all available providers' do
+      # create two providers
+      provider1 = test_provider
+      provider2 = test_provider
 
-      allow(Translatomatic::Translator).to receive(:available)
-        .and_return([translator1, translator2])
+      allow(Translatomatic::Provider).to receive(:available)
+        .and_return([provider1, provider2])
 
       path = create_tempfile('test.properties', 'key = Beer')
       # don't use database results
@@ -68,16 +68,16 @@ RSpec.describe Translatomatic::CLI::Translate do
       skip if database_disabled?
 
       path = create_tempfile('test.properties', 'key = Beer')
-      translator = test_translator('Bier')
-      expect(translator).to receive(:upload)
+      provider = test_provider('Bier')
+      expect(provider).to receive(:upload)
       add_cli_options(share: true, target_locales: 'de')
       @cli.file(path.to_s)
     end
 
     it 'requires target locale(s)' do
       path = create_tempfile('test.properties', 'key = Beer')
-      translator = test_translator
-      expect(translator).to_not receive(:translate)
+      provider = test_provider
+      expect(provider).to_not receive(:translate)
       # don't use database results
       expect do
         @cli.file(path.to_s)
@@ -91,9 +91,9 @@ RSpec.describe Translatomatic::CLI::Translate do
     @cli.options = @cli.options.merge(options)
   end
 
-  def test_translator(mapping = {})
-    translator = TestTranslator.new(mapping)
-    allow(Translatomatic::Translator).to receive(:available).and_return([translator])
-    translator
+  def test_provider(mapping = {})
+    provider = TestProvider.new(mapping)
+    allow(Translatomatic::Provider).to receive(:available).and_return([provider])
+    provider
   end
 end

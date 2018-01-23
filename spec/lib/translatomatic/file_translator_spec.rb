@@ -4,18 +4,18 @@ RSpec.describe Translatomatic::FileTranslator do
 
   context :new do
     it 'creates a new instance' do
-      translator = TestTranslator.new('test')
-      t = create_file_translator(translator: translator)
+      provider = TestProvider.new('test')
+      t = create_file_translator(provider: provider)
       expect(t).to be
     end
 
-    it 'resolves a translator by name' do
-      t = create_file_translator(translator: 'Yandex', yandex_api_key: '123')
+    it 'resolves a provider by name' do
+      t = create_file_translator(provider: 'Yandex', yandex_api_key: '123')
       expect(t).to be
     end
 
-    it 'allows specifying multiple translators' do
-      t = create_file_translator(translator: %w[Microsoft Yandex],
+    it 'allows specifying multiple providers' do
+      t = create_file_translator(provider: %w[Microsoft Yandex],
                                  yandex_api_key: '123', microsoft_api_key: '456')
       expect(t).to be
     end
@@ -23,21 +23,21 @@ RSpec.describe Translatomatic::FileTranslator do
 
   context :translate_to_file do
     it 'translates a properties file to a target language' do
-      translator = TestTranslator.new('Bier')
+      provider = TestProvider.new('Bier')
       path = create_tempfile('test.properties', 'key = Beer')
       file = Translatomatic::ResourceFile.load(path, "en")
-      t = create_file_translator(translator: translator)
+      t = create_file_translator(provider: provider)
       target = t.translate_to_file(file, 'de-DE')
       expect(target.path.basename.sub_ext('').to_s).to match(/_de-DE$/)
       expect(strip_comments(target.path.read)).to eq("key = Bier\n")
     end
 
     it "doesn't write files or translate strings when using dry run" do
-      translator = test_translator
-      expect(translator).to_not receive(:translate)
+      provider = test_provider
+      expect(provider).to_not receive(:translate)
       path = create_tempfile('test.properties', 'key = Beer')
       file = Translatomatic::ResourceFile.load(path, "en")
-      t = create_file_translator(translator: translator, dry_run: true)
+      t = create_file_translator(provider: provider, dry_run: true)
       target = t.translate_to_file(file, 'de-DE')
       expect(target.path).to_not exist
     end
@@ -45,9 +45,9 @@ RSpec.describe Translatomatic::FileTranslator do
 
   context :translate do
     it 'works with equal source and target languages' do
-      translator = test_translator
-      expect(translator).to_not receive(:translate)
-      t = create_file_translator(translator: translator)
+      provider = test_provider
+      expect(provider).to_not receive(:translate)
+      t = create_file_translator(provider: provider)
       file = create_test_file
       file.properties = { key: 'yoghurt' }
       result = t.translate(file, 'en-US')
@@ -59,8 +59,8 @@ RSpec.describe Translatomatic::FileTranslator do
         'Sentence one.' => 'Satz eins.',
         'Sentence two.' => 'Satz zwei.'
       }
-      translator = test_translator(mapping)
-      t = create_file_translator(translator: translator)
+      provider = test_provider(mapping)
+      t = create_file_translator(provider: provider)
       file = create_test_file
       file.properties = { key: 'Sentence one. Sentence two.' }
       result = t.translate(file, 'de')
@@ -68,22 +68,22 @@ RSpec.describe Translatomatic::FileTranslator do
     end
 
     # TODO: newlines aren't being preserved in text files because we
-    # are splitting on sentence boundaries and some translators don't
+    # are splitting on sentence boundaries and some providers don't
     # preserve newlines. could split on newline boundaries optionally?
     #     it "preserves newlines" do
-    #       translator = test_translator
+    #       provider = test_provider
     #
-    #       t = create_file_translator(translator: translator)
+    #       t = create_file_translator(provider: provider)
     #       file = create_test_file
     #       file.properties = { key: "- value 1\n- value 2" }
     #       result = t.translate(file, "de")
     #       expect(result.properties[:key]).to eq("- Wert 1\n-Wert 2")
     #     end
 
-    it 'uses multiple translators' do
-      translator1 = test_translator
-      translator2 = test_translator
-      t = create_file_translator(translator: [translator1, translator2])
+    it 'uses multiple providers' do
+      provider1 = test_provider
+      provider2 = test_provider
+      t = create_file_translator(provider: [provider1, provider2])
       file = create_test_file
       file.properties = { key: 'yoghurt' }
       t.translate(file, 'en-US')
@@ -92,15 +92,15 @@ RSpec.describe Translatomatic::FileTranslator do
     it 'uses existing translations from the database' do
       skip if database_disabled?
 
-      translator = TestTranslator.new
-      expect(translator).to_not receive(:translate)
+      provider = TestProvider.new
+      expect(provider).to_not receive(:translate)
 
       # add a translation to the database
       en_text = create_text(value: 'chicken', locale: 'en')
       create_text(value: 'buckerk', locale: 'de',
-                  from_text: en_text, translator: translator.name)
+                  from_text: en_text, provider: provider.name)
 
-      t = create_file_translator(translator: translator)
+      t = create_file_translator(provider: provider)
       file = create_test_file
       file.properties = { key: 'chicken' }
       result = t.translate(file, 'de')
@@ -111,17 +111,17 @@ RSpec.describe Translatomatic::FileTranslator do
     # exercises bug in translation result: "index 30 out of string".
     # caused by calling update_strings multiple times without updating
     # substring offsets.
-    it 'uses translations from database and translator' do
+    it 'uses translations from database and provider' do
       skip if database_disabled?
 
-      translator = test_translator('hello.' => 'hallo.')
+      provider = test_provider('hello.' => 'hallo.')
 
       # add a translation to the database
       en_text = create_text(value: 'this is a very long sentence.', locale: 'en')
       create_text(value: 'short!', locale: 'de',
-                  from_text: en_text, translator: translator.name)
+                  from_text: en_text, provider: provider.name)
 
-      t = create_file_translator(translator: translator)
+      t = create_file_translator(provider: provider)
       file = create_test_file
       file.properties = { key: 'this is a very long sentence. hello.' }
       result = t.translate(file, 'de')
@@ -132,8 +132,8 @@ RSpec.describe Translatomatic::FileTranslator do
     it 'saves translations to the database' do
       skip if database_disabled?
 
-      translator = test_translator('Bier')
-      t = create_file_translator(translator: translator)
+      provider = test_provider('Bier')
+      t = create_file_translator(provider: provider)
       file = create_test_file
       file.properties = { key: 'Beer' }
       Translatomatic::Model::Text.destroy_all
@@ -158,8 +158,8 @@ RSpec.describe Translatomatic::FileTranslator do
           key1: "rah #{original_variable} rah"
         }
         translated_text = "zomg #{translated_variable} zomg"
-        translator = test_translator(translated_text)
-        t = create_file_translator(translator: translator, no_database: true)
+        provider = test_provider(translated_text)
+        t = create_file_translator(provider: provider, no_database: true)
         t.translate(file, 'de')
         expected_result = "zomg #{original_variable} zomg"
         expect(file.properties[:key1]).to eq(expected_result)
@@ -167,8 +167,8 @@ RSpec.describe Translatomatic::FileTranslator do
 
       it 'rejects translations with malformed variable names' do
         file = create_test_file(type)
-        translator = setup_failed_variable_restore(file)
-        t = create_file_translator(translator: translator, no_database: true)
+        provider = setup_failed_variable_restore(file)
+        t = create_file_translator(provider: provider, no_database: true)
         t.translate(file, 'de')
         expect(file.properties[:key1]).to eq(nil)
       end
@@ -177,8 +177,8 @@ RSpec.describe Translatomatic::FileTranslator do
         skip if database_disabled?
 
         file = create_test_file(type)
-        translator = setup_failed_variable_restore(file)
-        t = create_file_translator(translator: translator)
+        provider = setup_failed_variable_restore(file)
+        t = create_file_translator(provider: provider)
         expect do
           t.translate(file, 'de')
         end.to_not change(Translatomatic::Model::Text, :count)
@@ -193,7 +193,7 @@ RSpec.describe Translatomatic::FileTranslator do
           key1: "rah #{original_variable} rah"
         }
         translated_text = "zomg #{translated_variable} zomg"
-        test_translator(translated_text)
+        test_provider(translated_text)
       end
     end
   end
@@ -212,9 +212,9 @@ RSpec.describe Translatomatic::FileTranslator do
     text.gsub(/^#.*\n/, '')
   end
 
-  def test_translator(mapping = {})
-    translator = TestTranslator.new(mapping)
-    translator
+  def test_provider(mapping = {})
+    provider = TestProvider.new(mapping)
+    provider
   end
 
   def create_text(attributes)

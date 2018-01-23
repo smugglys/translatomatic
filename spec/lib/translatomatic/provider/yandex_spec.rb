@@ -1,11 +1,11 @@
-RSpec.describe Translatomatic::Translator::Yandex do
-  include_examples 'a translator'
+RSpec.describe Translatomatic::Provider::Yandex do
+  include_examples 'a provider'
 
   it "requires an api key" do
     ENV["YANDEX_API_KEY"] = nil
     expect {
       described_class.new
-    }.to raise_error(t("translator.yandex.key_required"))
+    }.to raise_error(t("provider.yandex.key_required"))
   end
 
   def create_instance
@@ -26,7 +26,7 @@ RSpec.describe Translatomatic::Translator::Yandex do
          to_return(status: 200, body: expected_response.to_json)
   end
 
-  def mock_translation(translator, strings, from, to, results)
+  def mock_translation(provider, strings, from, to, results)
     api_endpoint = "https://translate.yandex.net/api/v1.5/tr.json/translate"
     #WebMock::Config.instance.query_values_notation = :flat_array
 

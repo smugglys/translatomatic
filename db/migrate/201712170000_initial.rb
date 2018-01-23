@@ -17,7 +17,7 @@ class Initial < ActiveRecord::Migration[4.2] # :nodoc:
       }
       t.text       :value, null: false
       t.boolean    :shared, null: false, default: false, index: true
-      t.string     :translator
+      t.string     :provider
       t.timestamps
     end
   end

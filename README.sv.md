@@ -22,7 +22,7 @@
 Följande översättning API: er kan användas med Translatomatic:
 
 - [Google](https://cloud.google.com/translate/)
-- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Microsoft](https://www.microsoft.com/en-us/provider/providerapi.aspx)
 - [Yandex](https://tech.yandex.com/translate/)
 - [MyMemory](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
@@ -81,9 +81,9 @@ Alternativ kan ställas in på användarnivå eller projektnivå. Se även avsni
 
 När översätta filer, `translatomatic` översätter texten en mening eller en fras på en gång. Om en fil är åter översatta, enda meningar som har ändrats sedan den senaste översättningen skickas till översättaren, och resten kommer från den lokala databasen.
 
-Att översätta en Java properties fil till tyska och franska använder Google translator:
+Att översätta en Java properties fil till tyska och franska använder Google provider:
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 Detta skulle skapa (eller skriva) `strings_de.properties` och `strings_fr.properties` med översatta egenskaper.
 
@@ -122,7 +122,7 @@ Att ställa in `google_api_key` inom användaren konfigurationsfilen, Använd:
 
 Ställa in en eller flera översättningstjänster att använda:
 
-    $ translatomatic config set translator Microsoft,Yandex
+    $ translatomatic config set provider Microsoft,Yandex
 
 Sekundära översättare kommer endast användas om ett översättningsfel uppträder när du använder det första valet.
 

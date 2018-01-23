@@ -22,7 +22,7 @@ es:
         subcommand: Traducir archivos o cadenas de
         file: Traducir un archivo a lugares de destino
         string: Traducir una cadena de locales de destino
-        translator: Implementaciones de traductor para utilizar
+        provider: Implementaciones de traductor para utilizar
       source_locale: La configuración regional del archivo fuente
       target_locales: Locales para traducir a
       source_files: Archivos para traducir
@@ -31,7 +31,7 @@ es:
       share: Compartir las traducciones con traductores
       dry_run: 'Dry run: archivos no serán traducidos o escritos'
       locales_required: Uno o más locales de destino requeridas
-      using_translator: 'Usar Traductor: %{name}'
+      using_provider: 'Usar Traductor: %{name}'
       display_values: Mostrar valores de un conjunto de recursos
       locales_to_display: Locales para mostrar
       display_sentences: Mostrar oraciones
@@ -58,7 +58,7 @@ es:
     tmx:
       multiple_origins: Múltiples orígenes en textos.
       multiple_locales: Múltiples idiomas de origen en los textos.
-    translator:
+    provider:
       email_required: Dirección de correo electrónico requerida.
       password_required: Contraseña necesaria.
       google_key_required: Google API key necesaria.
@@ -72,23 +72,23 @@ es:
       yandex_api_key: Yandex API key
       yandex_key_required: Yandex API key necesaria.
       required_option: "(requerido)"
-      translators: 'Todos los traductores:'
+      providers: 'Todos los traductores:'
       configured: 'Traductores configurados:'
       unavailable: Traductor %{name} no está disponible.
-      no_translators: No hay traductores están configurados.
+      no_providers: No hay traductores están configurados.
       password: Contraseña
     file_translator:
       total_translations: 'El Total de las traducciones: %{total} (%{from_db} a partir
-        de la base de datos, %{from_translator} de traductor, %{untranslated} sin
+        de la base de datos, %{from_provider} de traductor, %{untranslated} sin
         traducir)'
       untranslated: 'Cadenas sin traducir:'
       dry_run: Imprimir acciones sin necesidad de realizar las traducciones o escritura
         de archivos.
       use_database: Almacenar y recuperar las traducciones de la base de datos.
       database_disabled: Base de datos está deshabilitado.
-      translator_required: Traductor necesario.
+      provider_required: Traductor necesario.
       translating: Traducción de %{source} (%{source_locale}) %{target} (%{target_locale})
-      stats: 'Las traducciones de base de datos: %{from_db}, traductor: %{from_translator},
+      stats: 'Las traducciones de base de datos: %{from_db}, traductor: %{from_provider},
         sin traducir: %{untranslated}'
     database:
       no_environment: Ningún ambiente '%{env}' %{file}

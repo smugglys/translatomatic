@@ -22,7 +22,7 @@ sv:
         subcommand: Översätta filer eller strängar
         file: Översätta en fil till målet locales
         string: Översätta en sträng till målet locales
-        translator: Översättare-implementeringar använda
+        provider: Översättare-implementeringar använda
       source_locale: Lokalen på källfilen
       target_locales: Språk att översätta till
       source_files: Filer att översätta
@@ -31,7 +31,7 @@ sv:
       share: Dela översättningar med översättare
       dry_run: 'Torr kör: filer kommer inte att översättas eller skrivit'
       locales_required: Ett eller flera mål locales krävs
-      using_translator: 'Med hjälp av översättare: %{name}'
+      using_provider: 'Med hjälp av översättare: %{name}'
       display_values: Visa värden från en resurssamling
       locales_to_display: Locales att Visa
       display_sentences: Visa meningar
@@ -58,7 +58,7 @@ sv:
     tmx:
       multiple_origins: Flera ursprung i texter.
       multiple_locales: Flera källa lokalanpassningar i texter.
-    translator:
+    provider:
       email_required: E-postadress krävs.
       password_required: Lösenord krävs.
       google_key_required: Google API-nyckel krävs.
@@ -72,21 +72,21 @@ sv:
       yandex_api_key: Yandex API-nyckel
       yandex_key_required: Yandex API-nyckel krävs.
       required_option: "(krävs)"
-      translators: 'Alla översättare:'
+      providers: 'Alla översättare:'
       configured: 'Konfigurerade översättare:'
       unavailable: Översättare %{name} är inte tillgänglig.
-      no_translators: Ingen översättare är konfigurerade.
+      no_providers: Ingen översättare är konfigurerade.
       password: Lösenord
     file_translator:
       total_translations: 'Summa översättningar: %{total} (%{from_db} från databas,
-        %{from_translator} från översättare, %{untranslated} translaterade)'
+        %{from_provider} från översättare, %{untranslated} translaterade)'
       untranslated: 'Oöversatta strängar:'
       dry_run: Skriva ut åtgärder utan utför översättningar eller skriva filer.
       use_database: Lagra och hämta översättningar från databasen.
       database_disabled: Databasen är inaktiverad.
-      translator_required: Översättare som krävs.
+      provider_required: Översättare som krävs.
       translating: Att översätta %{source} (%{source_locale}) till %{target} (%{target_locale})
-      stats: 'Översättningar från databas: %{from_db}, översättare: %{from_translator},
+      stats: 'Översättningar från databas: %{from_db}, översättare: %{from_provider},
         translaterade: %{untranslated}'
     database:
       no_environment: Ingen miljö '%{env}' i %{file}

@@ -22,7 +22,7 @@ zh:
         subcommand: 翻译文件或字符串
         file: 将文件转换为目标区域设置
         string: 将字符串转换为目标区域设置
-        translator: 要使用的转换器实现
+        provider: 要使用的转换器实现
       source_locale: 源文件的区域设置
       target_locales: 要转换为的区域设置
       source_files: 要翻译的文件
@@ -31,7 +31,7 @@ zh:
       share: 与翻译人员共享翻译
       dry_run: '干运行: 文件不会被翻译或写入'
       locales_required: 需要一个或多个目标区域设置
-      using_translator: 使用转换器:%{name}
+      using_provider: 使用转换器:%{name}
       display_values: 显示资源包中的值
       locales_to_display: 要显示的区域设置
       display_sentences: 显示句子
@@ -58,7 +58,7 @@ zh:
     tmx:
       multiple_origins: 文本中的多个来源。
       multiple_locales: 文本中的多个源区域设置。
-    translator:
+    provider:
       email_required: 需要的电子邮件地址。
       password_required: 需要密码。
       google_key_required: 需要 Google API 密钥。
@@ -72,21 +72,21 @@ zh:
       yandex_api_key: Yandex API 密钥
       yandex_key_required: 需要 Yandex API 密钥。
       required_option: 需要)
-      translators: '所有翻译人员:'
+      providers: '所有翻译人员:'
       configured: '已配置的翻译人员:'
       unavailable: 转换器%{name} 不可用。
-      no_translators: 未配置任何翻译器。
+      no_providers: 未配置任何翻译器。
       password: 密码
     file_translator:
-      total_translations: 总翻译:%{total} (%{from_db} 来自数据库,%{from_translator} 来自翻译器,%{untranslated}
+      total_translations: 总翻译:%{total} (%{from_db} 来自数据库,%{from_provider} 来自翻译器,%{untranslated}
         未翻译)
       untranslated: '未翻译的字符串:'
       dry_run: 在不执行翻译或写入文件的情况下打印操作。
       use_database: 存储和检索数据库中的翻译。
       database_disabled: 数据库被禁用。
-      translator_required: 需要翻译。
+      provider_required: 需要翻译。
       translating: 将%{source} (%{source_locale}) 转换为%{target} (%{target_locale})
-      stats: 数据库翻译:%{from_db}, 转换器:%{from_translator}, 未翻译:%{untranslated}
+      stats: 数据库翻译:%{from_db}, 转换器:%{from_provider}, 未翻译:%{untranslated}
     database:
       no_environment: '%{env} 中没有环境 "%{file}"'
       migrated: 数据库已迁移。

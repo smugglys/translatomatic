@@ -10,8 +10,8 @@ module Translatomatic
     # @return [Number] The number of translations that came from the database.
     attr_reader :from_db
 
-    # @return [Number] The number of translations that came from the translator.
-    attr_reader :from_translator
+    # @return [Number] The number of translations that came from the provider.
+    attr_reader :from_provider
 
     # @return [Number] The number of untranslated strings
     attr_reader :untranslated
@@ -32,14 +32,14 @@ module Translatomatic
     def initialize(translations = [])
       @translations = list = translations
       @from_db = list.count { |i| i.from_database && i.result }
-      @from_translator = list.count { |i| !i.from_database && i.result }
+      @from_provider = list.count { |i| !i.from_database && i.result }
       @untranslated = list.count { |i| i.result.nil? }
     end
 
     def to_s
       key = 'file_translator.total_translations'
       t(key, total: @translations.length,
-             from_db: @from_db, from_translator: @from_translator,
+             from_db: @from_db, from_provider: @from_provider,
              untranslated: @untranslated)
     end
   end

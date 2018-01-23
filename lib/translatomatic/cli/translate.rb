@@ -6,9 +6,9 @@ module Translatomatic
     class Translate < Base
       default_task :file
 
-      define_option :translator, type: :array, aliases: '-t',
-                                 desc: t('cli.translate.translator'),
-                                 enum: Translatomatic::Translator.names
+      define_option :provider, type: :array, aliases: '-t',
+                                 desc: t('cli.translate.provider'),
+                                 enum: Translatomatic::Provider.names
       define_option :source_locale, desc: t('cli.source_locale')
       define_option :share, desc: t('cli.share'), default: false
       define_option :target_locales, desc: t('cli.target_locales'),
@@ -19,7 +19,7 @@ module Translatomatic
       desc 'string text locale...', t('cli.translate.string')
       thor_options(self, Translatomatic::CLI::CommonOptions)
       thor_options(self, Translatomatic::CLI::Translate)
-      thor_options(self, Translatomatic::Translator.types)
+      thor_options(self, Translatomatic::Provider.types)
       # Translate a string to target locales
       # @param text [String] String to translate
       # @param locales [Array<String>] List of target locales, can also be set
@@ -32,10 +32,10 @@ module Translatomatic
 
           template = '(%<locale>s) %<text>s'
           puts format(template, locale: @source_locale, text: text)
-          @translators.each do |translator|
-            puts t('cli.using_translator', name: translator.name)
+          @providers.each do |provider|
+            puts t('cli.using_provider', name: provider.name)
             @target_locales.each do |l|
-              value = translator.translate([text], @source_locale, l)
+              value = provider.translate([text], @source_locale, l)
               puts format('  -> ' + template, locale: l, text: value)
             end
             puts
@@ -50,7 +50,7 @@ module Translatomatic
       thor_options(self, Translatomatic::CLI::Translate)
       thor_options(self, Translatomatic::FileTranslator)
       thor_options(self, Translatomatic::Database)
-      thor_options(self, Translatomatic::Translator.types)
+      thor_options(self, Translatomatic::Provider.types)
       thor_options(self, Translatomatic::ResourceFile.types)
       # Translate files to target locales
       # @param file [String] Resource file to translate, can also be set
@@ -77,7 +77,7 @@ module Translatomatic
           # set up file translation
           count = translation_count(source_files, @target_locales)
           ft_options = options.merge(
-            translator: @translators,
+            provider: @providers,
             listener: progress_updater(count)
           )
           ft = Translatomatic::FileTranslator.new(ft_options)
@@ -106,9 +106,9 @@ module Translatomatic
         @source_locale = determine_source_locale
         log.debug("using source locale: #{@source_locale}")
 
-        # resolve translators
-        @translators = Translatomatic::Translator.resolve(
-          cli_option(:translator), options
+        # resolve providers
+        @providers = Translatomatic::Provider.resolve(
+          cli_option(:provider), options
         )
       end
 
@@ -134,11 +134,11 @@ module Translatomatic
         return if ft.db_translations.empty?
 
         tmx = Translatomatic::TMX::Document.from_texts(ft.db_translations)
-        available = Translatomatic::Translator.available(options)
-        available.each do |translator|
-          if translator.respond_to?(:upload)
-            log.info(t('cli.uploading_tmx', name: translator.name))
-            translator.upload(tmx)
+        available = Translatomatic::Provider.available(options)
+        available.each do |provider|
+          if provider.respond_to?(:upload)
+            log.info(t('cli.uploading_tmx', name: provider.name))
+            provider.upload(tmx)
           end
         end
         ActiveRecord::Base.transaction do

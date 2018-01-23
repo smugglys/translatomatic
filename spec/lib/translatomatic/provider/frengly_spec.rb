@@ -1,22 +1,22 @@
-RSpec.describe Translatomatic::Translator::Frengly do
-  include_examples 'a translator'
+RSpec.describe Translatomatic::Provider::Frengly do
+  include_examples 'a provider'
 
   it 'requires an email' do
     ENV['FRENGLY_API_KEY'] = nil
-    expect { described_class.new }.to raise_error(t('translator.email_required'))
+    expect { described_class.new }.to raise_error(t('provider.email_required'))
   end
 
   it 'requires a password' do
     expect do
       described_class.new(frengly_email: 'rah')
-    end.to raise_error(t('translator.password_required'))
+    end.to raise_error(t('provider.password_required'))
   end
 
   def create_instance
     described_class.new(frengly_email: 'dummy', frengly_password: 'dummy')
   end
 
-  def mock_translation(translator, strings, from, to, results)
+  def mock_translation(provider, strings, from, to, results)
     api_endpoint = 'http://frengly.com/frengly/data/translateREST'
     strings.zip(results).each do |string, result|
       expected_response = {

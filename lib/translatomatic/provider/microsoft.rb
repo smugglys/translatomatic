@@ -1,24 +1,24 @@
 require 'builder'
 
 module Translatomatic
-  module Translator
+  module Provider
     # Interface to the Microsoft translation API
-    # @see https://www.microsoft.com/en-us/translator/translatorapi.aspx
-    # @see http://docs.microsofttranslator.com/text-translate.html
+    # @see https://www.microsoft.com/en-us/provider/providerapi.aspx
+    # @see http://docs.microsoftprovider.com/text-translate.html
     class Microsoft < Base
       define_option :microsoft_api_key,
-                    desc: t('translator.microsoft.api_key'), use_env: true
+                    desc: t('provider.microsoft.api_key'), use_env: true
 
       # (see Base.supports_multiple_translations?)
       def self.supports_multiple_translations?
         true
       end
 
-      # Create a new Microsoft translator instance
+      # Create a new Microsoft provider instance
       def initialize(options = {})
         super(options)
         @key = options[:microsoft_api_key] || ENV['MICROSOFT_API_KEY']
-        raise t('translator.microsoft.key_required') if @key.nil?
+        raise t('provider.microsoft.key_required') if @key.nil?
       end
 
       # (see Base#languages)
@@ -28,7 +28,7 @@ module Translatomatic
 
       private
 
-      BASE_URL = 'https://api.microsofttranslator.com/V2/Http.svc'.freeze
+      BASE_URL = 'https://api.microsoftprovider.com/V2/Http.svc'.freeze
       TRANSLATE_ARRAY_1_URL = "#{BASE_URL}/TranslateArray".freeze
       TRANSLATE_ARRAY_N_URL = "#{BASE_URL}/GetTranslationsArray".freeze
       TRANSLATE_N_URL = "#{BASE_URL}/GetTranslations".freeze

@@ -22,7 +22,7 @@ Menterjemahkan teks fail dari satu bahasa yang lain, atau dari satu format yang 
 Terjemahan berikut api boleh digunakan dengan Translatomatic:
 
 - [Google](https://cloud.google.com/translate/)
-- [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Microsoft](https://www.microsoft.com/en-us/provider/providerapi.aspx)
 - [Yandex](https://tech.yandex.com/translate/)
 - [MyMemory](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
@@ -83,7 +83,7 @@ Apabila menterjemahkan fail, `translatomatic` diterjemahkan teks satu ayat atau 
 
 Untuk menterjemahkan fail sifat Java untuk Jerman dan Perancis yang menggunakan Google penterjemah:
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 Ini akan membuat (atau tindih) `strings_de.properties` dan `strings_fr.properties` dengan sifat-sifat yang diterjemahkan.
 
@@ -122,7 +122,7 @@ Untuk menetapkan `google_api_key` dalam fail konfigurasi pengguna, gunakan:
 
 Untuk menetapkan satu atau lebih perkhidmatan penterjemahan untuk digunakan:
 
-    $ translatomatic config set translator Microsoft,Yandex
+    $ translatomatic config set provider Microsoft,Yandex
 
 Penterjemah menengah hanya boleh digunakan jika satu ralat penterjemahan berlaku bila menggunakan pilihan pertama.
 

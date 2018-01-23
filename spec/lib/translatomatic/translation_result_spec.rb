@@ -9,7 +9,7 @@ RSpec.describe Translatomatic::TranslationResult do
     expect(result).to be
   end
 
-  it 'updates strings from translator' do
+  it 'updates strings from provider' do
     properties = { key1: 'Yoghurt' }
     result = create_result(properties, locale_en, locale_fr)
     translations = create_translations(result.untranslated, %w[Yoplait])
