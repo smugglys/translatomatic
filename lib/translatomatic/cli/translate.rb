@@ -7,8 +7,8 @@ module Translatomatic
       default_task :file
 
       define_option :provider, type: :array, aliases: '-t',
-                                 desc: t('cli.translate.provider'),
-                                 enum: Translatomatic::Provider.names
+                               desc: t('cli.translate.provider'),
+                               enum: Translatomatic::Provider.names
       define_option :source_locale, desc: t('cli.source_locale')
       define_option :share, desc: t('cli.share'), default: false
       define_option :target_locales, desc: t('cli.target_locales'),

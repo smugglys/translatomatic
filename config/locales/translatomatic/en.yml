@@ -1,6 +1,14 @@
 en:
   translatomatic:
     cli:
+      provider:
+        name: Name
+        option: Option
+        description: Description
+        env: Environment
+        available: Available
+        available_yes: "Yes"
+        available_no: "No"
       config:
         subcommand: Configuration commands
         configuration: Configuration
@@ -74,16 +82,15 @@ en:
       email_address: Email address
       share_response: 'Share response: %{response}'
       required_option: "(required)"
-      providers: 'All Providers:'
-      configured: "Configured Providers:"
+      options: 'Provider options:'
+      status: "Provider status:"
       unavailable: Provider %{name} is unavailable.
-      no_providers: No providers are configured.
       password: Password
       invalid_response: Unexpected response from provider
       google:
         key_required: Google API key required.
         api_key: Google API key
-        model: Google translation model
+        model: Translation model
       frengly:
         api_key: Frengly API key
       microsoft:

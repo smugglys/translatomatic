@@ -125,9 +125,7 @@ module Translatomatic
           puts t('cli.config.no_config')
         else
           headings = columns.collect { |i| CONFIG_HEADING_MAP[i] }
-          underscores = headings.collect { |i| i.gsub(/\w/, '=') }
-          rows = [headings, underscores] + rows
-          print_table(rows, indent: 2)
+          print_table(add_table_heading(rows, headings), indent: 2)
         end
         puts
       end

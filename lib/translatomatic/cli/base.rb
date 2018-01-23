@@ -78,6 +78,11 @@ module Translatomatic
       def empty_array?(value)
         value.is_a?(Array) && value.empty?
       end
+
+      def add_table_heading(rows, headings)
+        underscores = headings.collect { |i| i.gsub(/\w/, '=') }
+        [headings, underscores] + rows
+      end
     end
   end
 end

@@ -77,7 +77,7 @@ module Translatomatic
       # List available translation providers
       # @return [void]
       def providers
-        run { puts Translatomatic::Provider.list }
+        run { display_providers }
       end
 
       desc 'version', t('cli.display_version')
@@ -89,6 +89,64 @@ module Translatomatic
       end
 
       private
+
+      # @return [String] A description of all providers and options
+      def display_providers
+        puts t('provider.options') + "\n\n"
+        display_provider_options
+        puts
+
+        puts t('provider.status') + "\n\n"
+        display_provider_status
+        puts
+      end
+
+      private
+
+      def display_provider_options
+        rows = []
+        Translatomatic::Provider.types.each do |klass|
+          rows += provider_option_rows(klass)
+        end
+        headers = %i[name option description env]
+        heading = headers.collect { |i| t("cli.provider.#{i}") }
+        print_table(add_table_heading(rows, heading), indent: 2)
+      end
+
+      def provider_option_rows(klass)
+        name = klass.name.demodulize
+        opts = klass.options || []
+        rows = []
+        opts.each do |opt|
+          args = []
+          args << name
+          args << '--' + opt.name.to_s.tr('_', '-')
+          args << opt.description
+          args << opt.env_name ? "ENV[#{opt.env_name}]" : ''
+          rows << args
+        end
+        rows
+      end
+
+      def display_provider_status
+        config_all = Translatomatic.config.all
+        available = {}
+        configured = Translatomatic::Provider.available(config_all)
+        configured.each { |i| available[i.name] = true }
+        rows = []
+        yes = t('cli.provider.available_yes')
+        no = t('cli.provider.available_no')
+        Translatomatic::Provider.types.each do |klass|
+          name = klass.name.demodulize
+          args = []
+          args << name
+          args << (available[name] ? yes : no) # TODO: tick/cross
+          rows << args
+        end
+        headers = %i[name available]
+        heading = headers.collect { |i| t("cli.provider.#{i}") }
+        print_table(add_table_heading(rows, heading), indent: 2)
+      end
 
       def display_properties(source, keys)
         puts t('cli.file_source', file: source)

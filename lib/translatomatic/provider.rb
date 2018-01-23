@@ -70,40 +70,6 @@ module Translatomatic
         end
         available
       end
-
-      # @return [String] A description of all providers and options
-      def list
-        out = t('provider.providers') + "\n\n"
-        out += types.collect { |i| provider_description(i) }.join("\n")
-        out += "\n"
-        out += t('provider.configured') + "\n"
-        configured = available(config.all)
-        configured.each do |provider|
-          out += '  ' + provider.name + "\n"
-        end
-        out += t('provider.no_providers') if configured.empty?
-        out + "\n"
-      end
-
-      private
-
-      def provider_description(klass)
-        out = klass.name.demodulize + ":\n"
-        opts = klass.options || []
-        opts.each do |opt|
-          args = []
-          args << opt.name.to_s.tr('_', '-')
-          args << opt.description
-          args << opt.required ? t('provider.required_option') : ''
-          args << opt.env_name ? "ENV[#{opt.env_name}]" : ''
-          out += format("  --%-18s  %18s  %10s  %15s\n", *args)
-        end
-        out
-      end
-
-      def config
-        Translatomatic.config
-      end
     end
   end
 end

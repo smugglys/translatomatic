@@ -12,6 +12,5 @@ module Translatomatic
     def processed_strings(count)
       @progressbar.progress += count
     end
-
   end
 end
