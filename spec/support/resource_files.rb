@@ -69,6 +69,49 @@ RSpec.shared_examples 'a resource file' do |config = {}|
     expect(file).to be
   end
 
+  it 'adds properties to an empty file' do
+    properties = {
+      'property1' => 'value 1',
+      'property2' => 'value 2'
+    }
+    file = described_class.new
+    file.properties = properties
+
+    ext = described_class.extensions.first
+    save_path = create_tempfile("test.#{ext}")
+    file.save(save_path)
+    puts "contents: #{save_path.read}"
+    file = described_class.new(save_path)
+    expect(file.properties).to be_present
+    if described_class.key_value?
+      expect(file.properties).to eq(properties)
+    end
+  end
+
+  if described_class.supports_variable_interpolation?
+    it 'creates variables' do
+      file = described_class.new
+      variable = file.create_variable('test')
+      expect(variable).to be
+    end
+
+    it 'has a regex to match variables' do
+      file = described_class.new
+      expect(file.variable_regex).to be
+    end
+  else
+    it 'does not create variables' do
+      file = described_class.new
+      variable = file.create_variable('test')
+      expect(variable).to be_nil
+    end
+
+    it 'does not have a regex to match variables' do
+      file = described_class.new
+      expect(file.variable_regex).to be_nil
+    end
+  end
+
   # extension specific tests
   described_class.extensions.each do |ext|
     context "extension #{ext}" do

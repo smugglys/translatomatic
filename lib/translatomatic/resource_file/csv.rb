@@ -68,7 +68,7 @@ module Translatomatic
       end
 
       def add_row(key, value)
-        load_row(@key_column => key, @value_column => value)
+        @rows << load_row(@key_column => key, @value_column => value)
       end
 
       def load

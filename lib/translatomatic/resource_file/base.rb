@@ -132,13 +132,13 @@ module Translatomatic
       # @return [String] A string representing the interpolated variable, or
       #   nil if this resource file doesn't support variable interpolation.
       def create_variable(name)
-        return nil unless supports_variable_interpolation?
+        return nil unless self.class.supports_variable_interpolation?
         raise 'create_variable(name) must be implemented by subclass'
       end
 
       # @return [Regexp] A regexp used to match interpolated variables
       def variable_regex
-        return nil unless supports_variable_interpolation?
+        return nil unless self.class.supports_variable_interpolation?
         raise 'variable_regex must be implemented by subclass'
       end
 

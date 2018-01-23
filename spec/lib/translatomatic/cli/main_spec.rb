@@ -32,6 +32,15 @@ RSpec.describe Translatomatic::CLI::Main do
     end
   end
 
+  context :convert do
+    it 'converts resource files' do
+      save_path = create_tempfile("test.strings")
+      save_path.delete
+      @cli.convert(fixture_path('test.properties'), save_path)
+      expect(save_path).to exist
+    end
+  end
+
   context :strings do
     it 'displays strings from a resource file' do
       @cli.strings(fixture_path('test.properties'))

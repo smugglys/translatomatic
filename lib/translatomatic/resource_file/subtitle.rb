@@ -21,7 +21,11 @@ module Translatomatic
       # (see Base#set)
       def set(key, value)
         super(key, value)
-        @subtitle_map[key][:lines] = value if @subtitle_map.include?(key)
+        if @subtitle_map.include?(key)
+          @subtitle_map[key][:lines] = value
+        else
+          add_subtitle(lines: value)
+        end
       end
 
       # (see Base#save)
@@ -35,24 +39,14 @@ module Translatomatic
       def init
         @subtitle_map = {}
         @subtitles = []
+        @keynum = 1
       end
 
       def load
         @metadata.reset
-        @subtitles = import(@path)
-        init_subtitle_map
+        subtitles = import(@path)
+        subtitles.each { |i| add_subtitle(i) }
         init_properties
-      end
-
-      def init_subtitle_map
-        # map of key1 => subtitle, key2 => subtitle, ...
-        @keynum = 1
-        @subtitles.each_with_index do |subtitle, _i|
-          key = "key#{@keynum}"
-          @keynum += 1
-          @subtitle_map[key] = subtitle
-          # process_metadata(key, subtitle)
-        end
       end
 
       def process_metadata(key, subtitle)
@@ -63,6 +57,27 @@ module Translatomatic
 
       def add_created_by
         # TODO
+      end
+
+      def add_subtitle(subtitle = {})
+        key = "key#{@keynum}"
+        subtitle[:id] ||= @keynum
+        subtitle[:start] ||= @keynum * 10
+        subtitle[:end] ||= @keynum * 10 + 5
+        @keynum += 1
+        @subtitle_map[key] = subtitle
+        @subtitles << subtitle
+      end
+
+      # Find the first gap in subtitles with a minimum length in seconds.
+      # @return [Array] [start, end] Start and end times of the gap
+      def find_gap(min_length)
+        last = 0
+        @subtitles.each do |subtitle|
+          return [last, subtitle.start] if subtitle.start - last >= min_length
+          last = subtitle.end
+        end
+        [last, -1]
       end
 
       def init_properties

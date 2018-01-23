@@ -22,26 +22,21 @@ module Translatomatic
         Parser.new.parse(content)
       end
 
-      def definition_to_s(_definition)
+      def definition_to_s(key, value)
         format(%("%<key>s" = "%<value>s";\n\n), key: escape(key),
                                                 value: escape(value))
       end
 
-      def comment_to_s
+      def comment_to_s(text)
         comment = text && text.start_with?(' ') ? text : " #{text} "
         "/*#{comment}*/\n"
       end
 
       def render_element(element)
         if element.is_a? Comment
-          text = element.text
-          comment = text && text.start_with?(' ') ? text : " #{text} "
-          %(/*#{comment}*/\n)
+          comment_to_s(element.text)
         elsif element.is_a? Definition
-          key = element.key
-          value = element.value
-          format(%("%<key>s" = "%<value>s";\n\n), key: escape(key),
-                                                  value: escape(value))
+          definition_to_s(element.key, element.value)
         end
       end
     end
