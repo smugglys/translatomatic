@@ -35,7 +35,7 @@ module Translatomatic
     end
 
     # Parse comment text for metadata
-    # @return context [Array] parsed context data
+    # @return [Array] parsed context data
     def parse_comment(comment)
       return nil if comment.blank?
       contexts = comment.scan(/tm\.context:\s*(.*)/)

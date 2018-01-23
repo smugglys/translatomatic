@@ -41,7 +41,10 @@ module Translatomatic
         body = JSON.parse(response.body)
         data = body['data'] || {}
         translations = data['translations'] || []
-        translations.collect { |i| i['translatedText'] }
+        translations = translations.collect { |i| i['translatedText'] }
+        strings.zip(translations).each do |original, translated|
+          add_translations(original, translated)
+        end
       end
 
       def fetch_languages

@@ -13,11 +13,11 @@ module Translatomatic
     # @return [boolean] True if this translation came from the database
     attr_reader :from_database
 
-    def initialize(original, result, translator = nil, from_database = false)
+    def initialize(original, result, options = {})
       @original = string(original)
       @result = string(result)
-      @translator = translator
-      @from_database = from_database
+      @translator = options[:translator]
+      @from_database = options[:from_database]
     end
 
     # Restore interpolated variable names in the translation
@@ -42,6 +42,10 @@ module Translatomatic
           result[v2.offset, v2.length] = v1.value
         end
       end
+    end
+
+    def to_s
+      result.to_s
     end
 
     private

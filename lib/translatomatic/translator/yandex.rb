@@ -44,7 +44,10 @@ module Translatomatic
         response = http_client.post(TRANSLATE_URL, body)
         log.debug("#{name} response: #{response.body}")
         data = JSON.parse(response.body)
-        data['text']
+        result = data['text'] || []
+        strings.zip(result).each do |original, translated|
+          add_translations(original, translated)
+        end
       end
     end
   end

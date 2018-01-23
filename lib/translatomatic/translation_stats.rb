@@ -16,13 +16,21 @@ module Translatomatic
     # @return [Number] The number of untranslated strings
     attr_reader :untranslated
 
+    def +(other)
+      if other.is_a? TranslationStats
+        TranslationStats.new(translations + other.translations)
+      else
+        raise "expected TranslationStats, got #{other.class}"
+      end
+    end
+
     private
 
-    def initialize(translations)
-      @translations = tlist = translations.values
-      @from_db = tlist.count { |i| i.from_database && i.result }
-      @from_translator = tlist.count { |i| !i.from_database && i.result }
-      @untranslated = tlist.count { |i| i.result.nil? }
+    def initialize(translations = [])
+      @translations = list = translations
+      @from_db = list.count { |i| i.from_database && i.result }
+      @from_translator = list.count { |i| !i.from_database && i.result }
+      @untranslated = list.count { |i| i.result.nil? }
     end
 
     def to_s

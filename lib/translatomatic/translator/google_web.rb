@@ -8,6 +8,11 @@ module Translatomatic
     class GoogleWeb < Base
       attr_accessor :dt
 
+      # (see Base.supports_multiple_translations?)
+      def self.supports_multiple_translations?
+        true
+      end
+
       # Create a new GoogleWeb translator instance
       def initialize(options = {})
         super(options)
@@ -28,14 +33,20 @@ module Translatomatic
       private
 
       def perform_translate(strings, from, to)
-        translated = []
         strings.each do |string|
           attempt_with_retries(3) do
             result = api.translate(string, from, to)
-            translated << result.translation
+            add_translations(string, translations_from_result(result))
           end
         end
-        translated
+      end
+
+      def translations_from_result(result)
+        if result.alternatives.present?
+          result.alternatives
+        else
+          result.translation
+        end
       end
     end
   end

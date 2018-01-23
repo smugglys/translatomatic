@@ -19,10 +19,10 @@ module Translatomatic
         @query_options.merge!(key: @key) if @key
       end
 
-      # TODO: implement language list
       # (see Base#languages)
-      # def languages
-      # end
+      def languages
+        Locale.all_languages
+      end
 
       # Upload a set of translations to MyMemory
       # @param tmx [Translatomatic::TMX::Document] TMX document
@@ -42,12 +42,13 @@ module Translatomatic
 
       GET_URL = 'https://api.mymemory.translated.net/get'.freeze
       UPLOAD_URL = 'https://api.mymemory.translated.net/tmx/import'.freeze
+      MAIN_URL = 'https://mymemory.api.net'.freeze
 
       def perform_translate(strings, from, to)
         perform_fetch_translations(GET_URL, strings, from, to)
       end
 
-      def fetch_translation(string, from, to)
+      def fetch_translations(string, from, to)
         response = http_client.get(GET_URL, {
           langpair: from.to_s + '|' + to.to_s,
           q: string # multiple q strings not supported (tested 20180101)
@@ -57,7 +58,8 @@ module Translatomatic
         data = JSON.parse(response.body)
         # matches = data['matches'] # all translations
         # matches.collect { |i| match_data(i) }
-        data['responseData']['translatedText']
+        result = data['responseData']['translatedText']
+        add_translations(string, result)
       end
 
       # https://mymemory.translated.net/doc/features.php

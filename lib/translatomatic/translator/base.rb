@@ -9,6 +9,11 @@ module Translatomatic
       # Listener for translation events
       attr_accessor :listener
 
+      # @return [boolean] True if a single strings can have multiple results
+      def self.supports_multiple_translations?
+        false
+      end
+
       def initialize(options = {})
         @listener = options[:listener]
       end
@@ -29,16 +34,21 @@ module Translatomatic
       # @param from [String, Translatomatic::Locale] The locale of the
       #   given strings.
       # @param to [String, Translatomatic::Locale] The locale to translate to.
-      # @return [Array<String>] Translated strings
+      # @return [Array<Translatomatic::Translation>] Translation results
       def translate(strings, from, to)
         @updated_listener = false
+        @translations = []
+        @from = from
+        @to = to
         strings = [strings] unless strings.is_a?(Array)
         from = locale(from)
         to = locale(to)
-        return strings if from.language == to.language
-        translated = perform_translate(strings, from, to)
-        update_translated(translated) unless @updated_listener
-        translated
+        if from.language == to.language
+          return strings
+        else
+          perform_translate(strings, from, to)
+        end
+        @translations
       end
 
       private
@@ -53,8 +63,8 @@ module Translatomatic
       end
 
       # subclasses that call perform_fetch_translations must implement this
-      def fetch_translation(_string, _from, _to)
-        raise 'subclass must implement fetch_translation'
+      def fetch_translations(_string, _from, _to)
+        raise 'subclass must implement fetch_translations'
       end
 
       def http_client(*args)
@@ -67,32 +77,35 @@ module Translatomatic
       # is performed by this method.
       # (subclass must implement fetch_translation if this method is used)
       def perform_fetch_translations(url, strings, from, to)
-        translated = []
         untranslated = strings.dup
 
         http_client.start(url) do |_http|
           until untranslated.empty?
             # get next string to translate
             string = untranslated[0]
-            begin
-              # fetch translation
-              result = fetch_translation(string, from, to)
-
-              # successful translation
-              translated << result
-              update_translated(result)
-              untranslated.shift
-            end
+            # fetch translation
+            fetch_translations(string, from, to)
+            untranslated.shift
           end
         end
-
-        translated
       end
 
-      def update_translated(texts)
-        texts = [texts] unless texts.is_a?(Array)
-        @updated_listener = true
-        @listener.translated_texts(texts) if @listener
+      def add_translations(original, result)
+        # successful translation
+        result = [result] unless result.is_a?(Array)
+        result = convert_to_translations(original, result)
+        @listener.translated_texts(1) if @listener
+        @translations += result
+      end
+
+      def convert_to_translations(original, result)
+        result.collect { |i| translation(original, i) }
+      end
+
+      def translation(original, translated)
+        string1 = Translatomatic::String[original, @from]
+        string2 = Translatomatic::String[translated, @to]
+        Translatomatic::Translation.new(string1, string2, translator: name)
       end
 
       # Attempt to run a block of code up to retries times.

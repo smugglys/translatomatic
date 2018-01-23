@@ -1,0 +1,11 @@
+<GetTranslationsArrayRequest xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><AppId/>
+  <From>en</From>
+  <Options xmlns:o="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2">
+    <o:IncludeMultipleMTAlternatives>true</o:IncludeMultipleMTAlternatives>
+  </Options>
+  <Texts>
+    <a:string>string1</a:string>
+  </Texts>
+  <To>de</To>
+  <MaxTranslations>10</MaxTranslations>
+</GetTranslationsArrayRequest>

@@ -31,6 +31,10 @@ module Translatomatic
         end
         validate && !locale.valid? ? nil : locale
       end
+
+      def all_languages
+        VALID_LANGUAGES
+      end
     end
 
     # @return [Locale] create a new locale object

@@ -23,12 +23,12 @@ module Translatomatic
       log.debug(t('file_translator.database_disabled')) unless @use_db
 
       @db_translations = []
-      @translations = {} # map of original text to Translation
+      @stats = Translatomatic::TranslationStats.new
     end
 
     # @return [Translatomatic::TranslationStats] Translation statistics
     def stats
-      Translatomatic::TranslationStats.new(@translations)
+      @stats
     end
 
     # Translate properties of source_file to the target locale.
@@ -162,24 +162,17 @@ module Translatomatic
       untranslated = result.untranslated.to_a.select { |i| translatable?(i) }
       translated = []
       if !untranslated.empty? && !@dry_run
-        untranslated_strings = untranslated.collect(&:to_s)
         translator = @current_translator
         log.debug("translating: #{untranslated} with #{translator.name}")
-        translated = translator.translate(untranslated_strings,
-                                          result.from_locale, result.to_locale)
+        translations = translator.translate(
+          untranslated, result.from_locale, result.to_locale
+        )
+        log.debug("results: #{translations}")
 
-        # sanity check: we should have a translation for each string
-        unless translated.length == untranslated.length
-          raise t('translator.invalid_response')
-        end
-
-        # create list of translations, filtering out invalid translations
-        translations = []
-        untranslated.zip(translated).each do |from, to|
-          next unless to
-          translation = translation(from, to, false)
-          restore_variables(result, translation)
-          translations << translation
+        # check for valid response from translator
+        translations.each do |t|
+          raise t("translator.invalid_response") unless t.is_a?(Translation)
+          restore_variables(result, t)
         end
 
         result.add_translations(translations)
@@ -190,8 +183,9 @@ module Translatomatic
 
     def translation(from, to, from_database = false)
       translator = @current_translator.name
-      t = Translatomatic::Translation.new(from, to, translator, from_database)
-      @translations[from] = t
+      Translatomatic::Translation.new(
+        from, to, translator: translator, from_database: from_database
+      )
     end
 
     def database_disabled?

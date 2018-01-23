@@ -1,4 +1,6 @@
 RSpec.describe Translatomatic::Translator::Frengly do
+  include_examples 'a translator'
+
   it 'requires an email' do
     ENV['FRENGLY_API_KEY'] = nil
     expect { described_class.new }.to raise_error(t('translator.email_required'))
@@ -10,23 +12,25 @@ RSpec.describe Translatomatic::Translator::Frengly do
     end.to raise_error(t('translator.password_required'))
   end
 
-  it 'returns a language list' do
-    t = described_class.new(frengly_email: 'dummy', frengly_password: 'dummy')
-    expect(t.languages).to_not be_empty
+  def create_instance
+    described_class.new(frengly_email: 'dummy', frengly_password: 'dummy')
   end
 
-  it 'translates strings' do
-    # TODO: work out what the response looks like
+  def mock_translation(translator, strings, from, to, results)
     api_endpoint = 'http://frengly.com/frengly/data/translateREST'
-    expected_response = { text: 'Bier' }
-    stub_request(:post, api_endpoint)
-      .with(body: '{"src":"en","dest":"de","text":"Beer","email":"dummy","password":"dummy","premiumkey":null}',
-            headers: test_http_headers('Host' => 'frengly.com'))
-      .to_return(status: 200, body: expected_response.to_json, headers: {})
+    strings.zip(results).each do |string, result|
+      expected_response = {
+        status: 200, body: { text: result }.to_json, headers: {}
+      }
+      request_body = {
+        src: "en", dest: "de", text: string, email: "dummy",
+        password: "dummy", premiumkey: nil
+      }
+      stub_request(:post, api_endpoint)
+        .with(body: request_body,
+              headers: test_http_headers('Host' => 'frengly.com'))
+        .to_return(expected_response)
+    end
 
-    t = described_class.new(frengly_email: 'dummy', frengly_password: 'dummy')
-    results = t.translate('Beer', 'en', 'de')
-    expect(results).to eq(['Bier'])
-    expect(WebMock).to have_requested(:post, api_endpoint)
   end
 end

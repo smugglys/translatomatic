@@ -6,7 +6,13 @@
         <Count>0</Count>
         <MatchDegree>100</MatchDegree><MatchedOriginalText/>
         <Rating>5</Rating>
-        <TranslatedText>Bier</TranslatedText>
+        <TranslatedText>result1</TranslatedText>
+      </TranslationMatch>
+      <TranslationMatch>
+        <Count>0</Count>
+        <MatchDegree>100</MatchDegree><MatchedOriginalText/>
+        <Rating>0</Rating>
+        <TranslatedText>result2</TranslatedText>
       </TranslationMatch>
     </Translations>
   </GetTranslationsResponse>

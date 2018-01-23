@@ -15,6 +15,14 @@ module Translatomatic
     #   returns the starting offset of this string in the original.
     attr_reader :offset
 
+    def self.[](value, locale)
+      if value.is_a?(Translatomatic::String) && value.locale == locale
+        value
+      else
+        new(value, locale)
+      end
+    end
+
     def initialize(value, locale, options = {})
       @value = value.to_s || ''
       @locale = Translatomatic::Locale.parse(locale)

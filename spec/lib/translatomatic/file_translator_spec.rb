@@ -55,11 +55,11 @@ RSpec.describe Translatomatic::FileTranslator do
     end
 
     it 'translates multiple sentences separately' do
-      translator = test_translator
-      expect(translator).to receive(:translate)
-        .with(['Sentence one.', 'Sentence two.'], locale_en, locale_de)
-        .and_return(['Satz eins.', 'Satz zwei.'])
-
+      mapping = {
+        'Sentence one.' => 'Satz eins.',
+        'Sentence two.' => 'Satz zwei.'
+      }
+      translator = test_translator(mapping)
       t = create_file_translator(translator: translator)
       file = create_test_file
       file.properties = { key: 'Sentence one. Sentence two.' }

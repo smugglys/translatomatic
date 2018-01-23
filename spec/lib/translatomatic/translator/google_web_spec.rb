@@ -1,38 +1,33 @@
 RSpec.describe Translatomatic::Translator::GoogleWeb do
-  it 'returns a language list' do
+  include_examples 'a translator'
+
+  def mock_languages
     stub_request(:get, "https://translate.google.com/").
       with(headers: test_http_headers).
       to_return(status: 200, body: "['en','de']", headers: {})
-
-    t = described_class.new
-    expect(t.languages).to eq(['de', 'en'])
   end
 
-  it 'translates to a single string' do
-    t = described_class.new
-    mock_api(t, 'Recht')
-    results = t.translate('right', 'en', 'de')
-    expect(results).to eq(['Recht'])
+  def mock_translation(translator, strings, from, to, results)
+    alternatives = nil
+    if strings.length == 1 && results.length > 1
+      # use alternatives
+      alternatives = results
+      results = [nil]  # it should use the value of alternatives
+    end
+
+    mock_api(translator, results, alternatives)
   end
 
-  # TODO
-=begin
-  it 'translates to multiple strings' do
-    t = described_class.new
-    alternatives = ['Geh rechts', 'geh nach rechts', 'gehen Sie nach rechts']
-    mock_api(t, 'Geh rechts', alternatives)
-    results = t.translate('go right', 'en', 'de')
-  end
-=end
-
-  private
-
-  def mock_api(t, translation, alternatives = nil)
+  def mock_api(translator, results, alternatives = nil)
     mock_api = double(:api)
-    mock_response = double(:response)
-    expect(mock_response).to receive(:translation).and_return(translation)
-    allow(mock_response).to receive(:alternatives).and_return(alternatives)
-    expect(mock_api).to receive(:translate).and_return(mock_response)
-    allow(t).to receive(:api).and_return(mock_api)
+    responses = []
+    results.each do |result|
+      mock_response = double(:response)
+      allow(mock_response).to receive(:translation).and_return(result)
+      allow(mock_response).to receive(:alternatives).and_return(alternatives)
+      responses << mock_response
+    end
+    expect(mock_api).to receive(:translate).and_return(*responses)
+    allow(translator).to receive(:api).and_return(mock_api)
   end
 end

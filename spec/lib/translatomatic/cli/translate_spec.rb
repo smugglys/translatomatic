@@ -16,8 +16,7 @@ RSpec.describe Translatomatic::CLI::Translate do
 
   context :string do
     it 'translates a string' do
-      translator = test_translator
-      expect(translator).to receive(:translate).and_return(['Bier'])
+      test_translator('Bier')
       add_cli_options(no_database: true, target_locales: 'de')
       @cli.string('Beer')
     end
@@ -34,8 +33,7 @@ RSpec.describe Translatomatic::CLI::Translate do
   context :file do
     it 'translates a file' do
       path = create_tempfile('test.properties', 'key = Beer')
-      translator = test_translator
-      expect(translator).to receive(:translate).and_return(['Bier'])
+      test_translator('Bier')
       add_cli_options(no_database: true, target_locales: 'de')
       @cli.file(path.to_s)
     end
@@ -53,9 +51,8 @@ RSpec.describe Translatomatic::CLI::Translate do
 
     it 'uses all available translators' do
       # create two translators
-      translator1 = test_translator('Translator 1')
-      translator2 = test_translator('Translator 2')
-      expect(translator1).to receive(:translate).and_return(['Bier'])
+      translator1 = test_translator
+      translator2 = test_translator
 
       allow(Translatomatic::Translator).to receive(:available)
         .and_return([translator1, translator2])
@@ -71,8 +68,7 @@ RSpec.describe Translatomatic::CLI::Translate do
       skip if database_disabled?
 
       path = create_tempfile('test.properties', 'key = Beer')
-      translator = test_translator
-      expect(translator).to receive(:translate).and_return(['Bier'])
+      translator = test_translator('Bier')
       expect(translator).to receive(:upload)
       add_cli_options(share: true, target_locales: 'de')
       @cli.file(path.to_s)
@@ -95,8 +91,8 @@ RSpec.describe Translatomatic::CLI::Translate do
     @cli.options = @cli.options.merge(options)
   end
 
-  def test_translator(_name = nil)
-    translator = TestTranslator.new
+  def test_translator(mapping = {})
+    translator = TestTranslator.new(mapping)
     allow(Translatomatic::Translator).to receive(:available).and_return([translator])
     translator
   end

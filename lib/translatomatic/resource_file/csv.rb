@@ -20,7 +20,7 @@ module Translatomatic
       end
 
       # (see Base#save)
-      def save(target = path, _options = {})
+      def save(target = path, options = {})
         use_headers = @options[:csv_headers]
         csv_options = { write_headers: use_headers }
         csv_options[:headers] = @headers if use_headers

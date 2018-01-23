@@ -1,38 +1,9 @@
 RSpec.describe Translatomatic::Translator::MyMemory do
-  it "creates a translator" do
-    ENV["MYMEMORY_API_KEY"] = nil
-    t = described_class.new
-    expect(t).to be
-  end
-
-  # TODO
-  #it "returns a language list" do
-  #end
-
-  it "translates strings" do
-    api_endpoint = "https://api.mymemory.translated.net/get?langpair=en%7Cde&q=Beer"
-    expected_response = { "responseData": { "translatedText": "Bier" } }
-    stub_request(:get, api_endpoint).
-      with(headers: test_http_headers('Host'=>'api.mymemory.translated.net')).
-      to_return(status: 200, body: expected_response.to_json, headers: {})
-
-    t = described_class.new
-    results = t.translate("Beer", "en", "de")
-    expect(results).to eq(["Bier"])
-    expect(WebMock).to have_requested(:get, api_endpoint)
-  end
+  include_examples 'a translator'
 
   it "shares translated strings" do
-
     # WebMock does not support matching body for multipart/form-data requests yet :(
-=begin
-    stub_request(:post, "https://api.mymemory.translated.net/tmx/import").
-    with(headers: test_http_headers('Host'=>'api.mymemory.translated.net',
-      'Content-Type' => 'multipart/form-data')) { |request|
-        request.body.match(/.*/)
-      }
-=end
-    t = described_class.new
+    t = create_instance
 
     tmx = double(:tmx_document)
     expect(tmx).to receive(:to_xml).and_return("<xml />")
@@ -44,5 +15,26 @@ RSpec.describe Translatomatic::Translator::MyMemory do
     expect(client).to receive(:post).and_return(response)
 
     t.upload(tmx)
+  end
+
+  def create_instance
+    described_class.new(frengly_email: 'dummy', frengly_password: 'dummy')
+  end
+
+  def mock_translation(translator, strings, from, to, results)
+    api_endpoint = described_class::GET_URL
+    strings.zip(results).each do |string, result|
+      query = { langpair: "#{from}-#{to}", q: string }
+      expected_response = { "responseData": { "translatedText": result } }
+
+      # with(query: query) not working due to '-' escaping
+      uri = URI.parse(api_endpoint)
+      uri.query = URI.encode_www_form(query)
+      uri = uri.to_s.gsub(/-/, "%7C") # hack to satisfy webmock
+
+      stub_request(:get, uri).
+        with(headers: test_http_headers('Host'=>'api.mymemory.translated.net')).
+        to_return(status: 200, body: expected_response.to_json, headers: {})
+    end
   end
 end

@@ -7,14 +7,16 @@ module Translatomatic
       @progressbar = progressbar
     end
 
-    # @return [Number] the number of translated strings
-    def translated_texts(texts)
-      @progressbar.progress += texts.length
+    # @param count [Number] The number of strings translated
+    # @return [Number] The total number of translated strings
+    def translated_texts(count)
+      @progressbar.progress += count
     end
 
-    # @return [Number] the number of untranslated strings
-    def untranslated_texts(texts)
-      @progressbar.total -= texts.length
+    # @param count [Number] The number of strings that couldn't be translated
+    # @return [Number] the total number of untranslated strings
+    def untranslated_texts(count)
+      @progressbar.total -= count
     end
   end
 end

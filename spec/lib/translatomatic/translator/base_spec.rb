@@ -15,7 +15,7 @@ RSpec.describe Translatomatic::Translator::Base do
       end
     end
 
-    def fetch_translation(_strings, _from, _to)
+    def fetch_translations(_strings, _from, _to)
       http_client.get(@url).body
     end
   end
