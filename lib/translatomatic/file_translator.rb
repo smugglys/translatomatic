@@ -47,7 +47,7 @@ module Translatomatic
       each_provider(result) { translate_properties_with_provider(result) }
 
       log.debug(stats)
-      @listener.untranslated_texts(result.untranslated) if @listener
+      @listener.processed_strings(result.untranslated) if @listener
 
       result.apply!
       file.properties = result.properties
@@ -148,7 +148,7 @@ module Translatomatic
 
         result.add_translations(translations)
         log.debug("found #{translations.length} translations in database")
-        @listener.translated_texts(translations) if @listener
+        @listener.processed_strings(translations.length) if @listener
       end
       db_texts
     end

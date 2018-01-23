@@ -94,7 +94,7 @@ module Translatomatic
         # successful translation
         result = [result] unless result.is_a?(Array)
         result = convert_to_translations(original, result)
-        @listener.translated_texts(1) if @listener
+        @listener.processed_strings(1) if @listener
         @translations += result
       end
 
