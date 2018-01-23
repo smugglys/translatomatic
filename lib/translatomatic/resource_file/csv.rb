@@ -50,6 +50,7 @@ module Translatomatic
       define_option :csv_comment_column, default: DEFAULT_COMMENT_COLUMN,
                                          desc: t('file.csv.comment_column')
 
+      # @private
       Cell = Struct.new(:header, :key, :value, :translate)
 
       def init

@@ -12,6 +12,9 @@ module Translatomatic
       'r' => "\x0d", 'e' => "\x1b", '\\' => '\\'
     }.freeze
 
+    private_constant :ESCAPES
+    private_constant :UNESCAPES
+
     class << self
       # Escape unprintable characters such as newlines.
       # @param value [String] The string to escape

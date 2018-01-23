@@ -32,7 +32,8 @@ module Translatomatic
         validate && !locale.valid? ? nil : locale
       end
 
-      def all_languages
+      # @return [Array<String>] A list of ISO 639-1 language codes
+      def language_codes
         VALID_LANGUAGES
       end
     end

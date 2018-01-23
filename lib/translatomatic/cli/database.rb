@@ -30,6 +30,7 @@ module Translatomatic
       desc 'drop', t('cli.database.drop')
       thor_options(self, Translatomatic::CLI::CommonOptions)
       thor_options(self, Translatomatic::Database)
+      # Drop the database
       def drop
         Translatomatic::Database.new(options).drop
       end

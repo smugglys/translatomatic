@@ -1,7 +1,9 @@
 module Translatomatic
   module CLI
+    # @private
     module ThorPatch
       # disable --no booleans
+      # @private
       module NoNo
         def usage(padding = 0)
           sample = usage_banner

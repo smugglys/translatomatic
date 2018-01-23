@@ -1,5 +1,6 @@
 module Translatomatic
   module ResourceFile
+    # @private
     module KeyValueSupport
       # (see Base.key_value?)
       def self.key_value?
@@ -107,7 +108,9 @@ module Translatomatic
         Translatomatic::StringEscaping.unescape_all(value)
       end
 
+      # @private
       Definition = Struct.new(:key, :value)
+      # @private
       Comment = Struct.new(:text, :type)
     end
   end

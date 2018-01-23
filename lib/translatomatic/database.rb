@@ -81,10 +81,14 @@ module Translatomatic
       log.debug t('database.deleted')
     end
 
+    # Shortcut to text model class
+    # @return [Class] Translatomatic::Model::Text
     def text
       Translatomatic::Model::Text
     end
 
+    # Shortcut to locale model class
+    # @return [Class] Translatomatic::Model::Locale
     def locale
       Translatomatic::Model::Locale
     end

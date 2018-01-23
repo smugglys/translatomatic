@@ -16,6 +16,9 @@ module Translatomatic
     # @return [Number] The number of untranslated strings
     attr_reader :untranslated
 
+    # Combine stats with another object
+    # @param other [TranslationStats] Another stats object
+    # @return [TranslationStats] The result of adding this to other
     def +(other)
       if other.is_a? TranslationStats
         TranslationStats.new(translations + other.translations)

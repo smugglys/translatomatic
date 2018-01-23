@@ -1,5 +1,7 @@
 module Translatomatic
+  # HTTP request functionality
   module HTTP
+    # @private
     USER_AGENT = "Translatomatic #{VERSION} (+#{URL})".freeze
   end
 end

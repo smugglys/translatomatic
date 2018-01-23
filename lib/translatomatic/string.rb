@@ -15,6 +15,8 @@ module Translatomatic
     #   returns the starting offset of this string in the original.
     attr_reader :offset
 
+    # Create a new string. Returns value if value is already a
+    #   Translatomatic::String object with the same locale.
     def self.[](value, locale)
       if value.is_a?(Translatomatic::String) && value.locale == locale
         value
@@ -23,6 +25,9 @@ module Translatomatic
       end
     end
 
+    # Creates a new string
+    # @param value [String] A string
+    # @param locale [String] A locale
     def initialize(value, locale, options = {})
       @value = value.to_s || ''
       @locale = Translatomatic::Locale.parse(locale)

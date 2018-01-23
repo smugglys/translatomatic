@@ -15,6 +15,7 @@ module Translatomatic
       private
 
       Treetop.load(File.join(__dir__, 'xcode_strings.treetop'))
+      # @private
       class Parser < XCodeStringsParser; end
 
       def parse_doc(content)

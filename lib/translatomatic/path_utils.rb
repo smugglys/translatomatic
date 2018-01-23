@@ -1,9 +1,6 @@
 module Translatomatic
+  # Utilities for locales and paths
   module PathUtils
-    def read_contents(path)
-      Translatomatic::Slurp.read(path.to_s)
-    end
-
     # Find a new path representing the given path with a new locale
     # @param path [Pathname] The current path
     # @param target_locale [String] The target locale
@@ -76,6 +73,10 @@ module Translatomatic
     end
 
     private
+
+    def read_contents(path)
+      Translatomatic::Slurp.read(path.to_s)
+    end
 
     # ext_sub() only removes the last extension
     def basename_stripped(path)

@@ -44,6 +44,9 @@ module Translatomatic
         send_request_with_method(:delete, url, options)
       end
 
+      # Start an HTTP request. Yields the http object.
+      # @param url [String,URI] URL of the request, requires host and port
+      # @return [Object] The result of the yielded block
       def start(url, options = {})
         uri = url.respond_to?(:host) ? url : URI.parse(url)
         options = options.merge(use_ssl: uri.scheme == 'https')

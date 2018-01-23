@@ -25,12 +25,12 @@ module Translatomatic
         api.respond_to?(:languages) ? api.languages : []
       end
 
+      private
+
       def api
         options = { debug: @debug, dt: @dt, http_client: http_client }
         @api ||= GoogleWebTranslate::API.new(options)
       end
-
-      private
 
       def perform_translate(strings, from, to)
         strings.each do |string|

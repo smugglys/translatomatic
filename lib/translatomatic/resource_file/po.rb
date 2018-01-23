@@ -53,6 +53,7 @@ module Translatomatic
       PO_DATE_FORMAT = '%Y-%M-%d %HH:%MM%Z'.freeze
 
       # used to index into PO msgstr[]
+      # @private
       class PoProperty
         attr_reader :entry
         attr_reader :msgstr_index

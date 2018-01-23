@@ -4,6 +4,7 @@ module Translatomatic
     include Util
 
     class << self
+      # Shortcut for new(options).run
       def run(options = {})
         new(options).run { yield }
       end

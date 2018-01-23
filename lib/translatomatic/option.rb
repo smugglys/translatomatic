@@ -46,6 +46,8 @@ module Translatomatic
       @env_name ||= @use_env && @name ? @name.to_s.upcase : nil
     end
 
+    # Return sconfiguration for a thor command line option
+    # @return [Hash] Thor configuration
     def to_thor
       {
         required: @required,
@@ -58,6 +60,8 @@ module Translatomatic
       }
     end
 
+    # Translate the type of this option
+    # @return [String] The translated type
     def type_name
       t("config.types.#{type}")
     end

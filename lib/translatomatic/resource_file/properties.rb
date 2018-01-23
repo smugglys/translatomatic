@@ -30,6 +30,7 @@ module Translatomatic
       private
 
       Treetop.load(File.join(__dir__, 'properties.treetop'))
+      # @private
       class Parser < PropertiesParser; end
 
       def parse_doc(content)

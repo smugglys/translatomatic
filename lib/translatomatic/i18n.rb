@@ -5,6 +5,8 @@ module Translatomatic
   # I18n initialisation and translation fallback handling
   class I18n
     class << self
+      # Get string translation
+      # @param key translation key
       def t(key, options = {})
         tkey = "translatomatic.#{key}"
         raise "missing translation: #{tkey}" unless ::I18n.exists?(tkey)
@@ -12,8 +14,10 @@ module Translatomatic
         ::I18n.t(tkey, options.merge(locale: t_locale(options)))
       end
 
-      def l(key, options = {})
-        ::I18n.l(key, options)
+      # Localises dates and numbers to local formatting
+      # @param object [Object] Object to localise
+      def l(object, options = {})
+        ::I18n.l(object, options)
       end
 
       private

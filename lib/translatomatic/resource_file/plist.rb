@@ -65,6 +65,7 @@ module Translatomatic
   </plist>
 EOM
 
+      # @private
       PlistNode = Struct.new(:node, :content) do
         def inspect
           "PlistNode:#{content}"
@@ -73,6 +74,7 @@ EOM
 
       # Adapted from nokogiri-plist parser
       # @see https://github.com/caseyhoward/nokogiri-plist
+      # @private
       class Parser
         def parse(xml, options = {})
           @converters = {

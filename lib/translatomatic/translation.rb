@@ -44,10 +44,6 @@ module Translatomatic
       end
     end
 
-    def to_s
-      result.to_s
-    end
-
     private
 
     def string(string)

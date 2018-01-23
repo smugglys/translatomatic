@@ -52,6 +52,7 @@ module Translatomatic
       end
     end
 
+    # @private
     ESCAPE_REGEX = /(
       (?:
         [\xc2-\xdf][\x80-\xbf]    |
@@ -61,6 +62,7 @@ module Translatomatic
         [\x80-\xc1\xf5-\xff]       # invalid
         )/nx
 
+    # @private
     MAP = {
       "\x0" => '\u0000',
       "\x1" => '\u0001',
@@ -90,7 +92,9 @@ module Translatomatic
       "\x1e" => '\u001e',
       "\x1f" => '\u001f'
     }.freeze
+    private_constant :MAP
 
+    # @private
     EMPTY_8BIT_STRING = ''.force_encoding(::Encoding::ASCII_8BIT).freeze
   end
 end

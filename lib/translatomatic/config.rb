@@ -161,6 +161,7 @@ module Translatomatic
     LOCATIONS = %i[project user env].freeze
 
     class << self
+      # @private
       def config_sources
         [
           Translatomatic::CLI::CommonOptions,

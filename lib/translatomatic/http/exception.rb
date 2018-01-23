@@ -8,6 +8,7 @@ module Translatomatic
         @response = response
       end
 
+      # Exception string
       def to_s
         @response.to_s
       end

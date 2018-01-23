@@ -21,7 +21,7 @@ module Translatomatic
 
       # (see Base#languages)
       def languages
-        Locale.all_languages
+        Locale.language_codes
       end
 
       # Upload a set of translations to MyMemory
