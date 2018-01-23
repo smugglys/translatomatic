@@ -9,7 +9,7 @@ module Translatomatic
       basename = basename_stripped(path)
 
       extlist = extension_list(path)
-      if extlist.length >= 2 && loc_idx = find_extension_locale(extlist)
+      if extlist.length >= 2 && (loc_idx = find_extension_locale(extlist))
         # extension(s) contains locale, replace it
         extlist[loc_idx] = target_locale.to_s
         filename = basename + '.' + extlist.join('.')

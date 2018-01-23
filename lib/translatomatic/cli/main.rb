@@ -101,8 +101,6 @@ module Translatomatic
         puts
       end
 
-      private
-
       def display_provider_options
         rows = []
         Translatomatic::Provider.types.each do |klass|

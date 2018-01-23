@@ -113,10 +113,6 @@ module Translatomatic
         relative_path(path).to_s
       end
 
-      def type
-        self.class.name.demodulize
-      end
-
       # @return [Array<String>] All property values split into sentences
       def sentences
         sentences = []

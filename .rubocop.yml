@@ -21,3 +21,4 @@ Style/ClassCheck:
   Exclude:
     - 'lib/translatomatic/http/client.rb'
     - 'lib/translatomatic/retry_executor.rb'
+    - 'lib/translatomatic/file_translator.rb'

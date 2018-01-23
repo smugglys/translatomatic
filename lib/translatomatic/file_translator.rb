@@ -119,7 +119,6 @@ module Translatomatic
       end
     end
 
-    # rubocop:disable Style/ClassCheck
     def resource_file(path)
       if path.kind_of?(Translatomatic::ResourceFile::Base)
         path
