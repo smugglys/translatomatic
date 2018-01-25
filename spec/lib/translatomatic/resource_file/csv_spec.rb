@@ -48,6 +48,18 @@ RSpec.describe Translatomatic::ResourceFile::CSV do
     expect(file.properties.length).to eq(4)
   end
 
+  # test matching columns with target locale
+  it 'translates columns matching the target locale' do
+    skip 'not implemented yet'
+    options = {
+      csv_headers: true,
+      target_locale: 'de'
+    }
+    file = load_test_file('test_locale_column.csv', options)
+    # 1 column (de) * 2 rows
+    expect(file.properties.length).to eq(2)
+  end
+
   # only load the second column into @properties, but writing the file
   # should retain all original data.
   it 'preserves all data when columns are selected' do

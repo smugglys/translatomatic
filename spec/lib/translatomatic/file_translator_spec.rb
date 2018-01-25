@@ -25,7 +25,7 @@ RSpec.describe Translatomatic::FileTranslator do
     it 'translates a properties file to a target language' do
       provider = TestProvider.new('Bier')
       path = create_tempfile('test.properties', 'key = Beer')
-      file = Translatomatic::ResourceFile.load(path, "en")
+      file = Translatomatic::ResourceFile.load(path, locale: "en")
       t = create_file_translator(provider: provider)
       target = t.translate_to_file(file, 'de-DE')
       expect(target.path.basename.sub_ext('').to_s).to match(/_de-DE$/)
@@ -36,10 +36,21 @@ RSpec.describe Translatomatic::FileTranslator do
       provider = test_provider
       expect(provider).to_not receive(:translate)
       path = create_tempfile('test.properties', 'key = Beer')
-      file = Translatomatic::ResourceFile.load(path, "en")
+      file = Translatomatic::ResourceFile.load(path, locale: "en")
       t = create_file_translator(provider: provider, dry_run: true)
       target = t.translate_to_file(file, 'de-DE')
       expect(target.path).to_not exist
+    end
+
+    it 'writes to the same file with the in-place option' do
+      provider = TestProvider.new('Bier')
+      path = create_tempfile('test.properties', 'key = Beer')
+      file = Translatomatic::ResourceFile.load(path, locale: "en")
+      t = create_file_translator(provider: provider, in_place: true)
+      target = t.translate_to_file(file, 'de')
+      expect(target.path).to eq(file.path)
+      file = Translatomatic::ResourceFile.load(file.path, locale: "de")
+      expect(file.get('key')).to eq('Bier')
     end
   end
 

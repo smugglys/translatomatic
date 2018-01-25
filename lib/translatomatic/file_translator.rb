@@ -15,6 +15,7 @@ module Translatomatic
     def initialize(options = {})
       @dry_run = options[:dry_run]
       @listener = options[:listener]
+      @in_place = options[:in_place]
       @providers = resolve_providers(options)
       raise t('file_translator.provider_required') if @providers.empty?
       @providers.each { |i| i.listener = @listener } if @listener
@@ -64,16 +65,27 @@ module Translatomatic
     # @return [Translatomatic::ResourceFile] The translated resource file
     def translate_to_file(source, to_locale)
       # Automatically determines the target filename based on target locale.
-      source = resource_file(source)
-      target = Translatomatic::ResourceFile.load(source.path)
-      target.locale = source.locale
-      target.path = source.locale_path(to_locale)
-      return if target.path == source.path
+      target = resource_file(source)
+      to_locale = parse_locale(to_locale)
 
-      log.info(t('file_translator.translating', source: source,
-                                                source_locale: source.locale,
-                                                target: target,
-                                                target_locale: to_locale))
+      if @in_place
+        log.info(t('file_translator.translating_in_place',
+                   source: target, source_locale: target.locale,
+                   target_locale: to_locale))
+      else
+        target_path = source.locale_path(to_locale)
+        return if target_path == source.path
+
+        # make a copy of source and change the path
+        target = resource_file(source.path, target.options)
+        target.locale = source.locale # updated by translate() later
+        target.path = target_path
+
+        log.info(t('file_translator.translating',
+                   source: source, source_locale: source.locale,
+                   target: target, target_locale: to_locale))
+      end
+
       translate(target, to_locale)
       unless @dry_run
         target.path.parent.mkpath
@@ -92,6 +104,9 @@ module Translatomatic
                             command_line_only: true
     define_option :no_database, type: :boolean, default: false,
                                 desc: t('file_translator.no_database')
+    define_option :in_place, type: :boolean, command_line_only: true,
+                             default: false,
+                             desc: t('file_translator.in_place')
 
     def each_provider(result)
       @providers.each do |provider|
@@ -119,11 +134,11 @@ module Translatomatic
       end
     end
 
-    def resource_file(path)
-      if path.kind_of?(Translatomatic::ResourceFile::Base)
+    def resource_file(path, options = {})
+      if path.is_a?(Translatomatic::ResourceFile::Base)
         path
       else
-        file = Translatomatic::ResourceFile.load(path)
+        file = Translatomatic::ResourceFile.load(path, options)
         raise t('file.unsupported', file: path) unless file
         file
       end
@@ -158,11 +173,11 @@ module Translatomatic
       translated = []
       if !untranslated.empty? && !@dry_run
         provider = @current_provider
-        log.debug("translating: #{untranslated} with #{provider.name}")
+        log.debug("translating: #{untranslated.length} strings with #{provider.name}")
         translations = provider.translate(
           untranslated, result.from_locale, result.to_locale
         )
-        log.debug("results: #{translations}")
+        # log.debug("results: #{translations}")
 
         # check for valid response from provider
         translations.each do |t|

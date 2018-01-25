@@ -151,10 +151,23 @@ module Translatomatic
       end
 
       def translate_column?(column)
-        if @translate.blank?
-          column != @key_column && column != @comments_column
-        else
+        if @translate.present?
+          # translation columns specified
           @translate.include?(column)
+        elsif have_target_locale_column?
+          # if there is a column matching the target locale, translate that
+          # column only.
+          column == @target_locale.to_s
+        else
+          # translate if it's not the key column or comments column
+          column != @key_column && column != @comments_column
+        end
+      end
+
+      def have_target_locale_column?
+        @have_target_locale_column ||= begin
+          @target_locale && @headers &&
+            @headers.include?(@target_locale.to_s)
         end
       end
 
@@ -169,7 +182,7 @@ module Translatomatic
       end
 
       def find_cell(row, column_name)
-        row.find { |i| i.header == @comments_column }
+        row.find { |i| i.header == column_name }
       end
     end
   end

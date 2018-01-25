@@ -21,13 +21,13 @@ module Translatomatic
       @env_config = env_config[@env] || {}
       init_active_record
       create unless exists?
-      migrate
     end
 
     # Connect to the database
     # @return [boolean] True if the connection was established
     def connect
       ActiveRecord::Base.establish_connection(@env_config)
+      migrate
       true
     rescue LoadError
       false
@@ -55,10 +55,11 @@ module Translatomatic
     # Run outstanding migrations against the database
     # @return [void]
     def migrate
-      return false unless connect
+      return if @migrated
       ActiveRecord::Migrator.migrate(MIGRATIONS_PATH)
       ActiveRecord::Base.clear_cache!
       log.debug t('database.migrated')
+      @migrated = true
     end
 
     # Create the database

@@ -5,29 +5,28 @@ module Translatomatic
     class << self
       include Translatomatic::Util
 
-      # Load a resource file. If locale is not specified, the locale of the
-      # file will be determined from the filename, or else the current default
-      # locale will be used.
+      # Load a resource file. If options[:locale] is not specified,
+      # the locale of the file will be determined from the filename,
+      # or else the current default locale will be used.
       # @param path [String] Path to the resource file
-      # @param locale [String] Locale of the resource file
       # @return [Translatomatic::ResourceFile::Base] The resource file, or nil
       #   if the file type is unsupported.
-      def load(path, locale = nil)
+      def load(path, options = {})
         path = path.is_a?(Pathname) ? path : Pathname.new(path)
         types_for_path(path).each do |klass|
           log.debug(t('file.loading', file: path, name: klass.name.demodulize))
-          return klass.new(path, locale: locale)
+          return klass.new(path, options)
         end
         nil
       end
 
       # Create a new resource file
-      def create(path, locale = nil)
+      def create(path, options = {})
         klass = types_for_path(path).first
         return nil unless klass
         file = klass.new
         file.path = path
-        file.locale = locale
+        file.locale = locale(options[:locale])
         file
       end
 

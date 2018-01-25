@@ -5,7 +5,13 @@ module Translatomatic
     class Base
       include DefineOptions
 
+      # @return [Hash<Symbol,Object] Options used in the constructor
+      attr_reader :options
+
+      # @return [Locale] The locale of the contents of this resource file
       attr_accessor :locale
+
+      # @return [Pathname] The path to this resource file
       attr_accessor :path
 
       # @return [Hash<String,String>] key -> value properties

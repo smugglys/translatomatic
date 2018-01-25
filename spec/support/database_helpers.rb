@@ -30,7 +30,7 @@ module DatabaseHelpers
     db = use_test_database
     if db
       db.drop
-      db.migrate
+      db.connect
     end
   end
 end

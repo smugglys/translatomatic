@@ -55,7 +55,7 @@ module Translatomatic
         desc: @description,
         default: @default,
         aliases: @aliases,
-        banner: type_name,
+        banner: @type == :boolean ? nil : type_name,
         enum: @enum ? @enum.collect(&:to_s) : nil
       }
     end

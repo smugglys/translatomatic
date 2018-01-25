@@ -67,7 +67,7 @@ module Translatomatic
           source_files = parse_list(file, cli_option(:source_files))
           source_files.each do |path|
             raise t('file.not_found', file: path) unless File.exist?(path)
-            source = Translatomatic::ResourceFile.load(path, @source_locale)
+            source = resource_file(path)
             raise t('file.unsupported', file: path) unless source
           end
 
@@ -84,7 +84,7 @@ module Translatomatic
 
           source_files.each do |path|
             # read source file
-            source = Translatomatic::ResourceFile.load(path, @source_locale)
+            source = resource_file(path)
 
             # convert source to locale(s) and write files
             @target_locales.each do |i|
@@ -101,6 +101,11 @@ module Translatomatic
       end
 
       private
+
+      def resource_file(path, locale = @source_locale)
+        file_opts = @options.merge(locale: locale)
+        Translatomatic::ResourceFile.load(path, file_opts)
+      end
 
       def setup_translation
         @source_locale = determine_source_locale
@@ -124,7 +129,7 @@ module Translatomatic
       def translation_count(source_files, locales)
         count = 0
         source_files.each do |file|
-          source = Translatomatic::ResourceFile.load(file, @source_locale)
+          source = resource_file(file)
           count += source.sentences.length * locales.length
         end
         count

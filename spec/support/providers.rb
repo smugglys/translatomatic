@@ -27,8 +27,18 @@ RSpec.shared_examples 'a provider' do
       mock_translation(provider, ['Beer'], 'en', 'de', ['Bier'])
       translations = provider.translate('Beer', 'en', 'de')
       expect(translations.length).to eq(1)
+      expect(translations[0]).to be_a(Translatomatic::Translation)
       expect(translations[0].original).to eq(string("Beer", "en"))
       expect(translations[0].result).to eq(string("Bier", "de"))
+    end
+
+    it 'returns original strings if target locale equals source locale' do
+      provider = create_instance
+      translations = provider.translate('Beer', 'en', 'en')
+      expect(translations.length).to eq(1)
+      expect(translations[0]).to be_a(Translatomatic::Translation)
+      expect(translations[0].original).to eq(string("Beer", "en"))
+      expect(translations[0].result).to eq(string("Beer", "en"))
     end
 
     it 'translates multiple strings' do
@@ -38,8 +48,10 @@ RSpec.shared_examples 'a provider' do
       mock_translation(provider, strings, 'en', 'de', results)
       translations = provider.translate(strings, 'en', 'de')
       expect(translations.length).to eq(2)
+      expect(translations[0]).to be_a(Translatomatic::Translation)
       expect(translations[0].original).to eq(string("string1", "en"))
       expect(translations[0].result).to eq(string("result1", "de"))
+      expect(translations[1]).to be_a(Translatomatic::Translation)
       expect(translations[1].original).to eq(string("string2", "en"))
       expect(translations[1].result).to eq(string("result2", "de"))
     end
@@ -52,8 +64,10 @@ RSpec.shared_examples 'a provider' do
         mock_translation(provider, strings, 'en', 'de', results)
         translations = provider.translate(strings, 'en', 'de')
         expect(translations.length).to eq(2)
+        expect(translations[0]).to be_a(Translatomatic::Translation)
         expect(translations[0].original).to eq(string("string1", "en"))
         expect(translations[0].result).to eq(string("result1", "de"))
+        expect(translations[1]).to be_a(Translatomatic::Translation)
         expect(translations[1].original).to eq(string("string1", "en"))
         expect(translations[1].result).to eq(string("result2", "de"))
       end

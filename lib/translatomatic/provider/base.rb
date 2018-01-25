@@ -44,7 +44,7 @@ module Translatomatic
         from = locale(from)
         to = locale(to)
         if from.language == to.language
-          return strings
+          strings.each { |i| add_translations(i, i) }
         else
           perform_translate(strings, from, to)
         end
