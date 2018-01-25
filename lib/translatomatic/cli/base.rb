@@ -67,7 +67,7 @@ module Translatomatic
       # create @options from options and config
       def merge_options_and_config
         # start with command line options
-        @options = options.transform_keys(&:to_sym)
+        @options = options.transform_keys { |i| i.underscore.to_sym }
         # fill missing entries with config values
         settings = conf.all
         settings.each do |key, value|
