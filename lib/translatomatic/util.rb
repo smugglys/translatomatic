@@ -32,13 +32,18 @@ module Translatomatic
       Translatomatic::Locale.parse(tag)
     end
 
-    def string(value, locale)
-      Translatomatic::String.new(value, locale)
+    def string(value, locale, options = {})
+      string = Translatomatic::String.new(value, locale)
+      string.context = options[:context]
+      string
     end
 
-    def hashify(list)
+    def hashify(list, key_mapping = proc { |i| i.to_s })
       hash = {}
-      list.each { |i| hash[i.to_s] = i }
+      list.each do |i|
+        key = key_mapping.call(i)
+        hash[key] = i
+      end
       hash
     end
   end

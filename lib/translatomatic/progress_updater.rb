@@ -1,5 +1,4 @@
 module Translatomatic
-  # implements Converter listener
   class ProgressUpdater
     # Create a new progress updater
     # @param progressbar [Progressbar] A ruby-progressbar object
@@ -7,10 +6,17 @@ module Translatomatic
       @progressbar = progressbar
     end
 
-    # @param count [Number] The number of strings processed
-    # @return [Number] The total number of processed strings
-    def processed_strings(count)
+    # @param count [Number] Update progress
+    # @return [Number] The total number of processed items.
+    def update_progress(count)
       @progressbar.progress += count
     end
+
+    # @param total [Number] Set the total number of items that
+    #   will be processed.
+    def total=(total)
+      @progressbar.total = total
+    end
+
   end
 end

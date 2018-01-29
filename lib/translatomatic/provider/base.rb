@@ -23,6 +23,11 @@ module Translatomatic
         self.class.name.demodulize
       end
 
+      # @return [String] The name of this provider
+      def to_s
+        name
+      end
+
       # @return [Array<String>] A list of languages
       #   supported by this provider.
       def languages
@@ -94,7 +99,7 @@ module Translatomatic
         # successful translation
         result = [result] unless result.is_a?(Array)
         result = convert_to_translations(original, result)
-        @listener.processed_strings(1) if @listener
+        @listener.update_progress(1) if @listener
         @translations += result
       end
 
@@ -105,17 +110,7 @@ module Translatomatic
       def translation(original, translated)
         string1 = Translatomatic::String[original, @from]
         string2 = Translatomatic::String[translated, @to]
-        Translatomatic::Translation.new(string1, string2, provider: name)
-      end
-
-      # Attempt to run a block of code up to retries times.
-      # Reraises the exception if the block fails retries times.
-      # @param retries [Number] The maximum number of times to run
-      # @return [Object] the return value of the block
-      def attempt_with_retries(retries)
-        RetryExecutor.run(max_retries: retries) do
-          yield
-        end
+        Translatomatic::Translation::Result.new(string1, string2, name)
       end
     end
   end

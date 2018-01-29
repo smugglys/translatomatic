@@ -40,6 +40,19 @@ module Translatomatic
         new(units, source_locales[0])
       end
 
+      # Create a TMX document from a translation collection
+      # @param collection [Translatomatic::Translation::Collection]
+      #   Translation collection
+      # @return [Translatomatic::TMX::Document] TMX document
+      def self.from_collection(collection)
+        originals = collection.translations.collect(&:original)
+        source_locales = originals.collect(&:locale)
+        raise t('tmx.multiple_locales') if source_locales.length > 1
+        units = units_from_collection(collection)
+
+        new(units, source_locales[0])
+      end
+
       def self.valid?(xml)
         options = Nokogiri::XML::ParseOptions::DTDVALID
         doc = Nokogiri::XML::Document.parse(xml, nil, nil, options)
@@ -69,6 +82,11 @@ module Translatomatic
             strings = list.uniq.collect { |i| string(i.value, i.locale) }
             tmx_unit(strings)
           end
+        end
+
+        # @return [Array<Translatomatic::TMX::TranslationUnit]
+        #   translation unit list
+        def units_from_collection(collection)          
         end
 
         def tmx_unit(strings)

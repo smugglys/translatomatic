@@ -2,7 +2,7 @@ RSpec.describe Translatomatic::FileTranslator do
   let(:locale_en) { locale('en') }
   let(:locale_de) { locale('de') }
 
-  context :new do
+  context '#new' do
     it 'creates a new instance' do
       provider = TestProvider.new('test')
       t = create_file_translator(provider: provider)
@@ -21,7 +21,7 @@ RSpec.describe Translatomatic::FileTranslator do
     end
   end
 
-  context :translate_to_file do
+  context '#translate_to_file' do
     it 'translates a properties file to a target language' do
       provider = TestProvider.new('Bier')
       path = create_tempfile('test.properties', 'key = Beer')
@@ -54,7 +54,7 @@ RSpec.describe Translatomatic::FileTranslator do
     end
   end
 
-  context :translate do
+  context '#translate' do
     it 'works with equal source and target languages' do
       provider = test_provider
       expect(provider).to_not receive(:translate)
@@ -63,6 +63,21 @@ RSpec.describe Translatomatic::FileTranslator do
       file.properties = { key: 'yoghurt' }
       result = t.translate(file, 'en-US')
       expect(result.properties[:key]).to eq('yoghurt')
+    end
+
+    it 'translates keys with duplicate values' do
+      mapping = {
+        'Yoghurt' => 'Yoplait',
+      }
+      provider = test_provider(mapping)
+      t = create_file_translator(provider: provider)
+      file = create_test_file
+      file.properties = {
+        key1: 'Yoghurt',
+        key2: 'Yoghurt'
+      }
+      result = t.translate(file, 'fr')
+      expect(result.properties).to eq(key1: 'Yoplait', key2: 'Yoplait')
     end
 
     it 'translates multiple sentences separately' do
@@ -160,7 +175,7 @@ RSpec.describe Translatomatic::FileTranslator do
     type_string = type.to_s.demodulize
     next unless type.supports_variable_interpolation?
 
-    describe "#{type_string} files variable interpolation" do
+    describe "#{type_string} file variable interpolation" do
       it 'preserves variable names' do
         file = create_test_file(type)
         original_variable = file.create_variable('var1')
@@ -224,8 +239,7 @@ RSpec.describe Translatomatic::FileTranslator do
   end
 
   def test_provider(mapping = {})
-    provider = TestProvider.new(mapping)
-    provider
+    TestProvider.new(mapping)
   end
 
   def create_text(attributes)

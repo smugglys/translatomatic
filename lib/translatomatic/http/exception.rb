@@ -10,7 +10,7 @@ module Translatomatic
 
       # Exception string
       def to_s
-        @response.to_s
+        @response.body ? @response.body : "error #{@response.code}"
       end
     end
   end

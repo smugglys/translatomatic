@@ -35,8 +35,10 @@ module Translatomatic
           @providers.each do |provider|
             puts t('cli.using_provider', name: provider.name)
             @target_locales.each do |l|
-              value = provider.translate([text], @source_locale, l)
-              puts format('  -> ' + template, locale: l, text: value)
+              translations = provider.translate([text], @source_locale, l)
+              translations.each do |translation|
+                puts format('  -> ' + template, locale: l, text: translation)
+              end
             end
             puts
           end
@@ -75,10 +77,9 @@ module Translatomatic
           Translatomatic::Database.new(options)
 
           # set up file translation
-          count = translation_count(source_files, @target_locales)
           ft_options = options.merge(
             provider: @providers,
-            listener: progress_updater(count)
+            listener: progress_updater
           )
           ft = Translatomatic::FileTranslator.new(ft_options)
 
@@ -93,7 +94,7 @@ module Translatomatic
             end
           end
 
-          log.info ft.stats
+          log.info ft.translator.stats
           finish_log
 
           share_translations(ft) if cli_option(:share)
@@ -126,19 +127,11 @@ module Translatomatic
         cli_option(:source_locale) || Translatomatic::Locale.default.to_s
       end
 
-      def translation_count(source_files, locales)
-        count = 0
-        source_files.each do |file|
-          source = resource_file(file)
-          count += source.sentences.length * locales.length
-        end
-        count
-      end
-
       def share_translations(ft)
-        return if ft.db_translations.empty?
+        new_translations = ft.translator.new_translations
+        return if new_translations.empty?
 
-        tmx = Translatomatic::TMX::Document.from_texts(ft.db_translations)
+        tmx = Translatomatic::TMX::Document.from_collection(new_translations)
         available = Translatomatic::Provider.available(options)
         available.each do |provider|
           if provider.respond_to?(:upload)
@@ -146,22 +139,23 @@ module Translatomatic
             provider.upload(tmx)
           end
         end
+
+        # TODO: add text_id to string?
         ActiveRecord::Base.transaction do
-          ft.db_translations.each do |text|
+          ft.translator.new_translations.each do |text|
             text.update(shared: true) if text.translated?
           end
         end
       end
 
       # create a progress bar and progress updater
-      def progress_updater(count)
+      def progress_updater
         return nil unless cli_option(:wank)
         # set up progress bar
         progressbar = ProgressBar.create(
           title: t('cli.translating'),
-          format: '%t: |%B| %E ', # rubocop:disable Style/FormatStringToken
-          autofinish: false,
-          total: count
+          format: '%t: |%B| %E ',
+          autofinish: false
         )
         conf.logger.progressbar = progressbar
         Translatomatic::ProgressUpdater.new(progressbar)

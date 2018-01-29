@@ -29,9 +29,7 @@ module Translatomatic
       LANGUAGES_URL = 'https://translate.yandex.net/api/v1.5/tr.json/getLangs'.freeze
 
       def perform_translate(strings, from, to)
-        attempt_with_retries(3) do
-          fetch_translations(strings, from, to)
-        end
+        fetch_translations(strings, from, to)
       end
 
       def fetch_translations(strings, from, to)

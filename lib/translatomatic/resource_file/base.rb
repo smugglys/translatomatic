@@ -14,9 +14,6 @@ module Translatomatic
       # @return [Pathname] The path to this resource file
       attr_accessor :path
 
-      # @return [Hash<String,String>] key -> value properties
-      attr_reader :properties
-
       # @return [boolean] True if this resource format is enabled
       def self.enabled?
         true
@@ -90,6 +87,11 @@ module Translatomatic
         properties.each do |key, value|
           set(key, value)
         end
+      end
+
+      # @return [Hash<String,String>] key -> value properties
+      def properties
+        @properties.dup
       end
 
       # Get the value of a property

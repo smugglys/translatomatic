@@ -15,6 +15,12 @@ module Translatomatic
     #   returns the starting offset of this string in the original.
     attr_reader :offset
 
+    # @return [String] Disambiguating context
+    attr_accessor :context
+
+    # @return [Regexp] Regexp that matches parts of the string to preserve
+    attr_accessor :preserve_regex
+
     # Create a new string. Returns value if value is already a
     #   Translatomatic::String object with the same locale.
     def self.[](value, locale)
@@ -33,6 +39,14 @@ module Translatomatic
       @locale = Translatomatic::Locale.parse(locale)
       @offset = options[:offset] || 0
       @parent = options[:parent]
+      @options = options
+    end
+
+    def dup
+      copy = self.class.new(value, @locale, @options)
+      copy.preserve_regex = preserve_regex
+      copy.context = context
+      copy
     end
 
     # Invokes value.match
@@ -93,7 +107,8 @@ module Translatomatic
     # @return [boolean] true if other is a {Translatomatic::String} with
     #   the same value and locale.
     def eql?(other)
-      other.is_a?(Translatomatic::String) && other.hash == hash
+      (other.is_a?(Translatomatic::String) || other.is_a?(::String)) &&
+        other.hash == hash
     end
 
     # (see #eql?)
@@ -103,7 +118,8 @@ module Translatomatic
 
     # @!visibility private
     def hash
-      [value, locale].hash
+      value.hash
+      # [value, locale].hash
     end
 
     # Escape unprintable characters such as newlines.

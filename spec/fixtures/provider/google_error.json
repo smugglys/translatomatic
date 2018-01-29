@@ -1,0 +1,14 @@
+{
+  "error": {
+    "code": 403,
+    "message": "Error message",
+    "errors": [
+      {
+        "message": "Error message",
+        "domain": "global",
+        "reason": "forbidden"
+      }
+    ],
+    "status": "PERMISSION_DENIED"
+  }
+}

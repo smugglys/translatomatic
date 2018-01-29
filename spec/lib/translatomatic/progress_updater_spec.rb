@@ -10,11 +10,10 @@ RSpec.describe Translatomatic::ProgressUpdater do
     progressbar = double(:progressbar)
     progress = double(:progress)
     allow(progressbar).to receive(:progress).and_return(progress)
-    #expect(progress).to receive(:"+=").with(2)
     expect(progress).to receive(:+).with(2).and_return(progress)
     expect(progressbar).to receive(:progress=)
     updater = described_class.new(progressbar)
-    updater.processed_strings(2)
+    updater.update_progress(2)
   end
 
 end

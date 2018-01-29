@@ -22,3 +22,7 @@ Style/ClassCheck:
     - 'lib/translatomatic/http/client.rb'
     - 'lib/translatomatic/retry_executor.rb'
     - 'lib/translatomatic/file_translator.rb'
+
+Lint/DefEndAlignment:
+  Description: "Makes sure def/ends line up"
+  Enabled: true

@@ -102,15 +102,16 @@ en:
         api_key: Yandex API key
         key_required: Yandex API key required.
     file_translator:
-      total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_provider} from provider, %{untranslated} untranslated)'
-      untranslated: "Untranslated strings:"
       dry_run: Print actions without performing translations or writing files.
-      no_database: Do not store translations to the database.
-      database_disabled: Database is disabled.
-      provider_required: Provider required.
+      no_database: Do not save translations to the database.
       translating: Translating %{source} (%{source_locale}) to %{target} (%{target_locale})
       translating_in_place: Translating %{source} (%{source_locale}) in place (%{target_locale})
       in_place: Translate source file in-place.
+    translator:
+      database_disabled: Database is disabled.
+      provider_required: Provider required.
+      total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_provider} from provider, %{untranslated} untranslated)'
+      untranslated: "Untranslated strings:"
     database:
       no_environment: No environment '%{env}' in %{file}
       migrated: Database migrated.

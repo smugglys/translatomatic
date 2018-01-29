@@ -38,9 +38,7 @@ module Translatomatic
       MAX_TRANSLATIONS = 10
 
       def perform_translate(strings, from, to)
-        attempt_with_retries(3) do
-          fetch_translation_array(strings, from, to)
-        end
+        fetch_translation_array(strings, from, to)
       end
 
       # fetch single translation or n translations for given strings

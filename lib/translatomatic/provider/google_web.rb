@@ -34,10 +34,8 @@ module Translatomatic
 
       def perform_translate(strings, from, to)
         strings.each do |string|
-          attempt_with_retries(3) do
-            result = api.translate(string, from, to)
-            add_translations(string, translations_from_result(result))
-          end
+          result = api.translate(string, from, to)
+          add_translations(string, translations_from_result(result))
         end
       end
 
