@@ -1,116 +1,111 @@
-# Criado por Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:18 +1030
-
+---
 pt:
   translatomatic:
     cli:
+      aborted: Abortada
       config:
-        subcommand: Comandos de configuração
         configuration: Configuração
+        context: Contexto de configuração
         context_configuration: Configuração para o contexto '%{context}'
-        no_config: Nenhuma configuração encontrada
-        set: Alterar uma definição de configuração
-        remove: Remover uma definição de configuração
-        list: Lista as definições de configuração atuais
+        desc: Descrição
         describe: Descrever as configurações disponíveis
+        list: Lista as definições de configuração atuais
         name: Nome
+        no_config: Nenhuma configuração encontrada
+        remove: Remover uma definição de configuração
+        set: Alterar uma definição de configuração
+        subcommand: Comandos de configuração
         type: Tipo
         value: Valor
-        desc: Descrição
-        context: Contexto de configuração
       convert: Converter o arquivo de origem para o formato de arquivo de destino
-      translate:
-        subcommand: Traduzir arquivos ou cadeias de caracteres
-        file: Traduzir um arquivo para locais de destino
-        string: Definição da palavra uma sequência de caracteres para localidades
-          de destino
-        provider: Implementações de tradutor para usar
+      database:
+        search: Pesquisar banco de dados para correspondência determinada sequência de caracteres de texto.
+        subcommand: Comandos de banco de dados
+      debug: Habilitar a depuração de saída
+      display_sentences: Exibir as frases
+      display_values: Valores de exibição de um pacote de recursos
+      display_version: Versão de visualização
+      dry_run: 'Dry run: arquivos não irão ser traduzidos ou escritos'
+      extract_strings: Extrair as strings de arquivos não-recurso
+      file_source: 'Arquivo: %{file}'
+      list_backends: Lista de serviços de tradução disponíveis
+      locales_required: Um ou mais locais de destino necessários
+      locales_to_display: Locales para exibir
+      sentences: 'Frases:'
+      share: Compartilhamento de traduções com tradutores
+      source_files: Arquivos para traduzir
       source_locale: A localidade do arquivo de origem
       target_locales: Localidades de tradução para o
-      source_files: Arquivos para traduzir
-      debug: Habilitar a depuração de saída
-      wank: Ativar a barra de progresso de tradução
-      share: Compartilhamento de traduções com tradutores
-      dry_run: 'Dry run: arquivos não irão ser traduzidos ou escritos'
-      locales_required: Um ou mais locais de destino necessários
-      using_provider: 'Usando o Tradutor: %{name}'
-      display_values: Valores de exibição de um pacote de recursos
-      locales_to_display: Locales para exibir
-      display_sentences: Exibir as frases
-      extract_strings: Extrair as strings de arquivos não-recurso
-      list_backends: Lista de serviços de tradução disponíveis
-      display_version: Versão de visualização
-      uploading_tmx: Upload TMX %{name}
+      translate:
+        file: Traduzir um arquivo para locais de destino
+        provider: Implementações de tradutor para usar
+        string: Definição da palavra uma sequência de caracteres para localidades de destino
+        subcommand: Traduzir arquivos ou cadeias de caracteres
       translating: Tradução em andamento
-      aborted: Abortada
-      file_source: 'Arquivo: %{file}'
-      sentences: 'Frases:'
-      database:
-        subcommand: Comandos de banco de dados
-        search: Pesquisar banco de dados para correspondência determinada sequência
-          de caracteres de texto.
-    file:
-      not_found: 'Arquivo não encontrado: %{file}'
-      unsupported: 'Sem suporte de tipo de arquivo: %{file}'
-      unknown_locale: Não é possível determinar a localidade
-      created_by: Criado por %{app} %{version} %{date}
-      error: 'Erro: %{message}'
-      loading: Tentar carregar %{file} usando %{name}
-      directory: 'Arquivo é um diretório: %{file}'
-      invalid: 'Arquivo é inválido: %{file}'
-    tmx:
-      multiple_origins: Múltiplas origens nos textos.
-      multiple_locales: Várias localidades de origem nos textos.
-    provider:
-      email_required: Endereço de email.
-      password_required: Senha necessária.
-      google_key_required: Chave da API do Google exigido.
-      google_api_key: Chave da API do Google
-      frengly_api_key: Chave da API Frengly
-      microsoft_api_key: Chave da API do Microsoft
-      microsoft_key_required: Chave da API do Microsoft necessário.
-      mymemory_api_key: Chave da API do MyMemory
-      email_address: Endereço de e-mail
-      share_response: 'Compartilhar a resposta: %{response}'
-      yandex_api_key: Chave da API Yandex
-      yandex_key_required: Chave da API Yandex exigido.
-      required_option: "(obrigatório)"
-      providers: 'Todos os tradutores:'
-      configured: 'Tradutores configurados:'
-      unavailable: Tradutor %{name} não está disponível.
-      no_providers: Não há tradutores são configurados.
-      password: Senha
-    file_translator:
-      total_translations: 'Total de traduções: %{total} (%{from_db} de banco de dados,
-        %{from_provider} de tradutor, %{untranslated} não traduzida)'
-      untranslated: 'Untranslated sequências de caracteres:'
-      dry_run: Imprima ações sem realizar traduções ou gravação de arquivos.
-      use_database: Armazenar e recuperar as traduções do banco.
-      database_disabled: Banco de dados é desabilitado.
-      provider_required: Tradutor exigido.
-      translating: Traduzindo %{source} (%{source_locale}) para %{target} (%{target_locale})
-      stats: 'Traduções de banco de dados: %{from_db}, Tradutor: %{from_provider},
-        sem tradução: %{untranslated}'
-    database:
-      no_environment: Nenhum ambiente '%{env}' em %{file}
-      migrated: Banco de dados migrados.
-      created: Banco de dados criado.
-      deleted: Banco de dados excluído.
-      could_not_create: Banco de dados não pôde ser criado.
-      config_file: Caminho para o arquivo de configuração de banco de dados
-      env: Ambiente de banco de dados
-    unicode:
-      invalid_byte: 'Byte de UTF8 inválido: ''%{byte}'''
+      uploading_tmx: Upload TMX %{name}
+      using_provider: 'Usando o Tradutor: %{name}'
+      wank: Ativar a barra de progresso de tradução
     config:
-      invalid_context: 'Contexto de configuração não reconhecida: ''%{context}'''
-      invalid_key: 'Chave de configuração não reconhecida: ''%{key}'''
       command_line_only: Configuração '%{key}' não pode ser salvo.
-      types:
-        string: Sequência de caracteres
-        hash: Hash
-        array: Matriz
-        numeric: Numérico
-        boolean: Boolean
       context:
         env: Meio ambiente
         project: Projeto
         user: Usuário
+      invalid_context: 'Contexto de configuração não reconhecida: ''%{context}'''
+      invalid_key: 'Chave de configuração não reconhecida: ''%{key}'''
+      types:
+        array: Matriz
+        boolean: Boolean
+        hash: Hash
+        numeric: Numérico
+        string: Sequência de caracteres
+    database:
+      config_file: Caminho para o arquivo de configuração de banco de dados
+      could_not_create: Banco de dados não pôde ser criado.
+      created: Banco de dados criado.
+      deleted: Banco de dados excluído.
+      env: Ambiente de banco de dados
+      migrated: Banco de dados migrados.
+      no_environment: Nenhum ambiente '%{env}' em %{file}
+    file:
+      created_by: Criado por %{app} %{version} %{date}
+      directory: 'Arquivo é um diretório: %{file}'
+      error: 'Erro: %{message}'
+      invalid: 'Arquivo é inválido: %{file}'
+      loading: Tentar carregar %{file} usando %{name}
+      not_found: 'Arquivo não encontrado: %{file}'
+      unknown_locale: Não é possível determinar a localidade
+      unsupported: 'Sem suporte de tipo de arquivo: %{file}'
+    file_translator:
+      database_disabled: Banco de dados é desabilitado.
+      dry_run: Imprima ações sem realizar traduções ou gravação de arquivos.
+      provider_required: Tradutor exigido.
+      stats: 'Traduções de banco de dados: %{from_db}, Tradutor: %{from_provider}, sem tradução: %{untranslated}'
+      total_translations: 'Total de traduções: %{total} (%{from_db} de banco de dados, %{from_provider} de tradutor, %{untranslated} não traduzida)'
+      translating: Traduzindo %{source} (%{source_locale}) para %{target} (%{target_locale})
+      untranslated: 'Untranslated sequências de caracteres:'
+      use_database: Armazenar e recuperar as traduções do banco.
+    provider:
+      configured: 'Tradutores configurados:'
+      email_address: Endereço de e-mail
+      email_required: Endereço de email.
+      frengly_api_key: Chave da API Frengly
+      google_api_key: Chave da API do Google
+      google_key_required: Chave da API do Google exigido.
+      microsoft_api_key: Chave da API do Microsoft
+      microsoft_key_required: Chave da API do Microsoft necessário.
+      mymemory_api_key: Chave da API do MyMemory
+      no_providers: Não há tradutores são configurados.
+      password: Senha
+      password_required: Senha necessária.
+      providers: 'Todos os tradutores:'
+      required_option: "(obrigatório)"
+      share_response: 'Compartilhar a resposta: %{response}'
+      unavailable: Tradutor %{name} não está disponível.
+      yandex_api_key: Chave da API Yandex
+      yandex_key_required: Chave da API Yandex exigido.
+    tmx:
+      multiple_locales: Várias localidades de origem nos textos.
+      multiple_origins: Múltiplas origens nos textos.
+    unicode:
+      invalid_byte: 'Byte de UTF8 inválido: ''%{byte}'''

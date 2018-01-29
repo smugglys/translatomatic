@@ -1,113 +1,111 @@
-# Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:17 +1030 によって作成されました。
-
+---
 ja:
   translatomatic:
     cli:
+      aborted: 中止
       config:
-        subcommand: 構成コマンド
         configuration: 構成
+        context: 構成コンテキスト
         context_configuration: "'%{context}' のコンテキストの構成"
-        no_config: ない構成が見つかりません
-        set: 構成設定を変更します。
-        remove: 構成設定を削除します。
-        list: リストの現在の構成設定
+        desc: 説明
         describe: 使用可能な構成設定について説明します。
+        list: リストの現在の構成設定
         name: 名
+        no_config: ない構成が見つかりません
+        remove: 構成設定を削除します。
+        set: 構成設定を変更します。
+        subcommand: 構成コマンド
         type: タイプ
         value: 値
-        desc: 説明
-        context: 構成コンテキスト
       convert: ソース ファイルをターゲット ファイル形式に変換します。
-      translate:
-        subcommand: ファイルまたは文字列を翻訳します。
-        file: ターゲットのロケールにファイルを翻訳します。
-        string: ターゲット ロケールを文字列に変換します。
-        provider: 翻訳の実装を使用するには
+      database:
+        search: 指定した文字列と一致する文字列の検索データベースです。
+        subcommand: データベース コマンド
+      debug: デバッグ出力を有効にします。
+      display_sentences: 文章を表示します。
+      display_values: リソース バンドルから値を表示します。
+      display_version: バージョンの表示
+      dry_run: '乾燥を実行: ファイルはない翻訳されるか書かれて'
+      extract_strings: 非リソース ファイルから文字列を抽出します。
+      file_source: 'ファイル: %{file}'
+      list_backends: 一覧翻訳サービス
+      locales_required: 必要な 1 つまたは複数のターゲット ロケール
+      locales_to_display: 表示するロケール
+      sentences: '文:'
+      share: 翻訳者と翻訳を共有します。
+      source_files: 翻訳するファイル
       source_locale: ソース ファイルのロケール
       target_locales: 変換するロケール
-      source_files: 翻訳するファイル
-      debug: デバッグ出力を有効にします。
-      wank: 翻訳進行状況バーを有効にします。
-      share: 翻訳者と翻訳を共有します。
-      dry_run: '乾燥を実行: ファイルはない翻訳されるか書かれて'
-      locales_required: 必要な 1 つまたは複数のターゲット ロケール
-      using_provider: '翻訳を使用して: %{name}'
-      display_values: リソース バンドルから値を表示します。
-      locales_to_display: 表示するロケール
-      display_sentences: 文章を表示します。
-      extract_strings: 非リソース ファイルから文字列を抽出します。
-      list_backends: 一覧翻訳サービス
-      display_version: バージョンの表示
-      uploading_tmx: "%{name} に TMX をアップロードします。"
+      translate:
+        file: ターゲットのロケールにファイルを翻訳します。
+        provider: 翻訳の実装を使用するには
+        string: ターゲット ロケールを文字列に変換します。
+        subcommand: ファイルまたは文字列を翻訳します。
       translating: 翻訳しています
-      aborted: 中止
-      file_source: 'ファイル: %{file}'
-      sentences: '文:'
-      database:
-        subcommand: データベース コマンド
-        search: 指定した文字列と一致する文字列の検索データベースです。
-    file:
-      not_found: ファイルが見つかりません:%{file}
-      unsupported: 'ファイルの種類はサポートされていません: %{file}'
-      unknown_locale: ロケールを決定できません。
-      created_by: "%{app} %{version} %{date} によって作成されました。"
-      error: 'エラー: %{message}'
-      loading: "%{file} %{name} を使用してロードしようと"
-      directory: 'ファイルはディレクトリです: %{file}'
-      invalid: ファイルが無効である:%{file}
-    tmx:
-      multiple_origins: テキストの複数の起源。
-      multiple_locales: テキストに複数のソースのロケール。
-    provider:
-      email_required: メール アドレスが必要です。
-      password_required: パスワードが必要です。
-      google_key_required: Google の API キーが必要です。
-      google_api_key: Google の API キー
-      frengly_api_key: Frengly API キー
-      microsoft_api_key: マイクロソフトの API キー
-      microsoft_key_required: マイクロソフトの API キーが必要です。
-      mymemory_api_key: MyMemory API キー
-      email_address: メール アドレス
-      share_response: '応答を共有: %{response}'
-      yandex_api_key: Yandex API キー
-      yandex_key_required: Yandex の API キーが必要です。
-      required_option: "(必須)"
-      providers: 'すべての翻訳者:'
-      configured: '構成された翻訳者:'
-      unavailable: 翻訳 %{name} は使用できません。
-      no_providers: 翻訳者は構成されていません。
-      password: パスワード
-    file_translator:
-      total_translations: '翻訳を合計: %{total} (%{from_db} %{from_provider}、%{untranslated}
-        非翻訳の翻訳者からのデータベースから)'
-      untranslated: '未翻訳の文字列:'
-      dry_run: 翻訳の実行やファイルの書き込みせずにアクションを印刷します。
-      use_database: 保存し、データベースから翻訳を取得します。
-      database_disabled: データベースは無効です。
-      provider_required: 必要な翻訳。
-      translating: 翻訳%{source}(%{source_locale})に%{target}(%{target_locale})
-      stats: 翻訳からデータベース:%{from_db},翻訳:%{from_provider},翻:%{untranslated}
-    database:
-      no_environment: ない環境 '%{env}' %{file}
-      migrated: データベースの移行。
-      created: データベースを作成します。
-      deleted: データベースは削除されます。
-      could_not_create: データベースを作成できませんでした。
-      config_file: データベース構成ファイルへのパス
-      env: データベース環境
-    unicode:
-      invalid_byte: '無効な UTF8 バイト: ''%{byte}'''
+      uploading_tmx: "%{name} に TMX をアップロードします。"
+      using_provider: '翻訳を使用して: %{name}'
+      wank: 翻訳進行状況バーを有効にします。
     config:
-      invalid_context: '認識できない構成コンテキスト: ''%{context}'''
-      invalid_key: '認識できないコンフィギュレーション キー: ''%{key}'''
       command_line_only: 構成 '%{key}' を保存できません。
-      types:
-        string: 文字列
-        hash: ハッシュ
-        array: 配列
-        numeric: 数値
-        boolean: ブール値
       context:
         env: 環境
         project: プロジェクト
         user: ユーザー
+      invalid_context: '認識できない構成コンテキスト: ''%{context}'''
+      invalid_key: '認識できないコンフィギュレーション キー: ''%{key}'''
+      types:
+        array: 配列
+        boolean: ブール値
+        hash: ハッシュ
+        numeric: 数値
+        string: 文字列
+    database:
+      config_file: データベース構成ファイルへのパス
+      could_not_create: データベースを作成できませんでした。
+      created: データベースを作成します。
+      deleted: データベースは削除されます。
+      env: データベース環境
+      migrated: データベースの移行。
+      no_environment: ない環境 '%{env}' %{file}
+    file:
+      created_by: "%{app} %{version} %{date} によって作成されました。"
+      directory: 'ファイルはディレクトリです: %{file}'
+      error: 'エラー: %{message}'
+      invalid: ファイルが無効である:%{file}
+      loading: "%{file} %{name} を使用してロードしようと"
+      not_found: ファイルが見つかりません:%{file}
+      unknown_locale: ロケールを決定できません。
+      unsupported: 'ファイルの種類はサポートされていません: %{file}'
+    file_translator:
+      database_disabled: データベースは無効です。
+      dry_run: 翻訳の実行やファイルの書き込みせずにアクションを印刷します。
+      provider_required: 必要な翻訳。
+      stats: 翻訳からデータベース:%{from_db},翻訳:%{from_provider},翻:%{untranslated}
+      total_translations: '翻訳を合計: %{total} (%{from_db} %{from_provider}、%{untranslated} 非翻訳の翻訳者からのデータベースから)'
+      translating: 翻訳%{source}(%{source_locale})に%{target}(%{target_locale})
+      untranslated: '未翻訳の文字列:'
+      use_database: 保存し、データベースから翻訳を取得します。
+    provider:
+      configured: '構成された翻訳者:'
+      email_address: メール アドレス
+      email_required: メール アドレスが必要です。
+      frengly_api_key: Frengly API キー
+      google_api_key: Google の API キー
+      google_key_required: Google の API キーが必要です。
+      microsoft_api_key: マイクロソフトの API キー
+      microsoft_key_required: マイクロソフトの API キーが必要です。
+      mymemory_api_key: MyMemory API キー
+      no_providers: 翻訳者は構成されていません。
+      password: パスワード
+      password_required: パスワードが必要です。
+      providers: 'すべての翻訳者:'
+      required_option: "(必須)"
+      share_response: '応答を共有: %{response}'
+      unavailable: 翻訳 %{name} は使用できません。
+      yandex_api_key: Yandex API キー
+      yandex_key_required: Yandex の API キーが必要です。
+    tmx:
+      multiple_locales: テキストに複数のソースのロケール。
+      multiple_origins: テキストの複数の起源。
+    unicode:
+      invalid_byte: '無効な UTF8 バイト: ''%{byte}'''

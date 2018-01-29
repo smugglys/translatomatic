@@ -1,112 +1,111 @@
-# Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:18 +1030에 의해 만들어진
-
+---
 ko:
   translatomatic:
     cli:
+      aborted: 중단
       config:
-        subcommand: 구성 명령
         configuration: 구성
+        context: 구성 컨텍스트
         context_configuration: 컨텍스트 '%{context}'에 대 한 구성
-        no_config: 아니 구성 발견
-        set: 구성 설정 변경
-        remove: 구성 설정 제거
-        list: 현재 구성 설정 목록
+        desc: 설명
         describe: 사용 가능한 구성 설정 설명
+        list: 현재 구성 설정 목록
         name: 이름
+        no_config: 아니 구성 발견
+        remove: 구성 설정 제거
+        set: 구성 설정 변경
+        subcommand: 구성 명령
         type: 유형
         value: 값
-        desc: 설명
-        context: 구성 컨텍스트
       convert: 소스 파일을 대상 파일 형식으로 변환
-      translate:
-        subcommand: 파일 또는 문자열 번역
-        file: 대상 로케일 파일 번역
-        string: 대상 로케일 문자열 번역
-        provider: 번역기 사용 하 여 구현
+      database:
+        search: 지정 된 문자열과 일치 하는 텍스트에 대 한 검색 데이터베이스입니다.
+        subcommand: 데이터베이스 명령
+      debug: 디버깅 출력을 사용 하도록 설정
+      display_sentences: 표시 문장
+      display_values: 리소스 번들에서 표시 값
+      display_version: 디스플레이 버전
+      dry_run: '드라이 실행: 파일 또는 번역 될 하지 작성'
+      extract_strings: 아닌 리소스 파일에서 문자열을 추출
+      file_source: '파일: %{file}'
+      list_backends: 목록 사용 가능한 번역 서비스
+      locales_required: 하나 이상의 대상 로케일 필요
+      locales_to_display: 로캘을 표시합니다
+      sentences: '문장:'
+      share: 번역자와 번역을 공유
+      source_files: 번역 파일
       source_locale: 소스 파일의 로캘
       target_locales: 번역 하는 로캘
-      source_files: 번역 파일
-      debug: 디버깅 출력을 사용 하도록 설정
-      wank: 번역 진행률 표시줄 사용
-      share: 번역자와 번역을 공유
-      dry_run: '드라이 실행: 파일 또는 번역 될 하지 작성'
-      locales_required: 하나 이상의 대상 로케일 필요
-      using_provider: '번역기를 사용 하 여: %{name}'
-      display_values: 리소스 번들에서 표시 값
-      locales_to_display: 로캘을 표시합니다
-      display_sentences: 표시 문장
-      extract_strings: 아닌 리소스 파일에서 문자열을 추출
-      list_backends: 목록 사용 가능한 번역 서비스
-      display_version: 디스플레이 버전
-      uploading_tmx: "%{name} TMX 업로드"
+      translate:
+        file: 대상 로케일 파일 번역
+        provider: 번역기 사용 하 여 구현
+        string: 대상 로케일 문자열 번역
+        subcommand: 파일 또는 문자열 번역
       translating: 번역 중
-      aborted: 중단
-      file_source: '파일: %{file}'
-      sentences: '문장:'
-      database:
-        subcommand: 데이터베이스 명령
-        search: 지정 된 문자열과 일치 하는 텍스트에 대 한 검색 데이터베이스입니다.
-    file:
-      not_found: '파일을 찾을 수 없습니다: %{file}'
-      unsupported: '지원 되지 않는 파일 형식: %{file}'
-      unknown_locale: 로케일을 확인할 수 없습니다
-      created_by: "%{app} %{version} %{date}에 의해 만들어진"
-      error: '오류: %{message}'
-      loading: "%{file} %{name}를 사용 하 여 로드 하려고"
-      directory: '파일은 디렉터리: %{file}'
-      invalid: '파일 유효 하지 않습니다: %{file}'
-    tmx:
-      multiple_origins: 텍스트에 여러 개의 기원입니다.
-      multiple_locales: 텍스트에 여러 소스 로캘
-    provider:
-      email_required: 이메일 주소는 필수입니다.
-      password_required: 암호 필요입니다.
-      google_key_required: 구글 API 키 필요입니다.
-      google_api_key: 구글 API 키
-      frengly_api_key: Frengly API 키
-      microsoft_api_key: 마이크로소프트 API 키
-      microsoft_key_required: 마이크로소프트 API 키 필요입니다.
-      mymemory_api_key: MyMemory API 키
-      email_address: 이메일 주소
-      share_response: '공유 응답: %{response}'
-      yandex_api_key: Yandex API 키
-      yandex_key_required: Yandex API 키 필요입니다.
-      required_option: "(필수)"
-      providers: '모든 번역자:'
-      configured: '구성된 변환기:'
-      unavailable: 번역기 %{name} 불가능합니다.
-      no_providers: 아니 변환기 구성 됩니다.
-      password: 암호
-    file_translator:
-      total_translations: 총 번역:%{total}(%{from_db}데이터베이스에서,%{from_provider}에서 번역,%{untranslated}맞)
-      untranslated: '번역 되지 않은 문자열:'
-      dry_run: 번역을 수행 하거나 파일을 작성 하지 않고 작업을 인쇄 합니다.
-      use_database: 저장 하 고 데이터베이스에서 번역을 검색 합니다.
-      database_disabled: 데이터베이스는 사용할 수 없습니다.
-      provider_required: 통역 필요입니다.
-      translating: 번역%{source}(%{source_locale})%{target}(%{target_locale})
-      stats: '번역 데이터베이스: %{from_db}, 번역기: %{from_provider}, 번역된: %{untranslated}'
-    database:
-      no_environment: 아니 환경 %{env}에서 ' %{file}'
-      migrated: 데이터베이스 마이그레이션.
-      created: 데이터베이스 생성입니다.
-      deleted: 데이터베이스 삭제입니다.
-      could_not_create: 데이터베이스를 만들 수 없습니다.
-      config_file: 데이터베이스 구성 파일의 경로를
-      env: 데이터베이스 환경
-    unicode:
-      invalid_byte: '잘못 된 UTF8 바이트: ''%{byte}'''
+      uploading_tmx: "%{name} TMX 업로드"
+      using_provider: '번역기를 사용 하 여: %{name}'
+      wank: 번역 진행률 표시줄 사용
     config:
-      invalid_context: '배우와 구성 컨텍스트: ''%{context}'''
-      invalid_key: '배우와 구성 키: ''%{key}'''
       command_line_only: 구성 '%{key}' 저장할 수 없습니다.
-      types:
-        string: 문자열
-        hash: 해시
-        array: 배열
-        numeric: 숫자
-        boolean: 부울
       context:
         env: 환경
         project: 프로젝트
         user: 사용자
+      invalid_context: '배우와 구성 컨텍스트: ''%{context}'''
+      invalid_key: '배우와 구성 키: ''%{key}'''
+      types:
+        array: 배열
+        boolean: 부울
+        hash: 해시
+        numeric: 숫자
+        string: 문자열
+    database:
+      config_file: 데이터베이스 구성 파일의 경로를
+      could_not_create: 데이터베이스를 만들 수 없습니다.
+      created: 데이터베이스 생성입니다.
+      deleted: 데이터베이스 삭제입니다.
+      env: 데이터베이스 환경
+      migrated: 데이터베이스 마이그레이션.
+      no_environment: 아니 환경 %{env}에서 ' %{file}'
+    file:
+      created_by: "%{app} %{version} %{date}에 의해 만들어진"
+      directory: '파일은 디렉터리: %{file}'
+      error: '오류: %{message}'
+      invalid: '파일 유효 하지 않습니다: %{file}'
+      loading: "%{file} %{name}를 사용 하 여 로드 하려고"
+      not_found: '파일을 찾을 수 없습니다: %{file}'
+      unknown_locale: 로케일을 확인할 수 없습니다
+      unsupported: '지원 되지 않는 파일 형식: %{file}'
+    file_translator:
+      database_disabled: 데이터베이스는 사용할 수 없습니다.
+      dry_run: 번역을 수행 하거나 파일을 작성 하지 않고 작업을 인쇄 합니다.
+      provider_required: 통역 필요입니다.
+      stats: '번역 데이터베이스: %{from_db}, 번역기: %{from_provider}, 번역된: %{untranslated}'
+      total_translations: 총 번역:%{total}(%{from_db}데이터베이스에서,%{from_provider}에서 번역,%{untranslated}맞)
+      translating: 번역%{source}(%{source_locale})%{target}(%{target_locale})
+      untranslated: '번역 되지 않은 문자열:'
+      use_database: 저장 하 고 데이터베이스에서 번역을 검색 합니다.
+    provider:
+      configured: '구성된 변환기:'
+      email_address: 이메일 주소
+      email_required: 이메일 주소는 필수입니다.
+      frengly_api_key: Frengly API 키
+      google_api_key: 구글 API 키
+      google_key_required: 구글 API 키 필요입니다.
+      microsoft_api_key: 마이크로소프트 API 키
+      microsoft_key_required: 마이크로소프트 API 키 필요입니다.
+      mymemory_api_key: MyMemory API 키
+      no_providers: 아니 변환기 구성 됩니다.
+      password: 암호
+      password_required: 암호 필요입니다.
+      providers: '모든 번역자:'
+      required_option: "(필수)"
+      share_response: '공유 응답: %{response}'
+      unavailable: 번역기 %{name} 불가능합니다.
+      yandex_api_key: Yandex API 키
+      yandex_key_required: Yandex API 키 필요입니다.
+    tmx:
+      multiple_locales: 텍스트에 여러 소스 로캘
+      multiple_origins: 텍스트에 여러 개의 기원입니다.
+    unicode:
+      invalid_byte: '잘못 된 UTF8 바이트: ''%{byte}'''

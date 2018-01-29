@@ -1,114 +1,111 @@
-# Skapad av Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:18 +1030
-
+---
 sv:
   translatomatic:
     cli:
+      aborted: Avbröts
       config:
-        subcommand: Konfigurationskommandon
         configuration: Konfiguration
+        context: Konfiguration sammanhang
         context_configuration: Konfiguration för sammanhang '%{context}'
-        no_config: Ingen konfiguration som hittade
-        set: Ändra en konfigurationsinställning
-        remove: Ta bort en konfigurationsinställning
-        list: Förteckning aktuella konfigurationsinställningar
+        desc: Beskrivning
         describe: Beskriv tillgängliga konfigurationsinställningarna
+        list: Förteckning aktuella konfigurationsinställningar
         name: Namn
+        no_config: Ingen konfiguration som hittade
+        remove: Ta bort en konfigurationsinställning
+        set: Ändra en konfigurationsinställning
+        subcommand: Konfigurationskommandon
         type: Typ
         value: Värde
-        desc: Beskrivning
-        context: Konfiguration sammanhang
       convert: Konvertera källfilen till mål-format
-      translate:
-        subcommand: Översätta filer eller strängar
-        file: Översätta en fil till målet locales
-        string: Översätta en sträng till målet locales
-        provider: Översättare-implementeringar använda
+      database:
+        search: Sökdatabas för text på en given sträng.
+        subcommand: Databas-kommandon
+      debug: Aktivera felsökning utdata
+      display_sentences: Visa meningar
+      display_values: Visa värden från en resurssamling
+      display_version: Display-version
+      dry_run: 'Torr kör: filer kommer inte att översättas eller skrivit'
+      extract_strings: Extrahera strängar från icke-resursfiler
+      file_source: 'Fil: %{file}'
+      list_backends: Listan tillgängliga översättningstjänster
+      locales_required: Ett eller flera mål locales krävs
+      locales_to_display: Locales att Visa
+      sentences: 'Meningar:'
+      share: Dela översättningar med översättare
+      source_files: Filer att översätta
       source_locale: Lokalen på källfilen
       target_locales: Språk att översätta till
-      source_files: Filer att översätta
-      debug: Aktivera felsökning utdata
-      wank: Aktivera översättning förloppsindikatorn
-      share: Dela översättningar med översättare
-      dry_run: 'Torr kör: filer kommer inte att översättas eller skrivit'
-      locales_required: Ett eller flera mål locales krävs
-      using_provider: 'Med hjälp av översättare: %{name}'
-      display_values: Visa värden från en resurssamling
-      locales_to_display: Locales att Visa
-      display_sentences: Visa meningar
-      extract_strings: Extrahera strängar från icke-resursfiler
-      list_backends: Listan tillgängliga översättningstjänster
-      display_version: Display-version
-      uploading_tmx: Ladda upp TMX %{name}
+      translate:
+        file: Översätta en fil till målet locales
+        provider: Översättare-implementeringar använda
+        string: Översätta en sträng till målet locales
+        subcommand: Översätta filer eller strängar
       translating: Att översätta
-      aborted: Avbröts
-      file_source: 'Fil: %{file}'
-      sentences: 'Meningar:'
-      database:
-        subcommand: Databas-kommandon
-        search: Sökdatabas för text på en given sträng.
-    file:
-      not_found: 'Filen hittades inte: %{file}'
-      unsupported: 'Unsupported filtypen: %{file}'
-      unknown_locale: Det går inte att avgöra locale
-      created_by: Skapad av %{app} %{version} %{date}
-      error: 'Fel: %{message}'
-      loading: Försöker läsa in %{file} med %{name}
-      directory: 'Filen är en katalog: %{file}'
-      invalid: 'Filen är ogiltig: %{file}'
-    tmx:
-      multiple_origins: Flera ursprung i texter.
-      multiple_locales: Flera källa lokalanpassningar i texter.
-    provider:
-      email_required: E-postadress krävs.
-      password_required: Lösenord krävs.
-      google_key_required: Google API-nyckel krävs.
-      google_api_key: Google API-nyckel
-      frengly_api_key: Frengly API-nyckel
-      microsoft_api_key: Microsoft API nyckel
-      microsoft_key_required: Microsoft API nyckeln som krävs.
-      mymemory_api_key: MyMemory API-nyckel
-      email_address: E-postadress
-      share_response: 'Dela svar: %{response}'
-      yandex_api_key: Yandex API-nyckel
-      yandex_key_required: Yandex API-nyckel krävs.
-      required_option: "(krävs)"
-      providers: 'Alla översättare:'
-      configured: 'Konfigurerade översättare:'
-      unavailable: Översättare %{name} är inte tillgänglig.
-      no_providers: Ingen översättare är konfigurerade.
-      password: Lösenord
-    file_translator:
-      total_translations: 'Summa översättningar: %{total} (%{from_db} från databas,
-        %{from_provider} från översättare, %{untranslated} translaterade)'
-      untranslated: 'Oöversatta strängar:'
-      dry_run: Skriva ut åtgärder utan utför översättningar eller skriva filer.
-      use_database: Lagra och hämta översättningar från databasen.
-      database_disabled: Databasen är inaktiverad.
-      provider_required: Översättare som krävs.
-      translating: Att översätta %{source} (%{source_locale}) till %{target} (%{target_locale})
-      stats: 'Översättningar från databas: %{from_db}, översättare: %{from_provider},
-        translaterade: %{untranslated}'
-    database:
-      no_environment: Ingen miljö '%{env}' i %{file}
-      migrated: Databasen migrerad.
-      created: Databas som har skapats.
-      deleted: Databas raderas.
-      could_not_create: Databasen kunde inte skapas.
-      config_file: Sökvägen till databasen konfigurationsfilen
-      env: Databasmiljö
-    unicode:
-      invalid_byte: 'Ogiltigt UTF8 byte: ''%{byte}'''
+      uploading_tmx: Ladda upp TMX %{name}
+      using_provider: 'Med hjälp av översättare: %{name}'
+      wank: Aktivera översättning förloppsindikatorn
     config:
-      invalid_context: 'Oredovisade konfiguration sammanhang: ''%{context}'''
-      invalid_key: 'Konfigurationsnyckel för oredovisade: ''%{key}'''
       command_line_only: Konfiguration '%{key}' kan inte sparas
-      types:
-        string: Sträng
-        hash: Hash
-        array: Array
-        numeric: Numeriska
-        boolean: Boolean
       context:
         env: Miljö
         project: Projektet
         user: Användaren
+      invalid_context: 'Oredovisade konfiguration sammanhang: ''%{context}'''
+      invalid_key: 'Konfigurationsnyckel för oredovisade: ''%{key}'''
+      types:
+        array: Array
+        boolean: Boolean
+        hash: Hash
+        numeric: Numeriska
+        string: Sträng
+    database:
+      config_file: Sökvägen till databasen konfigurationsfilen
+      could_not_create: Databasen kunde inte skapas.
+      created: Databas som har skapats.
+      deleted: Databas raderas.
+      env: Databasmiljö
+      migrated: Databasen migrerad.
+      no_environment: Ingen miljö '%{env}' i %{file}
+    file:
+      created_by: Skapad av %{app} %{version} %{date}
+      directory: 'Filen är en katalog: %{file}'
+      error: 'Fel: %{message}'
+      invalid: 'Filen är ogiltig: %{file}'
+      loading: Försöker läsa in %{file} med %{name}
+      not_found: 'Filen hittades inte: %{file}'
+      unknown_locale: Det går inte att avgöra locale
+      unsupported: 'Unsupported filtypen: %{file}'
+    file_translator:
+      database_disabled: Databasen är inaktiverad.
+      dry_run: Skriva ut åtgärder utan utför översättningar eller skriva filer.
+      provider_required: Översättare som krävs.
+      stats: 'Översättningar från databas: %{from_db}, översättare: %{from_provider}, translaterade: %{untranslated}'
+      total_translations: 'Summa översättningar: %{total} (%{from_db} från databas, %{from_provider} från översättare, %{untranslated} translaterade)'
+      translating: Att översätta %{source} (%{source_locale}) till %{target} (%{target_locale})
+      untranslated: 'Oöversatta strängar:'
+      use_database: Lagra och hämta översättningar från databasen.
+    provider:
+      configured: 'Konfigurerade översättare:'
+      email_address: E-postadress
+      email_required: E-postadress krävs.
+      frengly_api_key: Frengly API-nyckel
+      google_api_key: Google API-nyckel
+      google_key_required: Google API-nyckel krävs.
+      microsoft_api_key: Microsoft API nyckel
+      microsoft_key_required: Microsoft API nyckeln som krävs.
+      mymemory_api_key: MyMemory API-nyckel
+      no_providers: Ingen översättare är konfigurerade.
+      password: Lösenord
+      password_required: Lösenord krävs.
+      providers: 'Alla översättare:'
+      required_option: "(krävs)"
+      share_response: 'Dela svar: %{response}'
+      unavailable: Översättare %{name} är inte tillgänglig.
+      yandex_api_key: Yandex API-nyckel
+      yandex_key_required: Yandex API-nyckel krävs.
+    tmx:
+      multiple_locales: Flera källa lokalanpassningar i texter.
+      multiple_origins: Flera ursprung i texter.
+    unicode:
+      invalid_byte: 'Ogiltigt UTF8 byte: ''%{byte}'''

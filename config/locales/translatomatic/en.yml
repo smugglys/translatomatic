@@ -1,141 +1,143 @@
+---
 en:
   translatomatic:
     cli:
-      provider:
+      aborted: Aborted
+      config:
+        add: Add a configuration value to a list
+        configuration: Configuration
+        desc: Description
+        describe: Describe available configuration settings
+        list: List current configuration settings
+        location_configuration: Configuration for file '%{location}'
         name: Name
-        option: Option
+        no_config: No configuration found
+        one_at_a_time: Only one config file at a time
+        project: Use project configuration file
+        set: Change a configuration setting
+        subcommand: Configuration commands
+        subtract: Remove a configuration value from a list
+        type: Type
+        unset: Remove a configuration setting
+        user: Use user configuration file
+        value: Value
+      convert: Convert source file to target file format
+      database:
+        drop: Drop the database
+        search: Search database for text matching the given string.
+        subcommand: Database commands
+      debug: Enable debugging output
+      display_sentences: Display sentences
+      display_values: Display values from a resource bundle
+      display_version: Display version
+      dry_run: 'Dry run: files will not be translated or written'
+      error: An error has occurred
+      extract_strings: Extract strings from non-resource files
+      file_source: 'File: %{file}'
+      locales_required: One or more target locales required
+      locales_to_display: Locales to display
+      no_wank: Disable translation progress bar
+      provider:
+        available: Available
+        available_no: 'No'
+        available_yes: 'Yes'
         description: Description
         env: Environment
-        available: Available
-        available_yes: "Yes"
-        available_no: "No"
-      config:
-        subcommand: Configuration commands
-        configuration: Configuration
-        location_configuration: Configuration for file '%{location}'
-        no_config: No configuration found
-        set: Change a configuration setting
-        unset: Remove a configuration setting
-        add: Add a configuration value to a list
-        subtract: Remove a configuration value from a list
-        list: List current configuration settings
-        describe: Describe available configuration settings
         name: Name
-        type: Type
-        value: Value
-        desc: Description
-        user: Use user configuration file
-        project: Use project configuration file
-        one_at_a_time: Only one config file at a time
-      convert: Convert source file to target file format
-      translate:
-        subcommand: Translate files or strings
-        file: Translate a file to target locales
-        string: Translate a string to target locales
-        provider: Provider implementations to use
+        option: Option
+      providers: List available translation providers
+      sentences: 'Sentences:'
+      source_files: Files to translate
       source_locale: The locale of the source file
       target_locales: Locales to translate to
-      source_files: Files to translate
-      debug: Enable debugging output
-      no_wank: Disable translation progress bar
-      share: Share translations with providers
-      dry_run: 'Dry run: files will not be translated or written'
-      locales_required: One or more target locales required
-      using_provider: 'Using provider: %{name}'
-      display_values: Display values from a resource bundle
-      locales_to_display: Locales to display
-      display_sentences: Display sentences
-      extract_strings: Extract strings from non-resource files
-      providers: List available translation providers
-      display_version: Display version
-      uploading_tmx: Uploading TMX to %{name}
+      translate:
+        file: Translate a file to target locales
+        provider: Provider implementations to use
+        share: Share translations with providers
+        string: Translate a string to target locales
+        subcommand: Translate files or strings
       translating: Translating
-      aborted: Aborted
-      file_source: 'File: %{file}'
-      sentences: 'Sentences:'
-      error: An error has occurred
-      database:
-        subcommand: Database commands
-        search: Search database for text matching the given string.
-        drop: Drop the database
+      using_provider: 'Using provider: %{name}'
+    config:
+      command_line_only: Configuration '%{key}' cannot be saved
+      context:
+        env: Environment
+        project: Project
+        user: User
+      invalid_context: 'Unrecognised configuration context: ''%{context}'''
+      invalid_key: 'Unrecognised configuration key: ''%{key}'''
+      non_array_key: 'Configuration is not an array type: ''%{key}'''
+      types:
+        array: Array
+        boolean: Boolean
+        hash: Hash
+        numeric: Numeric
+        path: Path
+        path_array: Array of Paths
+        string: String
+    database:
+      config_file: Path to the database configuration file
+      could_not_create: Database could not be created.
+      created: Database created.
+      deleted: Database deleted.
+      env: Database environment
+      migrated: Database migrated.
+      no_environment: No environment '%{env}' in %{file}
     file:
-      not_found: 'File not found: %{file}'
-      unsupported: 'Unsupported file type: %{file}'
-      unknown_locale: Unable to determine locale
       created_by: Created by %{app} %{version} %{date}
-      error: 'Error: %{message}'
-      loading: Attempting to load %{file} using %{name}
-      directory: "File is a directory: %{file}"
-      invalid: "File is invalid: %{file}"
       csv:
-        headers: Treat the first row of CSV files as a row of headers.
-        translate_columns: Names or indices of CSV columns to translate
-        key_column: A CSV column name to to be used for property keys
-        value_column: A CSV column name to be used for property values
         comment_column: A CSV column name to be used for comments
-    tmx:
-      multiple_origins: Multiple origins in texts.
-      multiple_locales: Multiple source locales in texts.
+        headers: Treat the first row of CSV files as a row of headers.
+        key_column: A CSV column name to to be used for property keys
+        translate_columns: Names or indices of CSV columns to translate
+        value_column: A CSV column name to be used for property values
+      directory: 'File is a directory: %{file}'
+      error: 'Error: %{message}'
+      invalid: 'File is invalid: %{file}'
+      loading: Attempting to load %{file} using %{name}
+      not_found: 'File not found: %{file}'
+      unknown_locale: Unable to determine locale
+      unsupported: 'Unsupported file type: %{file}'
+    file_translator:
+      dry_run: Print actions without performing translations or writing files.
+      in_place: Translate source file in-place.
+      translating: Translating %{source} (%{source_locale}) to %{target} (%{target_locale})
+      translating_in_place: Translating %{source} (%{source_locale}) in place (%{target_locale})
     provider:
-      email_required: Email address required.
-      password_required: Password required.
       email_address: Email address
-      share_response: 'Share response: %{response}'
-      required_option: "(required)"
-      options: 'Provider options:'
-      status: "Provider status:"
-      unavailable: Provider %{name} is unavailable.
-      password: Password
-      invalid_response: Unexpected response from provider
-      google:
-        key_required: Google API key required.
-        api_key: Google API key
-        model: Translation model
+      email_required: Email address required.
       frengly:
         api_key: Frengly API key
+      google:
+        api_key: Google API key
+        key_required: Google API key required.
+        model: Translation model
+      invalid_response: Unexpected response from provider
       microsoft:
         api_key: Microsoft API key
         key_required: Microsoft API key required.
       mymemory:
         api_key: MyMemory API key
+      options: 'Provider options:'
+      password: Password
+      password_required: Password required.
+      required_option: "(required)"
+      share_response: 'Share response: %{response}'
+      status: 'Provider status:'
+      unavailable: Provider %{name} is unavailable.
       yandex:
         api_key: Yandex API key
         key_required: Yandex API key required.
-    file_translator:
-      dry_run: Print actions without performing translations or writing files.
-      no_database: Do not save translations to the database.
-      translating: Translating %{source} (%{source_locale}) to %{target} (%{target_locale})
-      translating_in_place: Translating %{source} (%{source_locale}) in place (%{target_locale})
-      in_place: Translate source file in-place.
+    sharer:
+      uploading_tmx: Uploading TMX to %{name}
+    tmx:
+      multiple_locales: Multiple source locales in texts.
+      multiple_origins: Multiple origins in texts.
     translator:
       database_disabled: Database is disabled.
+      no_database: Do not save translations to the database.
       provider_required: Provider required.
       total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_provider} from provider, %{untranslated} untranslated)'
-      untranslated: "Untranslated strings:"
-    database:
-      no_environment: No environment '%{env}' in %{file}
-      migrated: Database migrated.
-      created: Database created.
-      deleted: Database deleted.
-      could_not_create: Database could not be created.
-      config_file: Path to the database configuration file
-      env: Database environment
+      untranslated: 'Untranslated strings:'
     unicode:
-      invalid_byte: "Invalid UTF8 byte: '%{byte}'"
-    config:
-      invalid_context: "Unrecognised configuration context: '%{context}'"
-      invalid_key: "Unrecognised configuration key: '%{key}'"
-      command_line_only: "Configuration '%{key}' cannot be saved"
-      non_array_key: "Configuration is not an array type: '%{key}'"
-      types:
-        string: String
-        hash: Hash
-        array: Array
-        numeric: Numeric
-        boolean: Boolean
-        path: Path
-        path_array: Array of Paths
-      context:
-        env: Environment
-        project: Project
-        user: User
+      invalid_byte: 'Invalid UTF8 byte: ''%{byte}'''

@@ -1,114 +1,111 @@
-# Dicipta oleh Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:18 +1030
-
+---
 ms:
   translatomatic:
     cli:
+      aborted: Dibatalkan
       config:
-        subcommand: Konfigurasi perintah
         configuration: Konfigurasi
+        context: Konteks konfigurasi
         context_configuration: Konfigurasi untuk konteks '%{context}'
-        no_config: Tiada konfigurasi yang ditemui
-        set: Menukar pengesetan konfigurasi
-        remove: Mengalih keluar seting konfigurasi
-        list: Tetapan tatarajah senarai semasa
+        desc: Description/kawalan
         describe: Huraikan tetapan tatarajah yang disediakan
+        list: Tetapan tatarajah senarai semasa
         name: Nama
+        no_config: Tiada konfigurasi yang ditemui
+        remove: Mengalih keluar seting konfigurasi
+        set: Menukar pengesetan konfigurasi
+        subcommand: Konfigurasi perintah
         type: Jenis
         value: Nilai
-        desc: Description/kawalan
-        context: Konteks konfigurasi
       convert: Menukar fail sumber kepada fail format sasaran
-      translate:
-        subcommand: Menterjemahkan fail atau tali
-        file: Menterjemahkan fail untuk locales sasaran
-        string: Menterjemah rentetan kepada sasaran locales
-        provider: Penterjemah implementasi menggunakan
+      database:
+        search: Cari pangkalan data teks yang dipadankan dengan tali yang diberikan.
+        subcommand: Arahan pangkalan data
+      debug: Mendayakan nyahpepijat output
+      display_sentences: Paparan ayat
+      display_values: Memaparkan nilai-nilai dari pakej sumber
+      display_version: Versi paparan
+      dry_run: 'Run kering: fail tidak boleh ditukar atau ditulis'
+      extract_strings: Cabutan rentetan dari fail sumber
+      file_source: 'Fail: %{file}'
+      list_backends: Perkhidmatan penterjemahan tersedia senarai
+      locales_required: Satu atau lebih locales sasaran yang dikehendaki
+      locales_to_display: Locales untuk memaparkan
+      sentences: 'Ayat:'
+      share: Berkongsi terjemahan dengan penterjemah
+      source_files: Fail untuk menterjemahkan
       source_locale: Dalam fail sumber
       target_locales: Locales untuk diterjemahkan kepada
-      source_files: Fail untuk menterjemahkan
-      debug: Mendayakan nyahpepijat output
-      wank: Membolehkan bar kemajuan penterjemahan
-      share: Berkongsi terjemahan dengan penterjemah
-      dry_run: 'Run kering: fail tidak boleh ditukar atau ditulis'
-      locales_required: Satu atau lebih locales sasaran yang dikehendaki
-      using_provider: 'Menggunakan penterjemah: %{name}'
-      display_values: Memaparkan nilai-nilai dari pakej sumber
-      locales_to_display: Locales untuk memaparkan
-      display_sentences: Paparan ayat
-      extract_strings: Cabutan rentetan dari fail sumber
-      list_backends: Perkhidmatan penterjemahan tersedia senarai
-      display_version: Versi paparan
-      uploading_tmx: Meng-upload TMX %{name}
+      translate:
+        file: Menterjemahkan fail untuk locales sasaran
+        provider: Penterjemah implementasi menggunakan
+        string: Menterjemah rentetan kepada sasaran locales
+        subcommand: Menterjemahkan fail atau tali
       translating: Menterjemah
-      aborted: Dibatalkan
-      file_source: 'Fail: %{file}'
-      sentences: 'Ayat:'
-      database:
-        subcommand: Arahan pangkalan data
-        search: Cari pangkalan data teks yang dipadankan dengan tali yang diberikan.
-    file:
-      not_found: 'Fail tidak dijumpai: %{file}'
-      unsupported: 'Jenis fail tidak disokong: %{file}'
-      unknown_locale: Dapat menentukan penempatan
-      created_by: Dicipta oleh %{app} %{version} %{date}
-      error: 'Ralat: %{message}'
-      loading: Cubaan memuatkan %{file} menggunakan %{name}
-      directory: 'Fail adalah direktori: %{file}'
-      invalid: 'Fail tidak sah: %{file}'
-    tmx:
-      multiple_origins: Asal-usul pelbagai dalam teks.
-      multiple_locales: Pelbagai sumber locales dalam teks.
-    provider:
-      email_required: Alamat e-mel yang diperlukan.
-      password_required: Kata laluan diperlukan.
-      google_key_required: Google API masukkan diperlukan.
-      google_api_key: Kekunci Google API
-      frengly_api_key: Kekunci Frengly API
-      microsoft_api_key: Kekunci Microsoft API
-      microsoft_key_required: Masukkan Microsoft API yang diperlukan.
-      mymemory_api_key: Kekunci MyMemory API
-      email_address: Alamat e-mel
-      share_response: 'Berkongsi jawapan: %{response}'
-      yandex_api_key: Kekunci Yandex API
-      yandex_key_required: Masukkan Yandex API diperlukan.
-      required_option: "(wajib)"
-      providers: 'Semua penterjemah yang terlibat:'
-      configured: 'Penterjemah yang dikonfigurasikan dengan betul:'
-      unavailable: Tidak ada penterjemah %{name}.
-      no_providers: Penterjemah tidak dikonfigurasikan.
-      password: Kata laluan
-    file_translator:
-      total_translations: 'Jumlah terjemahan: %{total} (%{from_db} dari pangkalan
-        data, %{from_provider} daripada penterjemah, %{untranslated} diterjemahkan)'
-      untranslated: 'Tali yang diterjemahkan:'
-      dry_run: Cetak tindakan tanpa melakukan penterjemahan atau menulis fail.
-      use_database: Menyimpan dan mendapatkan semula terjemahan dari pangkalan data.
-      database_disabled: Pangkalan data telah dinyahdayakan.
-      provider_required: Penterjemah yang diperlukan.
-      translating: Menterjemah %{source} (%{source_locale}) kepada %{target} (%{target_locale})
-      stats: 'Terjemahan dari pangkalan data: %{from_db}, penterjemah: %{from_provider},
-        diterjemahkan: %{untranslated}'
-    database:
-      no_environment: Persekitaran tidak '%{env}' dalam %{file}
-      migrated: Pangkalan data dipindahkan.
-      created: Pangkalan data yang diwujudkan.
-      deleted: Pangkalan data yang dipadam.
-      could_not_create: Pangkalan data tidak dapat dicipta.
-      config_file: Laluan ke fail konfigurasi pangkalan data
-      env: Persekitaran pangkalan data
-    unicode:
-      invalid_byte: 'Tidak sah UTF8 bait: ''%{byte}'''
+      uploading_tmx: Meng-upload TMX %{name}
+      using_provider: 'Menggunakan penterjemah: %{name}'
+      wank: Membolehkan bar kemajuan penterjemahan
     config:
-      invalid_context: 'Konteks konfigurasi tidak diiktiraf: ''%{context}'''
-      invalid_key: 'Kekunci konfigurasi tidak diiktiraf: ''%{key}'''
       command_line_only: Konfigurasi '%{key}' tidak boleh disimpan
-      types:
-        string: Rentetan
-        hash: Hash
-        array: Pelbagai
-        numeric: Angka
-        boolean: Boolean
       context:
         env: Persekitaran
         project: Projek
         user: Pengguna
+      invalid_context: 'Konteks konfigurasi tidak diiktiraf: ''%{context}'''
+      invalid_key: 'Kekunci konfigurasi tidak diiktiraf: ''%{key}'''
+      types:
+        array: Pelbagai
+        boolean: Boolean
+        hash: Hash
+        numeric: Angka
+        string: Rentetan
+    database:
+      config_file: Laluan ke fail konfigurasi pangkalan data
+      could_not_create: Pangkalan data tidak dapat dicipta.
+      created: Pangkalan data yang diwujudkan.
+      deleted: Pangkalan data yang dipadam.
+      env: Persekitaran pangkalan data
+      migrated: Pangkalan data dipindahkan.
+      no_environment: Persekitaran tidak '%{env}' dalam %{file}
+    file:
+      created_by: Dicipta oleh %{app} %{version} %{date}
+      directory: 'Fail adalah direktori: %{file}'
+      error: 'Ralat: %{message}'
+      invalid: 'Fail tidak sah: %{file}'
+      loading: Cubaan memuatkan %{file} menggunakan %{name}
+      not_found: 'Fail tidak dijumpai: %{file}'
+      unknown_locale: Dapat menentukan penempatan
+      unsupported: 'Jenis fail tidak disokong: %{file}'
+    file_translator:
+      database_disabled: Pangkalan data telah dinyahdayakan.
+      dry_run: Cetak tindakan tanpa melakukan penterjemahan atau menulis fail.
+      provider_required: Penterjemah yang diperlukan.
+      stats: 'Terjemahan dari pangkalan data: %{from_db}, penterjemah: %{from_provider}, diterjemahkan: %{untranslated}'
+      total_translations: 'Jumlah terjemahan: %{total} (%{from_db} dari pangkalan data, %{from_provider} daripada penterjemah, %{untranslated} diterjemahkan)'
+      translating: Menterjemah %{source} (%{source_locale}) kepada %{target} (%{target_locale})
+      untranslated: 'Tali yang diterjemahkan:'
+      use_database: Menyimpan dan mendapatkan semula terjemahan dari pangkalan data.
+    provider:
+      configured: 'Penterjemah yang dikonfigurasikan dengan betul:'
+      email_address: Alamat e-mel
+      email_required: Alamat e-mel yang diperlukan.
+      frengly_api_key: Kekunci Frengly API
+      google_api_key: Kekunci Google API
+      google_key_required: Google API masukkan diperlukan.
+      microsoft_api_key: Kekunci Microsoft API
+      microsoft_key_required: Masukkan Microsoft API yang diperlukan.
+      mymemory_api_key: Kekunci MyMemory API
+      no_providers: Penterjemah tidak dikonfigurasikan.
+      password: Kata laluan
+      password_required: Kata laluan diperlukan.
+      providers: 'Semua penterjemah yang terlibat:'
+      required_option: "(wajib)"
+      share_response: 'Berkongsi jawapan: %{response}'
+      unavailable: Tidak ada penterjemah %{name}.
+      yandex_api_key: Kekunci Yandex API
+      yandex_key_required: Masukkan Yandex API diperlukan.
+    tmx:
+      multiple_locales: Pelbagai sumber locales dalam teks.
+      multiple_origins: Asal-usul pelbagai dalam teks.
+    unicode:
+      invalid_byte: 'Tidak sah UTF8 bait: ''%{byte}'''
