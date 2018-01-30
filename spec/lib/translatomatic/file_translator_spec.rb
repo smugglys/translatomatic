@@ -21,6 +21,25 @@ RSpec.describe Translatomatic::FileTranslator do
     end
   end
 
+  context '#translate_to_files' do
+    it 'translates a file to multiple target languages' do
+      provider = TestProvider.new(
+        'de' => { 'Beer' => 'Bier' },
+        'ja' => { 'Beer' => 'Beeru' }
+      )
+      path = create_tempfile('test.properties', 'key = Beer')
+      file = Translatomatic::ResourceFile.load(path, locale: "en")
+      t = create_file_translator(provider: provider)
+      targets = t.translate_to_files(file, ['de', 'ja'])
+      expect(targets.length).to eq(2)
+
+      expect_basename(targets[0], /_de$/)
+      expect_contents(targets[0], "key = Bier\n")
+      expect_basename(targets[1], /_ja$/)
+      expect_contents(targets[1], "key = Beeru\n")
+    end
+  end
+
   context '#translate_to_file' do
     it 'translates a properties file to a target language' do
       provider = TestProvider.new('Bier')
@@ -28,8 +47,8 @@ RSpec.describe Translatomatic::FileTranslator do
       file = Translatomatic::ResourceFile.load(path, locale: "en")
       t = create_file_translator(provider: provider)
       target = t.translate_to_file(file, 'de-DE')
-      expect(target.path.basename.sub_ext('').to_s).to match(/_de-DE$/)
-      expect(strip_comments(target.path.read)).to eq("key = Bier\n")
+      expect_basename(target, /_de-DE$/)
+      expect_contents(target, "key = Bier\n")
     end
 
     it "doesn't write files or translate strings when using dry run" do
@@ -225,6 +244,14 @@ RSpec.describe Translatomatic::FileTranslator do
   end
 
   private
+
+  def expect_basename(file, basename)
+    expect(file.path.basename.sub_ext('').to_s).to match(basename)
+  end
+
+  def expect_contents(file, contents)          
+    expect(strip_comments(file.path.read)).to eq(contents)
+  end
 
   def create_file_translator(options = {})
     Translatomatic::FileTranslator.new(options)

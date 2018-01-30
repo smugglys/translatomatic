@@ -86,8 +86,7 @@ module Translatomatic
 
         # @return [Array<Translatomatic::TMX::TranslationUnit]
         #   translation unit list
-        def units_from_collection(collection)          
-        end
+        def units_from_collection(collection); end
 
         def tmx_unit(strings)
           Translatomatic::TMX::TranslationUnit.new(strings)

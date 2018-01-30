@@ -86,6 +86,13 @@ RSpec.describe Translatomatic::String do
       expect(string.sentences[0]).to equal(string)
     end
 
+    it 'sets correct offsets for repeated sentences' do
+      string = string('sentence. sentence.', 'en')
+      sentences = string.sentences
+      expect(sentences[0].offset).to eq(0)
+      expect(sentences[1].offset).to eq(10)
+    end
+
     STRING_DATA.each do |tag, _type, input, output|
       output ||= [input]
       s = output.length == 1 ? '' : 's'

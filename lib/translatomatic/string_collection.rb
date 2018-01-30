@@ -39,7 +39,7 @@ module Translatomatic
     end
 
     def find_sentences(strings)
-      strings.collect { |i| i.sentences }.flatten
+      strings.collect(&:sentences).flatten.uniq
     end
 
     def find_contexts(strings)

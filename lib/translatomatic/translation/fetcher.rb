@@ -1,7 +1,6 @@
 module Translatomatic
   module Translation
     class Fetcher
-
       def initialize(options = {})
         ATTRIBUTES.each do |i|
           instance_variable_set("@#{i}", options[i])
@@ -25,6 +24,7 @@ module Translatomatic
           collection.add(provider_translations)
         end
 
+        # puts collection.description
         collection
       end
 
@@ -38,7 +38,7 @@ module Translatomatic
       # @param collection [Collection] Translation collection
       # @return [Array<String>] Untranslated strings
       def untranslated(collection)
-        @strings.select { |i| !collection.translated?(i, @provider.name) }
+        @strings.reject { |i| collection.translated?(i, @provider.name) }
       end
 
       # @return [Array<Result>] translations from the database
@@ -87,7 +87,8 @@ module Translatomatic
         strings.collect do |string|
           next unless db_text = db_text_map[string.to_s]
           provider = db_text.provider
-          Result.new(string, db_text.value, provider, from_database: true)
+          translation = string(db_text.value, @to_locale)
+          Result.new(string, translation, provider, from_database: true)
         end.compact
       end
 

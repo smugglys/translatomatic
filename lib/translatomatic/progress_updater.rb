@@ -15,8 +15,8 @@ module Translatomatic
     # @param total [Number] Set the total number of items that
     #   will be processed.
     def total=(total)
+      @progressbar.progress = 0
       @progressbar.total = total
     end
-
   end
 end

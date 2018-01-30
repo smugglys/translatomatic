@@ -37,7 +37,7 @@ module Translatomatic
           key: @api_key,
           text: strings,
           lang: from.language + '-' + to.language,
-          format: 'plain'
+          format: 'plain' # 'html'
         }
         response = http_client.post(TRANSLATE_URL, body)
         log.debug("#{name} response: #{response.body}")

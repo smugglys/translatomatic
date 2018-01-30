@@ -17,3 +17,7 @@
 - config/locales/translatomatic/en.yml
 - README.md
 :share: 'false'
+:provider:
+- Google
+- Microsoft
+- Yandex

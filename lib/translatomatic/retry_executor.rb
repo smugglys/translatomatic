@@ -3,15 +3,11 @@ module Translatomatic
   class RetryExecutor
     include Util
 
-    class << self
-      # Shortcut for new(options).run
-      def run(options = {})
-        new(options).run { yield }
-      end
-    end
+    # @private
+    DEFAULT_RETRIES = 3
 
     def initialize(options = {})
-      @max_retries = options[:max_retries] || 3
+      @max_retries = options[:max_retries] || DEFAULT_RETRIES
       @retriable = options[:retriable] || [StandardError]
       @delay = options[:retry_delay]
     end
@@ -31,7 +27,6 @@ module Translatomatic
           sleep @delay if @delay
           retry
         end
-        puts "exception #{e} not retriable"
         raise e
       end
     end

@@ -35,11 +35,8 @@ module Translatomatic
           provider
         end
 
-        if list.empty?
-          # find all available providers that work with the given options
-          list = Translatomatic::Provider.available(options)
-          raise t('cli.no_providers') if list.empty?
-        end
+        # find all available providers that work with the given options
+        list = Translatomatic::Provider.available(options) if list.empty?
         list
       end
 

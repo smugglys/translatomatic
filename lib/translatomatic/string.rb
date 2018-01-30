@@ -87,19 +87,7 @@ module Translatomatic
     # @return [Array<Translatomatic::String] List of substrings
     def substrings(regex)
       matches = matches(@value, regex)
-      strings = []
-      matches.each do |match|
-        substring = match.to_s
-        # find leading and trailing whitespace
-        next if substring.empty?
-
-        parts = substring.match(/\A(\s*)(.*?)(\s*)\z/m).to_a
-        value = parts[2]
-        offset = match.offset(0)[0]
-        offset += parts[1].length # leading whitespace
-        strings << self.class.new(value, locale, offset: offset, parent: self)
-      end
-
+      strings = matches.collect { |i| match_to_substring(i) }.compact
       # return [self] if there's only one substring and it's equal to self
       strings.length == 1 && strings[0].eql?(self) ? [self] : strings
     end
@@ -188,6 +176,21 @@ module Translatomatic
         script_data[lang] = script
       end
       @script_data = script_data
+    end
+
+    def match_to_substring(match)
+      substring = match.to_s
+      return nil if substring.empty?
+
+      # find leading and trailing whitespace
+      parts = substring.match(/\A(\s*)(.*?)(\s*)\z/m).to_a
+      value = parts[2]
+      offset = match.offset(0)[0]
+      offset += parts[1].length # leading whitespace
+      string = self.class.new(value, locale, offset: offset, parent: self)
+      string.preserve_regex = preserve_regex
+      string.context = context
+      string
     end
 
     def matches(s, re)

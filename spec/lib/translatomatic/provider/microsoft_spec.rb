@@ -9,7 +9,7 @@ RSpec.describe Translatomatic::Provider::Microsoft do
   def mock_translation(provider, strings, from, to, results)
     post_headers = test_http_headers(
       'Content-Type' => 'application/xml',
-      'Host' => 'api.microsoftprovider.com',
+      'Host' => 'api.microsofttranslator.com',
       'Ocp-Apim-Subscription-Key' => 'dummy'
     )
     fixture_suffix = nil
@@ -26,7 +26,7 @@ RSpec.describe Translatomatic::Provider::Microsoft do
     expected_request = read_fixture("request", fixture_suffix)
     expected_response = read_fixture("response", fixture_suffix)
 
-    stub_request(:post, described_class::TRANSLATE_ARRAY_N_URL).with(
+    stub_request(:post, described_class::TRANSLATE_URL).with(
       body: expected_request,
       headers: post_headers
     ).to_return(
@@ -45,7 +45,7 @@ RSpec.describe Translatomatic::Provider::Microsoft do
   def mock_languages
     expected_response = fixture_read('provider/microsoft_languages.xml')
     request_headers = test_http_headers(
-      'Host' => 'api.microsoftprovider.com',
+      'Host' => 'api.microsofttranslator.com',
       'Ocp-Apim-Subscription-Key' => 'dummy'
     )
     stub_request(:get, described_class::LANGUAGES_URL).

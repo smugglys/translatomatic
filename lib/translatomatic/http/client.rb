@@ -49,11 +49,12 @@ module Translatomatic
       # @return [Object] The result of the yielded block
       def start(url, options = {})
         uri = url.respond_to?(:host) ? url : URI.parse(url)
-        options = options.merge(use_ssl: uri.scheme == 'https')
-        result = nil
-        Net::HTTP.start(uri.host, uri.port, options) do |http|
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = uri.scheme == 'https'
+        http.set_debug_output(Translatomatic.config.logger) if ENV['DEBUG']
+        result = http.start do
           @http = http
-          result = yield http
+          yield http
         end
         @http = nil
         result

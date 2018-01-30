@@ -54,8 +54,9 @@ module Translatomatic
       end
 
       def description
-        format('%<original>s -> %<result>s',
-               original: original.to_s, result: result.to_s)
+        format('%<original>s (%<from_locale>s) -> %<result>s (%<to_locale>s)',
+               original: original.to_s, result: result.to_s,
+               from_locale: original.locale, to_locale: result.locale)
       end
 
       private

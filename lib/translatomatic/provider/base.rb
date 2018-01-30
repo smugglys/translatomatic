@@ -1,4 +1,3 @@
-
 module Translatomatic
   module Provider
     # Base class for interfaces to translation APIs
@@ -39,7 +38,7 @@ module Translatomatic
       # @param from [String, Translatomatic::Locale] The locale of the
       #   given strings.
       # @param to [String, Translatomatic::Locale] The locale to translate to.
-      # @return [Array<Translatomatic::Translation>] Translation results
+      # @return [Array<Translatomatic::Translation::Result>] Translations
       def translate(strings, from, to)
         @updated_listener = false
         @translations = []
@@ -112,6 +111,14 @@ module Translatomatic
         string1 = Translatomatic::String[original, @from]
         string2 = Translatomatic::String[translated, @to]
         Translatomatic::Translation::Result.new(string1, string2, name)
+      end
+
+      def wrap_notranslate(string)
+        return string unless string.preserve_regex
+        value = string.gsub(string.preserve_regex) {
+          '<span translate="no">' + Regexp.last_match(1) + '</span>'
+        }
+        string(value, string.locale, string.options)
       end
     end
   end
