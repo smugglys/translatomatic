@@ -61,14 +61,25 @@ module Translatomatic
 
       private
 
+      include Util
+
       MAX_REDIRECTS = 5
       RETRIABLE = [Net::HTTPServerError, Net::HTTPTooManyRequests].freeze
+      RETRIABLE_CODES = [408].freeze
 
       # Retry requests on server errors
       class HttpRetryExecutor < RetryExecutor
         def retriable?(exception)
-          exception.is_a?(Translatomatic::HTTP::Exception) &&
-            RETRIABLE.any? { |i| exception.response.kind_of?(i) }
+          http_exception?(exception) && retriable_exception?(exception)
+        end
+
+        def http_exception?(exception)
+          exception.is_a?(Translatomatic::HTTP::Exception)
+        end
+
+        def retriable_exception?(exception)
+          RETRIABLE.any? { |i| exception.response.kind_of?(i) } ||
+            RETRIABLE_CODES.include?(exception.response.code.to_i)
         end
       end
 
@@ -86,9 +97,10 @@ module Translatomatic
 
       def send_request_http(req)
         if @http
+          log.debug("HTTP request: #{req.http_request.uri}")
           @http.request(req.http_request)
         else
-          start(req.uri) { |_http| send_request(req) }
+          start(req.uri) { |_http| send_request_http(req) }
         end
       end
 
@@ -99,6 +111,8 @@ module Translatomatic
       end
 
       def handle_response(response)
+        log.debug("HTTP response: #{response.code} #{response.msg}")
+
         case response
         when Net::HTTPSuccess
           @redirects = 0
