@@ -14,6 +14,7 @@ module Translatomatic
 
       private
 
+      # @override
       def init_nodemap
         @nodemap = {}
         nodes = @doc.search('//data/@name|//text()|//comment()')
@@ -37,12 +38,13 @@ module Translatomatic
         @key = nil
       end
 
+      # @override
       def create_node(key, value)
         # add xml: <data name="key"><value>value</value></data>
         data_node = Nokogiri::XML::Node.new('data', @doc)
         data_node['name'] = key
         value_node = Nokogiri::XML::Node.new('value', @doc)
-        text_node = Nokogiri::XML::Text.new(value, @doc)
+        text_node = Nokogiri::XML::Text.new(value.to_s, @doc)
         value_node.add_child(text_node)
         data_node.add_child(value_node)
 

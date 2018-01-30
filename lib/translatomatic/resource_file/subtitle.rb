@@ -21,10 +21,11 @@ module Translatomatic
       # (see Base#set)
       def set(key, value)
         super(key, value)
+
         if @subtitle_map.include?(key)
-          @subtitle_map[key][:lines] = value
+          @subtitle_map[key][:lines] = value.to_s
         else
-          add_subtitle(lines: value)
+          add_subtitle(lines: value) unless value.blank?
         end
       end
 
@@ -85,7 +86,9 @@ module Translatomatic
       end
 
       def import(path)
-        import_export_class(path).import(read_contents(path))
+        contents = read_contents(path)
+        return [] if contents.blank?
+        import_export_class(path).import(contents)
       end
 
       def export(target, _options = {})

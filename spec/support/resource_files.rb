@@ -46,6 +46,10 @@ RSpec.shared_examples 'a resource file' do |config = {}|
     fixture_path(context_path, allow_missing: true)
   end
 
+  def new_file(path = nil, options = {})
+    described_class.new(path, options)
+  end
+
   (config[:test_files] || [test_file]).each do |fixture|
     it "loads #{fixture}" do
       file = load_test_file(fixture)
@@ -64,27 +68,39 @@ RSpec.shared_examples 'a resource file' do |config = {}|
     end
   end
 
-  it "creates a new #{described_class.to_s.demodulize} file" do
-    file = described_class.new
-    expect(file).to be
+  context '#new' do
+    it "creates a new #{described_class.to_s.demodulize} file" do
+      file = new_file
+      expect(file).to be
+    end
   end
 
-  it 'adds properties to an empty file' do
-    properties = {
-      'property1' => 'value 1',
-      'property2' => 'value 2'
-    }
-    file = described_class.new
-    file.properties = properties
+  context '#save' do
+    it 'adds properties to an empty file' do
+      properties = {
+        'property1' => 'value 1',
+        'property2' => 'value 2'
+      }
+      file = new_file
+      file.properties = properties
 
-    ext = described_class.extensions.first
-    save_path = create_tempfile("test.#{ext}")
-    file.save(save_path)
-    puts "contents: #{save_path.read}"
-    file = described_class.new(save_path)
-    expect(file.properties).to be_present
-    if described_class.key_value?
-      expect(file.properties).to eq(properties)
+      ext = described_class.extensions.first
+      save_path = create_tempfile("test.#{ext}")
+      file.save(save_path)
+      file = new_file(save_path)
+      expect(file.properties).to be_present
+      expect(file.properties).to eq(properties) if described_class.key_value?
+    end
+
+    it 'adds a blank property' do
+      properties = { 'property1' => nil }
+      file = new_file
+      file.properties = properties
+      ext = described_class.extensions.first
+      save_path = create_tempfile("test.#{ext}")
+      file.save(save_path)
+      file = new_file(save_path)
+      expect(file.get('property1')).to be_blank
     end
   end
 
@@ -115,7 +131,6 @@ RSpec.shared_examples 'a resource file' do |config = {}|
   # extension specific tests
   described_class.extensions.each do |ext|
     context "extension #{ext}" do
-
       if fixture_path(test_file(ext), allow_missing: true)
         it 'saves a file' do
           source_file = load_test_ext(ext)
