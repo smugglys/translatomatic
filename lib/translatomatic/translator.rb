@@ -16,28 +16,28 @@ module Translatomatic
       @stats = Translatomatic::Translation::Stats.new
     end
 
-    # Translate strings to a target locale
-    # @param strings [Array<Translatomatic::String>] Strings to translate
+    # Translate texts to a target locale
+    # @param texts [Array<Translatomatic::Text>] Texts to translate
     # @param to_locales [Array<Locale>] Target locale(s)
     # @return [Array<Translatomatic::Translation>] Translations
-    def translate(strings, to_locales)
-      string_collection = StringCollection.new(strings)
+    def translate(texts, to_locales)
+      text_collection = TextCollection.new(texts)
       to_locales = [to_locales] unless to_locales.is_a?(Array)
 
       # for each provider
-      #   get translations for all strings from the database
-      #   for strings that are untranslated, call the provider
+      #   get translations for all texts from the database
+      #   for texts that are untranslated, call the provider
       # return translations
 
-      log.debug("translating #{string_collection.count} strings")
-      update_listener_total(string_collection, to_locales)
+      log.debug("translating #{text_collection.count} texts")
+      update_listener_total(text_collection, to_locales)
       translation_collection = Translation::Collection.new
-      string_collection.each_locale do |from_locale, list|
+      text_collection.each_locale do |from_locale, list|
         next if list.blank?
         @providers.each do |provider|
           to_locales.each do |to_locale|
             fetcher = Translation::Fetcher.new(
-              provider: provider, strings: list, use_db: @use_db,
+              provider: provider, texts: list, use_db: @use_db,
               from_locale: from_locale, to_locale: to_locale
             )
             translation_collection += fetcher.translations
@@ -45,7 +45,7 @@ module Translatomatic
         end
       end
 
-      combine_substrings(translation_collection, string_collection, to_locales)
+      combine_substrings(translation_collection, text_collection, to_locales)
       translation_collection
     end
 
@@ -57,9 +57,9 @@ module Translatomatic
     define_option :no_database, type: :boolean, default: false,
                                 desc: t('translator.no_database')
 
-    def update_listener_total(string_collection, to_locales)
+    def update_listener_total(text_collection, to_locales)
       return unless @listener
-      @listener.total = string_collection.count * @providers.length *
+      @listener.total = text_collection.count * @providers.length *
         to_locales.length
     end
 
@@ -67,9 +67,9 @@ module Translatomatic
     # @param tr_collection [Translatomatic::Translation::Collection]
     #   Translation collection
     # @return [void]
-    def combine_substrings(tr_collection, string_collection, to_locales)
+    def combine_substrings(tr_collection, text_collection, to_locales)
       to_locales.each do |to_locale|
-        string_collection.originals.each do |parent|
+        text_collection.originals.each do |parent|
           combine_parent_substrings(tr_collection, parent, to_locale)
         end
       end
@@ -82,7 +82,7 @@ module Translatomatic
       return if list.blank?
       list = list.sort_by { |tr| -tr.original.offset }
 
-      translated_parent = string(parent.value.dup, to_locale)
+      translated_parent = build_text(parent.value.dup, to_locale)
       list.each do |tr|
         original = tr.original
         translated = tr.result

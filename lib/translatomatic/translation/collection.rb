@@ -3,17 +3,18 @@ require 'set'
 module Translatomatic
   module Translation
     # Stores results of translations.
-    # For each original string, there may be zero or more translations from
+    # For each original text, there may be zero or more translations from
     # one or more providers.
     class Collection
       # Create a translation collection
       def initialize
         # by_provider[provider] = [Result, ...]
         @by_provider = {}
-        # by_original[string] = [Result, ...]
+        # by_original[text] = [Result, ...]
         @by_original = {}
       end
 
+      # @param string [String,Text] Original string
       # @return [Array<Result>] All translations for the given string
       def [](string)
         @by_original[string.to_s]
@@ -23,14 +24,14 @@ module Translatomatic
         @by_original.empty?
       end
 
-      # @param string [String] Original string
+      # @param string [String,Text] Original string
       # @param locale [Locale] Target locale
       # @return [Result] The best translation for the given string
       def get(string, locale)
-        locale = locale(locale)
+        locale = build_locale(locale)
         list = @by_original[string.to_s] || []
         list = sort_by_best_match(list)
-        if string.is_a?(Translatomatic::String) && string.context
+        if string.is_a?(Translatomatic::Text) && string.context
           # string has a context
           list = sort_by_context_match(list, string.context, locale)
         end
@@ -69,7 +70,7 @@ module Translatomatic
 
       # Get a list of the best sentence translations for the given
       # parent string.
-      # @param parent [String] Parent string
+      # @param parent [Text] Parent text
       # @param locale [Locale] Target locale
       # @return [Array<Result>] Substring translation results
       def sentences(parent, locale)
@@ -100,6 +101,8 @@ module Translatomatic
         @by_original.keys.collect { |i| get(i, locale) }
       end
 
+      # @return [Array<String>] A list of providers that translations were
+      #   sourced from.
       def providers
         @by_provider.keys
       end
@@ -114,11 +117,15 @@ module Translatomatic
         result
       end
 
+      # @param string [String,Text] Original string
+      # @param provider [String] Provider name
+      # @return [boolean] True if there is a translation for the given string.
       def translated?(string, provider)
         list = @by_provider[provider.to_s] || []
         list.any? { |tr| tr.original.to_s == string.to_s }
       end
 
+      # @return [String] String description of all translations
       def description
         translations.collect(&:description).join("\n")
       end
@@ -136,7 +143,7 @@ module Translatomatic
       #     the translated context string (and is longer than 'recht').
       def sort_by_context_match(list, context, locale)
         return list if list.blank?
-        context_tr = get(String[context, list[0].original.locale], locale)
+        context_tr = get(Text[context, list[0].original.locale], locale)
         unless context_tr
           log.error("no translation for context string '#{context}'")
           return list

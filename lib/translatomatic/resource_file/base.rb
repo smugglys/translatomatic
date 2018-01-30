@@ -121,11 +121,11 @@ module Translatomatic
         relative_path(path).to_s
       end
 
-      # @return [Array<String>] All property values split into sentences
+      # @return [Array<Text>] All property values split into sentences
       def sentences
         sentences = []
         properties.each_value do |value|
-          string = Translatomatic::String.new(value, locale)
+          string = build_text(value, locale)
           sentences += string.sentences
         end
         sentences
@@ -172,7 +172,8 @@ module Translatomatic
           app: 'Translatomatic',
           version: Translatomatic::VERSION,
           date: I18n.l(Time.now),
-          locale: locale.language
+          locale: locale.language,
+          url: Translatomatic::URL
         }
         t('file.created_by', options)
       end

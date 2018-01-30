@@ -5,10 +5,10 @@ module Translatomatic
     # document.
     # @see Translatomatic::TMX::Document
     class TranslationUnit
-      # @return [Array<Translatomatic::String>] Strings in this translation unit
+      # @return [Array<Translatomatic::Text>] Strings in this translation unit
       attr_reader :strings
 
-      # @param strings [Array<Translatomatic::String>] List of strings
+      # @param strings [Array<Translatomatic::Text>] List of strings
       def initialize(strings)
         @strings = strings || []
       end

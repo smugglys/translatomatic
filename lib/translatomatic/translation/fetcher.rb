@@ -12,11 +12,11 @@ module Translatomatic
 
         # add all translations from the database to the collection
         if @use_db
-          db_translations = find_database_translations(@strings)
+          db_translations = find_database_translations(@texts)
           collection.add(db_translations)
         end
 
-        # request translations for all strings that aren't in the database
+        # request translations for all texts that aren't in the database
         untranslated = untranslated(collection)
         if untranslated.present?
           provider_translations = find_provider_translations(untranslated)
@@ -32,17 +32,17 @@ module Translatomatic
 
       include Util
 
-      ATTRIBUTES = %i[provider strings from_locale to_locale use_db].freeze
+      ATTRIBUTES = %i[provider texts from_locale to_locale use_db].freeze
 
-      # find strings that we do not have translations for
+      # find texts that we do not have translations for
       # @param collection [Collection] Translation collection
-      # @return [Array<String>] Untranslated strings
+      # @return [Array<String>] Untranslated texts
       def untranslated(collection)
-        @strings.reject { |i| collection.translated?(i, @provider.name) }
+        @texts.reject { |i| collection.translated?(i, @provider.name) }
       end
 
       # @return [Array<Result>] translations from the database
-      def find_database_translations(strings)
+      def find_database_translations(texts)
         from = db_locale(@from_locale)
         to = db_locale(@to_locale)
 
@@ -51,18 +51,18 @@ module Translatomatic
           provider: @provider.name,
           from_texts_texts: {
             locale_id: from,
-            # convert untranslated set to strings
-            value: strings.collect(&:to_s)
+            # convert untranslated texts to strings
+            value: texts.collect(&:to_s)
           }
         ).joins(:from_text)
 
-        texts_to_translations(db_texts, strings)
+        texts_to_translations(db_texts, texts)
       end
 
       # @return [Array<Result>] translations from provider
-      def find_provider_translations(strings)
+      def find_provider_translations(texts)
         translations = @provider.translate(
-          strings, @from_locale, @to_locale
+          texts, @from_locale, @to_locale
         )
         # check for valid response from provider and restore variables
         translations.select do |tr|
@@ -79,16 +79,16 @@ module Translatomatic
         false
       end
 
-      # use the original string from strings in the translation rather than
+      # use the original text from the translation rather than
       # db_text.from_text.value, as the original string has required
       # information such as offset and context.
-      def texts_to_translations(db_texts, strings)
+      def texts_to_translations(db_texts, texts)
         db_text_map = hashify(db_texts, proc { |i| i.from_text.value })
-        strings.collect do |string|
-          next unless db_text = db_text_map[string.to_s]
+        texts.collect do |text|
+          next unless db_text = db_text_map[text.to_s]
           provider = db_text.provider
-          translation = string(db_text.value, @to_locale)
-          Result.new(string, translation, provider, from_database: true)
+          translation = build_text(db_text.value, @to_locale)
+          Result.new(text, translation, provider, from_database: true)
         end.compact
       end
 

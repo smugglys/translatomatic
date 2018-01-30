@@ -79,7 +79,7 @@ module Translatomatic
 
           # create list of Translation Units
           texts_by_from_id.values.collect do |list|
-            strings = list.uniq.collect { |i| string(i.value, i.locale) }
+            strings = list.uniq.collect { |i| build_text(i.value, i.locale) }
             tmx_unit(strings)
           end
         end

@@ -1,4 +1,4 @@
-RSpec.describe Translatomatic::String do
+RSpec.describe Translatomatic::Text do
   STRING_DATA = [
     # type detection tests
     ['en', :phrase, 'The bewildered tourist'],
@@ -42,14 +42,14 @@ RSpec.describe Translatomatic::String do
 
   context :new do
     it 'creates a string using a string tag' do
-      string = Translatomatic::String.new('test', 'en')
+      string = Translatomatic::Text.new('test', 'en')
       expect(string).to be
       expect(string.locale.language).to eq('en')
     end
 
     it 'creates a string using a locale object' do
-      locale = locale('en-US')
-      string = Translatomatic::String.new('test', locale)
+      locale = build_locale('en-US')
+      string = Translatomatic::Text.new('test', locale)
       expect(string).to be
       expect(string.locale.language).to eq('en')
     end
@@ -57,7 +57,7 @@ RSpec.describe Translatomatic::String do
 
   context :substring do
     it 'creates substrings' do
-      string = string('sentence one. sentence two.', 'en')
+      string = build_text('sentence one. sentence two.', 'en')
       expect(string.substring?).to be_falsey
       sentences = string.sentences
       expect(sentences[0].substring?).to be_truthy
@@ -65,7 +65,7 @@ RSpec.describe Translatomatic::String do
     end
 
     it 'sets the correct offset' do
-      string = string('word1 {var1} word3', 'en')
+      string = build_text('word1 {var1} word3', 'en')
       variables = string.substrings(/\{\w+\}/)
       expect(variables.length).to eq(1)
       expect(variables[0].offset).to eq(6)
@@ -75,19 +75,19 @@ RSpec.describe Translatomatic::String do
   context :type do
     STRING_DATA.each do |tag, type, input, _output|
       it "recognises '#{input}' as type '#{type}'" do
-        expect(string(input, tag).type).to eq(type)
+        expect(build_text(input, tag).type).to eq(type)
       end
     end
   end
 
   context :sentences do
     it 'returns itself if there is only one sentence' do
-      string = string('test sentence', 'en')
+      string = build_text('test sentence', 'en')
       expect(string.sentences[0]).to equal(string)
     end
 
     it 'sets correct offsets for repeated sentences' do
-      string = string('sentence. sentence.', 'en')
+      string = build_text('sentence. sentence.', 'en')
       sentences = string.sentences
       expect(sentences[0].offset).to eq(0)
       expect(sentences[1].offset).to eq(10)
@@ -97,8 +97,8 @@ RSpec.describe Translatomatic::String do
       output ||= [input]
       s = output.length == 1 ? '' : 's'
       it "splits '#{input}' into #{output.length} sentence#{s}" do
-        string = string(input, tag)
-        output = output.collect { |i| string(i, tag) }
+        string = build_text(input, tag)
+        output = output.collect { |i| build_text(i, tag) }
         expect(string.sentences).to eq(output)
       end
     end

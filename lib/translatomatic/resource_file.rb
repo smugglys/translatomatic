@@ -26,7 +26,7 @@ module Translatomatic
         return nil unless klass
         file = klass.new
         file.path = path
-        file.locale = locale(options[:locale])
+        file.locale = build_locale(options[:locale])
         file
       end
 

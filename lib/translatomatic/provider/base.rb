@@ -45,8 +45,8 @@ module Translatomatic
         @from = from
         @to = to
         strings = [strings] unless strings.is_a?(Array)
-        from = locale(from)
-        to = locale(to)
+        from = build_locale(from)
+        to = build_locale(to)
         if from.language == to.language
           strings.each { |i| add_translations(i, i) }
         else
@@ -108,8 +108,8 @@ module Translatomatic
 
       def translation(original, translated)
         return nil if translated.blank?
-        string1 = Translatomatic::String[original, @from]
-        string2 = Translatomatic::String[translated, @to]
+        string1 = Translatomatic::Text[original, @from]
+        string2 = Translatomatic::Text[translated, @to]
         Translatomatic::Translation::Result.new(string1, string2, name)
       end
 
@@ -118,7 +118,7 @@ module Translatomatic
         value = string.gsub(string.preserve_regex) {
           '<span translate="no">' + Regexp.last_match(1) + '</span>'
         }
-        string(value, string.locale, string.options)
+        build_text(value, string.locale, string.options)
       end
     end
   end

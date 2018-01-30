@@ -88,7 +88,7 @@ en:
       migrated: Database migrated.
       no_environment: No environment '%{env}' in %{file}
     file:
-      created_by: Created by %{app} %{version} %{date}
+      created_by: Created by %{app} %{version} %{date} %{url}
       csv:
         comment_column: A CSV column name to be used for comments
         headers: Treat the first row of CSV files as a row of headers.

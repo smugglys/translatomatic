@@ -20,7 +20,7 @@ module Translatomatic
     # @return [Translatomatic::ResourceFile] The translated resource file
     def translate(file, to_locale)
       file = resource_file(file)
-      to_locale = locale(to_locale)
+      to_locale = build_locale(to_locale)
 
       # do nothing if target language is the same as source language
       return file if file.locale.language == to_locale.language
@@ -77,7 +77,7 @@ module Translatomatic
     # translates a resource file using the given translation collection
     # saves to target
     def translate_file(source, to_locale, collection)
-      to_locale = locale(to_locale)
+      to_locale = build_locale(to_locale)
       target = translation_target_file(source, to_locale)
       return source unless target
       update_properties(target, to_locale, collection)
@@ -134,7 +134,7 @@ module Translatomatic
     def strings_from_file(file)
       strings = []
       file.properties.each do |key, value|
-        string = string(value, file.locale)
+        string = build_text(value, file.locale)
         string.preserve_regex = file.variable_regex
         string.context = file.get_context(key)
         strings << string

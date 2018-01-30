@@ -1,37 +1,37 @@
 module Translatomatic
-  # A string object with an associated locale.
-  class String
-    # @return [String] The string
+  # A text string with an associated locale and other attributes
+  class Text
+    # @return [String] The text content
     attr_reader :value
 
-    # @return [Translatomatic::Locale] The string's locale
+    # @return [Translatomatic::Locale] The text locale
     attr_reader :locale
 
-    # @return [Translatomatic::String] If this string is a substring of
-    #   another string, returns the original string. Otherwise, returns nil.
+    # @return [Translatomatic::Text] If this text is a substring of
+    #   another text, returns the original text. Otherwise, returns nil.
     attr_reader :parent
 
-    # @return [Number] If this string is a substring of another string,
-    #   returns the starting offset of this string in the original.
+    # @return [Number] If this text is a substring of another text,
+    #   returns the starting offset of this text in the original.
     attr_reader :offset
 
     # @return [String] Disambiguating context
     attr_accessor :context
 
-    # @return [Regexp] Regexp that matches parts of the string to preserve
+    # @return [Regexp] Regexp that matches parts of the text to preserve
     attr_accessor :preserve_regex
 
-    # Create a new string. Returns value if value is already a
-    #   Translatomatic::String object with the same locale.
+    # Create a new text. Returns value if value is already a
+    #   Translatomatic::Text object with the same locale.
     def self.[](value, locale)
-      if value.is_a?(Translatomatic::String) && value.locale == locale
+      if value.is_a?(Translatomatic::Text) && value.locale == locale
         value
       else
         new(value, locale)
       end
     end
 
-    # Creates a new string
+    # Creates a new text
     # @param value [String] A string
     # @param locale [String] A locale
     def initialize(value, locale, options = {})
@@ -56,17 +56,17 @@ module Translatomatic
       @value.match(pattern)
     end
 
-    # @return [boolean] true if this string is a substring of another string
+    # @return [boolean] true if this text is a substring of another text
     def substring?
       @parent ? true : false
     end
 
-    # @return [String] The value of the string
+    # @return [String] The value of the text
     def to_s
       @value
     end
 
-    # @return [Symbol] The type of string, corresponding to TMX segtype.
+    # @return [Symbol] The type of text, corresponding to TMX segtype.
     # @see http://xml.coverpages.org/tmxSpec971212.html#SEGTYPE
     def type
       if sentences.length >= 2
@@ -77,14 +77,14 @@ module Translatomatic
       end
     end
 
-    # Find all sentences in the string
-    # @return [Array<Translatomatic::String] List of sentences
+    # Find all sentences in the text
+    # @return [Array<Translatomatic::Text] List of sentences
     def sentences
       substrings(sentence_regex)
     end
 
     # Find all substrings matching the given regex
-    # @return [Array<Translatomatic::String] List of substrings
+    # @return [Array<Translatomatic::Text] List of substrings
     def substrings(regex)
       matches = matches(@value, regex)
       strings = matches.collect { |i| match_to_substring(i) }.compact
@@ -92,10 +92,10 @@ module Translatomatic
       strings.length == 1 && strings[0].eql?(self) ? [self] : strings
     end
 
-    # @return [boolean] true if other is a {Translatomatic::String} with
+    # @return [boolean] true if other is a {Translatomatic::Text} with
     #   the same value and locale.
     def eql?(other)
-      (other.is_a?(Translatomatic::String) || other.is_a?(::String)) &&
+      (other.is_a?(Translatomatic::Text) || other.is_a?(::String)) &&
         other.hash == hash
     end
 
@@ -111,14 +111,14 @@ module Translatomatic
     end
 
     # Escape unprintable characters such as newlines.
-    # @return [Translatomatic::String] The string with
+    # @return [Translatomatic::Text] The text with
     #   special characters escaped.
     def escape(skip = '')
       self.class.new(StringEscaping.escape(@value, skip), locale)
     end
 
     # Unescape character escapes such as "\n" to their character equivalents.
-    # @return [Translatomatic::String] The string with
+    # @return [Translatomatic::Text] The text with
     #   escaped characters replaced with actual characters.
     def unescape
       self.class.new(StringEscaping.unescape(@value), locale)

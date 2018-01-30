@@ -22,7 +22,7 @@ RSpec.describe Translatomatic::Translator do
 
   describe '#translate' do
     it 'translates a single string' do
-      string = string('hello', 'en')
+      string = build_text('hello', 'en')
 
       setup_translation('hello', 'hallo')
       translation = default_translator.translate(string, 'de')
@@ -31,8 +31,8 @@ RSpec.describe Translatomatic::Translator do
     end
 
     it 'translates two strings' do
-      string1 = string('left', 'en')
-      string2 = string('right', 'en')
+      string1 = build_text('left', 'en')
+      string2 = build_text('right', 'en')
 
       setup_translation('left', 'links')
       setup_translation('right', 'rechts')
@@ -43,7 +43,7 @@ RSpec.describe Translatomatic::Translator do
     end
 
     it 'translates a string with a context' do
-      string = string('right', 'en')
+      string = build_text('right', 'en')
       string.context = 'go right'
 
       setup_translation('right', ['richtig', 'rechts', 'Recht'])
@@ -55,8 +55,8 @@ RSpec.describe Translatomatic::Translator do
 
     # test translating two identical strings with different contexts
     it 'translates two identical strings with different contexts' do
-      string1 = string('right', 'en', context: 'go right')
-      string2 = string('right', 'en', context: 'you are right')
+      string1 = build_text('right', 'en', context: 'go right')
+      string2 = build_text('right', 'en', context: 'you are right')
 
       setup_translation('right', ['richtig', 'rechts', 'Recht'])
       setup_translation('go right', 'Geh rechts')
@@ -68,7 +68,7 @@ RSpec.describe Translatomatic::Translator do
     end
 
     it 'translates a string with two sentences' do
-      string = string('Sentence one. Sentence two.', 'en')
+      string = build_text('Sentence one. Sentence two.', 'en')
 
       setup_translation('Sentence one.', 'Satz eins.')
       setup_translation('Sentence two.', 'Satz zwei.')
@@ -78,7 +78,7 @@ RSpec.describe Translatomatic::Translator do
     end
 
     it 'translates a string with repeated sentences' do
-      string = string('Sentence. Sentence.', 'en')
+      string = build_text('Sentence. Sentence.', 'en')
 
       setup_translation('Sentence.', 'Satz.')
       translation = default_translator.translate(string, 'de')
@@ -87,7 +87,7 @@ RSpec.describe Translatomatic::Translator do
     end
 
     it 'preserves variables' do
-      string = string("rah {var} rah", 'en')
+      string = build_text("rah {var} rah", 'en')
       string.preserve_regex = /\{.*?\}/
       setup_translation(string, 'zomg {translated_var} zomg')
       translation = default_translator.translate(string, 'de')
@@ -96,7 +96,7 @@ RSpec.describe Translatomatic::Translator do
     end
 
     it 'rejects translations with malformed variable names' do
-      string = string("rah {var} rah", 'en')
+      string = build_text("rah {var} rah", 'en')
       string.preserve_regex = /\{.*?\}/
       setup_translation(string, 'zomg MUNGED zomg')
       translation = default_translator.translate(string, 'de')
@@ -110,7 +110,7 @@ RSpec.describe Translatomatic::Translator do
       setup_translation('hello.', 'hallo.')
       setup_db_translation('this is a long sentence.', 'short!')
 
-      string = string('this is a long sentence. hello.', 'en')
+      string = build_text('this is a long sentence. hello.', 'en')
       translator = create_translator(provider: provider) # use db
       translation = translator.translate(string, 'de')
 
@@ -118,7 +118,7 @@ RSpec.describe Translatomatic::Translator do
     end
 
     it 'doesn''t translate numbers' do
-      string = string('1234', 'en')
+      string = build_text('1234', 'en')
       translator = create_translator(provider: unused_provider)
       translator.translate(string, 'de')
     end

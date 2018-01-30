@@ -25,7 +25,7 @@ module Translatomatic
       # @param locales [Array<String>] List of target locales, can also be set
       #   with the --target-locales option
       # @return [void]
-      def string(text, *locales)
+      def build_text(text, *locales)
         run do
           setup_translation
           determine_target_locales(locales)

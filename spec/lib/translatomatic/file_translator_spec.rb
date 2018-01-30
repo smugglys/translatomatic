@@ -1,6 +1,6 @@
 RSpec.describe Translatomatic::FileTranslator do
-  let(:locale_en) { locale('en') }
-  let(:locale_de) { locale('de') }
+  let(:locale_en) { build_locale('en') }
+  let(:locale_de) { build_locale('de') }
 
   context '#new' do
     it 'creates a new instance' do

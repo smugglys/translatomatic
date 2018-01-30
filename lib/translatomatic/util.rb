@@ -28,14 +28,15 @@ module Translatomatic
       Translatomatic.config.logger
     end
 
-    def locale(tag)
+    def build_locale(tag)
       Translatomatic::Locale.parse(tag)
     end
 
-    def string(value, locale, options = {})
-      string = Translatomatic::String.new(value, locale)
-      string.context = options[:context]
-      string
+    def build_text(string, locale, options = {})
+      return nil if string.nil?
+      text = Translatomatic::Text.new(string, locale)
+      text.context = options[:context]
+      text
     end
 
     def hashify(list, key_mapping = proc { |i| i.to_s })

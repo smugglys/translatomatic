@@ -4,10 +4,10 @@ module Translatomatic
 
     # Data object describing a text translation
     class Result
-      # @return [Translatomatic::String] original string
+      # @return [Translatomatic::Text] original string
       attr_reader :original
 
-      # @return [Translatomatic::String] translated string
+      # @return [Translatomatic::Text] translated string
       attr_accessor :result
 
       # @return [Symbol] The name of the provider. Can be nil for translations
@@ -20,8 +20,8 @@ module Translatomatic
       def initialize(original, result, provider, options = {})
         raise 'original required' unless original.present?
         raise 'result required' unless result.present?
-        @original = string(original)
-        @result = string(result)
+        @original = build_text(original)
+        @result = build_text(result)
         @provider = provider
         @from_database = options[:from_database]
       end
@@ -61,11 +61,11 @@ module Translatomatic
 
       private
 
-      def string(string)
-        if string.is_a?(Translatomatic::String)
+      def build_text(string)
+        if string.is_a?(Translatomatic::Text)
           string
         else
-          Translatomatic::String.new(string, Locale.default)
+          Translatomatic::Text.new(string, Locale.default)
         end
       end
     end
