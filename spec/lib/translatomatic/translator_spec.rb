@@ -27,7 +27,7 @@ RSpec.describe Translatomatic::Translator do
       setup_translation('hello', 'hallo')
       translation = default_translator.translate(string, 'de')
 
-      expect_translation(translation, string, 'hallo')
+      expect_translation(translation, string, 'hallo', 'de')
     end
 
     it 'translates two strings' do
@@ -38,8 +38,8 @@ RSpec.describe Translatomatic::Translator do
       setup_translation('right', 'rechts')
       translation = default_translator.translate([string1, string2], 'de')
 
-      expect_translation(translation, string1, 'links')
-      expect_translation(translation, string2, 'rechts')
+      expect_translation(translation, string1, 'links', 'de')
+      expect_translation(translation, string2, 'rechts', 'de')
     end
 
     it 'translates a string with a context' do
@@ -50,7 +50,7 @@ RSpec.describe Translatomatic::Translator do
       setup_translation('go right', 'Geh rechts')
       translation = default_translator.translate(string, 'de')
 
-      expect_translation(translation, string, 'rechts')
+      expect_translation(translation, string, 'rechts', 'de')
     end
 
     # test translating two identical strings with different contexts
@@ -63,8 +63,8 @@ RSpec.describe Translatomatic::Translator do
       setup_translation('you are right', 'Du hast recht')
       translation = default_translator.translate([string1, string2], 'de')
 
-      expect_translation(translation, string1, 'rechts')
-      expect_translation(translation, string2, 'Recht')
+      expect_translation(translation, string1, 'rechts', 'de')
+      expect_translation(translation, string2, 'Recht', 'de')
     end
 
     it 'translates a string with two sentences' do
@@ -74,7 +74,16 @@ RSpec.describe Translatomatic::Translator do
       setup_translation('Sentence two.', 'Satz zwei.')
       translation = default_translator.translate(string, 'de')
 
-      expect_translation(translation, string, 'Satz eins. Satz zwei.')
+      expect_translation(translation, string, 'Satz eins. Satz zwei.', 'de')
+    end
+
+    it 'translates a string with repeated sentences' do
+      string = string('Sentence. Sentence.', 'en')
+
+      setup_translation('Sentence.', 'Satz.')
+      translation = default_translator.translate(string, 'de')
+
+      expect_translation(translation, string, 'Satz. Satz.', 'de')
     end
 
     it 'preserves variables' do
@@ -83,7 +92,7 @@ RSpec.describe Translatomatic::Translator do
       setup_translation(string, 'zomg {translated_var} zomg')
       translation = default_translator.translate(string, 'de')
 
-      expect_translation(translation, string, 'zomg {var} zomg')
+      expect_translation(translation, string, 'zomg {var} zomg', 'de')
     end
 
     it 'rejects translations with malformed variable names' do
@@ -92,7 +101,7 @@ RSpec.describe Translatomatic::Translator do
       setup_translation(string, 'zomg MUNGED zomg')
       translation = default_translator.translate(string, 'de')
 
-      expect_translation(translation, string, nil)
+      expect_translation(translation, string, nil, 'de')
     end
 
     it 'uses translations from database and provider' do
@@ -105,7 +114,7 @@ RSpec.describe Translatomatic::Translator do
       translator = create_translator(provider: provider) # use db
       translation = translator.translate(string, 'de')
 
-      expect_translation(translation, string, 'short! hallo.')
+      expect_translation(translation, string, 'short! hallo.', 'de')
     end
 
     it 'doesn''t translate numbers' do
@@ -115,8 +124,8 @@ RSpec.describe Translatomatic::Translator do
     end
   end
 
-  def expect_translation(translation, string, result)
-    tr = translation.get(string)
+  def expect_translation(translation, string, result, result_locale)
+    tr = translation.get(string, result_locale)
     if result.nil?
       expect(tr).to be_nil
     else

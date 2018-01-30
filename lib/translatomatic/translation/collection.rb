@@ -6,7 +6,6 @@ module Translatomatic
     # For each original string, there may be zero or more translations from
     # one or more providers.
     class Collection
-
       # Create a translation collection
       def initialize
         # by_provider[provider] = [Result, ...]
@@ -24,15 +23,18 @@ module Translatomatic
         @by_original.empty?
       end
 
+      # @param string [String] Original string
+      # @param locale [Locale] Target locale
       # @return [Result] The best translation for the given string
-      def get(string)
+      def get(string, locale)
+        locale = locale(locale)
         list = @by_original[string.to_s] || []
         list = sort_by_best_match(list)
         if string.is_a?(Translatomatic::String) && string.context
           # string has a context
-          list = sort_by_context_match(list, string.context)
+          list = sort_by_context_match(list, string.context, locale)
         end
-        list[0]
+        list.find { |i| i.result.locale == locale }
       end
 
       # Add a list of translations to the collection
@@ -68,9 +70,18 @@ module Translatomatic
       # Get a list of the best sentence translations for the given
       # parent string.
       # @param parent [String] Parent string
+      # @param locale [Locale] Target locale
       # @return [Array<Result>] Substring translation results
-      def sentences(parent)
-        parent.sentences.collect { |i| get(i) }.compact
+      def sentences(parent, locale)
+        parent.sentences.collect do |sentence|
+          # get translation for sentence
+          tr = get(sentence, locale)
+          # create a new translation with the sentence as the original
+          # string, so that we can rely on the offset value.
+          Result.new(
+            sentence, tr.result, tr.provider, from_database: tr.from_database
+          ) if tr
+        end.compact
       end
 
       # Return a new collection with only the translations that came from
@@ -78,14 +89,15 @@ module Translatomatic
       # @return [Collection] The collection result
       def from_providers
         result = self.class.new
-        provider_translations = translations.select { |tr| !tr.from_database }
+        provider_translations = translations.reject(&:from_database)
         result.add(provider_translations)
         result
       end
 
       # @return [Array<Result>] Best translations for each string
-      def best_translations
-        @by_original.keys.collect { |i| get(i) }
+      # @param locale [Locale] Target locale
+      def best_translations(locale)
+        @by_original.keys.collect { |i| get(i, locale) }
       end
 
       def providers
@@ -107,6 +119,10 @@ module Translatomatic
         list.any? { |tr| tr.original.to_s == string.to_s }
       end
 
+      def description
+        translations.collect(&:description).join("\n")
+      end
+
       private
 
       include Translatomatic::Util
@@ -118,9 +134,9 @@ module Translatomatic
       #   translation of 'right' is 'rechts', and 'richtig'.
       #   translation 'rechts' will be ordered first, as 'rechts' is in
       #     the translated context string (and is longer than 'recht').
-      def sort_by_context_match(list, context)
+      def sort_by_context_match(list, context, locale)
         return list if list.blank?
-        context_tr = get(String[context, list[0].original.locale])
+        context_tr = get(String[context, list[0].original.locale], locale)
         unless context_tr
           log.error("no translation for context string '#{context}'")
           return list
