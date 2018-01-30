@@ -26,6 +26,8 @@ en:
         drop: Drop the database
         search: Search database for text matching the given string.
         subcommand: Database commands
+        info: Database information
+        text_count: Database contains %{count} strings.
       debug: Enable debugging output
       display_sentences: Display sentences
       display_values: Display values from a resource bundle
@@ -52,12 +54,14 @@ en:
       target_locales: Locales to translate to
       translate:
         file: Translate a file to target locales
+        no_providers: No translation providers found
         provider: Provider implementations to use
         share: Share translations with providers
         string: Translate a string to target locales
         subcommand: Translate files or strings
-      translating: Translating
-      using_provider: 'Using provider: %{name}'
+        translating: Translating
+        using_provider: 'Using provider: %{name}'
+        using_providers: 'Using providers: %{list}'
     config:
       command_line_only: Configuration '%{key}' cannot be saved
       context:

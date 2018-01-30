@@ -25,6 +25,13 @@ RSpec.describe Translatomatic::CLI::Database do
     end
   end
 
+  context :info do
+    it 'displays database information' do
+      skip if database_disabled?
+      @cli.info
+    end
+  end
+
   private
 
   def add_cli_options(options = {})

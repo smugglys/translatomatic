@@ -34,6 +34,20 @@ module Translatomatic
       def drop
         Translatomatic::Database.new(options).drop
       end
+
+      desc 'info', t('cli.database.info')
+      thor_options(self, Translatomatic::CLI::CommonOptions)
+      thor_options(self, Translatomatic::Database)
+      # Show information about the database
+      def info
+        db = Translatomatic::Database.new(options)
+        puts t('cli.database.text_count', count: db.text.count)
+        texts_by_locale = db.text.group(:locale).count
+        texts_by_locale.each do |locale, count|
+          puts format('  (%<locale>s) %<count>d',
+                      locale: locale.to_s, count: count)
+        end
+      end
     end
   end
 end
