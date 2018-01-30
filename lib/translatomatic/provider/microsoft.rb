@@ -3,8 +3,8 @@ require 'builder'
 module Translatomatic
   module Provider
     # Interface to the Microsoft translation API
-    # @see https://www.microsoft.com/en-us/provider/providerapi.aspx
-    # @see http://docs.microsoftprovider.com/text-translate.html
+    # @see https://www.microsoft.com/en-us/translator/translatorapi.aspx
+    # @see http://docs.microsofttranslator.com/text-translate.html
     class Microsoft < Base
       define_option :microsoft_api_key,
                     desc: t('provider.microsoft.api_key'), use_env: true
@@ -28,34 +28,40 @@ module Translatomatic
 
       private
 
-      BASE_URL = 'https://api.microsoftprovider.com/V2/Http.svc'.freeze
-      TRANSLATE_ARRAY_1_URL = "#{BASE_URL}/TranslateArray".freeze
-      TRANSLATE_ARRAY_N_URL = "#{BASE_URL}/GetTranslationsArray".freeze
-      TRANSLATE_N_URL = "#{BASE_URL}/GetTranslations".freeze
+      BASE_URL = 'https://api.microsofttranslator.com/V2/Http.svc'.freeze
+      TRANSLATE_URL = "#{BASE_URL}/GetTranslationsArray".freeze
       LANGUAGES_URL = "#{BASE_URL}/GetLanguagesForTranslate".freeze
       ARRAYS_NS = 'http://schemas.microsoft.com/2003/10/Serialization/Arrays'.freeze
       OPTS_NS = 'http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2'.freeze
       MAX_TRANSLATIONS = 10
+      MAX_TEXTS_PER_REQUEST = 10
 
       def perform_translate(strings, from, to)
         fetch_translation_array(strings, from, to)
       end
 
-      # fetch single translation or n translations for given strings
+      # fetch translations for given strings
       def fetch_translation_array(strings, from, to)
-        url = TRANSLATE_ARRAY_N_URL
-        body = build_body_xml(strings, from, to)
-        headers = { 'Ocp-Apim-Subscription-Key' => @key }
-        log.debug("#{name} request: #{url}, body: #{body}")
+        strings.each_slice(MAX_TEXTS_PER_REQUEST) do |texts|
+          translate_texts(texts, from, to)
+        end
+      end
 
+      def translate_texts(texts, from, to)
+        url = TRANSLATE_URL
+        headers = { 'Ocp-Apim-Subscription-Key' => @key }
+        body = build_body_xml(texts, from, to)
         response = http_client.post(url, body,
                                     headers: headers,
                                     content_type: 'application/xml')
-        log.debug("#{name} response: #{response.body}")
+        add_translations_from_response(response, texts)
+      end
+
+      def add_translations_from_response(response, texts)
         doc = Nokogiri::XML(response.body)
         # there should be one GetTranslationsResponse for each string
         responses = doc.search('//xmlns:GetTranslationsResponse')
-        strings.zip(responses).each do |original, tr|
+        texts.zip(responses).each do |original, tr|
           results = tr.search('TranslatedText').collect(&:content)
           add_translations(original, results)
         end

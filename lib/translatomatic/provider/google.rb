@@ -27,8 +27,27 @@ module Translatomatic
       BASE_URL = 'https://translation.googleapis.com'.freeze
       TRANSLATE_URL = (BASE_URL + '/language/translate/v2').freeze
       LANGUAGES_URL = (BASE_URL + '/language/translate/v2/languages').freeze
+      MAX_TEXTS_PER_REQUEST = 128
 
       def perform_translate(strings, from, to)
+        strings.each_slice(MAX_TEXTS_PER_REQUEST) do |texts|
+          perform_translate_texts(texts, from, to)
+        end
+      end
+
+      def perform_translate_texts(texts, from, to)
+        request_body = request_body(texts, from, to)
+        response = http_client.post(TRANSLATE_URL, request_body)
+        body = JSON.parse(response.body)
+        data = body['data'] || {}
+        translations = data['translations'] || []
+        translations = translations.collect { |i| i['translatedText'] }
+        texts.zip(translations).each do |original, translated|
+          add_translations(original, translated)
+        end
+      end
+
+      def request_body(strings, from, to)
         body = {
           q: strings,
           source: from.language,
@@ -37,14 +56,7 @@ module Translatomatic
           key: @key
         }
         body[:model] = @model if @model
-        response = http_client.post(TRANSLATE_URL, body)
-        body = JSON.parse(response.body)
-        data = body['data'] || {}
-        translations = data['translations'] || []
-        translations = translations.collect { |i| i['translatedText'] }
-        strings.zip(translations).each do |original, translated|
-          add_translations(original, translated)
-        end
+        body
       end
 
       def fetch_languages

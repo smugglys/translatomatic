@@ -104,10 +104,11 @@ module Translatomatic
       end
 
       def convert_to_translations(original, result)
-        result.collect { |i| translation(original, i) }
+        result.collect { |i| translation(original, i) }.compact
       end
 
       def translation(original, translated)
+        return nil if translated.blank?
         string1 = Translatomatic::String[original, @from]
         string2 = Translatomatic::String[translated, @to]
         Translatomatic::Translation::Result.new(string1, string2, name)
