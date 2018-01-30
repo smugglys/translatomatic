@@ -33,9 +33,9 @@ grammar Properties
   end
 
   rule definition
-    key assignment value end_definition {
+    key assignment value? end_definition {
       def content
-        [:definition, elements[0].text_value, elements[2].text_value]
+        [:definition, elements[0].text_value, elements[2] ? elements[2].text_value : nil]
       end
     }
   end
