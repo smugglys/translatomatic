@@ -29,7 +29,6 @@ module Translatomatic
       #   for texts that are untranslated, call the provider
       # return translations
 
-      log.debug("translating #{text_collection.count} texts")
       update_listener_total(text_collection, to_locales)
       translation_collection = Translation::Collection.new
       text_collection.each_locale do |from_locale, list|

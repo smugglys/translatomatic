@@ -1,7 +1,7 @@
 RSpec.describe Translatomatic::Config do
   KEY_LOCALES = 'target_locales'.freeze
   KEY_DB_CONFIG = 'database_config'.freeze
-  KEY_DEBUG = 'debug'.freeze
+  KEY_BOOLEAN = 'no_wank'.freeze
 
   let(:config) { Translatomatic.config }
 
@@ -16,8 +16,8 @@ RSpec.describe Translatomatic::Config do
     end
 
     it 'sets a boolean setting' do
-      config.set(KEY_DEBUG, 'true')
-      expect(config.get(KEY_DEBUG)).to eq(true)
+      config.set(KEY_BOOLEAN, 'true')
+      expect(config.get(KEY_BOOLEAN)).to eq(true)
     end
 
     it 'writes configuration to file' do
@@ -45,10 +45,10 @@ RSpec.describe Translatomatic::Config do
     end
 
     it 'removes a boolean setting' do
-      config.set(KEY_DEBUG, 'false')
-      expect(config.get(KEY_DEBUG)).to eq(false)
-      config.unset(KEY_DEBUG)
-      expect(config.get(KEY_DEBUG)).to eq(false) # default setting
+      config.set(KEY_BOOLEAN, 'false')
+      expect(config.get(KEY_BOOLEAN)).to eq(false)
+      config.unset(KEY_BOOLEAN)
+      expect(config.get(KEY_BOOLEAN)).to eq(false) # default setting
     end
   end
 
@@ -61,8 +61,8 @@ RSpec.describe Translatomatic::Config do
 
     it 'fails on non-list types' do
       expect do
-        config.add(KEY_DEBUG, true)
-      end.to raise_error(t('config.non_array_key', key: KEY_DEBUG))
+        config.add(KEY_BOOLEAN, true)
+      end.to raise_error(t('config.non_array_key', key: KEY_BOOLEAN))
     end
   end
 
@@ -75,8 +75,8 @@ RSpec.describe Translatomatic::Config do
 
     it 'fails on non list types' do
       expect do
-        config.subtract(KEY_DEBUG, true)
-      end.to raise_error(t('config.non_array_key', key: KEY_DEBUG))
+        config.subtract(KEY_BOOLEAN, true)
+      end.to raise_error(t('config.non_array_key', key: KEY_BOOLEAN))
     end
   end
 

@@ -3,7 +3,7 @@ RSpec.describe Translatomatic::CLI::Config do
   let(:config) { Translatomatic.config }
 
   KEY_CLI_TEST = 'target_locales'.freeze
-  KEY_CLI_DEBUG = 'debug'.freeze
+  KEY_CLI_BOOLEAN = 'no_wank'.freeze
 
   before(:each) do
     # TODO: test with project level config also
@@ -43,8 +43,8 @@ RSpec.describe Translatomatic::CLI::Config do
 
     it 'fails on non list types' do
       expect do
-        cli.add(KEY_CLI_DEBUG, true)
-      end.to raise_error(t('config.non_array_key', key: KEY_CLI_DEBUG))
+        cli.add(KEY_CLI_BOOLEAN, true)
+      end.to raise_error(t('config.non_array_key', key: KEY_CLI_BOOLEAN))
     end
   end
 
@@ -57,8 +57,8 @@ RSpec.describe Translatomatic::CLI::Config do
 
     it 'fails on non list types' do
       expect do
-        cli.add(KEY_CLI_DEBUG, true)
-      end.to raise_error(t('config.non_array_key', key: KEY_CLI_DEBUG))
+        cli.add(KEY_CLI_BOOLEAN, true)
+      end.to raise_error(t('config.non_array_key', key: KEY_CLI_BOOLEAN))
     end
   end
 

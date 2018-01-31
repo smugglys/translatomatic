@@ -40,7 +40,7 @@ module Translatomatic
       end
 
       # Translate strings from one locale to another
-      # @param strings [Array<String>] A list of strings to translate.
+      # @param strings [Array<String,Text>] A list of text/strings to translate.
       # @param from [String, Translatomatic::Locale] The locale of the
       #   given strings.
       # @param to [String, Translatomatic::Locale] The locale to translate to.
@@ -117,14 +117,6 @@ module Translatomatic
         string1 = Translatomatic::Text[original, @from]
         string2 = Translatomatic::Text[translated, @to]
         Translatomatic::Translation::Result.new(string1, string2, name)
-      end
-
-      def wrap_notranslate(string)
-        return string unless string.preserve_regex
-        value = string.gsub(string.preserve_regex) {
-          '<span translate="no">' + Regexp.last_match(1) + '</span>'
-        }
-        build_text(value, string.locale, string.options)
       end
     end
   end

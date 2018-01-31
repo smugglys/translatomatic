@@ -51,7 +51,7 @@ module Translatomatic
         uri = url.respond_to?(:host) ? url : URI.parse(url)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = uri.scheme == 'https'
-        http.set_debug_output(Translatomatic.config.logger) if ENV['DEBUG']
+        # http.set_debug_output(Translatomatic.config.logger) if ENV['DEBUG']
         result = http.start do
           @http = http
           yield http

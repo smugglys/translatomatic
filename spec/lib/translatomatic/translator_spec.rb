@@ -7,6 +7,7 @@ RSpec.describe Translatomatic::Translator do
   end
 
   let(:provider) { TestProvider.new(@mapping) }
+  let(:notranslate_provider) { TestProviderNoTranslate.new(@mapping) }
   let(:unused_provider) {
     prov = TestProvider.new
     expect(prov).to_not receive(:translate)
@@ -95,6 +96,22 @@ RSpec.describe Translatomatic::Translator do
       expect_translation(translation, string, 'zomg {var} zomg', 'de')
     end
 
+    it 'escapes variables with notranslate if supported by provider' do
+      string = build_text("rah {var} rah", 'en')
+      string.preserve_regex = /\{.*?\}/
+      escaped = build_text(%q{rah <span translate="no">{var}</span> rah}, 'en')
+      escaped.preserve_regex = string.preserve_regex
+      
+      options = { provider: notranslate_provider, no_database: true }
+      translator = create_translator(options)
+
+      # this does not test the result of translation, just tests that string
+      # is being escaped with <span translate="no"></span>
+      expect(notranslate_provider).to receive(:translate).
+        with([escaped], build_locale('en'), 'de').and_return([])
+      translator.translate(string, 'de')
+    end
+
     it 'rejects translations with malformed variable names' do
       string = build_text("rah {var} rah", 'en')
       string.preserve_regex = /\{.*?\}/
@@ -129,7 +146,7 @@ RSpec.describe Translatomatic::Translator do
     if result.nil?
       expect(tr).to be_nil
     else
-      expect(tr).to be
+      expect(tr).to be_present
       expect(tr.result.to_s).to eq(result)
     end
   end

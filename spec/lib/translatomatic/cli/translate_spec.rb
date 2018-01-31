@@ -18,7 +18,7 @@ RSpec.describe Translatomatic::CLI::Translate do
     it 'translates a string' do
       test_provider('Bier')
       add_cli_options(no_database: true, target_locales: 'de')
-      @cli.build_text('Beer')
+      @cli.string('Beer')
     end
 
     it 'uses command line options in preference to configuration' do
@@ -26,7 +26,7 @@ RSpec.describe Translatomatic::CLI::Translate do
       add_cli_options(provider: 'Google', target_locales: 'de')
       expect(Translatomatic::Provider).to receive(:find)
         .with('Google').and_return(TestProvider)
-      @cli.build_text('Beer')
+      @cli.string('Beer')
     end
   end
 

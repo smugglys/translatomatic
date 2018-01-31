@@ -1,5 +1,5 @@
-
 class TestProvider < Translatomatic::Provider::Base
+
   def initialize(result = {})
     @mapping = result
   end
@@ -14,7 +14,7 @@ class TestProvider < Translatomatic::Provider::Base
   def results_from_strings(strings, to)
     if @mapping.is_a?(Hash)
       langmap = @mapping.include?(to.to_s) ? @mapping[to.to_s] : @mapping
-      strings.collect { |i| langmap[i.to_s] }
+      strings.collect { |i| langmap[i] || langmap[i.to_s] }
     else
       strings.collect { @mapping }
     end

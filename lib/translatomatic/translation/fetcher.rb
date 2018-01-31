@@ -33,6 +33,7 @@ module Translatomatic
       private
 
       include Util
+      include Munging
 
       ATTRIBUTES = %i[provider texts from_locale to_locale use_db].freeze
 
@@ -55,29 +56,22 @@ module Translatomatic
             # convert untranslated texts to strings
             value: texts.collect(&:to_s)
           }
-        ).joins(:from_text)
+        ).joins(:from_text).includes(:from_text)
 
         texts_to_translations(db_texts, texts)
       end
 
       # @return [Array<Result>] translations from provider
       def find_provider_translations(texts)
+        texts = wrap_notranslate(texts)
         translations = @provider.translate(
           texts, @from_locale, @to_locale
         )
         # check for valid response from provider and restore variables
-        translations.select do |tr|
+        translations.each do |tr|
           raise t('provider.invalid_response') unless tr.is_a?(Result)
-          restore_variables(tr)
         end
-      end
-
-      def restore_variables(tr)
-        tr.restore_preserved_text
-        true
-      rescue RestorePreservedTextException
-        log.debug("unable to restore variables: #{tr}")
-        false
+        munge_translation_results(translations)
       end
 
       # use the original text from the translation rather than

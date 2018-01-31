@@ -14,6 +14,11 @@ module Translatomatic
         true
       end
 
+      # (see Base.supports_no_translate_html?)
+      def self.supports_no_translate_html?
+        true
+      end
+
       # Create a new Microsoft provider instance
       def initialize(options = {})
         super(options)

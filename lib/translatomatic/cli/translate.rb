@@ -25,7 +25,7 @@ module Translatomatic
       # @param locales [Array<String>] List of target locales, can also be set
       #   with the --target-locales option
       # @return [void]
-      def build_text(text, *locales)
+      def string(text, *locales)
         run do
           setup_translation
           determine_target_locales(locales)
@@ -126,7 +126,7 @@ module Translatomatic
         # set up progress bar
         progressbar = ProgressBar.create(
           title: t('cli.translate.translating'),
-          format: '%t: |%B| %E ',
+          format: '%t: |%B| %p%% ',
           autofinish: false
         )
         conf.logger.progressbar = progressbar

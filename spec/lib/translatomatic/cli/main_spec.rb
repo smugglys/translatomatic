@@ -45,10 +45,5 @@ RSpec.describe Translatomatic::CLI::Main do
     it 'displays strings from a resource file' do
       @cli.strings(fixture_path('test.properties'))
     end
-
-    it 'displays strings from a resource file with debug enabled' do
-      @cli.options = @cli.options.merge(debug: true)
-      @cli.strings(fixture_path('test.properties'))
-    end
   end
 end

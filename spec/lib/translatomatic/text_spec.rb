@@ -40,7 +40,7 @@ RSpec.describe Translatomatic::Text do
      ['sentence one.', 'sentence', 'two']]
   ].freeze
 
-  context :new do
+  context '#new' do
     it 'creates a string using a string tag' do
       string = Translatomatic::Text.new('test', 'en')
       expect(string).to be
@@ -55,7 +55,23 @@ RSpec.describe Translatomatic::Text do
     end
   end
 
-  context :substring do
+  context '#[]' do
+    it 'returns the original text if given a text with equal locale' do
+      text = Translatomatic::Text.new('test', 'en')
+      text.context = ['foo']
+      text.preserve_regex = /abc/
+
+      copy = Translatomatic::Text[text, 'en']
+      expect(copy.context).to eq(text.context)
+      expect(copy.preserve_regex).to eq(text.preserve_regex)
+
+      copy2 = Translatomatic::Text[text, build_locale('en')]
+      expect(copy2.context).to eq(text.context)
+      expect(copy2.preserve_regex).to eq(text.preserve_regex)
+    end
+  end
+
+  context '#substrings' do
     it 'creates substrings' do
       string = build_text('sentence one. sentence two.', 'en')
       expect(string.substring?).to be_falsey
@@ -72,7 +88,16 @@ RSpec.describe Translatomatic::Text do
     end
   end
 
-  context :type do
+  context '#gsub' do
+    it 'should retain the preserve_regex attribute in result' do
+      text = build_text('test text', 'en')
+      text.preserve_regex = /foobar/
+      text2 = text.gsub(/text/, 'string')
+      expect(text2.preserve_regex).to eq(text.preserve_regex)
+    end
+  end
+
+  context '#type' do
     STRING_DATA.each do |tag, type, input, _output|
       it "recognises '#{input}' as type '#{type}'" do
         expect(build_text(input, tag).type).to eq(type)
@@ -80,7 +105,7 @@ RSpec.describe Translatomatic::Text do
     end
   end
 
-  context :sentences do
+  context '#sentences' do
     it 'returns itself if there is only one sentence' do
       string = build_text('test sentence', 'en')
       expect(string.sentences[0]).to equal(string)

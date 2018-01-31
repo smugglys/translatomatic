@@ -4,6 +4,7 @@ module Translatomatic
 end
 
 require 'translatomatic/translation/collection'
+require 'translatomatic/translation/munging'
 require 'translatomatic/translation/fetcher'
 require 'translatomatic/translation/result'
 require 'translatomatic/translation/stats'

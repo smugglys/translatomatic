@@ -24,6 +24,7 @@ module Translatomatic
     # Create a new text. Returns value if value is already a
     #   Translatomatic::Text object with the same locale.
     def self.[](value, locale)
+      locale = Translatomatic::Locale.parse(locale)
       if value.is_a?(Translatomatic::Text) && value.locale == locale
         value
       else
@@ -44,10 +45,7 @@ module Translatomatic
 
     # @return [Text] A copy of this text
     def dup
-      copy = self.class.new(value, @locale, @options)
-      copy.preserve_regex = preserve_regex
-      copy.context = context
-      copy
+      copy_self_with_value(value)
     end
 
     # Invokes value.match
@@ -65,6 +63,21 @@ module Translatomatic
     # @return [String] The value of the text
     def to_s
       @value
+    end
+
+    def to_str
+      @value.to_str
+    end
+
+    # @return [Text] A copy of this text with all occurrences of pattern
+    #   substituted for the replacement text.
+    def gsub(pattern, replacement = nil)
+      new_value = if block_given?
+                    @value.gsub(pattern) { yield Regexp.last_match }
+                  else
+                    @value.gsub(pattern, replacement)
+                  end
+      copy_self_with_value(new_value)
     end
 
     # @return [Symbol] The type of text, corresponding to TMX segtype.
@@ -179,6 +192,13 @@ module Translatomatic
       @script_data = script_data
     end
 
+    def copy_self_with_value(new_value)
+      copy = self.class.new(new_value, @locale, @options)
+      copy.preserve_regex = preserve_regex
+      copy.context = context
+      copy
+    end
+
     def match_to_substring(match)
       substring = match.to_s
       return nil if substring.empty?
@@ -226,7 +246,13 @@ module Translatomatic
 
     def method_missing(name, *args)
       if @value.respond_to?(name)
-        @value.send(name, *args)
+        result = @value.send(name, *args)
+        if result.is_a?(String)
+          # convert to text object
+          copy_self_with_value(result)
+        else
+          result
+        end
       else
         super
       end

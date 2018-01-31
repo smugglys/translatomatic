@@ -55,6 +55,11 @@ module Translatomatic
         translations.length
       end
 
+      # @return [Boolean] True if there is one or more translations
+      def present?
+        count > 0
+      end
+
       # Get translations from this collection. If provider is specified,
       # returns only translations from the given provider, otherwise all
       # translations are returned.
@@ -145,7 +150,7 @@ module Translatomatic
       def sort_by_context_match(list, context, locale)
         return list if list.blank?
         context_results = context_translation_results(list, context, locale)
-        log.debug("context translations: #{context_results}")
+        # log.debug("context translations: #{context_results}")
         # put translations that include the context string(s) first.
         # also put longer translations that include the context string first.
         # (fixes matching 'rechts' before 'recht')

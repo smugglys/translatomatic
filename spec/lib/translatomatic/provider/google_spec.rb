@@ -39,7 +39,7 @@ RSpec.describe Translatomatic::Provider::Google do
       'Content-Type'=>'application/x-www-form-urlencoded'
     )
     body = {
-      "format"=>"text", "key"=>"dummy", "q" => expected_q,
+      "format"=>"html", "key"=>"dummy", "q" => expected_q,
       "source"=>"en", "target"=>"de"
     }
     stub_request(:post, api_endpoint).

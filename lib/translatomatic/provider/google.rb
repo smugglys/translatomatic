@@ -11,7 +11,7 @@ module Translatomatic
 
       # (see Base.supports_no_translate_html?)
       def self.supports_no_translate_html?
-        false
+        true
       end
 
       # Create a new Google provider instance
@@ -57,7 +57,7 @@ module Translatomatic
           q: strings,
           source: from.language,
           target: to.language,
-          format: 'text',
+          format: 'html', # required for <span translate="no"></span>
           key: @key
         }
         body[:model] = @model if @model
