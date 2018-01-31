@@ -1,4 +1,5 @@
 module Translatomatic
+  # Classes for translating strings
   module Translation; end
 end
 

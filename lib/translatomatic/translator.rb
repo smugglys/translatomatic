@@ -40,7 +40,9 @@ module Translatomatic
               provider: provider, texts: list, use_db: @use_db,
               from_locale: from_locale, to_locale: to_locale
             )
-            translation_collection += fetcher.translations
+            translations = fetcher.translations
+            translation_collection += translations
+            update_stats(translations)
           end
         end
       end
@@ -75,9 +77,9 @@ module Translatomatic
       end
     end
 
-    def combine_parent_substrings(translation_collection, parent, to_locale)
+    def combine_parent_substrings(tr_collection, parent, to_locale)
       # get a list of substring translations for this parent string
-      list = translation_collection.sentences(parent, to_locale)
+      list = tr_collection.sentences(parent, to_locale)
       # skip if we have no substrings for this string
       return if list.blank?
       list = list.sort_by { |tr| -tr.original.offset }
@@ -92,7 +94,7 @@ module Translatomatic
       # add the translation that results from combining the translated
       # substrings to the translation collection
       new_translation = translation(parent, translated_parent)
-      translation_collection.add(new_translation)
+      tr_collection.add(new_translation)
     end
 
     def translation(original, result, provider = nil, options = {})
@@ -103,6 +105,13 @@ module Translatomatic
 
     def resolve_providers(options)
       Translatomatic::Provider.resolve(options[:provider], options)
+    end
+
+    def update_stats(tr_collection)
+      stats = Translatomatic::Translation::Stats.new(
+        tr_collection.translations
+      )
+      @stats += stats
     end
   end
 end

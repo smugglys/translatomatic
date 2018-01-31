@@ -1,5 +1,6 @@
 module Translatomatic
   module Translation
+    # Fetches translations from the database and translation providers
     class Fetcher
       def initialize(options = {})
         ATTRIBUTES.each do |i|
@@ -7,14 +8,15 @@ module Translatomatic
         end
       end
 
+      # Fetch a list of translations for all texts given in the constructor
+      # for all providers.
+      # Translations are fetched from the database first, then from providers.
+      # @return [Array<Result>] List of translations
       def translations
         collection = Collection.new
 
         # add all translations from the database to the collection
-        if @use_db
-          db_translations = find_database_translations(@texts)
-          collection.add(db_translations)
-        end
+        collection.add(find_database_translations(@texts)) if @use_db
 
         # request translations for all texts that aren't in the database
         untranslated = untranslated(collection)
@@ -47,8 +49,7 @@ module Translatomatic
         to = db_locale(@to_locale)
 
         db_texts = Translatomatic::Model::Text.where(
-          locale: to,
-          provider: @provider.name,
+          locale: to, provider: @provider.name,
           from_texts_texts: {
             locale_id: from,
             # convert untranslated texts to strings
@@ -85,7 +86,7 @@ module Translatomatic
       def texts_to_translations(db_texts, texts)
         db_text_map = hashify(db_texts, proc { |i| i.from_text.value })
         texts.collect do |text|
-          next unless db_text = db_text_map[text.to_s]
+          next unless (db_text = db_text_map[text.to_s])
           provider = db_text.provider
           translation = build_text(db_text.value, @to_locale)
           Result.new(text, translation, provider, from_database: true)
@@ -111,8 +112,7 @@ module Translatomatic
         )
 
         text = Translatomatic::Model::Text.find_or_create_by!(
-          locale: to_locale,
-          value: translation.result.to_s,
+          locale: to_locale, value: translation.result.to_s,
           from_text: original_text,
           provider: @provider.name
         )

@@ -20,7 +20,7 @@ module Translatomatic
       # (see Base#save)
       def save(target = path, options = {})
         return unless @doc
-        add_created_by unless options[:no_created_by] || have_created_by?
+        add_created_by unless options[:no_created_by] || created_by?
         target.write(@doc.to_xml(indent: 2))
       end
 

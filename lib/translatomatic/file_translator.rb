@@ -25,8 +25,8 @@ module Translatomatic
       # do nothing if target language is the same as source language
       return file if file.locale.language == to_locale.language
 
-      strings = strings_from_file(file)
-      collection = @translator.translate(strings, to_locale)
+      texts = texts_from_file(file)
+      collection = @translator.translate(texts, to_locale)
       update_properties(file, to_locale, collection)
       file
     end
@@ -51,8 +51,8 @@ module Translatomatic
     def translate_to_files(sources, to_locales)
       sources = [sources] unless sources.is_a?(Array)
       to_locales = [to_locales] unless to_locales.is_a?(Array)
-      strings = sources.collect { |i| strings_from_file(i) }.flatten
-      collection = @translator.translate(strings, to_locales)
+      texts = sources.collect { |i| texts_from_file(i) }.flatten
+      collection = @translator.translate(texts, to_locales)
       translated = []
       sources.each do |source|
         to_locales.each do |to_locale|
@@ -131,15 +131,15 @@ module Translatomatic
       target
     end
 
-    def strings_from_file(file)
-      strings = []
+    def texts_from_file(file)
+      texts = []
       file.properties.each do |key, value|
-        string = build_text(value, file.locale)
-        string.preserve_regex = file.variable_regex
-        string.context = file.get_context(key)
-        strings << string
+        text = build_text(value, file.locale)
+        text.preserve_regex = file.variable_regex
+        text.context = file.get_context(key)
+        texts << text
       end
-      strings
+      texts
     end
 
     # set up a mapping from property value -> key list

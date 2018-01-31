@@ -31,7 +31,7 @@ module Translatomatic
 
       # (see Base#save)
       def save(target = path, options = {})
-        add_created_by unless options[:no_created_by] || have_created_by?
+        add_created_by unless options[:no_created_by] || created_by?
         export(target)
       end
 
@@ -65,6 +65,7 @@ module Translatomatic
         subtitle[:id] ||= @keynum
         subtitle[:start] ||= @keynum * 10
         subtitle[:end] ||= @keynum * 10 + 5
+        process_metadata(key, subtitle)
         @keynum += 1
         @subtitle_map[key] = subtitle
         @subtitles << subtitle

@@ -22,7 +22,7 @@ module Translatomatic
 
       # (see Base#save)
       def save(target = path, options = {})
-        add_created_by unless options[:no_created_by] || have_created_by?
+        add_created_by unless options[:no_created_by] || created_by?
         content = @elements.collect { |i| render_element(i) }.join
         content = content.gsub(/[\r\n]+\Z/, '') + "\n"
         target.write(content)

@@ -1,5 +1,7 @@
 module Translatomatic
   module Translation
+    # Exception raised when preserved text could not be restored in a
+    # translated text.
     class RestorePreservedTextException < StandardError; end
 
     # Data object describing a text translation
@@ -33,18 +35,16 @@ module Translatomatic
         return unless preserve_regex
 
         # find parts to preserve in the original string
-        parts1 = original.substrings(preserve_regex)
+        list1 = original.substrings(preserve_regex)
         # find corresponding parts in the translated string
-        parts2 = result.substrings(preserve_regex)
+        list2 = result.substrings(preserve_regex)
 
-        if parts1.length == parts2.length
-          # we can restore text. sort by largest offset first.
-          conversions = parts1.zip(parts2).collect.sort_by { |i| -i[0].offset }
-          conversions.each do |v1, v2|
-            result[v2.offset, v2.length] = v1.value
-          end
-        else
-          raise RestorePreservedTextException
+        raise RestorePreservedTextException unless list1.length == list2.length
+
+        # we can restore text. sort by largest offset first.
+        conversions = list1.zip(list2).collect.sort_by { |i| -i[0].offset }
+        conversions.each do |v1, v2|
+          result[v2.offset, v2.length] = v1.value
         end
       end
 
@@ -53,6 +53,7 @@ module Translatomatic
         result.to_s
       end
 
+      # @return [String] A description of this translation
       def description
         format('%<original>s (%<from_locale>s) -> %<result>s (%<to_locale>s)',
                original: original.to_s, result: result.to_s,

@@ -1,4 +1,5 @@
 module Translatomatic
+  # Class to update the progress bar for the CLI
   class ProgressUpdater
     # Create a new progress updater
     # @param progressbar [Progressbar] A ruby-progressbar object

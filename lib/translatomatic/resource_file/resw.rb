@@ -14,21 +14,30 @@ module Translatomatic
 
       private
 
-      # @override
       def init_nodemap
         @nodemap = {}
         nodes = @doc.search('//data/@name|//text()|//comment()')
         nodes.each do |node|
-          parent = node.parent
-          if node.comment?
-            @metadata.parse_comment(node.content)
-          elsif node.type == Nokogiri::XML::Node::ATTRIBUTE_NODE # data name=""
-            @key = node.content
-          elsif node.text? && parent.name == 'value' # <value>content</value>
-            found_value(node)
-          elsif node.text? && parent.name == 'comment'
-            @metadata.parse_comment(node.content)
-          end
+          process_node(node)
+        end
+      end
+
+      def process_node(node)
+        if node.comment?
+          @metadata.parse_comment(node.content)
+        elsif node.type == Nokogiri::XML::Node::ATTRIBUTE_NODE # data name=""
+          @key = node.content
+        elsif node.text?
+          process_text_node(node)
+        end
+      end
+
+      def process_text_node(node)
+        parent = node.parent
+        if parent.name == 'value' # <value>content</value>
+          found_value(node)
+        elsif parent.name == 'comment'
+          @metadata.parse_comment(node.content)
         end
       end
 
@@ -38,7 +47,6 @@ module Translatomatic
         @key = nil
       end
 
-      # @override
       def create_node(key, value)
         # add xml: <data name="key"><value>value</value></data>
         data_node = Nokogiri::XML::Node.new('data', @doc)

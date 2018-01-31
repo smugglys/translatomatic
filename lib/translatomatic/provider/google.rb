@@ -9,6 +9,11 @@ module Translatomatic
       define_option :google_model, enum: %i[base nmt],
                                    desc: t('provider.google.model'), use_env: true
 
+      # (see Base.supports_no_translate_html?)
+      def self.supports_no_translate_html?
+        false
+      end
+
       # Create a new Google provider instance
       def initialize(options = {})
         super(options)

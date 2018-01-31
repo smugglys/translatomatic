@@ -13,6 +13,12 @@ module Translatomatic
         false
       end
 
+      # @return [boolean] true if this provider supports html5
+      #   <span translate="no"></span> tags.
+      def self.supports_no_translate_html?
+        false
+      end
+
       def initialize(options = {})
         @listener = options[:listener]
       end

@@ -42,10 +42,9 @@ module Translatomatic
 
       # (see Base#save)
       def save(target = path, options = {})
-        if @po
-          add_created_by unless options[:no_created_by]
-          target.write(@po.to_s)
-        end
+        return unless @po
+        add_created_by unless options[:no_created_by]
+        target.write(@po.to_s)
       end
 
       private
@@ -101,7 +100,7 @@ module Translatomatic
         po.entries.each_with_index do |entry, i|
           # skip PO file header if present
           # TODO: update PO-Revision-Date, Last-Provider ?
-          next if entry.msgid == '' && i == 0
+          next if entry.msgid == '' && i.zero?
 
           if entry.extracted_comment
             @metadata.parse_comment(entry.extracted_comment.value)

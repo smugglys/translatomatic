@@ -4,8 +4,7 @@ module Translatomatic
     class Stats
       include Translatomatic::Util
 
-      # @return [Array<Translatomatic::Translation>]
-      #   A list of all translations
+      # @return [Array<Result>] A list of all translations
       attr_reader :translations
 
       # @return [Number] The number of translations that came from the database.
@@ -18,14 +17,11 @@ module Translatomatic
       attr_reader :untranslated
 
       # Combine stats with another object
-      # @param other [TranslationStats] Another stats object
-      # @return [TranslationStats] The result of adding this to other
+      # @param other [Stats] Another stats object
+      # @return [Stats] The result of adding this to other
       def +(other)
-        if other.is_a? TranslationStats
-          Stats.new(translations + other.translations)
-        else
-          raise "expected TranslationStats, got #{other.class}"
-        end
+        raise "expected Stats, got #{other.class}" unless other.is_a?(Stats)
+        Stats.new(translations + other.translations)
       end
 
       private
