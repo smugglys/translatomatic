@@ -51,4 +51,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor', '= 0.20.0'   # using monkey patch
   spec.add_dependency 'builder'
   spec.add_dependency 'http-cookie', '~> 1'
+  spec.add_dependency 'rainbow', '~> 3'
 end

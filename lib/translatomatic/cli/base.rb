@@ -1,4 +1,5 @@
 require 'thor'
+require 'rainbow'
 
 module Translatomatic
   module CLI
@@ -57,6 +58,14 @@ module Translatomatic
 
       def conf
         Translatomatic.config
+      end
+
+      def rainbow
+        @rainbow ||= begin
+          rainbow = Rainbow.new
+          rainbow.enabled = !cli_option(:no_wank)
+          rainbow
+        end
       end
 
       # get an option value
