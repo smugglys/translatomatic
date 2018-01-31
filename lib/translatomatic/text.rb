@@ -15,7 +15,7 @@ module Translatomatic
     #   returns the starting offset of this text in the original.
     attr_reader :offset
 
-    # @return [String] Disambiguating context
+    # @return [Array<String>] Disambiguating context string(s)
     attr_accessor :context
 
     # @return [Regexp] Regexp that matches parts of the text to preserve
@@ -42,6 +42,7 @@ module Translatomatic
       @options = options
     end
 
+    # @return [Text] A copy of this text
     def dup
       copy = self.class.new(value, @locale, @options)
       copy.preserve_regex = preserve_regex

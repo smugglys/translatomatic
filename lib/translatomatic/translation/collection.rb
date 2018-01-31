@@ -76,12 +76,13 @@ module Translatomatic
       def sentences(parent, locale)
         parent.sentences.collect do |sentence|
           # get translation for sentence
-          tr = get(sentence, locale)
+          translation = get(sentence, locale)
           # create a new translation with the sentence as the original
           # string, so that we can rely on the offset value.
-          Result.new(
-            sentence, tr.result, tr.provider, from_database: tr.from_database
-          ) if tr
+          if translation
+            Result.new(sentence, translation.result, translation.provider,
+                       from_database: translation.from_database)
+          end
         end.compact
       end
 
@@ -112,7 +113,7 @@ module Translatomatic
       # @return [Collection] The collection result
       def +(other)
         result = self.class.new
-        @by_provider.values.each { |i| result.add(i) }
+        @by_provider.each_value { |i| result.add(i) }
         other.translations.each { |i| result.add(i) }
         result
       end
@@ -143,18 +144,15 @@ module Translatomatic
       #     the translated context string (and is longer than 'recht').
       def sort_by_context_match(list, context, locale)
         return list if list.blank?
-        context_tr = get(Text[context, list[0].original.locale], locale)
-        unless context_tr
-          log.error("no translation for context string '#{context}'")
-          return list
-        end
-        context_result = context_tr.result.downcase
-        log.debug("context translation: #{context_tr.description}")
-        # put translations that include the context string first.
-        # put longer translations first.
+        context_results = context_translation_results(list, context, locale)
+        log.debug("context translations: #{context_results}")
+        # put translations that include the context string(s) first.
+        # also put longer translations that include the context string first.
+        # (fixes matching 'rechts' before 'recht')
         list.sort_by do |tr|
           tr_result = tr.result.downcase
-          context_result.include?(tr_result) ? -tr_result.length : 1
+          ctx_match = context_results.any? { |ctx| ctx.include?(tr_result) }
+          ctx_match ? -tr_result.length : 1
         end
       end
 
@@ -173,6 +171,18 @@ module Translatomatic
         list.sort do |tr1, tr2|
           by_count[tr1.result.downcase] <=> by_count[tr2.result.downcase]
         end
+      end
+
+      # @param list [Array<Result>] translations
+      # @param context [Array<String>] context(s)
+      # @return [Array<String>] lowercased context translation strings
+      def context_translation_results(list, context, locale)
+        context_locale = list[0].original.locale
+        context = [context] unless context.is_a?(Array)
+        context.collect do |ctx|
+          context_tr = get(Text[ctx, context_locale], locale)
+          context_tr.result.downcase if context_tr
+        end.compact
       end
 
       def add_to_list(hash, key, value)

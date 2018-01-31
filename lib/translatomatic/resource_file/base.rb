@@ -103,7 +103,7 @@ module Translatomatic
 
       # Get context of a property
       # @param key [String] The name of the property
-      # @return [String] The property context, may be nil
+      # @return [Array<String>] The property context, may be nil
       def get_context(key)
         @metadata.get_context(key)
       end
@@ -178,7 +178,7 @@ module Translatomatic
         t('file.created_by', options)
       end
 
-      def have_created_by?
+      def created_by?
         @created_by
       end
 
