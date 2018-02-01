@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
 
   spec.metadata['yard.run'] = 'yri' # use "yard" to build full HTML docs.
 
+  spec.required_ruby_version = '>= 2.2'
+
   # development
   spec.add_development_dependency 'bundler', '~> 1'
   spec.add_development_dependency 'rake', '~> 10'
@@ -31,7 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock'
 
   # translation
-  spec.add_dependency 'google_web_translate', '~> 0.2.2'
+  spec.add_dependency 'google_web_translate', '~> 0.2.3'
 
   # resource file parsing
   spec.add_dependency 'kramdown'           # markdown -> html
