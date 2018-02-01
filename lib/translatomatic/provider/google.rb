@@ -32,10 +32,13 @@ module Translatomatic
       BASE_URL = 'https://translation.googleapis.com'.freeze
       TRANSLATE_URL = (BASE_URL + '/language/translate/v2').freeze
       LANGUAGES_URL = (BASE_URL + '/language/translate/v2/languages').freeze
-      MAX_TEXTS_PER_REQUEST = 128
+      # https://cloud.google.com/translate/faq
+      # TODO: limit requested characters per second?
+      LIMIT = [128, 5000].freeze # strings, characters per request
 
       def perform_translate(strings, from, to)
-        strings.each_slice(MAX_TEXTS_PER_REQUEST) do |texts|
+        batcher(strings, max_count: LIMIT[0], max_length: LIMIT[1])
+          .each_batch do |texts|
           perform_translate_texts(texts, from, to)
         end
       end

@@ -8,8 +8,8 @@ module Translatomatic
       # Listener for translation events
       attr_accessor :listener
 
-      # @return [boolean] True if a single strings can have multiple results
-      def self.supports_multiple_translations?
+      # @return [boolean] True if a string can have alternative translations
+      def self.supports_alternative_translations?
         false
       end
 

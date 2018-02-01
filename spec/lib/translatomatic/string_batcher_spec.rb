@@ -42,6 +42,16 @@ RSpec.describe Translatomatic::StringBatcher do
     expect(results[0]).to eq(strings)
   end
 
+  it 'returns all strings if max count is nil' do
+    strings = %W{a b c d e f g}
+    batcher = create_batcher(strings, max_length: 100, max_count: nil)
+    results = []
+    batcher.each_batch { |list| results << list }
+
+    expect(results.length).to eq(1)
+    expect(results[0]).to eq(strings)
+  end
+
   def create_batcher(strings, max_length:, max_count:)
     described_class.new(strings, max_length: max_length, max_count: max_count)
   end

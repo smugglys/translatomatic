@@ -9,8 +9,8 @@ module Translatomatic
       define_option :microsoft_api_key,
                     desc: t('provider.microsoft.api_key'), use_env: true
 
-      # (see Base.supports_multiple_translations?)
-      def self.supports_multiple_translations?
+      # (see Base.supports_alternative_translations?)
+      def self.supports_alternative_translations?
         true
       end
 
@@ -36,10 +36,10 @@ module Translatomatic
       BASE_URL = 'https://api.microsofttranslator.com/V2/Http.svc'.freeze
       # this endpoint returns one translation per source text
       TRANSLATE_URL1 = "#{BASE_URL}/TranslateArray".freeze
-      LIMITS_URL1 = [2000, 10_000].freeze # words, characters
+      LIMITS_URL1 = [2000, 10_000].freeze # strings, characters per request
       # this url returns multiple translations
       TRANSLATE_URL2 = "#{BASE_URL}/GetTranslationsArray".freeze
-      LIMITS_URL2 = [10, 10_000].freeze # words, characters
+      LIMITS_URL2 = [10, 10_000].freeze # strings, characters per request
       MAX_TRANSLATIONS = 10 # for URL2
       LANGUAGES_URL = "#{BASE_URL}/GetLanguagesForTranslate".freeze
       ARRAYS_NS = 'http://schemas.microsoft.com/2003/10/Serialization/Arrays'.freeze

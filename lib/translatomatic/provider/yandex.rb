@@ -25,20 +25,20 @@ module Translatomatic
 
       private
 
-      TRANSLATE_URL = 'https://translate.yandex.net/api/v1.5/tr.json/translate'.freeze
-      LANGUAGES_URL = 'https://translate.yandex.net/api/v1.5/tr.json/getLangs'.freeze
+      BASE_URL = 'https://translate.yandex.net/api/v1.5/tr.json'.freeze
+      TRANSLATE_URL = (BASE_URL + '/translate').freeze
+      LANGUAGES_URL = (BASE_URL + '/getLangs').freeze
+      LIMIT = [nil, 10_000].freeze # strings, characters per request
 
       def perform_translate(strings, from, to)
-        fetch_translations(strings, from, to)
+        batcher(strings, max_count: LIMIT[0], max_length: LIMIT[1])
+          .each_batch do |texts|
+          fetch_translations(texts, from, to)
+        end
       end
 
       def fetch_translations(strings, from, to)
-        body = {
-          key: @api_key,
-          text: strings,
-          lang: from.language + '-' + to.language,
-          format: 'plain' # 'html'
-        }
+        body = request_body(strings, from, to)
         response = http_client.post(TRANSLATE_URL, body)
         log.debug("#{name} response: #{response.body}")
         data = JSON.parse(response.body)
@@ -46,6 +46,15 @@ module Translatomatic
         strings.zip(result).each do |original, translated|
           add_translations(original, translated)
         end
+      end
+
+      def request_body(strings, from, to)
+        {
+          key: @api_key,
+          text: strings,
+          lang: from.language + '-' + to.language,
+          format: 'plain' # 'html'
+        }
       end
     end
   end

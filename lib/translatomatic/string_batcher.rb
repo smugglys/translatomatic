@@ -37,7 +37,7 @@ module Translatomatic
       @batch << string
       @length += string.length
 
-      return if @max_count && @batch.length < @max_count
+      return if @max_count.nil? || @batch.length < @max_count
       yield_batch { |batch| yield batch }
     end
 

@@ -56,13 +56,13 @@ RSpec.shared_examples 'a provider' do
       expect(translations[1].result).to eq(build_text('result2', 'de'))
     end
 
-    if described_class.supports_multiple_translations?
+    if described_class.supports_alternative_translations?
       it 'translates a string to multiple alternatives' do
         strings = ['string1']
         results = %w[result1 result2]
         provider = create_instance
 
-        # microsoft provider currently only does multiple translations
+        # microsoft provider currently only does alternative translations
         # when there is a context attached to the string.
         strings = strings.collect do |i|
           build_text(i, 'en', context: 'context')

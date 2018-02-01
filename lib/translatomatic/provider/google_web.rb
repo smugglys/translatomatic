@@ -8,8 +8,8 @@ module Translatomatic
     class GoogleWeb < Base
       attr_accessor :dt
 
-      # (see Base.supports_multiple_translations?)
-      def self.supports_multiple_translations?
+      # (see Base.supports_alternative_translations?)
+      def self.supports_alternative_translations?
         true
       end
 
