@@ -1,13 +1,13 @@
-<ArrayOfGetTranslationsResponse xmlns="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-  <GetTranslationsResponse>
+<ArrayOfTranslateArrayResponse xmlns="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <TranslateArrayResponse>
     <From>en</From>
-    <Translations>
-      <TranslationMatch>
-        <Count>0</Count>
-        <MatchDegree>100</MatchDegree><MatchedOriginalText/>
-        <Rating>5</Rating>
-        <TranslatedText>Bier</TranslatedText>
-      </TranslationMatch>
-    </Translations>
-  </GetTranslationsResponse>
-</ArrayOfGetTranslationsResponse>
+    <OriginalTextSentenceLengths xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+      <a:int>4</a:int>
+    </OriginalTextSentenceLengths>
+    <State/>
+    <TranslatedText>Bier</TranslatedText>
+    <TranslatedTextSentenceLengths xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+      <a:int>7</a:int>
+    </TranslatedTextSentenceLengths>
+  </TranslateArrayResponse>
+</ArrayOfTranslateArrayResponse>

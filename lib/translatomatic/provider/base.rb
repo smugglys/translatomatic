@@ -118,6 +118,10 @@ module Translatomatic
         string2 = Translatomatic::Text[translated, @to]
         Translatomatic::Translation::Result.new(string1, string2, name)
       end
+
+      def batcher(strings, max_count:, max_length:)
+        StringBatcher.new(strings, max_count: max_count, max_length: max_length)
+      end
     end
   end
 end

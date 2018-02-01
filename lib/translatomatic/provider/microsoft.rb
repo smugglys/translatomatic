@@ -34,36 +34,59 @@ module Translatomatic
       private
 
       BASE_URL = 'https://api.microsofttranslator.com/V2/Http.svc'.freeze
-      TRANSLATE_URL = "#{BASE_URL}/GetTranslationsArray".freeze
+      # this endpoint returns one translation per source text
+      TRANSLATE_URL1 = "#{BASE_URL}/TranslateArray".freeze
+      LIMITS_URL1 = [2000, 10_000].freeze # words, characters
+      # this url returns multiple translations
+      TRANSLATE_URL2 = "#{BASE_URL}/GetTranslationsArray".freeze
+      LIMITS_URL2 = [10, 10_000].freeze # words, characters
+      MAX_TRANSLATIONS = 10 # for URL2
       LANGUAGES_URL = "#{BASE_URL}/GetLanguagesForTranslate".freeze
       ARRAYS_NS = 'http://schemas.microsoft.com/2003/10/Serialization/Arrays'.freeze
-      OPTS_NS = 'http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2'.freeze
-      MAX_TRANSLATIONS = 10
-      MAX_TEXTS_PER_REQUEST = 10
+      WEB_SERVICE_NS = 'http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2'.freeze
 
       def perform_translate(strings, from, to)
-        fetch_translation_array(strings, from, to)
+        # get multiple translations for strings with context, so we
+        # can choose the best translation.
+        strings_with_context = strings.select { |i| context?(i) }
+        strings_without_context = strings.reject { |i| context?(i) }
+
+        fetch_translation_array(strings_with_context, from, to, true)
+        fetch_translation_array(strings_without_context, from, to, false)
       end
 
       # fetch translations for given strings
-      def fetch_translation_array(strings, from, to)
-        strings.each_slice(MAX_TEXTS_PER_REQUEST) do |texts|
-          translate_texts(texts, from, to)
+      def fetch_translation_array(strings, from, to, multiple)
+        limit = multiple ? LIMITS_URL2 : LIMITS_URL1
+        batcher(strings, max_count: limit[0], max_length: limit[1])
+          .each_batch do |texts|
+          translate_texts(texts, from, to, multiple)
         end
       end
 
-      def translate_texts(texts, from, to)
-        url = TRANSLATE_URL
+      def translate_texts(texts, from, to, multiple)
+        url = multiple ? TRANSLATE_URL2 : TRANSLATE_URL1
         headers = { 'Ocp-Apim-Subscription-Key' => @key }
-        body = build_body_xml(texts, from, to)
+        body = build_body_xml(texts, from, to, multiple)
         response = http_client.post(url, body,
                                     headers: headers,
                                     content_type: 'application/xml')
-        add_translations_from_response(response, texts)
+        add_translations_from_response(response, texts, multiple)
       end
 
-      def add_translations_from_response(response, texts)
+      def add_translations_from_response(response, texts, multiple)
         doc = Nokogiri::XML(response.body)
+        if multiple
+          add_translations_from_response_multiple(doc, texts)
+        else
+          results = doc.search('//xmlns:TranslatedText').collect(&:content)
+          texts.zip(results).each do |original, tr|
+            add_translations(original, tr)
+          end
+        end
+      end
+
+      def add_translations_from_response_multiple(doc, texts)
         # there should be one GetTranslationsResponse for each string
         responses = doc.search('//xmlns:GetTranslationsResponse')
         texts.zip(responses).each do |original, tr|
@@ -82,27 +105,39 @@ module Translatomatic
         doc.search('//xmlns:string').collect(&:content)
       end
 
-      def build_body_xml(strings, from, to)
-        root = 'GetTranslationsArrayRequest'
+      def xml_root(multiple)
+        multiple ? 'GetTranslationsArray' : 'TranslateArray'
+      end
+
+      def build_body_xml(strings, from, to, multiple)
+        root = xml_root(multiple) + 'Request'
         xml = Builder::XmlMarkup.new
         xml.tag!(root, 'xmlns:a' => ARRAYS_NS) do
           xml.AppId
           xml.From(from)
-          build_options_xml(xml)
-          xml.Texts do
-            strings.each do |string|
-              xml.tag!('a:string', string)
-            end
-          end
+          build_options_xml(xml) if multiple
+          build_texts_xml(xml, strings)
           xml.To(to)
-          xml.MaxTranslations MAX_TRANSLATIONS
+          xml.MaxTranslations MAX_TRANSLATIONS if multiple
+        end
+      end
+
+      def build_texts_xml(xml, strings)
+        xml.Texts do
+          strings.each do |string|
+            xml.tag!('a:string', string)
+          end
         end
       end
 
       def build_options_xml(xml)
-        xml.tag!('Options', 'xmlns:o' => OPTS_NS) do
+        xml.tag!('Options', 'xmlns:o' => WEB_SERVICE_NS) do
           xml.tag!('o:IncludeMultipleMTAlternatives', 'true')
         end
+      end
+
+      def context?(text)
+        text.is_a?(Translatomatic::Text) && text.context.present?
       end
     end
   end

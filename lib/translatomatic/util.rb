@@ -34,9 +34,7 @@ module Translatomatic
 
     def build_text(string, locale, options = {})
       return nil if string.nil?
-      text = Translatomatic::Text.new(string, locale)
-      text.context = options[:context]
-      text
+      Translatomatic::Text.new(string, locale, options)
     end
 
     def hashify(list, key_mapping = proc { |i| i.to_s })

@@ -24,7 +24,7 @@ module Translatomatic
         target_file.properties = source_file.properties
       end
 
-      target_file.save(target, @options)
+      target_file.save(Pathname.new(target), @options)
       target_file
     end
 

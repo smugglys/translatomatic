@@ -37,7 +37,8 @@ module Translatomatic
           to_locales.each do |to_locale|
             fetcher = Translation::Fetcher.new(
               provider: provider, texts: list, use_db: @use_db,
-              from_locale: from_locale, to_locale: to_locale
+              from_locale: from_locale, to_locale: to_locale,
+              listener: @listener
             )
             translations = fetcher.translations
             translation_collection += translations

@@ -40,6 +40,7 @@ module Translatomatic
       @locale = Translatomatic::Locale.parse(locale)
       @offset = options[:offset] || 0
       @parent = options[:parent]
+      @context = options[:context]
       @options = options
     end
 

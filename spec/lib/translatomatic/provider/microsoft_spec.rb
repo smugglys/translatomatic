@@ -13,12 +13,14 @@ RSpec.describe Translatomatic::Provider::Microsoft do
       'Ocp-Apim-Subscription-Key' => 'dummy'
     )
     fixture_suffix = nil
+    url = described_class::TRANSLATE_URL1
     if results.length == 1
       fixture_suffix = ''
     elsif strings.length > 1 && results.length > 1
       fixture_suffix = '_multiple'
     elsif strings.length == 1 && results.length > 1
       fixture_suffix = '_alternatives'
+      url = described_class::TRANSLATE_URL2
     else
       raise "unhandled request configuration"
     end
@@ -26,7 +28,7 @@ RSpec.describe Translatomatic::Provider::Microsoft do
     expected_request = read_fixture("request", fixture_suffix)
     expected_response = read_fixture("response", fixture_suffix)
 
-    stub_request(:post, described_class::TRANSLATE_URL).with(
+    stub_request(:post, url).with(
       body: expected_request,
       headers: post_headers
     ).to_return(

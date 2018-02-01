@@ -35,7 +35,8 @@ module Translatomatic
       include Util
       include Munging
 
-      ATTRIBUTES = %i[provider texts from_locale to_locale use_db].freeze
+      ATTRIBUTES = %i[provider texts from_locale to_locale 
+                      use_db listener].freeze
 
       # find texts that we do not have translations for
       # @param collection [Collection] Translation collection
@@ -81,6 +82,7 @@ module Translatomatic
         db_text_map = hashify(db_texts, proc { |i| i.from_text.value })
         texts.collect do |text|
           next unless (db_text = db_text_map[text.to_s])
+          @listener.update_progress(1) if @listener
           provider = db_text.provider
           translation = build_text(db_text.value, @to_locale)
           Result.new(text, translation, provider, from_database: true)
