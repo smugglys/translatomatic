@@ -5,7 +5,7 @@ module Translatomatic
     # @param path [Pathname] The current path
     # @param target_locale [String] The target locale
     # @return [Pathname] The new path for the given locale
-    def modify_path_locale(path, target_locale)
+    def modify_path_locale(path, target_locale, preferred_separator = '.')
       basename = basename_stripped(path)
 
       extlist = extension_list(path)
@@ -20,7 +20,7 @@ module Translatomatic
       elsif basename.match(/_([-\w]+)\Z/) &&
             valid_locale?(Regexp.last_match(1))
         # basename contains locale, e.g. basename_$locale.ext
-        add_basename_locale(path, target_locale)
+        add_basename_locale(path, target_locale, '_') # retain _
       elsif valid_locale?(path.parent.basename(path.parent.extname)) ||
             path.parent.basename.to_s == 'Base.lproj'
         # parent directory contains locale, e.g. strings/en-US/text.resw
@@ -32,8 +32,8 @@ module Translatomatic
         filename = path.basename
         path.parent.parent + ('values-' + target_locale.to_s) + filename
       else
-        # default behaviour, add locale after underscore in basename
-        add_basename_locale(path, target_locale)
+        # default behaviour, add locale after separator in basename
+        add_basename_locale(path, target_locale, preferred_separator)
       end
     end
 
@@ -104,11 +104,12 @@ module Translatomatic
       end
     end
 
-    def add_basename_locale(path, target_locale)
+    def add_basename_locale(path, target_locale, preferred_separator = '.')
       # remove any underscore and trailing text from basename
       deunderscored = basename_stripped(path).sub(/_.*?\Z/, '')
-      # add _locale.ext
-      filename = deunderscored + '_' + target_locale.to_s + path.extname
+      # add #{preferred_separator}locale.ext
+      filename = deunderscored + preferred_separator + 
+                 target_locale.to_s + path.extname
       path.dirname + filename
     end
 

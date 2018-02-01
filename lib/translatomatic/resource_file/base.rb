@@ -19,6 +19,12 @@ module Translatomatic
         true
       end
 
+      # @return [String] Preferred character to use to separate the locale
+      #   from the file basename
+      def self.preferred_locale_separator
+        '.'
+      end
+
       # @return [Array<String>] File extensions supported by this resource file
       def self.extensions
         raise 'extensions must be implemented by subclass'
@@ -76,7 +82,8 @@ module Translatomatic
       # @return [Pathname] The path of this resource file modified
       #   for the given locale
       def locale_path(target_locale)
-        modify_path_locale(path, target_locale)
+        modify_path_locale(path, target_locale,
+                           self.class.preferred_locale_separator)
       end
 
       # Set all properties

@@ -17,6 +17,11 @@ module Translatomatic
         true
       end
 
+      # (see Base.preferred_locale_separator)
+      def self.preferred_locale_separator
+        '_'
+      end
+
       # (see Base#create_variable)
       def create_variable(name)
         "{#{name}}"

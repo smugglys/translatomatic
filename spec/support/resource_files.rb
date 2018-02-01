@@ -18,7 +18,8 @@ RSpec.shared_examples 'a resource file' do |config = {}|
 
   PATH_CONVERSIONS ||= [
     # locale after _ in basename
-    PathConversion.new('path/file.$EXT', 'path/file_$LOC.$EXT'),
+    PathConversion.new('path/file.$EXT', 
+      "path/file#{described_class.preferred_locale_separator}$LOC.$EXT"),
     PathConversion.new('path/file_$LOC.$EXT', 'path/file_$LOC.$EXT'),
     # locale in extension list
     PathConversion.new('path/file.$EXT.$LOC', 'path/file.$EXT.$LOC'),
