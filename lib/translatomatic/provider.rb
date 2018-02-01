@@ -1,10 +1,3 @@
-require 'translatomatic/provider/base'
-require 'translatomatic/provider/yandex'
-require 'translatomatic/provider/google'
-require 'translatomatic/provider/google_web'
-require 'translatomatic/provider/microsoft'
-require 'translatomatic/provider/frengly'
-require 'translatomatic/provider/my_memory'
 
 module Translatomatic
   # Provides methods to access and create instances of
@@ -15,6 +8,7 @@ module Translatomatic
 
       # @return [Class] The provider class corresponding to the given name
       def find(name)
+        load_providers
         name && !name.empty? ? const_get(name) : nil
       end
 
@@ -24,24 +18,24 @@ module Translatomatic
       # @param options [Hash<String,String>] Provider options
       # @return [Array<Translatomatic::Provider::Base>] Providers
       def resolve(list, options = {})
-        list = [list] unless list.is_a?(Array)
-        list = list.compact.collect do |provider|
+        list = [list].flatten.compact.collect do |provider|
           if provider.respond_to?(:translate)
             provider
           else
-            klass = Translatomatic::Provider.find(provider)
-            provider = klass.new(options)
+            klass = find(provider)
+            provider = create_provider(klass, options)
           end
           provider
         end
 
-        # find all available providers that work with the given options
-        list = Translatomatic::Provider.available(options) if list.empty?
-        list
+        # if we didn't resolve to any providers, find all available 
+        # providers that work with the given options.
+        list.empty? ? available(options) : list
       end
 
       # @return [List<Class>] A list of all provider classes
       def types
+        load_providers
         constants.collect { |c| const_get(c) }.select do |klass|
           klass.is_a?(Class) && klass != Translatomatic::Provider::Base
         end
@@ -56,16 +50,45 @@ module Translatomatic
       # @param options [Hash<String,String>] Provider options
       # @return [Array<#translate>] A list of provider instances
       def available(options = {})
-        available = []
-        types.each do |klass|
+        available = types.collect { |klass| create_provider(klass, options) }
+        available.compact
+      end
+
+      def get_error(name)
+        @provider_errors[name]
+      end
+
+      private
+
+      def create_provider(klass, options = {})
+        klass.new(options) if klass
+      rescue StandardError => e
+        name = klass.name.demodulize
+        log.debug(t('provider.unavailable', name: name))
+        provider_error(name, e)
+        nil
+      end
+
+      def loaded_providers?
+        @loaded_providers
+      end
+
+      def provider_error(name, e)
+        @provider_errors ||= {}
+        @provider_errors[name] = e
+      end
+
+      def load_providers
+        return if loaded_providers?
+        Dir[File.join(__dir__, 'provider/*.rb')].sort.each do |file|
           begin
-            provider = klass.new(options)
-            available << provider
-          rescue StandardError
-            log.debug(t('provider.unavailable', name: klass.name.demodulize))
+            require file
+          rescue StandardError => e
+            name = File.basename(file, '.rb').classify
+            provider_error(name, e)
           end
         end
-        available
+        @loaded_providers = true
       end
     end
   end

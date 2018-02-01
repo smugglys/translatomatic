@@ -1,5 +1,3 @@
-require 'google_web_translate'
-
 module Translatomatic
   module Provider
     # Google translation web interface.
@@ -16,6 +14,7 @@ module Translatomatic
       # Create a new GoogleWeb provider instance
       def initialize(options = {})
         super(options)
+        require 'google_web_translate'
         @dt = %w[t at]
         @debug = options[:debug]
       end
