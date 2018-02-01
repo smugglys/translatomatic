@@ -174,4 +174,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 Everyone interacting with the Translatomatic projectâs codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Created by Translatomatic 0.1.3 Thu, 01 Feb 2018 12:34:19 +1030 https://github.com/smugglys/translatomatic_
+_Created by Translatomatic 0.1.3 Thu, 01 Feb 2018 21:35:39 +1030 https://github.com/smugglys/translatomatic_
