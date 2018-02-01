@@ -28,6 +28,8 @@ en:
         subcommand: Database commands
         info: Database information
         text_count: Database contains %{count} strings.
+        delete_text: Delete a text and its translations
+        text_not_found: Text id %{id} not found.
       debug: Enable debugging output
       display_sentences: Display sentences
       display_values: Display values from a resource bundle
@@ -143,5 +145,6 @@ en:
       provider_required: Provider required.
       total_translations: 'Total translations: %{total} (%{from_db} from database, %{from_provider} from provider, %{untranslated} untranslated)'
       untranslated: 'Untranslated strings:'
+      string_too_long: String is too long to translate
     unicode:
       invalid_byte: 'Invalid UTF8 byte: ''%{byte}'''

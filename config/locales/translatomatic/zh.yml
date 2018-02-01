@@ -1,63 +1,86 @@
----
+# translation missing: zh.translatomatic.file.created_by
+
 zh:
   translatomatic:
     cli:
       aborted: 中止
       config:
+        add: 向列表中添加配置值
         configuration: 配置
-        context: 配置上下文
-        context_configuration: 上下文 "%{context}" 的配置
         desc: 描述
         describe: 描述可用的配置设置
         list: 列出当前配置设置
+        location_configuration: 文件 "%{location} "的配置
         name: 名称
         no_config: 找不到配置
-        remove: 删除配置设置
+        one_at_a_time: 一次只能有一个配置文件
+        project: 使用项目配置文件
         set: 更改配置设置
         subcommand: 配置命令
+        subtract: 从列表中删除配置值
         type: 类型
+        unset: 删除配置设置
+        user: 使用用户配置文件
         value: 值
       convert: 将源文件转换为目标文件格式
       database:
+        drop: 删除数据库
         search: 搜索与给定字符串匹配的文本的数据库。
         subcommand: 数据库命令
+        info: 数据库信息
+        text_count: 数据库包含 %{count} 字符串。
+        delete_text: 删除文本及其翻译
+        text_not_found: 文本 id %{id} 找不到。
       debug: 启用调试输出
       display_sentences: 显示句子
       display_values: 显示资源包中的值
       display_version: 显示版本
       dry_run: '干运行: 文件不会被翻译或写入'
-      extract_strings: 从资源文件中提取字符串
-      file_source: 文件:%{file}
-      list_backends: 列出可用的翻译服务
+      error: 发生错误
+      extract_strings: 从非资源文件中提取字符串
+      file_source: '文件: %{file}'
       locales_required: 需要一个或多个目标区域设置
       locales_to_display: 要显示的区域设置
+      no_wank: 禁用翻译进度栏
+      provider:
+        available: 可用
+        available_no: 不
+        available_yes: 是的
+        description: 描述
+        env: 环境
+        name: 名称
+        option: 选项
+      providers: 列出可用的翻译提供商
       sentences: '句子:'
-      share: 与翻译人员共享翻译
       source_files: 要翻译的文件
       source_locale: 源文件的区域设置
       target_locales: 要转换为的区域设置
       translate:
         file: 将文件转换为目标区域设置
-        provider: 要使用的转换器实现
+        no_providers: 找不到翻译提供商
+        provider: 要使用的提供程序实现
+        share: 与提供者共享翻译
         string: 将字符串转换为目标区域设置
         subcommand: 翻译文件或字符串
-      translating: 正在翻译
-      uploading_tmx: 正在将 TMX 上载到%{name}
-      using_provider: 使用转换器:%{name}
-      wank: 启用翻译进度栏
+        translating: 正在翻译
+        using_provider: '使用提供程序: %{name}'
+        using_providers: '使用提供程序: %{list}'
     config:
-      command_line_only: 无法保存配置 "%{key}"
+      command_line_only: 无法保存配置 "%{key} "
       context:
         env: 环境
         project: 项目
         user: 用户
       invalid_context: '未配置上下文: "%{context}"'
       invalid_key: '未配置键: "%{key}"'
+      non_array_key: '配置不是数组类型: "%{key}"'
       types:
         array: 数组
         boolean: 布尔
         hash: 哈希
         numeric: 数值
+        path: 路径
+        path_array: 路径数组
         string: 字符串
     database:
       config_file: 数据库配置文件的路径
@@ -66,46 +89,64 @@ zh:
       deleted: 数据库已删除。
       env: 数据库环境
       migrated: 数据库已迁移。
-      no_environment: '%{env} 中没有环境 "%{file}"'
+      no_environment: 没有环境的 "%{env} "in %{file}
     file:
-      created_by: 由%{app}%{version}%{date} 创建
-      directory: 文件是一个目录:%{file}
-      error: 错误:%{message}
-      invalid: 文件无效:%{file}
-      loading: 尝试使用%{file} 加载%{name}
-      not_found: 找不到文件:%{file}
+      created_by: 由 %{app} %{version} %{date} 创建%{url}
+      csv:
+        comment_column: 用于注释的 CSV 列名称
+        headers: 将第一行 CSV 文件作为标题行处理。
+        key_column: 要用于属性键的 CSV 列名
+        translate_columns: 要翻译的 CSV 列的名称或索引
+        value_column: 用于属性值的 CSV 列名称
+      directory: '文件是一个目录: %{file}'
+      error: '错误: %{message}'
+      invalid: '文件无效: %{file}'
+      loading: 尝试加载 %{file} 使用 %{name}
+      not_found: '找不到文件: %{file}'
       unknown_locale: 无法确定区域设置
-      unsupported: 不支持的文件类型:%{file}
+      unsupported: '不支持的文件类型: %{file}'
     file_translator:
-      database_disabled: 数据库被禁用。
       dry_run: 在不执行翻译或写入文件的情况下打印操作。
-      provider_required: 需要翻译。
-      stats: 数据库翻译:%{from_db}, 转换器:%{from_provider}, 未翻译:%{untranslated}
-      total_translations: 总翻译:%{total} (%{from_db} 来自数据库,%{from_provider} 来自翻译器,%{untranslated} 未翻译)
-      translating: 将%{source} (%{source_locale}) 转换为%{target} (%{target_locale})
-      untranslated: '未翻译的字符串:'
-      use_database: 存储和检索数据库中的翻译。
+      in_place: 就地翻译源文件。
+      translating: 将 %{source} (%{source_locale}) 转换为 %{target} (%{target_locale})
+      translating_in_place: 将 %{source} (%{source_locale}) 就地转换 (%{target_locale})
     provider:
-      configured: '已配置的翻译人员:'
       email_address: 电子邮件地址
       email_required: 需要的电子邮件地址。
-      frengly_api_key: Frengly API 密钥
-      google_api_key: 谷歌 API 密钥
-      google_key_required: 需要 Google API 密钥。
-      microsoft_api_key: 微软 API 密钥
-      microsoft_key_required: 需要使用 Microsoft API 密钥。
-      mymemory_api_key: MyMemory API 密钥
-      no_providers: 未配置任何翻译器。
+      frengly:
+        api_key: Frengly API 密钥
+      google:
+        api_key: 谷歌 API 密钥
+        key_required: 需要 Google API 密钥。
+        model: 翻译模型
+      invalid_response: 来自提供程序的意外响应
+      microsoft:
+        api_key: 微软 API 密钥
+        key_required: 需要使用 Microsoft API 密钥。
+      mymemory:
+        api_key: MyMemory API 密钥
+      options: '提供程序选项:'
       password: 密码
       password_required: 需要密码。
-      providers: '所有翻译人员:'
       required_option: 需要)
-      share_response: 共享响应:%{response}
-      unavailable: 转换器%{name} 不可用。
-      yandex_api_key: Yandex API 密钥
-      yandex_key_required: 需要 Yandex API 密钥。
+      share_response: '共享响应: %{response}'
+      status: '提供程序状态:'
+      unavailable: 提供程序 %{name} 不可用。
+      yandex:
+        api_key: Yandex API 密钥
+        key_required: 需要 Yandex API 密钥。
+    sharer:
+      uploading_tmx: 上传 TMX 到 %{name}
     tmx:
       multiple_locales: 文本中的多个源区域设置。
       multiple_origins: 文本中的多个来源。
+    translator:
+      database_disabled: 数据库被禁用。
+      no_database: 不要将翻译保存到数据库中。
+      provider_required: 所需的提供程序。
+      total_translations: '总翻译: %{total} (%{from_db} 来自数据库,  %{from_provider} 来自提供商,  %{untranslated}
+        未翻译) '
+      untranslated: '未翻译的字符串:'
+      string_too_long: 字符串太长, 无法转换
     unicode:
       invalid_byte: '无效的 UTF8 字节: "%{byte}"'

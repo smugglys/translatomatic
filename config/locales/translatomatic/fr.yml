@@ -1,111 +1,155 @@
----
+# translation missing: fr.translatomatic.file.created_by
+
 fr:
   translatomatic:
     cli:
-      aborted: Abandonnée
+      aborted: Abandon
       config:
-        configuration: Configuration
-        context: Contexte de configuration
-        context_configuration: Configuration pour le contexte « %{context} »
-        desc: Description
-        describe: Décrire les paramètres de configuration disponibles
-        list: Liste des paramètres de configuration actuels
-        name: Nom
-        no_config: Aucune configuration n’est trouvée
-        remove: Supprimer un paramètre de configuration
-        set: Modifier un paramètre de configuration
-        subcommand: Commandes de configuration
+        add: Ajoute une valeur de configuration à une liste
+        configuration: Configuration de
+        desc: La description
+        describe: Décrivent des paramètres de configuration disponibles
+        list: Paramètres de configuration actuelles liste
+        location_configuration: Configuration de fichier «%{location}»
+        name: prénom
+        no_config: Aucune configuration de trouvé
+        one_at_a_time: Un seul fichier config à la fois
+        project: Fichier de configuration pour le projet usage
+        set: Modifier un paramètre configuration
+        subcommand: Commandes des configuration
+        subtract: Supprimer une valeur de configuration de liste
         type: Type de
+        unset: Enlevez un paramètre de configuration
+        user: Fichier de configuration de l’utilisateur d’utilisation
         value: Valeur
-      convert: Convertir fichier source au format de fichier cible
+      convert: Convertir des fichiers source au format de fichier cible
       database:
-        search: Base de données de recherche pour texte correspondant de la chaîne donnée.
-        subcommand: Commandes de base de données
-      debug: Activer la sortie de débogage
-      display_sentences: Afficher les phrases
-      display_values: Afficher les valeurs d’un groupe de ressources
-      display_version: Version d’affichage
-      dry_run: 'Galop d’essai : fichiers ne seront pas traduits ou écrits'
-      extract_strings: Extraire les chaînes des fichiers autres que les ressources
-      file_source: 'Fichier : %{file}'
-      list_backends: Liste des services de traduction disponibles
-      locales_required: Un ou plusieurs paramètres régionaux cibles requis
-      locales_to_display: Paramètres régionaux pour afficher
-      sentences: 'Phrases :'
-      share: Partager les traductions avec les traducteurs
-      source_files: Fichiers à traduire
-      source_locale: Les paramètres régionaux du fichier source
-      target_locales: Paramètres régionaux pour la traduction
+        drop: Supprimer de la base de données
+        search: Base de données de recherche pour texte correspondant de la chaîne
+          fournie.
+        subcommand: Commandes des base de données
+        info: Renseignements de la base de données
+        text_count: Contient de la base de données %{count} cordes.
+        delete_text: Supprimer un texte et ses traductions de
+        text_not_found: Id text %{id} introuvable.
+      debug: Activez le débogage sortie
+      display_sentences: Phrases de l’affichage
+      display_values: Affichage des valeurs d’un ensemble de ressources
+      display_version: Version du affichage
+      dry_run: 'Fonctionnement à sec : les fichiers ne seront pas traduits ou rédigés'
+      error: Une erreur se produit
+      extract_strings: Extrait les fichiers autres que les ressources de cordes
+      file_source: 'Fichier de : %{file}'
+      locales_required: Une ou plusieurs paramètres régionaux cibles requis
+      locales_to_display: Locales d’afficher
+      no_wank: Désactiver la barre de progression des translation
+      provider:
+        available: Disponible
+        available_no: Pas
+        available_yes: Oui
+        description: La description
+        env: Environnement
+        name: prénom
+        option: Option de
+      providers: Fournisseurs de traduction disponibles de listes
+      sentences: 'Condamnations à :'
+      source_files: Fichiers de définition de
+      source_locale: Les paramètres régionaux du fichier source de
+      target_locales: Paramètres régionaux la traduction
       translate:
-        file: Traduire un fichier de paramètres régionaux cibles
-        provider: Implémentations de traducteur
-        string: Traduire une chaîne de paramètres régionaux cibles
-        subcommand: Traduire des fichiers ou des chaînes
-      translating: Traduction en cours
-      uploading_tmx: Téléchargement de TMX %{name}
-      using_provider: 'À l’aide du traducteur : %{name}'
-      wank: Activer la barre de progression de traduction
+        file: Traduire un fichier aux locales de cible
+        no_providers: Aucun fournisseur traduction trouvés
+        provider: Implémentations de fournisseur d’utilisation
+        share: Traductions de partage avec les fournisseurs de
+        string: Traduire une chaîne à locales cible
+        subcommand: Définition de fichiers ou des chaînes
+        translating: Traduction en cours
+        using_provider: 'À l’aide de prestataire : %{name}'
+        using_providers: 'L’aide de fournisseurs : %{list}'
     config:
-      command_line_only: Configuration « %{key} » ne peut pas être sauvée
+      command_line_only: Configuration '%{key}' ne peuvent être sauvés
       context:
         env: Environnement
-        project: Projet
+        project: Projets
         user: Utilisateur
-      invalid_context: 'Contexte de configuration non reconnue : « %{context} »'
-      invalid_key: 'Clé de configuration non reconnue : « %{key} »'
+      invalid_context: 'Contexte de configuration non reconnu : «%{context}»'
+      invalid_key: 'Clé de configuration non reconnu : "%{key}"'
+      non_array_key: 'Configuration n’est pas un type de tableau : ''%{key}"'
       types:
-        array: Tableau
-        boolean: Boolean
-        hash: Hachage
-        numeric: Numérique
-        string: Chaîne
+        array: Éventail
+        boolean: Booléen
+        hash: Parasite du
+        numeric: Numériques
+        path: Tracé
+        path_array: Gamme de chemins
+        string: Chaîne de
     database:
-      config_file: Chemin vers le fichier de configuration de base de données
-      could_not_create: Base de données n’a pas pu être créé.
-      created: Base de données créée.
-      deleted: Base de données supprimée.
-      env: Environnement de base de données
-      migrated: Base de données migrée.
-      no_environment: Aucun environnement « %{env} » %{file}
+      config_file: Chemin d’accès vers le fichier de configuration de la base de données
+      could_not_create: Base n’a pas pu être créée.
+      created: Banque de données créée.
+      deleted: Banque de données supprimée.
+      env: Environnement de Database
+      migrated: Base de données est migré.
+      no_environment: Aucun environnement "%{env}" en %{file}
     file:
-      created_by: Créé par %{app} %{version} %{date}
-      directory: 'Fichier est un répertoire : %{file}'
-      error: 'Erreur : %{message}'
-      invalid: 'Fichier est non valide : %{file}'
-      loading: La tentative de chargement %{file} à l’aide de %{name}
-      not_found: 'Fichier non trouvé : %{file}'
-      unknown_locale: Impossible de déterminer les paramètres régionaux
-      unsupported: 'Non pris en charge le type de fichier : %{file}'
+      created_by: Création par %{app} %{version} %{date} %{url}
+      csv:
+        comment_column: Un nom de colonne CSV à utiliser pour commentaires
+        headers: Traiter la première ligne des fichiers CSV sous une ligne d’en-têtes.
+        key_column: Un nom de colonne CSV d’être utilisés pour les clés de la propriété
+        translate_columns: Noms ou les indices de colonnes CSV à traduire
+        value_column: Un nom de colonne CSV pour être utilisé pour les valeurs de
+          la propriété
+      directory: 'Fichier d’est un répertoire : %{file}'
+      error: ": Erreur de %{message}"
+      invalid: 'Fichier est incorrecte : %{file}'
+      loading: La tentative de chargement %{file} aide %{name}
+      not_found: 'Fichier ne pas trouvé : %{file}'
+      unknown_locale: Pas permis de déterminer les paramètres régionaux
+      unsupported: ": Type de fichier non pris en charge %{file}"
     file_translator:
-      database_disabled: Base de données est désactivée.
-      dry_run: Imprimer des actions sans effectuer des traductions ou écrire des fichiers.
-      provider_required: Traducteur requis.
-      stats: 'Traductions de base de données : %{from_db}, traducteur : %{from_provider}, non traduite : %{untranslated}'
-      total_translations: 'Total des traductions : %{total} (%{from_db} de la base de données, %{from_provider} de traducteur, %{untranslated} non traduite)'
-      translating: La traduction de %{source} (%{source_locale}) %{target} (%{target_locale})
-      untranslated: 'Chaînes non traduites :'
-      use_database: Stocker et récupérer des traductions depuis la base de données.
+      dry_run: Imprimer des actions sans effectuer des traductions ou d’écriture de
+        fichiers.
+      in_place: Traduire un fichier source sur place.
+      translating: Traduction de %{source} (%{source_locale}) pour %{target} (%{target_locale})
+      translating_in_place: Traduire %{source} (%{source_locale}) en lieu (%{target_locale})
     provider:
-      configured: 'Traducteurs configurés :'
-      email_address: Adresse de courriel
-      email_required: Adresse de courriel requise.
-      frengly_api_key: Frengly API key
-      google_api_key: Clé API Google
-      google_key_required: Clé d’API Google requise.
-      microsoft_api_key: Clé API de Microsoft
-      microsoft_key_required: Clé de Microsoft API requis.
-      mymemory_api_key: MyMemory API key
-      no_providers: Aucun traducteurs ne sont configurés.
-      password: Mot de passe
-      password_required: Mot de passe requis.
-      providers: 'Tous les traducteurs :'
-      required_option: "(obligatoire)"
-      share_response: 'Partager la réponse : %{response}'
-      unavailable: Traducteur %{name} n’est pas disponible.
-      yandex_api_key: Clé API de Yandex
-      yandex_key_required: Clé d’API Yandex requise.
+      email_address: Email adresse
+      email_required: Adresse e-mail obligatoire.
+      frengly:
+        api_key: API Frengly key
+      google:
+        api_key: Clé de Google API
+        key_required: Clé de Google API requise.
+        model: Modèle de la translation
+      invalid_response: Réponse inattendue du prestataire
+      microsoft:
+        api_key: Clés de l’API Microsoft
+        key_required: Clé d’API de Microsoft requise.
+      mymemory:
+        api_key: Clés de l’API MyMemory
+      options: 'Options de fournisseur du :'
+      password: Passe
+      password_required: Mot de passe requise.
+      required_option: "(besoin)"
+      share_response: 'Partager la réaction : %{response}'
+      status: 'Statut du prestataire :'
+      unavailable: Fournisseur %{name} est non disponible.
+      yandex:
+        api_key: Clé Yandex API
+        key_required: Clé d’API de Yandex nécessaire.
+    sharer:
+      uploading_tmx: Téléchargement de TMX de %{name}
     tmx:
-      multiple_locales: Plusieurs localités de source dans les textes.
-      multiple_origins: Origines multiples dans les textes.
+      multiple_locales: Multiples locales de source dans les textes.
+      multiple_origins: Origines multiples de textes.
+    translator:
+      database_disabled: Base de données d’est désactivé.
+      no_database: N’enregistrez pas de traductions à la base de données.
+      provider_required: Fournisseur requise.
+      total_translations: 'Total des traductions : %{total} (%{from_db} de la base,
+        %{from_provider} de fournisseur, %{untranslated} non traduits)'
+      untranslated: 'Cordes non traduites :'
+      string_too_long: Chaîne est trop longue à traduire
     unicode:
-      invalid_byte: 'Les octets UTF8 non valide : « %{byte} »'
+      invalid_byte: 'Octets de UTF8 non valide : "%{byte}"'

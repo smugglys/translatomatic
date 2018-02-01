@@ -1,111 +1,155 @@
----
+# translation missing: de.translatomatic.file.created_by
+
 de:
   translatomatic:
     cli:
-      aborted: Abgebrochen
+      aborted: Abgetrieben
       config:
-        configuration: Konfiguration
-        context: Konfigurations-Contexts
-        context_configuration: Konfiguration für Kontext '%{context}'
+        add: Fügen Sie einen Konfigurationswert zu einer Liste
+        configuration: Aufbau
         desc: Beschreibung
-        describe: Verfügbaren Konfigurationseinstellungen zu beschreiben
-        list: Liste aktuellen Konfigurationseinstellungen
-        name: Name
-        no_config: Keine Konfiguration gefunden
-        remove: Entfernen Sie eine Konfigurationseinstellung
-        set: Ändern Sie eine Konfigurationseinstellung
-        subcommand: Konfigurationsbefehle
-        type: Typ
+        describe: Verfügbare Konfigurationseinstellungen zu beschreiben
+        list: Liste aktuelle Konfiguration-Einstellungen
+        location_configuration: Konfiguration für eine Datei "%{location}"
+        name: Namens
+        no_config: Kein Konfiguration gefunden
+        one_at_a_time: Nur einen Config-Datei zu einem Zeitpunkt
+        project: Nutzung-Projekt-Konfigurationsdatei
+        set: Eine Konfiguration ändern
+        subcommand: Konfiguration von Befehlen
+        subtract: Entfernen Sie einen Konfigurationswert aus einer Liste
+        type: Art
+        unset: Entfernen von einer Konfigurationseinstellung
+        user: Datei verwenden Benutzer Konfiguration
         value: Wert
-      convert: Quelldatei in Ziel-Datei-Format konvertieren
+      convert: Quelldatei in Target-Datei-Format konvertieren
       database:
-        search: Suchdatenbank für Text passend die angegebene Zeichenfolge.
-        subcommand: Datenbank-Befehle
-      debug: Aktiviere Debug-Ausgabe
-      display_sentences: Display-Sätze
-      display_values: Werte aus einer Ressourcenbündel anzeigen
-      display_version: Display-version
-      dry_run: 'Dry Run: Dateien werden nicht übersetzt oder geschrieben werden'
-      extract_strings: Saiten aus nicht-Ressource-Dateien extrahieren
-      file_source: 'Datei: %{file}'
-      list_backends: Liste der verfügbaren Übersetzungsdienste
-      locales_required: Eine oder mehrere Ziel-Gebietsschemas erforderlich
-      locales_to_display: Ländereinstellungen anzeigen
-      sentences: 'Sätze:'
-      share: Übersetzungen mit Übersetzern zu teilen
-      source_files: Dateien zu übersetzen
-      source_locale: Das Gebietsschema der Quelldatei
-      target_locales: Sprachen zu übersetzen
+        drop: Fallen Sie die Datenbank
+        search: Suchdatenbank für Text matching der angegebenen Zeichenfolge.
+        subcommand: Datenbank Kommandos
+        info: Datenbank information
+        text_count: "-Datenbank enthält %{count} Zeichenfolgen."
+        delete_text: Löschen Sie ein Text und dessen Übersetzungen
+        text_not_found: Textid %{id} nicht fand.
+      debug: Aktivieren Sie Debuggen Ausgabe
+      display_sentences: Anzeigen der Sätze
+      display_values: Anzeigewerte aus einer Ressource bundle
+      display_version: Display-Fassung
+      dry_run: 'Probelauf: Dateien nicht übersetzt oder geschrieben werden'
+      error: Hat ist ein Fehler aufgetreten
+      extract_strings: Zeichenfolgen aus nicht-Ressource-Dateien zu extrahieren
+      file_source: 'Datei ein: %{file}'
+      locales_required: Eine oder mehrere Ziel Gebietsschemas erforderlich
+      locales_to_display: Locales angezeigt
+      no_wank: Übersetzung Statusleiste deaktivieren
+      provider:
+        available: Zugänglich
+        available_no: Nein
+        available_yes: Ja
+        description: Beschreibung
+        env: Umgebung
+        name: Namens
+        option: Wahl
+      providers: Liste verfügbaren Übersetzungsdienstleister
+      sentences: 'Sätze werden:'
+      source_files: Die Dateien übersetzen
+      source_locale: Das Gebietsschema der Quellcode-Datei
+      target_locales: Ländereinstellungen, um übersetzen
       translate:
-        file: Eine Datei zum Ziel Gebietsschemas zu übersetzen
-        provider: Übersetzer-Implementierungen verwenden
-        string: Eine Zeichenfolge, die Ziel-Gebietsschemas zu übersetzen
-        subcommand: Dateien oder Zeichenfolgen übersetzen
-      translating: Wird übersetzt
-      uploading_tmx: Hochladen von TMX %{name}
-      using_provider: 'Mit Übersetzer: %{name}'
-      wank: Übersetzung-Statusanzeige aktivieren
+        file: Eine Datei zum Ziel Schauplätzen zu übersetzen
+        no_providers: Keine Übersetzungsanbieter zu finden
+        provider: Anbieter Implementierungen verwenden
+        share: Übersetzungen mit Anbietern von Teilen
+        string: Eine Zeichenfolge, die Ziel-Schauplätze zu übersetzen
+        subcommand: Dateien oder Saiten zu übersetzen
+        translating: Wird übersetzt
+        using_provider: 'Verwenden Provider: %{name}'
+        using_providers: 'Provider verwenden: %{list}'
     config:
-      command_line_only: Konfiguration "%{key}" kann nicht gespeichert werden
+      command_line_only: Konfiguration '%{key}"kann nicht gespeichert werden
       context:
         env: Umgebung
         project: Projekt
-        user: Benutzer
-      invalid_context: 'Unerkannte Konfigurations-Contexts: ''%{context}'''
-      invalid_key: 'Unerkannte Konfigurationsschlüssel: "%{key}"'
+        user: Anwender
+      invalid_context: 'Verkannten Konfiguration Kontext: "%{context}"'
+      invalid_key: 'Verkannten Konfigurationsschlüssel: "%{key}"'
+      non_array_key: 'Die Konfiguration ist keiner Array-Typ: "%{key}"'
       types:
-        array: Array
-        boolean: Boolescher Wert
-        hash: Hash
-        numeric: Numerische
-        string: Zeichenfolge
+        array: Auswahl
+        boolean: Booleschen Wert
+        hash: Hashwert
+        numeric: Numerisch
+        path: Pfad
+        path_array: Palette von Pfaden
+        string: Reihe
     database:
-      config_file: Pfad zu der Datenbank-Konfiguration-Datei
-      could_not_create: Datenbank konnte nicht erstellt werden.
-      created: Datenbank erstellt.
-      deleted: Datenbank gelöscht.
-      env: Datenbank-Umgebung
-      migrated: Datenbank migriert.
-      no_environment: Keine Umwelt '%{env}' %{file}
+      config_file: Pfad zur Konfigurationsdatei Datenbank
+      could_not_create: Datenbank kann nicht entstehen.
+      created: Datenbank, die erstellt.
+      deleted: Database gelöscht.
+      env: Datenbank Umfeld
+      migrated: Datenbank wanderten.
+      no_environment: Kein Umfeld "%{env}" in %{file}
     file:
-      created_by: Erstellt von %{app} %{version} %{date}
-      directory: 'Die Datei ist ein Verzeichnis: %{file}'
-      error: 'Fehler: %{message}'
-      invalid: 'Datei ist ungültig: %{file}'
-      loading: "%{file} %{name} mit laden"
-      not_found: 'Datei nicht gefunden: %{file}'
-      unknown_locale: Nicht in der Lage, Sprachumgebung zu bestimmen
-      unsupported: 'Nicht unterstützte Datei-Typ: %{file}'
+      created_by: Angelegt von %{app} %{version} %{date} %{url}
+      csv:
+        comment_column: Ein CSV Spaltenname für Kommentare verwendet werden soll
+        headers: Behandeln Sie die erste Zeile der CSV-Dateien als eine Reihe von
+          Kopfzeilen.
+        key_column: Ein Spaltenname CSV, um für Eigenschaftsschlüssel genutzt werden
+        translate_columns: Indizes von CSV-Spalten, zu übersetzen oder Namen
+        value_column: CSV-Spaltenname für Eigenschaftswerte verwendet werden
+      directory: 'Datei, ist ein Verzeichnis: %{file}'
+      error: 'Die Fehler: %{message}'
+      invalid: Ungültige lautet Datei %{file}
+      loading: Laden %{file} verwenden %{name}
+      not_found: 'Datei nicht finden: %{file}'
+      unknown_locale: Nicht in der Lage Gebietsschema bestimmen
+      unsupported: 'Dateityp nicht unterstützt: %{file}'
     file_translator:
-      database_disabled: Datenbank ist deaktiviert.
-      dry_run: Aktionen ohne Durchführung von Übersetzungen oder Schreiben von Dateien zu drucken.
-      provider_required: Übersetzer erforderlich.
-      stats: 'Übersetzungen aus der Datenbank: %{from_db}, provider: %{from_provider}, un: %{untranslated}'
-      total_translations: 'Total translations: %{total} (%{from_db} aus der Datenbank, %{from_provider} von übersetzer, %{untranslated} unübersetzte)'
-      translating: Übersetzung %{source} (%{source_locale}) %{target} (%{target_locale})
-      untranslated: 'Nicht übersetzte Zeichenfolgen:'
-      use_database: Speichern und Abrufen von Übersetzungen aus der Datenbank.
+      dry_run: Drucken Sie Aktionen, ohne Durchführung von Übersetzungen oder Schreiben
+        von Dateien.
+      in_place: Quelle Datei im Ort zu übersetzen.
+      translating: Übersetzung von %{source} (%{source_locale}) für %{target} (%{target_locale})
+      translating_in_place: Übersetzung von %{source} (%{source_locale}) in den Ort
+        (%{target_locale})
     provider:
-      configured: 'Konfigurierten Übersetzer:'
-      email_address: E-Mail-Adresse
-      email_required: E-Mail-Adresse erforderlich.
-      frengly_api_key: Frengly API-Schlüssel
-      google_api_key: Google-API-Schlüssel
-      google_key_required: Google-API-Schlüssel erforderlich.
-      microsoft_api_key: Microsoft-API-Schlüssel
-      microsoft_key_required: Microsoft-API-Schlüssel erforderlich.
-      mymemory_api_key: MyMemory-API-Schlüssel
-      no_providers: Keine Übersetzer konfiguriert sind.
+      email_address: Adresse
+      email_required: Emailadresse erforderlich.
+      frengly:
+        api_key: Frengly-API-Schlüssels
+      google:
+        api_key: Google-API-Schlüssels
+        key_required: Google-API Schlüssel erforderlich.
+        model: Übersetzungen Modell
+      invalid_response: Unerwartete Rückmeldung vom Anbieter
+      microsoft:
+        api_key: Microsoft API-Schlüssels
+        key_required: Microsoft-API-Key erforderlich.
+      mymemory:
+        api_key: MyMemory-API-Schlüssels
+      options: 'Provider-Möglichkeiten:'
       password: Passwort
-      password_required: Passwort erforderlich.
-      providers: 'Alle Übersetzer:'
-      required_option: "(erforderlich)"
-      share_response: 'Teil Antwort: %{response}'
-      unavailable: Übersetzer-%{name} ist nicht verfügbar.
-      yandex_api_key: Yandex-API-Schlüssel
-      yandex_key_required: Yandex-API-Schlüssel erforderlich.
+      password_required: Kennworts erforderlich.
+      required_option: "(müssen)"
+      share_response: 'Anteil Antwort: %{response}'
+      status: 'Die Anbieterstatus:'
+      unavailable: Anbieter %{name} nicht verfügbar.
+      yandex:
+        api_key: Yandex-API-Schlüssels
+        key_required: Yandex API-Key erforderlich.
+    sharer:
+      uploading_tmx: Hochladen von TMX auf %{name}
     tmx:
-      multiple_locales: Mehreren Quelle Gebietsschemas in Texten.
-      multiple_origins: Mehrere Wurzeln in Texten.
+      multiple_locales: Mehrfache Quelle Locales in Texten.
+      multiple_origins: Mehrere Wurzeln im Texte.
+    translator:
+      database_disabled: Datenbank deaktiviert wird.
+      no_database: Übersetzungen für die Datenbank nicht gespeichert werden.
+      provider_required: Dienstanbieter erforderlich.
+      total_translations: 'Total Übersetzungen: %{total} (%{from_db} Datenbank, %{from_provider}
+        vom Anbieter, %{untranslated} unübersetzt)'
+      untranslated: 'Unübersetzte Zeichenfolgen:'
+      string_too_long: Zeichenfolge ist zu lang, zu übersetzen
     unicode:
-      invalid_byte: 'Ungültigen UTF-8-Byte: ''%{byte}'''
+      invalid_byte: 'Ungültige UTF-8-Byte: ''%{byte}'''
