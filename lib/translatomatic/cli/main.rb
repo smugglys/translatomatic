@@ -114,36 +114,45 @@ module Translatomatic
       def provider_option_rows(klass)
         name = klass.name.demodulize
         opts = klass.options || []
-        rows = []
-        opts.each do |opt|
-          args = []
-          args << name
-          args << '--' + opt.name.to_s.tr('_', '-')
-          args << opt.description
-          args << opt.env_name ? "ENV[#{opt.env_name}]" : ''
-          rows << args
-        end
-        rows
+        opts.collect { |i| provider_option_row(name, i) }
+      end
+
+      def provider_option_row(name, opt)
+        args = []
+        args << name
+        args << '--' + opt.name.to_s.tr('_', '-')
+        args << opt.description
+        args << opt.env_name ? "ENV[#{opt.env_name}]" : ''
+        args
       end
 
       def display_provider_status
-        config_all = Translatomatic.config.all
-        available = {}
-        configured = Translatomatic::Provider.available(config_all)
-        configured.each { |i| available[i.name] = true }
-        rows = []
-        yes = t('cli.provider.available_yes')
-        no = t('cli.provider.available_no')
-        Translatomatic::Provider.types.each do |klass|
-          name = klass.name.demodulize
-          args = []
-          args << name
-          args << (available[name] ? yes : no) # TODO: tick/cross
-          rows << args
+        types = Translatomatic::Provider.types
+        available = available_providers
+        rows = types.sort_by { |i| available[i.name] ? 0 : 1 }.map do |klass|
+          provider_status_row(klass, available)
         end
         headers = %i[name available]
         heading = headers.collect { |i| t("cli.provider.#{i}") }
         print_table(add_table_heading(rows, heading), indent: 2)
+      end
+
+      def available_providers
+        config_all = Translatomatic.config.all
+        available = {}
+        configured = Translatomatic::Provider.available(config_all)
+        configured.each { |i| available[i.class.name] = true }
+        available
+      end
+
+      def provider_status_row(klass, available)
+        name = klass.name.demodulize
+        avail = available[klass.name] ? 'yes' : 'no'
+        args = []
+        args << name
+        args << t('cli.provider.available_' + avail)
+        args << Translatomatic::Provider.get_error(name)
+        args
       end
 
       def display_properties(source, keys)
