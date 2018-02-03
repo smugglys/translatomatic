@@ -28,7 +28,7 @@ module Translatomatic
           provider
         end
 
-        # if we didn't resolve to any providers, find all available 
+        # if we didn't resolve to any providers, find all available
         # providers that work with the given options.
         list.empty? ? available(options) : list
       end
@@ -54,6 +54,8 @@ module Translatomatic
         available.compact
       end
 
+      # Get errors for the specified provider
+      # @param name [String] Provider name
       def get_error(name)
         @provider_errors[name]
       end

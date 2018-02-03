@@ -129,7 +129,7 @@ module Translatomatic
           format: '%t: |%B| %p%% ',
           autofinish: false
         )
-        conf.logger.progressbar = progressbar
+        log.progressbar = progressbar if log.respond_to?(:progressbar=)
         Translatomatic::ProgressUpdater.new(progressbar)
       end
     end

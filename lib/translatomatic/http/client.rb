@@ -47,7 +47,7 @@ module Translatomatic
       # Start an HTTP request. Yields the http object.
       # @param url [String,URI] URL of the request, requires host and port
       # @return [Object] The result of the yielded block
-      def start(url, options = {})
+      def start(url, _options = {})
         uri = url.respond_to?(:host) ? url : URI.parse(url)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = uri.scheme == 'https'

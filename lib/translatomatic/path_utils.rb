@@ -108,7 +108,7 @@ module Translatomatic
       # remove any underscore and trailing text from basename
       deunderscored = basename_stripped(path).sub(/_.*?\Z/, '')
       # add #{preferred_separator}locale.ext
-      filename = deunderscored + preferred_separator + 
+      filename = deunderscored + preferred_separator +
                  target_locale.to_s + path.extname
       path.dirname + filename
     end

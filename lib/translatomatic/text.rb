@@ -66,6 +66,7 @@ module Translatomatic
       @value
     end
 
+    # @return [String] value.to_str
     def to_str
       @value.to_str
     end

@@ -62,7 +62,7 @@ module Translatomatic
     def update_listener_total(text_collection, to_locales)
       return unless @listener
       @listener.total = text_collection.count * @providers.length *
-        to_locales.length
+                        to_locales.length
     end
 
     # Combine translations of substrings of the original strings

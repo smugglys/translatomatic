@@ -35,7 +35,7 @@ module Translatomatic
       include Util
       include Munging
 
-      ATTRIBUTES = %i[provider texts from_locale to_locale 
+      ATTRIBUTES = %i[provider texts from_locale to_locale
                       use_db listener].freeze
 
       # find texts that we do not have translations for

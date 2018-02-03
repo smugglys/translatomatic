@@ -1,6 +1,5 @@
-
 # gem :rchardet19, provided_by: :rchardet
-# titlekit has rchardet19 dependency, but we don't want that
+# titlekit has rchardet19 dependency, but we don't want that.
 dependency = Gem::Dependency.new('rchardet19')
 specs = dependency.matching_specs
 if specs
@@ -15,9 +14,17 @@ require 'rchardet'
 # Module containing all of the translation goodness
 module Translatomatic
   class << self
-    # @return [Translatomatic::Config] configuration
+    attr_writer :logger
+    attr_writer :config
+
+    # @return [Logger] Translatomatic logger instance
+    def logger
+      @logger ||= Translatomatic::Logger.new
+    end
+
+    # @return [Translatomatic::Config] Configuration settings
     def config
-      @config ||= Translatomatic::Config.new
+      @config ||= Translatomatic::Config::Settings.new
     end
   end
 end

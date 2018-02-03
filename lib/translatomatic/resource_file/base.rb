@@ -59,7 +59,7 @@ module Translatomatic
         update_locale
         init
         if @path
-          raise t('file.not_found') unless @path.exist?
+          raise t('file.not_found', file: path) unless @path.exist?
           load
         end
       end

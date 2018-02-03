@@ -3,7 +3,7 @@ module Translatomatic
   module TypeCast
     private
 
-    def cast(value, type)
+    def cast(value, type, options = {})
       value = value[0] if value.is_a?(Array) && !array_type?(type)
 
       case type
@@ -12,8 +12,10 @@ module Translatomatic
       when :string
         return value.nil? ? value : value.to_s
       when :path
-        cast_path(value)
-      when :array, :path_array
+        cast_path(value, options)
+      when :path_array
+        array_value(value).collect { |i| cast_path(i, options) }
+      when :array
         array_value(value)
       else
         # no casting
@@ -21,9 +23,12 @@ module Translatomatic
       end
     end
 
-    def cast_path(value)
+    def cast_path(value, options = {})
       return nil if value.nil?
-      homeify(value.to_s)
+      base_path = options[:base_path]
+      value = homeify(value.to_s)
+      value = File.absolute_path(value, base_path) if base_path
+      value
     end
 
     def homeify(path)

@@ -36,7 +36,7 @@ module Translatomatic
       def run
         merge_options_and_config
         @dry_run = cli_option(:dry_run)
-        conf.logger.level = ::Logger::DEBUG if cli_option(:debug)
+        log.level = ::Logger::DEBUG if cli_option(:debug)
         log.info(t('cli.dry_run')) if @dry_run
 
         yield
@@ -53,7 +53,7 @@ module Translatomatic
       end
 
       def finish_log
-        conf.logger.finish if conf.logger.respond_to?(:finish)
+        log.finish if log.respond_to?(:finish)
       end
 
       def conf

@@ -6,21 +6,17 @@ en:
       config:
         add: Add a configuration value to a list
         configuration: Configuration
-        desc: Description
         describe: Describe available configuration settings
+        for_file: Change a per-file configuration setting
         list: List current configuration settings
         location_configuration: Configuration for file '%{location}'
-        name: Name
         no_config: No configuration found
-        one_at_a_time: Only one config file at a time
         project: Use project configuration file
         set: Change a configuration setting
         subcommand: Configuration commands
         subtract: Remove a configuration value from a list
-        type: Type
         unset: Remove a configuration setting
         user: Use user configuration file
-        value: Value
       convert: Convert source file to target file format
       database:
         drop: Drop the database
@@ -70,9 +66,15 @@ en:
         env: Environment
         project: Project
         user: User
+      heading:
+        desc: Description
+        name: Name
+        type: Type
+        value: Value
       invalid_context: 'Unrecognised configuration context: ''%{context}'''
       invalid_key: 'Unrecognised configuration key: ''%{key}'''
       non_array_key: 'Configuration is not an array type: ''%{key}'''
+      one_at_a_time: Only one config file at a time
       types:
         array: Array
         boolean: Boolean

@@ -25,7 +25,7 @@ module Translatomatic
     end
 
     def log
-      Translatomatic.config.logger
+      Translatomatic.logger
     end
 
     def build_locale(tag)

@@ -4,6 +4,7 @@ module Translatomatic
     module Munging
       private
 
+      # @private
       NoTranslateTag = Struct.new(:leading_space, :trailing_space)
 
       def munge_translation_results(translations)

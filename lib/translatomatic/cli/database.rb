@@ -21,8 +21,8 @@ module Translatomatic
 
         # get all the associated original texts
         original_texts = texts.where(from_text_id: nil)
-        from_ids = texts.where('from_text_id IS NOT NULL').
-          select(:from_text_id).collect(&:from_text_id)
+        from_ids = texts.where('from_text_id IS NOT NULL')
+                        .select(:from_text_id).collect(&:from_text_id)
         original2 = db.text.where('id IN (?)', from_ids)
         original_texts += original2
 

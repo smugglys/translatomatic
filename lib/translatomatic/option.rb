@@ -44,6 +44,7 @@ module Translatomatic
       @type ||= :string
       raise "invalid type: #{@type}" unless VALID_TYPES.include?(@type)
       @env_name ||= @use_env && @name ? @name.to_s.upcase : nil
+      @user_location_only = true if @name.to_s =~ /api_key/
     end
 
     # Return sconfiguration for a thor command line option

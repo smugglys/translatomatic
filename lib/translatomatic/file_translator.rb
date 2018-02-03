@@ -83,7 +83,7 @@ module Translatomatic
       update_properties(target, to_locale, collection)
       save_resource_file(target)
     end
-  
+
     # Update file properties from the given translation collection
     def update_properties(file, to_locale, collection)
       value_map = init_value_map(file)

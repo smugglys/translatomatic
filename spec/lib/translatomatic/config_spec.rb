@@ -3,10 +3,16 @@ RSpec.describe Translatomatic::Config do
   KEY_DB_CONFIG = 'database_config'.freeze
   KEY_BOOLEAN = 'no_wank'.freeze
 
-  let(:config) { Translatomatic.config }
+  def config
+    Translatomatic.config
+  end
 
   before(:each) do
-    config.reset
+    reset_test_config
+  end
+
+  after(:all) do
+    reset_test_config
   end
 
   describe '#set' do
@@ -23,7 +29,9 @@ RSpec.describe Translatomatic::Config do
     it 'writes configuration to file' do
       config.set(KEY_LOCALES, 'de')
       expect(config.get(KEY_LOCALES)).to eq(['de'])
-      config.load
+      dump_config(:user, config.user_path)
+      dump_config(:project, config.project_path)
+      config.send(:load)
       expect(config.get(KEY_LOCALES)).to eq(['de'])
     end
 
@@ -33,6 +41,27 @@ RSpec.describe Translatomatic::Config do
         config.set(key, 'value ')
       end.to raise_error(t('config.invalid_key', key: key))
     end
+
+    it 'chages project settings by default when within a project' do
+      config.set(KEY_LOCALES, 'de')
+      expect(config.get(KEY_LOCALES, location: :project)).to eq(['de'])
+      expect(config.get(KEY_LOCALES, location: :user)).to eq([])
+    end
+
+    it 'changes user settings by default when outside of a project' do
+      reset_test_config(project_path: nil)
+      config.set(KEY_LOCALES, 'de')
+      expect(config.get(KEY_LOCALES, location: :user)).to eq(['de'])
+      expect(config.get(KEY_LOCALES, location: :project)).to eq([])
+    end
+
+    it 'changes a per-file setting with a for_file argument' do
+      for_file = 'rah.txt'
+      config.set(KEY_LOCALES, 'de', location: :project, for_file: for_file)
+      expect(config.get(KEY_LOCALES, location: :user)).to eq([])
+      expect(config.get(KEY_LOCALES, location: :project)).to eq([])
+      expect(config.get(KEY_LOCALES, location: :project, for_file: for_file)).to eq(['de'])
+    end
   end
 
   describe '#unset' do
@@ -40,7 +69,7 @@ RSpec.describe Translatomatic::Config do
       config.set(KEY_LOCALES, 'de')
       expect(config.get(KEY_LOCALES)).to eq(['de'])
       config.unset(KEY_LOCALES)
-      config.load
+      config.send(:load)
       expect(config.get(KEY_LOCALES)).to be_empty
     end
 
@@ -82,32 +111,28 @@ RSpec.describe Translatomatic::Config do
 
   describe '#get' do
     it 'returns a configuration key' do
-      config.set(KEY_LOCALES, 'de')
-      expect(config.get(KEY_LOCALES)).to eq(['de'])
+      expect(config.get(:no_wank)).to eq(false)
     end
 
-    it 'returns paths relative to the user config file' do
+    it 'returns paths relative to the user path' do
       user_db = 'path1/file.txt'
-      config.set(KEY_DB_CONFIG, user_db, :user)
-      expected_path = File.absolute_path(File.join(File.join(File.dirname(config.user_settings_path), '..'), user_db))
-      expect(config.get(KEY_DB_CONFIG, :user)).to eq(expected_path)
+      config.set(KEY_DB_CONFIG, user_db, location: :user)
+      # dump_all_config
+      expected_path = absolute_path(config.user_path, user_db)
+      expect(config.get(KEY_DB_CONFIG, location: :user)).to eq(expected_path)
     end
 
-    it 'returns paths relative to the project config file' do
+    it 'returns paths relative to the project path' do
       proj_db = 'path2/file.txt'
-      config.set(KEY_DB_CONFIG, proj_db, :project)
-      expected_path = File.absolute_path(File.join(File.join(File.dirname(config.project_settings_path), '..', proj_db)))
-      expect(config.get(KEY_DB_CONFIG, :project)).to eq(expected_path)
+      config.set(KEY_DB_CONFIG, proj_db, location: :project)
+      expected_path = absolute_path(config.project_path, proj_db)
+      expect(config.get(KEY_DB_CONFIG, location: :project)).to eq(expected_path)
     end
-  end
 
-  describe '#all' do
-    it 'returns all configuration settings' do
-      config.set(KEY_LOCALES, 'de')
-      settings = config.all
-      expect(settings).to be_a(Hash)
-      expect(settings).to be_present
-      expect(settings[KEY_LOCALES.to_sym]).to eq(%w[de])
+    it 'returns values set at the user level with no location' do
+      config.set(KEY_BOOLEAN, 'true', location: :user)
+      # dump_all_config
+      expect(config.get(KEY_BOOLEAN)).to be_truthy
     end
   end
 
@@ -118,16 +143,13 @@ RSpec.describe Translatomatic::Config do
     end
   end
 
-  describe '#save' do
-    it 'saves settings to the config file' do
+  describe '#all' do
+    it 'returns all configuration settings' do
       config.set(KEY_LOCALES, 'de')
-      config.save
-    end
-  end
-
-  describe '#load' do
-    it 'loads settings from the config file' do
-      config.load
+      settings = config.all
+      expect(settings).to be_a(Hash)
+      expect(settings).to be_present
+      expect(settings[KEY_LOCALES.to_sym]).to eq(%w[de])
     end
   end
 end

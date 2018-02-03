@@ -1,21 +1,28 @@
 module Helpers
   TMP_PATH = File.join(__dir__, '..', 'tmp')
   CONFIG_PATH = File.join('.translatomatic/config.yml')
-  TEST_USER_SETTINGS_PATH = File.join(TMP_PATH, CONFIG_PATH)
-  TEST_PROJ_SETTINGS_PATH = File.join(TMP_PATH, 'project', CONFIG_PATH)
+  TEST_USER_PATH = TMP_PATH
+  TEST_PROJ_PATH = File.join(TMP_PATH, 'project')
   FIXTURES_PATH = File.join(__dir__, '..', 'fixtures')
 
-  def use_test_config
-    [TEST_USER_SETTINGS_PATH, TEST_PROJ_SETTINGS_PATH].each do |file|
-      File.delete(file) if File.exist?(file)
+  def use_test_config(options = {})
+    [TEST_USER_PATH, TEST_PROJ_PATH].each do |file|
+      config = File.join(file, CONFIG_PATH)
+      File.delete(config) if File.exist?(config)
     end
-    config = Translatomatic.config
-    config.send(:user_settings_path=, TEST_USER_SETTINGS_PATH)
-    config.send(:project_settings_path=, TEST_PROJ_SETTINGS_PATH)
+    params = {
+      user_path: TEST_USER_PATH,
+      project_path: TEST_PROJ_PATH
+    }.merge(options)
+    Translatomatic.config = Translatomatic::Config::Settings.new(params)
 
     # patch http request so we can match multipart bodies
     # WebMock does not support matching body for multipart/form-data requests yet :(
     # Translatomatic::HTTP::Request.prepend Helpers::MultipartPatch
+  end
+
+  def reset_test_config(options = {})
+    use_test_config(options)
   end
 
   def fixture_read(path, crlf = false)
@@ -38,6 +45,25 @@ module Helpers
 
   def test_http_headers(options = {})
     TestConfig::DEFAULT_HTTP_HEADERS.merge(options)
+  end
+
+  def absolute_path(*args)
+    File.absolute_path(File.join(*args))
+  end
+
+  def config_file_path(path)
+    File.join(path, ".translatomatic", "config.yml")
+  end
+
+  def dump_config(location, path)
+    content = File.read(config_file_path(path)) if path
+    puts "#{location} config:"
+    puts content ? content : "(empty)"
+  end
+
+  def dump_all_config
+    dump_config(:user, config.user_path)
+    dump_config(:project, config.project_path)
   end
 
   # create a temporary file, return path to file

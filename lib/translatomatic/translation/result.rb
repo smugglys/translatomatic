@@ -1,6 +1,5 @@
 module Translatomatic
   module Translation
-
     # Data object describing a text translation
     class Result
       # @return [Translatomatic::Text] original string
