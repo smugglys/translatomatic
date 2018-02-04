@@ -1,152 +1,155 @@
-# translation missing: ms.translatomatic.file.created_by
+# Dicipta oleh Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
 
 ms:
   translatomatic:
     cli:
       aborted: Dibatalkan
       config:
-        add: Menambah nilai konfigurasi senarai
+        add: Tambah nilai konfigurasi ke senarai
         configuration: Konfigurasi
-        desc: Penerangan
-        describe: Huraikan tetapan tatarajah yang disediakan
-        list: Tetapan tatarajah senarai semasa
-        location_configuration: Konfigurasi fail '%{location}'
-        name: Nama
-        no_config: Tiada konfigurasi yang ditemui
-        one_at_a_time: Hanya satu fail konfigurasi pada satu masa
-        project: Fail konfigurasi penggunaan projek
-        set: Menukar pengesetan konfigurasi
-        subcommand: Konfigurasi perintah
-        subtract: Mengalih keluar nilai konfigurasi daripada senarai
-        type: Jenis
-        unset: Mengalih keluar seting konfigurasi
-        user: Fail konfigurasi penggunaan pengguna
-        value: Nilai
-      convert: Menukar fail sumber kepada fail format sasaran
+        describe: Terangkan tetapan konfigurasi yang ada
+        for_file: Tukar tetapan konfigurasi setiap fail
+        list: Senaraikan tetapan konfigurasi semasa
+        location_configuration: Konfigurasi untuk fail &#39;%{location}&#39;
+        no_config: Tiada konfigurasi yang dijumpai
+        project: Gunakan fail konfigurasi projek
+        set: Tukar tetapan tatarajah
+        subcommand: Arahan konfigurasi
+        subtract: Keluarkan nilai konfigurasi dari senarai
+        unset: Keluarkan tetapan konfigurasi
+        user: Gunakan fail konfigurasi pengguna
+      convert: Tukar fail sumber ke format fail sasaran
       database:
-        drop: Jatuh dalam pangkalan data
-        search: Cari pangkalan data teks yang dipadankan dengan tali yang diberikan.
-        subcommand: Arahan pangkalan data
+        drop: Jatuhkan pangkalan data
+        search: Cari pangkalan data untuk teks yang sepadan dengan rentetan yang diberikan.
+        subcommand: Perintah pangkalan data
         info: Maklumat pangkalan data
-        text_count: Pangkalan data mengandungi %{count} tali.
-        delete_text: Menghapuskan teks dan terjemahan yang
-        text_not_found: Teks id %{id} tidak dijumpai.
-      debug: Mendayakan nyahpepijat output
-      display_sentences: Paparan ayat
-      display_values: Memaparkan nilai-nilai dari pakej sumber
+        text_count: Pangkalan data mengandungi %{count} strings.
+        delete_text: Padamkan teks dan terjemahannya
+        text_not_found: Id teks %{id} tidak dijumpai.
+      debug: Dayakan output debugging
+      display_sentences: Paparkan ayat
+      display_values: Paparkan nilai dari bundle sumber
       display_version: Versi paparan
-      dry_run: 'Run kering: fail tidak boleh ditukar atau ditulis'
-      error: Satu ralat telah berlaku
-      extract_strings: Cabutan rentetan dari fail sumber
+      dry_run: 'Runut kering: fail tidak akan diterjemahkan atau ditulis'
+      error: Ralat telah berlaku
+      extract_strings: Ekstrak rentetan daripada fail bukan sumber
       file_source: 'Fail: %{file}'
-      locales_required: Satu atau lebih locales sasaran yang dikehendaki
-      locales_to_display: Locales untuk memaparkan
-      no_wank: Nyahdayakan bar kemajuan penterjemahan
+      locales_required: Satu atau lebih banyak kawasan sasaran diperlukan
+      locales_to_display: Tempatan untuk dipaparkan
+      no_wank: Lumpuhkan bar kemajuan terjemahan
       provider:
-        available: Disediakan
+        available: Tersedia
         available_no: Tidak
         available_yes: Ya
         description: Penerangan
         env: Alam Sekitar
         name: Nama
-        option: Opsyen
-      providers: Senarai terjemahan yang disediakan pembekal
-      sentences: 'Ayat:'
-      source_files: Fail untuk menterjemahkan
-      source_locale: Dalam fail sumber
-      target_locales: Locales untuk diterjemahkan kepada
+        option: Pilihan
+      providers: Senaraikan penyedia terjemahan yang tersedia
+      sentences: 'Hukuman:'
+      source_files: Fail untuk diterjemahkan
+      source_locale: Lokasi fail sumber
+      target_locales: Tempatan untuk diterjemahkan ke
       translate:
-        file: Menterjemahkan fail untuk locales sasaran
-        no_providers: Tiada pembekal terjemahan yang ditemui
-        provider: Pembekal implementasi menggunakan
+        file: Terjemahkan fail untuk menyasarkan tempat
+        no_providers: Tiada pembekal terjemahan dijumpai
+        provider: Pelaksanaan penyedia untuk digunakan
         share: Berkongsi terjemahan dengan pembekal
-        string: Menterjemah rentetan kepada sasaran locales
-        subcommand: Menterjemahkan fail atau tali
+        string: Terjemah rentetan kepada sasaran tempat
+        subcommand: Terjemah fail atau rentetan
         translating: Menterjemah
-        using_provider: 'Menggunakan pembekal: %{name}'
-        using_providers: 'Menggunakan pembekal: %{list}'
+        using_provider: 'Menggunakan penyedia: %{name}'
+        using_providers: 'Menggunakan penyedia: %{list}'
     config:
-      command_line_only: Konfigurasi '%{key}' tidak boleh disimpan
+      command_line_only: Konfigurasi &#39;%{key}&#39; tidak dapat disimpan
       context:
         env: Alam Sekitar
         project: Projek
         user: Pengguna
-      invalid_context: 'Konteks konfigurasi tidak diiktiraf: ''%{context}'''
-      invalid_key: 'Kekunci konfigurasi tidak diiktiraf: ''%{key}'''
-      non_array_key: 'Konfigurasi bukanlah untuk pelbagai jenis: ''%{key}'''
+      heading:
+        desc: Penerangan
+        name: Nama
+        type: Taipkan
+        value: Nilai
+      invalid_context: 'Konteks konfigurasi yang tidak diiktiraf: &#39;%{context}&#39;'
+      invalid_key: 'Kunci konfigurasi yang tidak dikenali: &#39;%{key}&#39;'
+      non_array_key: 'Konfigurasi bukan jenis array: &#39;%{key}&#39;'
+      one_at_a_time: Hanya satu fail konfigurasi pada satu masa
       types:
-        array: Pelbagai
+        array: Array
         boolean: Boolean
         hash: Hash
         numeric: Angka
-        path: Laluan
-        path_array: Pelbagai laluan
-        string: Rentetan
+        path: Jalan
+        path_array: Array Laluan
+        string: Tali
     database:
-      config_file: Laluan ke fail konfigurasi pangkalan data
-      could_not_create: Pangkalan data tidak dapat dicipta.
-      created: Pangkalan data yang diwujudkan.
-      deleted: Pangkalan data yang dipadam.
+      config_file: Jalankan ke fail konfigurasi pangkalan data
+      could_not_create: Pangkalan data tidak boleh dibuat.
+      created: Pangkalan data dibuat.
+      deleted: Pangkalan data dipadamkan.
       env: Persekitaran pangkalan data
-      migrated: Pangkalan data dipindahkan.
-      no_environment: Persekitaran yang tidak '%{env}' di %{file}
+      migrated: Pangkalan data bermigrasi.
+      no_environment: Tiada persekitaran &#39;%{env}&#39; dalam %{file}
     file:
-      created_by: Dicipta oleh %{app} %{version} %{date} %{url}
+      created_by: Dibuat oleh %{app} %{version} %{date} %{url}
       csv:
-        comment_column: Nama kolum CSV yang digunakan untuk komen
-        headers: Melayan baris pertama bagi fail CSV sebagai satu baris pengepala.
-        key_column: Nama kolum CSV untuk digunakan bagi kunci harta
-        translate_columns: Nama atau Indeks CSV kolum untuk menterjemahkan
-        value_column: Nama kolum CSV yang digunakan untuk nilai hartanah
-      directory: 'Fail adalah satu direktori: %{file}'
+        comment_column: Nama lajur CSV untuk digunakan untuk komen
+        headers: Rawat baris pertama fail CSV sebagai deretan tajuk.
+        key_column: Nama lajur CSV untuk digunakan untuk kekunci harta
+        translate_columns: Nama atau indeks ruang CSV untuk diterjemahkan
+        value_column: Nama lajur CSV untuk digunakan untuk nilai harta
+      directory: 'Fail adalah direktori: %{file}'
       error: 'Ralat: %{message}'
       invalid: 'Fail tidak sah: %{file}'
-      loading: Cubaan memuatkan %{file} menggunakan %{name}
+      loading: Mencuba untuk memuat %{file} menggunakan %{name}
       not_found: 'Fail tidak dijumpai: %{file}'
-      unknown_locale: Dapat menentukan penempatan
-      unsupported: 'Jenis fail tidak disokong: %{file}'
+      unknown_locale: Tidak dapat menentukan locale
+      unsupported: 'Jenis fail yang tidak disokong: %{file}'
     file_translator:
-      dry_run: Cetak tindakan tanpa melakukan penterjemahan atau menulis fail.
-      in_place: Menterjemahkan sumber fail ditempatnya.
-      translating: Penterjemahan %{source} (%{source_locale}) untuk %{target} (%{target_locale})
-      translating_in_place: Penterjemahan %{source} (%{source_locale}) di tempat (%{target_locale})
+      dry_run: Cetak tindakan tanpa melakukan terjemahan atau menulis fail.
+      in_place: Terjemah sumber fail di tempat.
+      translating: Menterjemahkan %{source} (%{source_locale}) kepada %{target} (%{target_locale})
+      translating_in_place: Menterjemahkan %{source} (%{source_locale}) di tempat
+        (%{target_locale})
     provider:
-      email_address: Alamat e-mel
-      email_required: Alamat e-mel yang diperlukan.
+      email_address: Alamat emel
+      email_required: Alamat e-mel diperlukan.
       frengly:
-        api_key: Kekunci Frengly API
+        api_key: Kekunci API Frengly
       google:
-        api_key: Kekunci Google API
-        key_required: Google API masukkan diperlukan.
-        model: Terjemahan model
-      invalid_response: Sambutan luar jangkaan daripada pembekal
+        api_key: Kunci Google API
+        key_required: Kunci API Google diperlukan.
+        model: Model penterjemahan
+      invalid_response: Sambutan yang tidak dijangka daripada pembekal
       microsoft:
-        api_key: Kekunci Microsoft API
-        key_required: Masukkan Microsoft API yang diperlukan.
+        api_key: Kunci API Microsoft
+        key_required: Kunci API Microsoft diperlukan.
       mymemory:
-        api_key: Kekunci MyMemory API
-      options: 'Pilihan pembekal:'
+        api_key: Kunci API MyMemory
+      options: 'Pilihan penyedia:'
       password: Kata laluan
       password_required: Kata laluan diperlukan.
-      required_option: "(wajib)"
-      share_response: 'Kongsi maklum balas: %{response}'
-      status: 'Status pembekal:'
-      unavailable: Pembekal %{name} tidak ada.
+      required_option: "(diperlukan)"
+      share_response: 'Jawapan jawapan: %{response}'
+      status: 'Status penyedia:'
+      unavailable: Penyedia %{name} tidak tersedia.
       yandex:
-        api_key: Kekunci Yandex API
-        key_required: Masukkan Yandex API diperlukan.
+        api_key: Kunci API Yandex
+        key_required: Kunci API Yandex diperlukan.
     sharer:
-      uploading_tmx: Meng-upload TMX untuk %{name}
+      uploading_tmx: Memuat naik TMX ke %{name}
     tmx:
-      multiple_locales: Pelbagai sumber locales dalam teks.
-      multiple_origins: Asal-usul pelbagai dalam teks.
+      multiple_locales: Pelbagai sumber tempatan dalam teks.
+      multiple_origins: Beberapa asal dalam teks.
     translator:
-      database_disabled: Pangkalan data telah dinyahdayakan.
-      no_database: Jangan Simpan terjemahan ke dalam pangkalan data.
+      database_disabled: Pangkalan data dinyahdayakan.
+      no_database: Jangan simpan terjemahan ke pangkalan data.
       provider_required: Pembekal diperlukan.
-      total_translations: 'Jumlah terjemahan: %{total} (%{from_db} dari pangkalan
-        data, %{from_provider} daripada pembekal, %{untranslated} diterjemahkan)'
-      untranslated: 'Tali yang diterjemahkan:'
-      string_too_long: Tali adalah terlalu panjang untuk menterjemahkan
+      total_translations: 'Terjemahan penuh: %{total} (%{from_db} dari pangkalan data,
+        %{from_provider} daripada pembekal, %{untranslated} tidak diterjemahkan)'
+      untranslated: 'Rentetan tidak ditranslasikan:'
+      string_too_long: String terlalu panjang untuk diterjemahkan
     unicode:
-      invalid_byte: 'Tidak sah UTF8 bait: ''%{byte}'''
+      invalid_byte: 'BUTUL UTF8 tidak sah: &#39;%{byte}&#39;'

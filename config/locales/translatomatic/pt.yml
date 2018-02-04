@@ -1,154 +1,154 @@
-# translation missing: pt.translatomatic.file.created_by
+# Criado por Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
 
 pt:
   translatomatic:
     cli:
       aborted: Abortado
       config:
-        add: Adicionar um valor de configuração de uma lista
+        add: Adicione um valor de configuração a uma lista
         configuration: Configuração
-        desc: Descrição
-        describe: Descrever as configurações disponíveis
-        list: Lista as definições de configuração atuais
-        location_configuration: Configuração para o arquivo '%{location}'
-        name: Nome
+        describe: Descreva as configurações disponíveis
+        for_file: Alterar uma configuração de configuração por arquivo
+        list: Liste as configurações atuais
+        location_configuration: Configuração para o arquivo &#39;%{location}&#39;
         no_config: Nenhuma configuração encontrada
-        one_at_a_time: Apenas um arquivo de configuração de cada vez
-        project: Arquivo de configuração de projeto de uso
-        set: Alterar uma definição de configuração
+        project: Use o arquivo de configuração do projeto
+        set: Alterar uma configuração
         subcommand: Comandos de configuração
-        subtract: Remover um valor de configuração de uma lista
-        type: Tipo
-        unset: Remover uma definição de configuração
-        user: Arquivo de configuração de usuário de uso
-        value: Valor
-      convert: Converter o arquivo de origem para o formato de arquivo de destino
+        subtract: Remova um valor de configuração de uma lista
+        unset: Remova uma configuração
+        user: Use o arquivo de configuração do usuário
+      convert: Converter arquivo de origem para formato de arquivo de destino
       database:
-        drop: Descartar o banco de dados
-        search: Pesquisar banco de dados para correspondência determinada sequência
-          de caracteres de texto.
+        drop: Solte o banco de dados
+        search: Pesquisar banco de dados para texto correspondente à string fornecida.
         subcommand: Comandos de banco de dados
-        info: Informações do banco de dados
-        text_count: Banco de dados contém %{count} sequências de caracteres.
+        info: Informação do banco de dados
+        text_count: O banco de dados contém as cadeias %{count} .
         delete_text: Excluir um texto e suas traduções
-        text_not_found: Identificação de texto %{id} não encontrado.
-      debug: Habilitar a depuração de saída
-      display_sentences: Exibir as frases
-      display_values: Valores de exibição de um pacote de recursos
-      display_version: Versão de visualização
-      dry_run: 'Dry run: arquivos não irão ser traduzidos ou escritos'
+        text_not_found: Texto id %{id} não encontrado.
+      debug: Habilitar a saída de depuração
+      display_sentences: Exibir frases
+      display_values: Exibir valores de um pacote de recursos
+      display_version: Exibir versão
+      dry_run: 'Corte a seco: os arquivos não serão traduzidos ou escritos'
       error: ocorreu um erro
-      extract_strings: Extrair as strings de arquivos não-recurso
+      extract_strings: Extraia strings de arquivos que não sejam de recursos
       file_source: 'Arquivo: %{file}'
-      locales_required: Um ou mais locais de destino necessários
-      locales_to_display: Locales para exibir
-      no_wank: Desativar a barra de progresso de tradução
+      locales_required: É necessário um ou mais locais alvo
+      locales_to_display: Locais para exibir
+      no_wank: Desativar barra de progresso da tradução
       provider:
-        available: Disponível
+        available: acessível
         available_no: Não
         available_yes: sim
         description: Descrição
         env: Meio Ambiente
         name: Nome
         option: Opção
-      providers: Provedores de lista de disponível Tradução
+      providers: Lista de provedores de tradução disponíveis
       sentences: 'Frases:'
       source_files: Arquivos para traduzir
-      source_locale: A localidade do arquivo de origem
-      target_locales: Localidades de tradução para o
+      source_locale: O local do arquivo de origem
+      target_locales: Locais para traduzir para
       translate:
         file: Traduzir um arquivo para locais de destino
-        no_providers: Não há provedores de tradução encontradas
-        provider: Implementações de provedor para usar
-        share: Compartilhamento de traduções com provedores
-        string: Definição da palavra uma sequência de caracteres para localidades
-          de destino
-        subcommand: Traduzir arquivos ou cadeias de caracteres
-        translating: Tradução em andamento
-        using_provider: 'Usando o provedor: %{name}'
+        no_providers: Não foram encontrados provedores de tradução
+        provider: Implementações do provedor para usar
+        share: Compartilhe traduções com fornecedores
+        string: Traduzir uma string para locais de destino
+        subcommand: Traduzir arquivos ou strings
+        translating: Traduzindo
+        using_provider: 'Fornecedor de uso: %{name}'
         using_providers: 'Usando provedores: %{list}'
     config:
-      command_line_only: Configuração '%{key}' não pode ser salvo
+      command_line_only: Configuração &#39;%{key}&#39; não pode ser salvo
       context:
         env: Meio Ambiente
         project: Projeto
-        user: Usuário
-      invalid_context: 'Contexto de configuração não reconhecida: ''%{context}'''
-      invalid_key: 'Chave de configuração não reconhecida: ''%{key}'''
-      non_array_key: 'A configuração não é um tipo de matriz: ''%{key}'''
+        user: Do utilizador
+      heading:
+        desc: Descrição
+        name: Nome
+        type: Tipo
+        value: Valor
+      invalid_context: 'Contexto de configuração não reconhecido: &#39;%{context}&#39;'
+      invalid_key: 'Chave de configuração não reconhecida: &#39;%{key}&#39;'
+      non_array_key: 'A configuração não é um tipo de matriz: &#39;%{key}&#39;'
+      one_at_a_time: Apenas um arquivo de configuração por vez
       types:
-        array: Matriz
+        array: Array
         boolean: boleano
         hash: Jogo da velha
         numeric: Numérico
         path: Caminho
-        path_array: Matriz de caminhos
-        string: Sequência de caracteres
+        path_array: Array of Paths
+        string: Corda
     database:
-      config_file: Caminho para o arquivo de configuração de banco de dados
-      could_not_create: Banco de dados não pôde ser criado.
-      created: Banco de dados criado.
+      config_file: Caminho para o arquivo de configuração do banco de dados
+      could_not_create: O banco de dados não pôde ser criado.
+      created: Base de dados criada.
       deleted: Banco de dados excluído.
       env: Ambiente de banco de dados
-      migrated: Banco de dados migrados.
-      no_environment: Ambiente não '%{env}' em %{file}
+      migrated: Base de dados migrou.
+      no_environment: Sem ambiente &#39;%{env}&#39; em %{file}
     file:
       created_by: Criado por %{app} %{version} %{date} %{url}
       csv:
-        comment_column: Um nome de coluna CSV deve ser usado para comentários
+        comment_column: Um nome de coluna CSV a ser usado para comentários
         headers: Trate a primeira linha de arquivos CSV como uma linha de cabeçalhos.
         key_column: Um nome de coluna CSV para ser usado para chaves de propriedade
         translate_columns: Nomes ou índices de colunas CSV para traduzir
-        value_column: Um nome de coluna CSV deve ser usado para valores de propriedade.
-      directory: 'Arquivo é um diretório: %{file}'
+        value_column: Um nome de coluna CSV a ser usado para valores de propriedade
+      directory: 'O arquivo é um diretório: %{file}'
       error: 'Erro: %{message}'
-      invalid: 'Arquivo é inválido: %{file}'
-      loading: Tentar carregar %{file} usando %{name}
+      invalid: 'O arquivo é inválido: %{file}'
+      loading: Tentando carregar %{file} usando %{name}
       not_found: 'Arquivo não encontrado: %{file}'
-      unknown_locale: Não é possível determinar a localidade
+      unknown_locale: Não é possível determinar o local
       unsupported: 'Tipo de arquivo não suportado: %{file}'
     file_translator:
-      dry_run: Imprima ações sem realizar traduções ou gravação de arquivos.
-      in_place: Definição da palavra arquivo fonte no local.
-      translating: Traduzindo %{source} (%{source_locale}) para %{target} (%{target_locale})
+      dry_run: Imprima ações sem realizar traduções ou escrever arquivos.
+      in_place: Traduzir o arquivo de origem no local.
+      translating: Translating %{source} (%{source_locale}) para %{target} (%{target_locale})
       translating_in_place: Traduzindo %{source} (%{source_locale}) no lugar (%{target_locale})
     provider:
       email_address: Endereço de e-mail
-      email_required: Endereço de email.
+      email_required: 'E-mail: (Obrigatório.'
       frengly:
-        api_key: Chave da API Frengly
+        api_key: Frengly API key
       google:
         api_key: Chave da API do Google
-        key_required: Chave da API do Google exigido.
+        key_required: É necessária a chave API do Google.
         model: Modelo de tradução
       invalid_response: Resposta inesperada do provedor
       microsoft:
-        api_key: Chave da API do Microsoft
-        key_required: Chave da API do Microsoft necessário.
+        api_key: Chave da API da Microsoft
+        key_required: É necessária a chave da API da Microsoft.
       mymemory:
-        api_key: Chave da API do MyMemory
-      options: 'Opções de provedor:'
+        api_key: Chave da API MyMemory
+      options: 'Opções do fornecedor:'
       password: Senha
-      password_required: Senha necessária.
-      required_option: "(obrigatório)"
-      share_response: 'Compartilhe a resposta: %{response}'
-      status: 'Estatuto do provedor:'
-      unavailable: Provedor de %{name} não está disponível.
+      password_required: Senha requerida.
+      required_option: "(requeridos)"
+      share_response: 'Compartilhar resposta: %{response}'
+      status: 'Estado do provedor:'
+      unavailable: Provider %{name} não está disponível.
       yandex:
         api_key: Chave da API Yandex
-        key_required: Chave da API Yandex exigido.
+        key_required: É necessária a chave da API Yandex.
     sharer:
-      uploading_tmx: TMX para fazer o upload %{name}
+      uploading_tmx: Fazendo upload do TMX para %{name}
     tmx:
-      multiple_locales: Várias localidades de origem nos textos.
-      multiple_origins: Múltiplas origens nos textos.
+      multiple_locales: Múltiplos locais de origem em textos.
+      multiple_origins: Múltiplas origens em textos.
     translator:
-      database_disabled: Banco de dados é desabilitado.
-      no_database: Não guardar traduções no banco de dados.
+      database_disabled: O banco de dados está desabilitado.
+      no_database: Não guarde as traduções no banco de dados.
       provider_required: Provedor necessário.
-      total_translations: 'Total de traduções: %{total} (%{from_db} de banco de dados,
-        %{from_provider} do provedor, %{untranslated} untranslated)'
-      untranslated: 'Untranslated sequências de caracteres:'
-      string_too_long: Sequência de caracteres é muito longa para traduzir
+      total_translations: 'Total de traduções: %{total} (%{from_db} do banco de dados,
+        %{from_provider} do provedor, %{untranslated} não traduzido)'
+      untranslated: 'Cordas não traduzidas:'
+      string_too_long: String é muito longo para traduzir
     unicode:
       invalid_byte: 'Byte UTF8 inválido: &#39;%{byte}&#39;'

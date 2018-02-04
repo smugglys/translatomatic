@@ -9,17 +9,17 @@
 | [свойства](https://en.wikipedia.org/wiki/.properties) | `.properties` |
 | Файлы ресурсов Windows | `.resw, .resx` |
 | [Списки свойств](https://en.wikipedia.org/wiki/Property_list) (OSX plist) | `.plist` |
-| [PO-файлов](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
-| [XCode строки](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [Файлы PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [Строки XCode](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
 | Субтитры | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
 | XML | `.xml` |
-| [Уценок](https://en.wikipedia.org/wiki/Markdown) | `.md` |
+| [уценка](https://en.wikipedia.org/wiki/Markdown) | `.md` |
 | Текстовые файлы | `.txt` |
-| CSV файлов | `.csv` |
+| Файлы CSV | `.csv` |
 
-Могут использоваться следующие поставщики перевод с Translatomatic:
+Следующие переводческие услуги могут использоваться с Translatomatic:
 
 - [Google](https://cloud.google.com/translate/)
 - [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
@@ -27,11 +27,11 @@
 - [Мои воспоминания](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
 
-Переведенные строки сохраняются в базе данных и повторно.
+Переведенные строки сохраняются в базе данных и используются повторно.
 
 * * *
 
-## Установки
+## Монтаж
 
 Добавьте эту строку в свою заявку. `Gemfile`:
 
@@ -39,30 +39,30 @@
 gem 'translatomatic'
 `
 
-А затем выполнить:
+И затем выполните:
 
     $ bundle
 
-Или установить его самостоятельно, как:
+Или установите его как:
 
     $ gem install translatomatic
 
 * * *
 
-## Использование
+## Применение
 
-Этот камень предоставляет исполняемый файл, называемый `translatomatic`, В `translatomatic` команда имеет ряд функций, не все из которых описаны здесь. Для получения справки о доступных командах и параметрах выполните:
+Этот камень предоставляет исполняемый файл, называемый `translatomatic`, The `translatomatic` команда имеет ряд функций, не все из которых описаны здесь. Для получения справки о доступных командах и параметрах выполните:
 
     $ translatomatic help
 
-И для справки по команде, выполните:
+И для получения справки по команде выполните:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
 * * *
 
-## Установки
+## Настроить
 
 Проверьте наличие доступных поставщиков перевода и `providers` команда:
 
@@ -81,7 +81,7 @@ gem 'translatomatic'
 
 При переводе файлов, `translatomatic` переводит текст на одно предложение или фразу за раз. Если файл переводится, только предложения, которые были изменены с момента последнего перевода, отправляются поставщику переводов, а остальные - из локальной базы данных.
 
-Чтобы перевести файл свойств Java на немецком и французском языках, используя Google поставщика:
+Чтобы перевести файл свойств Java на немецкий и французский языки с помощью поставщика Google:
 
     $ translatomatic translate file --provider Google strings.properties de,fr
 
@@ -114,23 +114,23 @@ Translatomatic может использоваться для преобразо
 
 Настройки конфигурации можно читать и записывать с помощью `config get` а также `config set` команды. Translatomatic использует файл конфигурации пользователя в `$HOME/.translatomatic/config.yml`, и необязательно один файл конфигурации проекта `$PROJECT_DIR/.translatomatic/config.yml`,
 
-В `--user` а также `--project` параметры могут использоваться, чтобы сообщить команде читать или записывать `user` или `project` конфигурации.
+`--user` а также `--project` параметры могут использоваться, чтобы сообщить команде читать или записывать `user` или `project` конфигурации.
 
 Параметры конфигурации считываются из переменных среды, файла конфигурации пользователя, файла конфигурации проекта (если имеется) и из командной строки. Последнее найденное значение имеет приоритет над значениями, прочитанными ранее.
 
 При написании конфигурации с помощью `config set` команда, новое значение записывается в файл конфигурации проекта при выполнении в проекте, содержащем файл трансатомной конфигурации, или файл конфигурации пользователя, если нет файла конфигурации проекта.
 
-### Примеры конфигурации Translatomatic
+### Примеры перевода
 
 Устанавливать `google_api_key` в файле конфигурации пользователя используйте:
 
     $ translatomatic config set google_api_key value --user
 
-Чтобы задать одну или несколько услуг перевода для использования:
+Чтобы установить одну или несколько переводческих служб:
 
     $ translatomatic config set provider Microsoft,Yandex
 
-Чтобы задать список целевой локали по умолчанию:
+Чтобы установить список целевых локалей по умолчанию:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -138,11 +138,11 @@ Translatomatic может использоваться для преобразо
 
     $ translatomatic translate file resources/strings.properties
 
-Для отображения текущей конфигурации, выполните:
+Чтобы отобразить текущую конфигурацию, выполните:
 
     $ translatomatic config list
 
-### Конфигурация базы данных
+### Настройка базы данных
 
 По умолчанию, `translatomatic` использует базу данных sqlite3 в `$HOME/.translatomatic/translatomatic.sqlite3` для хранения переведенных строк. Конфигурация базы данных может быть изменена путем создания `database.yml` файл под `$HOME/.translatomatic/database.yml` для `production` окружающей среды, например
 
@@ -158,9 +158,9 @@ Translatomatic может использоваться для преобразо
 
 * * *
 
-## Войска
+## Contributing
 
-Сообщения об ошибках и запросы на тягу приветствуются на GitHub по адресу https://github.com/smugglys/translatomatic. Этот проект призван стать безопасным, уютным местом для сотрудничества, и участники, как ожидается, будут придерживаться [Участника Пакта](http://contributor-covenant.org) нормы поведения.
+Сообщения об ошибках и запросы на тягу приветствуются на GitHub по адресу https://github.com/smugglys/translatomatic. Этот проект призван стать безопасным, уютным местом для сотрудничества, и участники, как ожидается, будут придерживаться [Автор](http://contributor-covenant.org) нормы поведения.
 
 * * *
 
@@ -170,8 +170,8 @@ Translatomatic может использоваться для преобразо
 
 * * *
 
-## Кодекса поведения
+## Нормы поведения
 
-Ожидается, что все, кто взаимодействует с кодовыми базами проекта Translatomatic, будут выпускать трекеры, чаты и списки рассылки [Кодекс поведения](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md),
+Ожидается, что все, кто взаимодействует с кодовыми базами проекта Translatomatic, будут выпускать трекеры, чаты и списки рассылки [нормы поведения](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md),
 
-_Созданная Translatomatic 0.1.3 Thu, 01 Feb 2018 21:35:41 +1030 https://github.com/smugglys/translatomatic_
+_Созданная Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:42 +1030 https://github.com/smugglys/translatomatic_

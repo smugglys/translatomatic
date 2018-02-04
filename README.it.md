@@ -4,13 +4,13 @@
 
 Traduce i file di testo da una lingua all&#39;altra o da un formato all&#39;altro. I seguenti formati di file sono attualmente supportati:
 
-| Formato di file | estensioni |
+| Formato del file | estensioni |
 | --- | --- |
 | [Proprietà](https://en.wikipedia.org/wiki/.properties) | `.properties` |
 | File di risorse di Windows | `.resw, .resx` |
-| [Elenchi delle proprietà](https://en.wikipedia.org/wiki/Property_list) (Pliste di OSX) | `.plist` |
+| [Elenchi di proprietà](https://en.wikipedia.org/wiki/Property_list) (Pliste di OSX) | `.plist` |
 | [File PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
-| [Stringhe di XCode](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [Stringhe XCode](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
 | Sottotitoli | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
@@ -19,7 +19,7 @@ Traduce i file di testo da una lingua all&#39;altra o da un formato all&#39;altr
 | File di testo | `.txt` |
 | File CSV | `.csv` |
 
-I seguenti provider di traduzione può essere utilizzato con Translatomatic:
+I seguenti provider di traduzione possono essere utilizzati con Translatomatic:
 
 - [Google](https://cloud.google.com/translate/)
 - [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
@@ -31,7 +31,7 @@ Le stringhe tradotte vengono salvate in un database e riutilizzate.
 
 * * *
 
-# # Installazione
+## Installazione
 
 Aggiungi questa linea alle tue applicazioni `Gemfile`:
 
@@ -43,26 +43,26 @@ E poi eseguire:
 
     $ bundle
 
-O installarlo da soli come:
+Oppure installalo da solo come:
 
     $ gem install translatomatic
 
 * * *
 
-# # L'utilizzo
+## Utilizzo
 
 Questa gemma fornisce un eseguibile chiamato `translatomatic`. Il `translatomatic` il comando ha un numero di funzioni, non tutte documentate qui. Per assistenza su comandi e opzioni disponibili, eseguire:
 
     $ translatomatic help
 
-E per un aiuto su un comando, eseguire:
+E per aiuto su un comando, esegui:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
 * * *
 
-# # Installazione
+## Impostare
 
 Controlla i fornitori di servizi di traduzione disponibili e le opzioni con `providers` comando:
 
@@ -77,24 +77,24 @@ Le opzioni possono essere impostate a livello di utente o di progetto. Vedi anch
 
 * * *
 
-# # Traduzione di file
+## Tradurre i file
 
 Quando si traducono i file, `translatomatic` traduce il testo una frase o frase alla volta. Se un file viene tradotto nuovamente, solo le frasi che sono state modificate dall&#39;ultima traduzione vengono inviate al fornitore di traduzioni e il resto viene estratto dal database locale.
 
-Per tradurre un file di proprietà Java in tedesco e francese utilizzando il provider di Google:
+Per tradurre un file di proprietà Java in tedesco e francese utilizzando il fornitore di Google:
 
     $ translatomatic translate file --provider Google strings.properties de,fr
 
 Questo creerebbe (o sovrascriverà) `strings_de.properties` e `strings_fr.properties` con proprietà tradotte.
 
-### Visualizzazione stringhe da un raggruppamento di risorse
+### Visualizzazione di stringhe da un pacchetto di risorse
 
 Per leggere e visualizzare il `store.description` e `store.name` proprietà da file di risorse locali in inglese, tedesco e francese:
 
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
-### Estrarre stringhe dai file di origine
+### Estrazione di stringhe dai file di origine
 
 Per estrarre le stringhe dai file di origine, utilizzare il `strings` comando, ad es
 
@@ -102,7 +102,7 @@ Per estrarre le stringhe dai file di origine, utilizzare il `strings` comando, a
 
 * * *
 
-# # Conversione di file
+## Conversione di file
 
 Translatomatic può essere utilizzato per convertire file da un formato all&#39;altro. Ad esempio, per convertire un file di proprietà Java in un file di stringhe XCode:
 
@@ -110,7 +110,7 @@ Translatomatic può essere utilizzato per convertire file da un formato all&#39;
 
 * * *
 
-# # Configurazione
+## Configurazione
 
 Le impostazioni di configurazione possono essere lette e scritte usando il `config get` e `config set` comandi. Translatomatic utilizza un file di configurazione utente su `$HOME/.translatomatic/config.yml`e facoltativamente un file di configurazione per progetto `$PROJECT_DIR/.translatomatic/config.yml`.
 
@@ -120,7 +120,7 @@ Le impostazioni di configurazione vengono lette dalle variabili di ambiente, dal
 
 Quando si scrive sulla configurazione con `config set` comando, il nuovo valore viene scritto nel file di configurazione del progetto quando viene eseguito all&#39;interno di un progetto contenente un file di configurazione translatomatico o il file di configurazione utente se non esiste un file di configurazione del progetto.
 
-### Esempi di configurazione di Translatomatic
+### Esempi di configurazione traslatomica
 
 Impostare `google_api_key` all&#39;interno del file di configurazione utente, utilizzare:
 
@@ -130,7 +130,7 @@ Per impostare uno o più servizi di traduzione da utilizzare:
 
     $ translatomatic config set provider Microsoft,Yandex
 
-Per impostare un elenco predefinito delle impostazioni locali di destinazione:
+Per impostare un elenco predefinito di impostazioni locali di destinazione:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -158,20 +158,20 @@ Di default, `translatomatic` utilizza un database sqlite3 in `$HOME/.translatoma
 
 * * *
 
-# # Contribuendo
+## Contribuire
 
-Segnalazioni di bug e richieste di pull sono benvenute su GitHub all&#39;indirizzo https://github.com/smugglys/translatomatic. Questo progetto vuole essere uno spazio sicuro e accogliente per la collaborazione e ci si aspetta che i contributori aderiscano al [Collaboratore alleanza](http://contributor-covenant.org) codice di condotta.
+Segnalazioni di bug e richieste di pull sono benvenute su GitHub all&#39;indirizzo https://github.com/smugglys/translatomatic. Questo progetto vuole essere uno spazio sicuro e accogliente per la collaborazione e ci si aspetta che i contributori aderiscano al [Patto del collaboratore](http://contributor-covenant.org) codice di condotta.
 
 * * *
 
-# # Licenza
+## Licenza
 
 La gemma è disponibile come open source secondo i termini di [Licenza MIT](https://opensource.org/licenses/MIT).
 
 * * *
 
-# # Codice di condotta
+## Codice di condotta
 
 Si prevede che tutti coloro che interagiscono con le basi di codice del progetto Translatomatic, gli inseguitori di problemi, le chat room e le mailing list seguano il [codice di condotta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Creato da Translatomatic 0.1.3 Thu, 01 Feb 2018 21:35:40 +1030 https://github.com/smugglys/translatomatic_
+_Creato da Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:41 +1030 https://github.com/smugglys/translatomatic_

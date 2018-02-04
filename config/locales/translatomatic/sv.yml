@@ -1,47 +1,43 @@
-# translation missing: sv.translatomatic.file.created_by
+# Skapad av Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
 
 sv:
   translatomatic:
     cli:
-      aborted: Avbröts
+      aborted: Avbruten
       config:
-        add: Lägga till en konfigurationsvärde i en lista
+        add: Lägg till ett konfigurationsvärde för en lista
         configuration: Konfiguration
-        desc: Beskrivning
-        describe: Beskriv tillgängliga konfigurationsinställningarna
-        list: Förteckning aktuella konfigurationsinställningar
-        location_configuration: Konfiguration för filen '%{location}'
-        name: namn
-        no_config: Ingen konfiguration som hittade
-        one_at_a_time: Endast en config fil i taget
-        project: Använd projekt konfigurationsfil
+        describe: Beskriv tillgängliga konfigurationsinställningar
+        for_file: Ändra en konfigurationsinställning per fil
+        list: Lista nuvarande konfigurationsinställningar
+        location_configuration: Konfiguration för fil &#39;%{location}&#39;
+        no_config: Ingen konfiguration hittades
+        project: Använd projektkonfigurationsfilen
         set: Ändra en konfigurationsinställning
         subcommand: Konfigurationskommandon
         subtract: Ta bort ett konfigurationsvärde från en lista
-        type: Typ
         unset: Ta bort en konfigurationsinställning
-        user: Använda konfigurationsfilen för användaren
-        value: Värde
-      convert: Konvertera källfilen till mål-format
+        user: Använd användarkonfigurationsfilen
+      convert: Konvertera källfilen till målfilformatet
       database:
-        drop: Drop databasen
-        search: Sökdatabas för text på en given sträng.
-        subcommand: Databas-kommandon
+        drop: Släpp databasen
+        search: Sök databas för text som matchar den angivna strängen.
+        subcommand: Databaskommandon
         info: Databasinformation
         text_count: Databasen innehåller %{count} strängar.
         delete_text: Ta bort en text och dess översättningar
-        text_not_found: Text-id %{id} hittades inte.
-      debug: Aktivera felsökning utdata
+        text_not_found: Text id %{id} hittades inte.
+      debug: Aktivera felsökningsutgång
       display_sentences: Visa meningar
-      display_values: Visa värden från en resurssamling
-      display_version: Display-version
-      dry_run: 'Torr kör: filer kommer inte att översättas eller skrivit'
-      error: Ett fel har inträffat
+      display_values: Visa värden från en resursbunt
+      display_version: Visningsversion
+      dry_run: 'Torrkörning: Filerna kommer inte att översättas eller skrivas'
+      error: Ett fel har uppstått
       extract_strings: Extrahera strängar från icke-resursfiler
       file_source: 'Fil: %{file}'
-      locales_required: Ett eller flera mål locales krävs
-      locales_to_display: Locales att Visa
-      no_wank: Inaktivera översättning förloppsindikatorn
+      locales_required: Ett eller flera målsättningar krävs
+      locales_to_display: Lokaler att visa
+      no_wank: Inaktivera översättningsfältet
       provider:
         available: Tillgängliga
         available_no: Nej
@@ -49,67 +45,73 @@ sv:
         description: Beskrivning
         env: Miljö
         name: namn
-        option: Alternativet
-      providers: Listan tillgängliga översättning leverantörer
-      sentences: 'Meningar:'
-      source_files: Filer att översätta
-      source_locale: Lokalen på källfilen
-      target_locales: Språk att översätta till
+        option: Alternativ
+      providers: Lista tillgängliga översättningsleverantörer
+      sentences: 'Mening:'
+      source_files: Filer som ska översättas
+      source_locale: Källfilens ort
+      target_locales: Lokaler att översätta till
       translate:
-        file: Översätta en fil till målet locales
-        no_providers: Ingen översättning leverantörer hittade
-        provider: Leverantör-implementeringar använda
+        file: Översätt en fil för att rikta in lokala
+        no_providers: Inga översättningstillhandahållare hittades
+        provider: Ger implementeringar att använda
         share: Dela översättningar med leverantörer
-        string: Översätta en sträng till målet locales
-        subcommand: Översätta filer eller strängar
-        translating: Att översätta
-        using_provider: 'Med providern: %{name}'
-        using_providers: 'Hjälp av providers: %{list}'
+        string: Översätt en sträng för att rikta platsen
+        subcommand: Översätt filer eller strängar
+        translating: Översätter
+        using_provider: 'Använda leverantör: %{name}'
+        using_providers: 'Använda leverantörer: %{list}'
     config:
-      command_line_only: Konfiguration '%{key}' kan inte sparas
+      command_line_only: Konfigurationen &#39;%{key}&#39; kan inte sparas
       context:
         env: Miljö
-        project: Projektet
-        user: Användaren
-      invalid_context: 'Oredovisade konfiguration sammanhang: ''%{context}'''
-      invalid_key: 'Konfigurationsnyckel för oredovisade: ''%{key}'''
-      non_array_key: 'Konfigurationen är inte en matristyp: ''%{key}'''
+        project: Projekt
+        user: Användare
+      heading:
+        desc: Beskrivning
+        name: namn
+        type: Typ
+        value: Värde
+      invalid_context: 'Oigenkänt konfigurationskontext: &#39;%{context}&#39;'
+      invalid_key: 'Oigenkänd konfigurationsnyckel: &#39;%{key}&#39;'
+      non_array_key: 'Konfigurationen är inte en array typ: &#39;%{key}&#39;'
+      one_at_a_time: Endast en konfigurationsfil i taget
       types:
         array: Array
         boolean: Boolean
         hash: Hash
-        numeric: Numeriska
-        path: Sökväg
-        path_array: Utbud av banor
+        numeric: Numerisk
+        path: Väg
+        path_array: Array of Paths
         string: Sträng
     database:
-      config_file: Sökvägen till databasen konfigurationsfilen
+      config_file: Vägen till databasens konfigurationsfil
       could_not_create: Databasen kunde inte skapas.
-      created: Databas som har skapats.
-      deleted: Databas raderas.
+      created: Databas skapad.
+      deleted: Databasen raderad.
       env: Databasmiljö
-      migrated: Databasen migrerad.
-      no_environment: Ingen miljö '%{env}' i %{file}
+      migrated: Databas migrerad.
+      no_environment: Ingen miljö &quot;%{env}&quot; i %{file}
     file:
-      created_by: Skapad av %{app} %{version} %{date} %{url}
+      created_by: Skapat av %{app} %{version} %{date} %{url}
       csv:
-        comment_column: En CSV-kolumnnamn som ska användas för kommentarer
-        headers: Behandla den första raden i CSV-filer som en rad med headers.
-        key_column: En CSV-kolumnnamn till för att användas för boendet nycklar
+        comment_column: Ett CSV kolumnnamn som ska användas för kommentarer
+        headers: Behandla den första raden av CSV-filer som en rad med rubriker.
+        key_column: Ett CSV-kolumnnamn som ska användas för egenskapsnycklar
         translate_columns: Namn eller index för CSV-kolumner att översätta
-        value_column: En CSV-kolumnnamn som ska användas för egenskapsvärden
+        value_column: Ett CSV kolumnnamn som ska användas för egenskapsvärden
       directory: 'Filen är en katalog: %{file}'
       error: 'Fel: %{message}'
       invalid: 'Filen är ogiltig: %{file}'
-      loading: Försöker läsa in %{file} med hjälp %{name}
+      loading: Försöker ladda %{file} med %{name}
       not_found: 'Filen hittades inte: %{file}'
-      unknown_locale: Det går inte att avgöra locale
-      unsupported: 'Stöds inte filtypen: %{file}'
+      unknown_locale: Det gick inte att bestämma språk
+      unsupported: 'Ostödd filtyp: %{file}'
     file_translator:
-      dry_run: Skriva ut åtgärder utan utför översättningar eller skriva filer.
-      in_place: Översätt källa fil på plats.
-      translating: Översätta %{source} (%{source_locale}) till %{target} (%{target_locale})
-      translating_in_place: Översätta %{source} (%{source_locale}) på plats (%{target_locale})
+      dry_run: Skriv ut åtgärder utan att översätta eller skriva filer.
+      in_place: Översätt källfilen på plats.
+      translating: Översätter %{source} (%{source_locale}) till %{target} (%{target_locale})
+      translating_in_place: Översätter %{source} (%{source_locale}) på plats (%{target_locale})
     provider:
       email_address: E-postadress
       email_required: E-postadress krävs.
@@ -117,36 +119,36 @@ sv:
         api_key: Frengly API-nyckel
       google:
         api_key: Google API-nyckel
-        key_required: Google API-nyckel krävs.
-        model: Översättning modell
-      invalid_response: Oväntat svar från leverantör
+        key_required: Googles API-nyckel krävs.
+        model: Översättningsmodell
+      invalid_response: Oväntat svar från leverantören
       microsoft:
-        api_key: Microsoft API nyckel
-        key_required: Microsoft API nyckeln som krävs.
+        api_key: Microsoft API-nyckel
+        key_required: Microsoft API-nyckel krävs.
       mymemory:
-        api_key: MyMemory API-nyckel
-      options: 'Leverantör alternativ:'
+        api_key: MyMemory API-nyckeln
+      options: 'Leverantörsalternativ:'
       password: Lösenord
       password_required: Lösenord krävs.
-      required_option: "(krävs)"
+      required_option: "(nödvändig)"
       share_response: 'Dela svar: %{response}'
-      status: 'Leverantören status:'
-      unavailable: Leverantören %{name} är inte tillgänglig.
+      status: 'Leverantörsstatus:'
+      unavailable: Leverantör %{name} är inte tillgänglig.
       yandex:
         api_key: Yandex API-nyckel
         key_required: Yandex API-nyckel krävs.
     sharer:
-      uploading_tmx: Ladda upp TMX till %{name}
+      uploading_tmx: Överför TMX till %{name}
     tmx:
-      multiple_locales: Flera källa lokalanpassningar i texter.
+      multiple_locales: Flera källkällor i texter.
       multiple_origins: Flera ursprung i texter.
     translator:
       database_disabled: Databasen är inaktiverad.
       no_database: Spara inte översättningar till databasen.
       provider_required: Leverantör krävs.
-      total_translations: 'Summa översättningar: %{total} (%{from_db} från databas,
-        %{from_provider} från leverantör, %{untranslated} oöversatta)'
-      untranslated: 'Oöversatta strängar:'
-      string_too_long: Strängen är för lång att översätta
+      total_translations: 'Totalt antal översättningar: %{total} (%{from_db} från
+        databasen, %{from_provider} från leverantören, %{untranslated} översatt)'
+      untranslated: 'Otranslaterade strängar:'
+      string_too_long: String är för lång att översätta
     unicode:
-      invalid_byte: 'Ogiltigt UTF8 byte: ''%{byte}'''
+      invalid_byte: 'Ogiltig UTF8 byte: &#39;%{byte}&#39;'

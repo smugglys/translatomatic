@@ -1,82 +1,84 @@
-# translation missing: ja.translatomatic.file.created_by
+# によって作成された Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
 
 ja:
   translatomatic:
     cli:
       aborted: 中断された
       config:
-        add: 構成値をリストに追加します。
+        add: リストに構成値を追加する
         configuration: 構成
-        desc: 説明
-        describe: 使用可能な構成設定について説明します。
-        list: リストの現在の構成設定
-        location_configuration: 構成ファイルの '%{location}'
-        name: 名
-        no_config: ない構成が見つかりません
-        one_at_a_time: 一度に 1 つだけ設定ファイル
-        project: プロジェクト構成ファイルの使用
-        set: 構成設定を変更します。
-        subcommand: 構成コマンド
-        subtract: リストから設定値を削除します。
-        type: タイプ
-        unset: 構成設定を削除します。
-        user: ユーザー構成ファイルの使用
-        value: 値
-      convert: ソース ファイルをターゲット ファイル形式に変換します。
+        describe: 利用可能な構成設定を記述する
+        for_file: ファイルごとの構成設定を変更する
+        list: 現在の構成設定を一覧表示する
+        location_configuration: ファイル &#39;%{location}&#39;の設定
+        no_config: 設定が見つかりません
+        project: プロジェクト構成ファイルを使用する
+        set: 構成設定を変更する
+        subcommand: 設定コマンド
+        subtract: リストから構成値を削除する
+        unset: 構成設定を削除する
+        user: ユーザー設定ファイルを使用する
+      convert: ソースファイルをターゲットファイル形式に変換する
       database:
-        drop: データベースをドロップします。
-        search: 指定した文字列と一致する文字列の検索データベースです。
-        subcommand: データベース コマンド
+        drop: データベースを削除する
+        search: 指定された文字列に一致するテキストをデータベースで検索します。
+        subcommand: データベースコマンド
         info: データベース情報
-        text_count: データベースが含まれています %{count} の文字列。
-        delete_text: テキストとその翻訳を削除します。
-        text_not_found: テキスト id の %{id} が見つかりませんでした。
-      debug: デバッグ出力を有効にします。
-      display_sentences: 文章を表示します。
-      display_values: リソース バンドルから値を表示します。
-      display_version: バージョンの表示
-      dry_run: '乾燥を実行: ファイルはない翻訳されるか書かれて'
+        text_count: データベースに %{count} 文字列が含まれています。
+        delete_text: テキストとその翻訳を削除する
+        text_not_found: テキストID %{id} が見つかりません。
+      debug: デバッグ出力を有効にする
+      display_sentences: 文章を表示する
+      display_values: リソースバンドルからの値の表示
+      display_version: バージョン表示
+      dry_run: ドライラン：ファイルは翻訳されたり書かれたりしません
       error: エラーが発生しました
-      extract_strings: 非リソース ファイルから文字列を抽出します。
-      file_source: 'ファイル: %{file}'
-      locales_required: 必要な 1 つまたは複数のターゲット ロケール
+      extract_strings: 非リソースファイルから文字列を抽出する
+      file_source: ファイル： %{file}
+      locales_required: 1つ以上のターゲットロケールが必要です
       locales_to_display: 表示するロケール
-      no_wank: 翻訳進行状況バーを無効にします。
+      no_wank: 翻訳プログレスバーを無効にする
       provider:
-        available: 利用可能です
-        available_no: 違います
-        available_yes: うん
+        available: 利用可能
+        available_no: いいえ
+        available_yes: はい
         description: 説明
         env: 環境
         name: 名
         option: オプション
-      providers: リストの利用可能な翻訳会社
-      sentences: '文:'
+      providers: 利用可能な翻訳プロバイダのリスト
+      sentences: センテンス：
       source_files: 翻訳するファイル
-      source_locale: ソース ファイルのロケール
-      target_locales: 変換するロケール
+      source_locale: ソースファイルのロケール
+      target_locales: 翻訳するロケール
       translate:
-        file: ターゲットのロケールにファイルを翻訳します。
-        no_providers: 発見した翻訳プロバイダーがありません。
-        provider: プロバイダーの実装を使用するには
-        share: プロバイダーと共有翻訳
-        string: ターゲット ロケールを文字列に変換します。
-        subcommand: ファイルまたは文字列を翻訳します。
-        translating: 翻訳しています
-        using_provider: プロバイダーを使用してください。 %{name}
-        using_providers: プロバイダーを使用するには。 %{list}
+        file: ファイルをターゲットロケールに変換する
+        no_providers: 翻訳プロバイダが見つかりません
+        provider: 使用するプロバイダの実装
+        share: プロバイダとの翻訳を共有する
+        string: 文字列をターゲットロケールに変換する
+        subcommand: ファイルまたは文字列を翻訳する
+        translating: 翻訳
+        using_provider: プロバイダを使用： %{name}
+        using_providers: プロバイダの使用： %{list}
     config:
-      command_line_only: 構成 '%{key}' を保存できません
+      command_line_only: 設定 &#39;%{key}&#39;を保存できません
       context:
         env: 環境
         project: プロジェクト
         user: ユーザー
-      invalid_context: '認識できない構成コンテキスト: ''%{context}'''
-      invalid_key: '認識できないコンフィギュレーション キー: ''%{key}'''
-      non_array_key: '構成が配列型ではありません: ''%{key}'''
+      heading:
+        desc: 説明
+        name: 名
+        type: タイプ
+        value: 値
+      invalid_context: 認識できない設定コンテキスト： &#39;%{context}&#39;
+      invalid_key: 認識できない設定キー： &#39;%{key}&#39;
+      non_array_key: 設定は配列型ではありません： &#39;%{key}&#39;
+      one_at_a_time: 一度に1つの設定ファイルのみ
       types:
-        array: 配列
-        boolean: ブール値
+        array: アレイ
+        boolean: ブール
         hash: ハッシュ
         numeric: 数値
         path: パス
@@ -85,68 +87,69 @@ ja:
     database:
       config_file: データベース構成ファイルへのパス
       could_not_create: データベースを作成できませんでした。
-      created: データベースを作成します。
-      deleted: データベースは削除されます。
+      created: データベースが作成されました。
+      deleted: データベースが削除されました。
       env: データベース環境
-      migrated: データベースの移行。
-      no_environment: ない環境 '%{env}' で %{file}
+      migrated: 移行されたデータベース。
+      no_environment: "%{file}環境 &#39; %{env}&#39;がありません"
     file:
-      created_by: によって作成された %{app} %{version} %{date} %{url}
+      created_by: " %{app} %{version} %{date} %{url}によって作成されました"
       csv:
-        comment_column: コメントに使用する CSV の列名
-        headers: CSV ファイルの最初の行をヘッダー行として扱います。
-        key_column: CSV の列名にプロパティのキーを使用するを
-        translate_columns: 名または変換する CSV の列のインデックス
-        value_column: プロパティの値に使用する CSV の列名
-      directory: ファイルはディレクトリです。 %{file}
-      error: 'エラー: %{message}'
-      invalid: ファイルは有効です。 %{file}
-      loading: 読み込もうとしている %{file} を使用して %{name}
-      not_found: ファイルが見つかりません。 %{file}
-      unknown_locale: ロケールを決定できません。
-      unsupported: 'サポートされていないファイルの種類: %{file}'
+        comment_column: コメントに使用されるCSV列名
+        headers: CSVファイルの最初の行をヘッダーの行として扱います。
+        key_column: プロパティキーに使用されるCSV列名
+        translate_columns: 変換するCSV列の名前またはインデックス
+        value_column: プロパティ値に使用されるCSV列名
+      directory: ファイルはディレクトリです： %{file}
+      error: エラー： %{message}
+      invalid: ファイルが無効です： %{file}
+      loading: "%{name}を使用して%{name} %{file}をロードしようとしています"
+      not_found: ファイルが見つかりません： %{file}
+      unknown_locale: ロケールを特定できません
+      unsupported: サポートされていないファイルタイプ： %{file}
     file_translator:
-      dry_run: 翻訳の実行やファイルの書き込みせずにアクションを印刷します。
-      in_place: 場所のソース ファイルに変換します。
-      translating: 翻訳 %{source} (%{source_locale}) に %{target} (%{target_locale})
-      translating_in_place: 翻訳 %{source} (%{source_locale}) の場所で (%{target_locale})
+      dry_run: 翻訳やファイルの書き込みを行わずにアクションを出力します。
+      in_place: ソースファイルをインプレースで翻訳します。
+      translating: "%{source} （ %{source_locale} ）を%{target} （ %{target_locale} ）に%{target_locale}"
+      translating_in_place: "%{source} （ %{source_locale} ）をその場所に%{target_locale}
+        （ %{target_locale} ）"
     provider:
-      email_address: メール アドレス
-      email_required: メール アドレスが必要です。
+      email_address: 電子メールアドレス
+      email_required: 電子メールアドレスが必要です。
       frengly:
-        api_key: Frengly API キー
+        api_key: Frengly APIキー
       google:
-        api_key: Google の API キー
-        key_required: Google の API キーが必要です。
+        api_key: Google APIキー
+        key_required: Google APIキーが必要です。
         model: 翻訳モデル
-      invalid_response: プロバイダーから予期しない応答
+      invalid_response: プロバイダからの予期しない応答
       microsoft:
-        api_key: マイクロソフトの API キー
-        key_required: マイクロソフトの API キーが必要です。
+        api_key: Microsoft APIキー
+        key_required: Microsoft APIキーが必要です。
       mymemory:
-        api_key: MyMemory API キー
-      options: 'プロバイダー オプション:'
+        api_key: MyMemory APIキー
+      options: プロバイダオプション：
       password: パスワード
-      password_required: パスワードが必要です。
-      required_option: "(必須)"
-      share_response: 応答を共有します。 %{response}
-      status: 'プロバイダーの状態:'
-      unavailable: プロバイダー %{name} は利用できません。
+      password_required: パスワードが必要。
+      required_option: "（必須）"
+      share_response: 共有レスポンス： %{response}
+      status: プロバイダのステータス：
+      unavailable: プロバイダ %{name} は利用できません。
       yandex:
-        api_key: Yandex API キー
-        key_required: Yandex の API キーが必要です。
+        api_key: Yandex APIキー
+        key_required: Yandex APIキーが必要です。
     sharer:
-      uploading_tmx: TMX をアップロード %{name}
+      uploading_tmx: " %{name}へのTMXのアップロード"
     tmx:
-      multiple_locales: テキストに複数のソースのロケール。
+      multiple_locales: テキスト内の複数のソースロケール
       multiple_origins: テキストの複数の起源。
     translator:
       database_disabled: データベースは無効です。
-      no_database: 翻訳をデータベースに保存しません。
-      provider_required: 必要なプロバイダー。
-      total_translations: '翻訳を合計: %{total} (%{from_db} データベースから %{from_provider} プロバイダーから
-        %{untranslated} 無変換)'
-      untranslated: '未翻訳の文字列:'
-      string_too_long: 文字列が長すぎて変換
+      no_database: 翻訳をデータベースに保存しないでください。
+      provider_required: プロバイダが必要です。
+      total_translations: "：総翻訳 %{total} （%{from_db} データベースから、 %{from_provider} プロバイダから、
+        %{untranslated} 未翻訳）"
+      untranslated: 翻訳されていない文字列：
+      string_too_long: 文字列が長すぎて翻訳できません
     unicode:
-      invalid_byte: '無効な UTF8 バイト: ''%{byte}'''
+      invalid_byte: 無効なUTF8バイト： &#39;%{byte}&#39;

@@ -4,11 +4,11 @@
 
 Översätter textfiler från ett språk till ett annat, eller från ett format till ett annat. Följande filformat stöds för närvarande:
 
-| Filformat | Tillägg |
+| Filformat | Extensions |
 | --- | --- |
-| [Boenden](https://en.wikipedia.org/wiki/.properties) | `.properties` |
+| [Egenskaper](https://en.wikipedia.org/wiki/.properties) | `.properties` |
 | Windows resursfiler | `.resw, .resx` |
-| [Egenskapslistor](https://en.wikipedia.org/wiki/Property_list) (OSX-plist) | `.plist` |
+| [Fastighetslistor](https://en.wikipedia.org/wiki/Property_list) (OSX-plist) | `.plist` |
 | [PO-filer](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
 | [XCode strängar](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
@@ -19,7 +19,7 @@
 | Textfiler | `.txt` |
 | CSV-filer | `.csv` |
 
-Följande översättning leverantörer kan användas med Translatomatic:
+Följande översättningsleverantörer kan användas med Translatomatic:
 
 - [Google](https://cloud.google.com/translate/)
 - [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
@@ -27,7 +27,7 @@ Följande översättning leverantörer kan användas med Translatomatic:
 - [Mitt minne](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
 
-Översatta strängar sparas i en databas och återanvändas.
+Översatta strängar sparas i en databas och återanvänds.
 
 * * *
 
@@ -39,7 +39,7 @@ Lägg till den här raden i din ansökans `Gemfile`:
 gem 'translatomatic'
 `
 
-Och sedan kör:
+Och kör sedan:
 
     $ bundle
 
@@ -55,7 +55,7 @@ Denna pärla ger en körbar kallad `translatomatic`. De `translatomatic` Kommand
 
     $ translatomatic help
 
-Och hjälp om ett kommando, kör:
+Och för hjälp på ett kommando, kör:
 
     $ translatomatic translate help
     $ translatomatic translate help file
@@ -81,20 +81,20 @@ Alternativ kan ställas in på användarnivå eller projektnivå. Se även avsni
 
 När man översätter filer, `translatomatic` översätter text en mening eller fras i taget. Om en fil översätts, skickas endast meningar som har ändrats sedan den senaste översättningen till översättningsleverantören, och resten kommer från den lokala databasen.
 
-Att översätta en Java properties fil till tyska och franska med hjälp av Google-providern:
+Att översätta en Java-egenskapsfil till tyska och franska med hjälp av Googles leverantör:
 
     $ translatomatic translate file --provider Google strings.properties de,fr
 
 Detta skulle skapa (eller skriva över) `strings_de.properties` och `strings_fr.properties` med översatta egenskaper.
 
-### Visar strängar från en resurssamling
+### Visar strängar från en resursbunt
 
 Att läsa och visa `store.description` och `store.name` egenskaper från lokala resursfiler på engelska, tyska och franska:
 
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
-### Utvinna strängar från källfiler
+### Extraherar strängar från källfiler
 
 För att extrahera strängar från källfiler, använd `strings` kommando, t.ex.
 
@@ -120,17 +120,17 @@ Konfigurationsinställningarna läses från miljövariabler, användarkonfigurat
 
 När du skriver till konfigurationen med `config set` kommando, skrivs det nya värdet till projektkonfigurationsfilen när den körs i ett projekt som innehåller en translatomatisk konfigurationsfil eller användarkonfigurationsfilen om det inte finns någon projektkonfigurationsfil.
 
-### Translatomatic Konfigurationsexempel
+### Translatomatiska konfigurationsexempel
 
 Att sätta `google_api_key` Använd användarkonfigurationsfilen:
 
     $ translatomatic config set google_api_key value --user
 
-Ställa in en eller flera översättningstjänster att använda:
+Så här ställer du in en eller flera översättningstjänster:
 
     $ translatomatic config set provider Microsoft,Yandex
 
-Ange en standardlista över målet locales:
+Så här ställer du in en standardlista med målsökningar:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -138,11 +138,11 @@ Med `target_locales` set kan filer översättas utan att ange mållänkar i `tra
 
     $ translatomatic translate file resources/strings.properties
 
-Om du vill visa den aktuella konfigurationen, kör:
+För att visa den aktuella konfigurationen, kör:
 
     $ translatomatic config list
 
-### Konfiguration av databas
+### Databaskonfiguration
 
 Som standard `translatomatic` använder en sqlite3 databas i `$HOME/.translatomatic/translatomatic.sqlite3` att lagra översatta strängar. Databaskonfigurationen kan ändras genom att skapa en `database.yml` fil under `$HOME/.translatomatic/database.yml` för `production` miljö, t.ex.
 
@@ -158,9 +158,9 @@ Som standard `translatomatic` använder en sqlite3 databas i `$HOME/.translatoma
 
 * * *
 
-## Bidrar
+## Bidragande
 
-Felrapporter och dragförfrågningar är välkomna på GitHub på https://github.com/smugglys/translatomatic. Projektet är avsett att vara ett säkert, välkomnande utrymme för samarbete, och bidragsgivare förväntas följa [Bidragsgivaren förbund](http://contributor-covenant.org) uppförandekod.
+Felrapporter och dragförfrågningar är välkomna på GitHub på https://github.com/smugglys/translatomatic. Projektet är avsett att vara ett säkert, välkomnande utrymme för samarbete, och bidragsgivare förväntas följa [Bidragande förbund](http://contributor-covenant.org) uppförandekod.
 
 * * *
 
@@ -174,4 +174,4 @@ Pärlan är tillgänglig som öppen källkod enligt villkoren i [MIT-licens](htt
 
 Alla som interagerar med Translatomatic-projektets kodbaser, frågespårare, chattrum och e-postlistor förväntas följa [uppförandekod](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Skapad av Translatomatic 0.1.3 Thu, 01 Feb 2018 21:35:42 +1030 https://github.com/smugglys/translatomatic_
+_Skapad av Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:42 +1030 https://github.com/smugglys/translatomatic_

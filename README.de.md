@@ -4,22 +4,22 @@
 
 Übersetzt Textdateien von einer Sprache in eine andere oder von einem Format in ein anderes. Die folgenden Dateiformate werden derzeit unterstützt:
 
-| Dateiformat: | Erweiterungen |
+| Datei Format | Erweiterungen |
 | --- | --- |
-| [Unterkünfte](https://en.wikipedia.org/wiki/.properties) | `.properties` |
-| Windows-Resource-Dateien | `.resw, .resx` |
-| [Property Listen](https://en.wikipedia.org/wiki/Property_list) ("OSX Plist") | `.plist` |
-| [Dateien für PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
-| [XCode-Zeichenketten](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [Eigenschaften](https://en.wikipedia.org/wiki/.properties) | `.properties` |
+| Windows-Ressourcendateien | `.resw, .resx` |
+| [Eigenschaftslisten](https://en.wikipedia.org/wiki/Property_list) (OSX plist) | `.plist` |
+| [PO-Dateien](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [XCode-Zeichenfolgen](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
 | Untertitel | `.srt, .ass, .ssa` |
-| HTML-CODE | `.html, .htm, .shtml` |
+| HTML | `.html, .htm, .shtml` |
 | XML | `.xml` |
 | [Abschlag](https://en.wikipedia.org/wiki/Markdown) | `.md` |
-| Textdateien: | `.txt` |
-| Dateien CSV | `.csv` |
+| Textdateien | `.txt` |
+| CSV-Dateien | `.csv` |
 
-Die folgende Übersetzungsanbieter können mit Translatomatic verwendet werden:
+Folgende Übersetzungsanbieter können mit Translatomatic verwendet werden:
 
 - [Google](https://cloud.google.com/translate/)
 - [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
@@ -27,11 +27,11 @@ Die folgende Übersetzungsanbieter können mit Translatomatic verwendet werden:
 - [Meine Erinnerung](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
 
-Übersetzte Zeichenketten sind in einer Datenbank gespeichert und wieder verwendet.
+Übersetzte Zeichenfolgen werden in einer Datenbank gespeichert und wiederverwendet.
 
 * * *
 
-## Die Anlage
+## Installation
 
 Fügen Sie diese Zeile zu Ihrer Anwendung hinzu `Gemfile`:
 
@@ -39,30 +39,30 @@ Fügen Sie diese Zeile zu Ihrer Anwendung hinzu `Gemfile`:
 gem 'translatomatic'
 `
 
-Und dann ausgeführt werden:
+Und dann ausführen:
 
     $ bundle
 
-Oder installieren Sie es selbst, als:
+Oder installiere es selbst als:
 
     $ gem install translatomatic
 
 * * *
 
-## Auslastung
+## Verwendung
 
 Dieses Juwel bietet eine ausführbare Datei namens `translatomatic`. Das `translatomatic` Befehl hat eine Reihe von Funktionen, von denen hier nicht alle dokumentiert sind. Um Hilfe zu verfügbaren Befehlen und Optionen zu erhalten, führen Sie Folgendes aus:
 
     $ translatomatic help
 
-Und, um Hilfe zu einem Befehl auszuführen:
+Und um Hilfe zu einem Befehl zu erhalten, führen Sie Folgendes aus:
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
 * * *
 
-## Einstellungen
+## Konfiguration
 
 Suchen Sie nach verfügbaren Übersetzungsanbietern und Optionen mit dem `providers` Befehl:
 
@@ -77,24 +77,24 @@ Optionen können auf Benutzerebene oder Projektebene festgelegt werden. Weitere 
 
 * * *
 
-## Dateien zu übersetzen.
+## Dateien übersetzen
 
 Beim Übersetzen von Dateien `translatomatic` übersetzt Text einen Satz oder Satz auf einmal. Wenn eine Datei erneut übersetzt wird, werden nur Sätze, die seit der letzten Übersetzung geändert wurden, an den Übersetzungsanbieter gesendet, und der Rest stammt aus der lokalen Datenbank.
 
-Um eine Java-Properties-Datei auf Deutsch und Französisch, mit dem Google-Anbieter zu übersetzen:
+So übersetzen Sie eine Java-Eigenschaftendatei mithilfe des Google-Anbieters in Deutsch und Französisch:
 
     $ translatomatic translate file --provider Google strings.properties de,fr
 
 Dies würde erstellen (oder überschreiben) `strings_de.properties` und `strings_fr.properties` mit übersetzten Eigenschaften.
 
-### Anzeigen von Zeichenfolgen aus einer Resource-bundle
+### Anzeigen von Zeichenfolgen aus einem Ressourcenpaket
 
 Zum Lesen und Anzeigen der `store.description` und `store.name` Eigenschaften aus lokalen Ressourcendateien in Englisch, Deutsch und Französisch:
 
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
-### Saiten aus Quelldateien extrahieren
+### Extrahieren von Zeichenfolgen aus Quelldateien
 
 Verwenden Sie den Befehl zum Extrahieren von Zeichenfolgen aus Quelldateien `strings` Befehl, z
 
@@ -102,7 +102,7 @@ Verwenden Sie den Befehl zum Extrahieren von Zeichenfolgen aus Quelldateien `str
 
 * * *
 
-## Die Dateikonvertierung
+## Konvertieren von Dateien
 
 Translatomatic kann verwendet werden, um Dateien von einem Format in ein anderes zu konvertieren. Um beispielsweise eine Java-Eigenschaftendatei in eine XCode-Zeichenfolgendatei zu konvertieren:
 
@@ -110,7 +110,7 @@ Translatomatic kann verwendet werden, um Dateien von einem Format in ein anderes
 
 * * *
 
-## Das Konfiguration
+## Aufbau
 
 Konfigurationseinstellungen können mit Hilfe des. Gelesen und geschrieben werden `config get` und `config set` Befehle. Translatomatic verwendet eine Benutzerkonfigurationsdatei unter `$HOME/.translatomatic/config.yml`und optional eine pro Projekt Konfigurationsdatei `$PROJECT_DIR/.translatomatic/config.yml`.
 
@@ -120,17 +120,17 @@ Konfigurationseinstellungen werden aus Umgebungsvariablen, der Benutzerkonfigura
 
 Beim Schreiben in die Konfiguration mit dem `config set` Befehl wird der neue Wert in die Projektkonfigurationsdatei geschrieben, wenn er in einem Projekt ausgeführt wird, das eine translatomatische Konfigurationsdatei enthält, oder in der Benutzerkonfigurationsdatei, wenn keine Projektkonfigurationsdatei vorhanden ist.
 
-### Translatomatic Beispiele für Konfigurationen
+### Translatomatische Konfigurationsbeispiele
 
 Einstellen `google_api_key` Verwenden Sie in der Benutzerkonfigurationsdatei Folgendes:
 
     $ translatomatic config set google_api_key value --user
 
-Ein oder mehrere Übersetzungen zu verwenden, legen Sie fest:
+So legen Sie einen oder mehrere zu verwendende Übersetzungsdienste fest:
 
     $ translatomatic config set provider Microsoft,Yandex
 
-Eine Standardliste von Ziel-Gebietsschemas einstellen:
+So legen Sie eine Standardliste von Zielgebietsschemas fest:
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
@@ -138,11 +138,11 @@ Mit `target_locales` set können Dateien ohne Angabe von Zielgebietsschemas übe
 
     $ translatomatic translate file resources/strings.properties
 
-Um die aktuelle Konfiguration anzeigen lassen wollen, führen Sie Folgendes aus:
+Um die aktuelle Konfiguration anzuzeigen, führen Sie Folgendes aus:
 
     $ translatomatic config list
 
-### Datenbankkonfiguration:
+### Datenbankkonfiguration
 
 Standardmäßig, `translatomatic` benutzt eine sqlite3 Datenbank in `$HOME/.translatomatic/translatomatic.sqlite3` um übersetzte Strings zu speichern. Die Datenbankkonfiguration kann durch Erstellen einer geändert werden `database.yml` Datei unter `$HOME/.translatomatic/database.yml` für die `production` Umgebung, z
 
@@ -158,20 +158,20 @@ Standardmäßig, `translatomatic` benutzt eine sqlite3 Datenbank in `$HOME/.tran
 
 * * *
 
-## Zur
+## Beitragend
 
-Fehlerberichte und Pull-Anfragen sind auf GitHub unter https://github.com/smugglys/translatomatic willkommen. Dieses Projekt soll ein sicherer und einladender Raum für die Zusammenarbeit sein und es wird erwartet, dass sich die Mitwirkenden an die [Contributor-Bund](http://contributor-covenant.org) Verhaltensregeln.
-
-* * *
-
-## Das Lizenz
-
-Der Edelstein ist als Open Source unter den Bedingungen der [Lizenz von MIT](https://opensource.org/licenses/MIT).
+Fehlerberichte und Pull-Anfragen sind auf GitHub unter https://github.com/smugglys/translatomatic willkommen. Dieses Projekt soll ein sicherer und einladender Raum für die Zusammenarbeit sein und es wird erwartet, dass sich die Mitwirkenden an die [Contributor Covenant](http://contributor-covenant.org) Verhaltensregeln.
 
 * * *
 
-## Verhaltenskodex verpflichtet
+## Lizenz
 
-Jeder, der mit den Codebasen des Translatomatic-Projekts, Issue-Trackern, Chat-Rooms und Mailinglisten interagiert, wird voraussichtlich den [dargestellten Verhaltenskodex](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
+Der Edelstein ist als Open Source unter den Bedingungen der [MIT-Lizenz](https://opensource.org/licenses/MIT).
 
-_Angelegt von Translatomatic 0.1.3 Thu, 01 Feb 2018 21:35:40 +1030 https://github.com/smugglys/translatomatic_
+* * *
+
+## Verhaltensregeln
+
+Jeder, der mit den Codebasen des Translatomatic-Projekts, Issue-Trackern, Chat-Rooms und Mailinglisten interagiert, wird voraussichtlich den [Verhaltensregeln](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
+
+_Angelegt von Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:41 +1030 https://github.com/smugglys/translatomatic_
