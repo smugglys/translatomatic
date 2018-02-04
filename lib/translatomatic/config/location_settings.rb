@@ -72,11 +72,7 @@ module Translatomatic
       # @param value [Object] value to add to the list
       # @return [Object] the new value
       def add(key, value)
-        update(key) do |option|
-          assert_array_type(option)
-          current_value = @data[option.name] || []
-          @data[option.name] = current_value + cast(value, option.type)
-        end
+        update_array(key, value, :add)
       end
 
       # If key is an array type, removes the value from the existing list.
@@ -85,11 +81,7 @@ module Translatomatic
       # @param value [Object] value to remove from the list
       # @return [Object] the new value
       def subtract(key, value)
-        update(key) do |option|
-          assert_array_type(option)
-          current_value = @data[option.name] || []
-          @data[option.name] = current_value - cast(value, option.type)
-        end
+        update_array(key, value, :subtract)
       end
 
       # Test if configuration includes the given key
@@ -104,6 +96,16 @@ module Translatomatic
 
       include Translatomatic::Util
       include Translatomatic::TypeCast
+
+      def update_array(key, value, add)
+        update(key) do |option|
+          assert_array_type(option)
+          current = @data[option.name] || []
+          casted = cast(value, option.type)
+          new_value = add == :add ? current + casted : current - casted
+          @data[option.name] = new_value
+        end
+      end
 
       # common functionality for set/unset/add/subtract methods
       def update(key)

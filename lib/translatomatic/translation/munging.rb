@@ -105,7 +105,7 @@ module Translatomatic
         spacing = fix_spacing[num - 1]
         leading = spacing[0]
         trailing = spacing[1]
-        string = leading + string + trailing
+        leading + string + trailing
       end
     end
   end
