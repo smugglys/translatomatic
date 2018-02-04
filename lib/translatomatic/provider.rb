@@ -1,4 +1,3 @@
-
 module Translatomatic
   # Provides methods to access and create instances of
   # interfaces to translation APIs.
@@ -62,8 +61,15 @@ module Translatomatic
 
       private
 
+      def test_provider(provider)
+        provider.languages
+      end
+
       def create_provider(klass, options = {})
-        klass.new(options) if klass
+        return nil unless klass
+        provider = klass.new(options) 
+        test_provider(provider)
+        provider
       rescue StandardError => e
         name = klass.name.demodulize
         log.debug(t('provider.unavailable', name: name))

@@ -104,7 +104,7 @@ module Translatomatic
           start(req.uri) { |_http| send_request_http(req) }
         end
       end
-
+ 
       def save_cookies(response)
         cookies = response.get_fields('set-cookie')
         return unless cookies

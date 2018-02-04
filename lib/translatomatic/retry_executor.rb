@@ -21,7 +21,6 @@ module Translatomatic
       begin
         yield
       rescue StandardError => e
-        log.error(e.message)
         fail_count += 1
         if fail_count < @max_retries && retriable?(e)
           sleep @delay if @delay
