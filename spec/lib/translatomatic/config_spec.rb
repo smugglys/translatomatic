@@ -130,9 +130,47 @@ RSpec.describe Translatomatic::Config do
     end
 
     it 'returns values set at the user level with no location' do
-      config.set(KEY_BOOLEAN, 'true', location: :user)
-      # dump_all_config
-      expect(config.get(KEY_BOOLEAN)).to be_truthy
+      expect {
+        config.set(KEY_BOOLEAN, 'true', location: :user)
+        # dump_all_config
+      }.to change { config.get(KEY_BOOLEAN) }.from(false).to(true)
+    end
+
+    it 'gets a configuration key for a matched file' do
+      for_file = 'path/file.txt'
+      expect {
+        config.set(KEY_BOOLEAN, 'true', for_file: for_file)
+        # dump_all_config
+      }.to change { 
+        config.get(KEY_BOOLEAN, for_file: for_file) 
+      }.from(false).to(true)
+    end
+
+    it 'gets a configuration key for a matched parent file' do
+      for_file_parent = 'path'
+      for_file = 'path/file.txt'
+      expect {
+        config.set(KEY_BOOLEAN, 'true', for_file: for_file_parent)
+      }.to change {
+        config.get(KEY_BOOLEAN, for_file: for_file)
+      }.from(false).to(true)
+    end
+
+    it 'skips file configuration that is not a match' do
+      for_file = 'path/file.txt'
+      expect {
+        config.set(KEY_BOOLEAN, 'true', for_file: 'some/other/path')
+      }.to_not change {
+        config.get(KEY_BOOLEAN, for_file: for_file)
+      }
+    end
+
+    it 'merges matching file configurations' do
+      for_file = 'path1/path2/file.txt'
+      config.set(KEY_BOOLEAN, 'true', for_file: 'path1')
+      config.set(KEY_LOCALES, 'de', for_file: 'path1/path2')
+      expect(config.get(KEY_BOOLEAN, for_file: for_file)).to be_truthy
+      expect(config.get(KEY_LOCALES, for_file: for_file)).to eq(['de'])
     end
   end
 

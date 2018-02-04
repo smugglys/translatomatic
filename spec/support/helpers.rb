@@ -52,11 +52,13 @@ module Helpers
   end
 
   def config_file_path(path)
+    return nil unless path
     File.join(path, ".translatomatic", "config.yml")
   end
 
   def dump_config(location, path)
-    content = File.read(config_file_path(path)) if path
+    config_path = config_file_path(path)
+    content = File.read(config_path) if config_path && File.exist?(config_path)
     puts "#{location} config:"
     puts content ? content : "(empty)"
   end

@@ -30,7 +30,7 @@ module Translatomatic
       # @param key [Symbol] Option name
       # @return [LocationSettings] settings
       def settings_for_write(key)
-        location_settings(key, location || @default_location)
+        location_settings(key, location || @default_location, true)
       end
 
       private
@@ -49,13 +49,10 @@ module Translatomatic
         nil
       end
 
-      def location_settings(key, loc)
+      def location_settings(key, loc, write = false)
         effective = effective_location(key, loc)
-        if for_file
-          @settings[effective].for_file(for_file, effective)
-        else
-          @settings[effective]
-        end
+        settings = @settings[effective]
+        for_file ? for_file_settings(settings, write) : settings
       end
 
       def effective_location(key, loc)
@@ -71,6 +68,41 @@ module Translatomatic
 
       def valid_location?
         location.present? && LOCATIONS.include?(location.to_sym)
+      end
+
+      def for_file_settings(settings, write = false)
+        file = Pathname.new(for_file)
+        file = file.relative_path_from(settings.path) unless file.relative?
+        data = for_file_data(settings, file, write)
+        file_location_settings(settings, data)
+      end
+
+      def for_file_data(settings, file, write = false)
+        if write
+          settings.files[file.to_s] ||= {}
+        else
+          merged_file_data(settings, file)
+        end
+      end
+
+      # find matching file configurations
+      def merged_file_data(settings, file)
+        merged_data = {}
+        settings.files.keys.sort_by(&:length).each do |path|
+          next unless path_match?(file, path)
+          merged_data.merge!(settings.files[path])
+        end
+        merged_data
+      end
+
+      # check if file is equal to or a child of the given path
+      def path_match?(file, path)
+        file.to_s == path || file.to_s.start_with?(path)
+      end
+
+      def file_location_settings(settings, data)
+        options = { path: settings.path, location: settings.location }
+        LocationSettings.new(data, options)
       end
     end
   end

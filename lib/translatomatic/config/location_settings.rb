@@ -28,7 +28,7 @@ module Translatomatic
         @options = options || {}
         @path = @options[:path]
         @location = @options[:location]
-        @data[:files] ||= {}
+        @data[:files] = {}
       end
 
       # @return [String] Configuration as YAML
@@ -36,12 +36,9 @@ module Translatomatic
         @data.to_yaml
       end
 
-      # Get per-file settings for the given path
-      def for_file(for_file, location)
-        file = Pathname.new(for_file)
-        file = file.relative_path_from(@path) unless file.relative?
-        data = @data[:files][file.to_s] ||= {}
-        LocationSettings.new(data, path: @path, location: location)
+      # @return [Hash] Files data
+      def files
+        @data[:files]
       end
 
       # Get a configuration setting
