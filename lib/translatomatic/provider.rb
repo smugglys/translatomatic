@@ -67,9 +67,7 @@ module Translatomatic
 
       def create_provider(klass, options = {})
         return nil unless klass
-        provider = klass.new(options) 
-        test_provider(provider)
-        provider
+        klass.new(options)
       rescue StandardError => e
         name = klass.name.demodulize
         log.debug(t('provider.unavailable', name: name))
