@@ -3,8 +3,6 @@ module Translatomatic
     # Base class for resource file implementations
     # @abstract Subclasses implement different types of resource files
     class Base
-      include DefineOptions
-
       # @return [Hash<Symbol,Object] Options used in the constructor
       attr_reader :options
 
@@ -52,16 +50,10 @@ module Translatomatic
       def initialize(path = nil, options = {})
         raise 'expected options hash' if options && !options.is_a?(Hash)
         raise t('file.unsupported', file: path) unless self.class.enabled?
-        @options = options || {}
-        @properties = {}
-        @metadata = Metadata.new
-        @path = path.nil? || path.is_a?(Pathname) ? path : Pathname.new(path)
+        initialize_attributes(path, options)
         update_locale
         init
-        if @path
-          raise t('file.not_found', file: path) unless @path.exist?
-          load
-        end
+        try_load
       end
 
       # Save the resource file.
@@ -158,6 +150,7 @@ module Translatomatic
       include Translatomatic::Util
       include Translatomatic::Flattenation
       include Translatomatic::PathUtils
+      include Translatomatic::DefineOptions
 
       # called by constructor before load
       def init; end
@@ -165,6 +158,19 @@ module Translatomatic
       # load contents from @path
       def load
         raise 'load must be implemented by subclass'
+      end
+
+      def try_load
+        return unless @path
+        raise t('file.not_found', file: path) unless @path.exist?
+        load
+      end
+
+      def initialize_attributes(path, options)
+        @options = options || {}
+        @properties = {}
+        @metadata = Metadata.new
+        @path = path.nil? || path.is_a?(Pathname) ? path : Pathname.new(path)
       end
 
       def update_locale

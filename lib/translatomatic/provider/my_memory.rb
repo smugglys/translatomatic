@@ -1,4 +1,3 @@
-
 module Translatomatic
   module Provider
     # Interface to the MyMemory translation API
@@ -58,7 +57,7 @@ module Translatomatic
         data = JSON.parse(response.body)
         # matches = data['matches'] # all translations
         # matches.collect { |i| match_data(i) }
-        result = data['responseData']['translatedText']
+        result = try_hash(data, 'responseData', 'translatedText')
         add_translations(string, result)
       end
 

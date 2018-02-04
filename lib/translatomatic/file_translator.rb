@@ -87,7 +87,7 @@ module Translatomatic
     # Update file properties from the given translation collection
     def update_properties(file, to_locale, collection)
       value_map = init_value_map(file)
-      file.properties.each do |_key, value|
+      file.properties.each_value do |value|
         keys = value_map[value.to_s]
         translation = collection.get(value, to_locale) # best translation
         new_value = translation ? translation.result.to_s : nil

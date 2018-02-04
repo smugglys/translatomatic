@@ -32,24 +32,23 @@ module Translatomatic
       end
 
       # run the give code block, display exceptions.
-      # return true if the code ran without exceptions
       def run
         merge_options_and_config
         @dry_run = cli_option(:dry_run)
         log.level = ::Logger::DEBUG if cli_option(:debug)
         log.info(t('cli.dry_run')) if @dry_run
-
         yield
-        true
       rescue Interrupt
         puts "\n" + t('cli.aborted')
-        false
       rescue StandardError => e
+        handle_run_error(e)
+      end
+
+      def handle_run_error(e)
         finish_log
         log.error(e.message)
         log.debug(e.backtrace.join("\n"))
         raise e if ENV['TEST'] # reraise exceptions in test
-        false
       end
 
       def finish_log

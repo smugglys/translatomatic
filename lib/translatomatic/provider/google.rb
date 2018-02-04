@@ -70,8 +70,7 @@ module Translatomatic
       def fetch_languages
         response = http_client.get(LANGUAGES_URL, key: @key)
         body = JSON.parse(response.body)
-        data = body['data'] || {}
-        languages = data['languages'] || []
+        languages = try_hash(body, 'data', 'languages') || []
         languages.collect { |i| i['language'] }
       end
     end

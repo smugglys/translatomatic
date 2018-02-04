@@ -122,6 +122,15 @@ module Translatomatic
       def batcher(strings, max_count:, max_length:)
         StringBatcher.new(strings, max_count: max_count, max_length: max_length)
       end
+
+      def try_hash(hash, *keys)
+        result = hash
+        keys.each do |key|
+          result ||= {}
+          result = result.is_a?(Hash) ? result[key] : nil
+        end
+        result
+      end
     end
   end
 end
