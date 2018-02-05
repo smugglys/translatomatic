@@ -33,15 +33,19 @@ module Translatomatic
 
       # run the give code block, display exceptions.
       def run
-        merge_options_and_config
-        @dry_run = cli_option(:dry_run)
-        log.level = ::Logger::DEBUG if cli_option(:debug)
+        Translatomatic.config = create_config
+        @dry_run = conf.get(:dry_run)
+        log.level = ::Logger::DEBUG if conf.get(:debug)
         log.info(t('cli.dry_run')) if @dry_run
         yield
       rescue Interrupt
         puts "\n" + t('cli.aborted')
       rescue StandardError => e
         handle_run_error(e)
+      end
+
+      def create_config
+        Translatomatic::Config::Settings.new(runtime: options)
       end
 
       def handle_run_error(e)
@@ -62,24 +66,8 @@ module Translatomatic
       def rainbow
         @rainbow ||= begin
           rainbow = Rainbow.new
-          rainbow.enabled = !cli_option(:no_wank)
+          rainbow.enabled = !conf.get(:no_wank)
           rainbow
-        end
-      end
-
-      # get an option value
-      def cli_option(key)
-        @options[key]
-      end
-
-      # create @options from options and config
-      def merge_options_and_config
-        # start with command line options
-        @options = options.transform_keys { |i| i.to_s.underscore.to_sym }
-        # fill missing entries with config values
-        settings = conf.all
-        settings.each do |key, value|
-          @options[key] = value unless @options.include?(key)
         end
       end
 

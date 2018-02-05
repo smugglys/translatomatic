@@ -15,7 +15,8 @@ module Translatomatic
       def initialize(options = {})
         @runtime = options[:runtime] || {}
         @user_path = File.realpath(options[:user_path] || Dir.home)
-        @project_path = options[:project_path] || Files.find_project(@user_path)
+        @project_path = options[:project_path]
+        @project_path ||= Files.find_project(@user_path)
         load
       end
 
@@ -113,7 +114,7 @@ module Translatomatic
         @settings[:env] = LocationSettings.from_environment
         @settings[:user] = Files.load(@user_path, location: :user)
         @settings[:project] = Files.load(@project_path, location: :project)
-        @settings[:runtime] = LocationSettings.new(@runtime, location: :runtime)
+        @settings[:runtime] = LocationSettings.runtime(@runtime)
       end
 
       def settings_write(key, params = {})
@@ -139,7 +140,7 @@ module Translatomatic
         when :project
           project_path
         when :runtime, :env
-          Dir.cwd
+          Dir.pwd
         end
       end
     end

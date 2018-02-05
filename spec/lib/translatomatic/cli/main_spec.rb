@@ -1,7 +1,10 @@
 RSpec.describe Translatomatic::CLI::Main do
   before(:each) do
     @cli = Translatomatic::CLI::Main.new
-    @cli.options = { database_env: 'test' }
+    @cli_options = { database_env: 'test' }
+    allow(@cli).to receive(:create_config) {
+      use_test_config(runtime: @cli_options)
+    }
   end
 
   context :services do

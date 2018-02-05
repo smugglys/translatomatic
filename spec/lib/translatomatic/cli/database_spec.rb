@@ -5,6 +5,9 @@ RSpec.describe Translatomatic::CLI::Database do
     skip if database_disabled?
     @cli = Translatomatic::CLI::Database.new
     @cli.options = { database_env: 'test' }
+    allow(@cli).to receive(:create_config) {
+      use_test_config(runtime: @cli.options)
+    }
     @locale_en = create_locale(language: :en)
     @locale_de = create_locale(language: :de)
   end
@@ -35,6 +38,6 @@ RSpec.describe Translatomatic::CLI::Database do
   private
 
   def add_cli_options(options = {})
-    @cli.options = @cli.options.merge(options)
+    @cli_options.merge!(options)
   end
 end

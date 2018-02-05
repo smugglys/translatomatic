@@ -28,8 +28,8 @@ module Translatomatic
       # @return [void]
       def display(file = nil, *keys)
         run do
-          locales = cli_option(:target_locales)
-          source_files = parse_list(file, cli_option(:source_files))
+          source_files = parse_list(file, conf.get(:source_files))
+          locales = conf.get(:target_locales, for_file: file)
           source_files.each do |path|
             raise t('file.not_found', file: path) unless File.exist?(path)
             source = Translatomatic::ResourceFile.load(path)

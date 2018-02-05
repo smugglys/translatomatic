@@ -6,9 +6,11 @@ module Helpers
   FIXTURES_PATH = File.join(__dir__, '..', 'fixtures')
 
   def use_test_config(options = {})
-    [TEST_USER_PATH, TEST_PROJ_PATH].each do |file|
-      config = File.join(file, CONFIG_PATH)
-      File.delete(config) if File.exist?(config)
+    unless options && options[:keep_config]
+      [TEST_USER_PATH, TEST_PROJ_PATH].each do |file|
+        config = File.join(file, CONFIG_PATH)
+        File.delete(config) if File.exist?(config)
+      end
     end
     params = {
       user_path: TEST_USER_PATH,

@@ -67,9 +67,6 @@ module Translatomatic
     include Translatomatic::Util
     include Translatomatic::DefineOptions
 
-    define_option :dry_run, type: :boolean, aliases: '-n',
-                            desc: t('file_translator.dry_run'),
-                            command_line_only: true
     define_option :in_place, type: :boolean, command_line_only: true,
                              default: false,
                              desc: t('file_translator.in_place')

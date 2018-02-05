@@ -33,7 +33,7 @@ module Translatomatic
 
         # @return [Boolean] True if key is a recognised configuration option
         def valid_key?(key)
-          options.include?(key)
+          options.include?(key.to_sym)
         end
 
         private
@@ -48,7 +48,8 @@ module Translatomatic
             Translatomatic::Provider.types,
             Translatomatic::ResourceFile.types,
             Translatomatic::Database,
-            Translatomatic::Converter
+            Translatomatic::Converter,
+            Translatomatic::FileTranslator
           ].freeze
         end
 

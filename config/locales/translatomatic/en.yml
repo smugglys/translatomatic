@@ -30,7 +30,7 @@ en:
       display_sentences: Display sentences
       display_values: Display values from a resource bundle
       display_version: Display version
-      dry_run: 'Dry run: files will not be translated or written'
+      dry_run: Print actions without performing translations or writing files.
       error: An error has occurred
       extract_strings: Extract strings from non-resource files
       file_source: 'File: %{file}'
@@ -107,7 +107,6 @@ en:
       unknown_locale: Unable to determine locale
       unsupported: 'Unsupported file type: %{file}'
     file_translator:
-      dry_run: Print actions without performing translations or writing files.
       in_place: Translate source file in-place.
       translating: Translating %{source} (%{source_locale}) to %{target} (%{target_locale})
       translating_in_place: Translating %{source} (%{source_locale}) in place (%{target_locale})

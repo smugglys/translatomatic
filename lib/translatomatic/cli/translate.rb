@@ -67,7 +67,7 @@ module Translatomatic
 
           # check source file(s) exist and they can be loaded
           source_files = []
-          files = parse_list(file, cli_option(:source_files))
+          files = parse_list(file, conf.get(:source_files))
           files.each do |path|
             raise t('file.not_found', file: path) unless File.exist?(path)
             source = resource_file(path)
@@ -106,23 +106,23 @@ module Translatomatic
 
         # resolve providers
         @providers = Translatomatic::Provider.resolve(
-          cli_option(:provider), options
+          conf.get(:provider), options
         )
         raise t('cli.translate.no_providers') if @providers.empty?
       end
 
       def determine_target_locales(locales)
-        @target_locales = parse_list(locales, cli_option(:target_locales))
+        @target_locales = parse_list(locales, conf.get(:target_locales))
         raise t('cli.locales_required') if @target_locales.empty?
       end
 
       def determine_source_locale
-        cli_option(:source_locale) || Translatomatic::Locale.default.to_s
+        conf.get(:source_locale) || Translatomatic::Locale.default.to_s
       end
 
       # create a progress bar and progress updater
       def progress_updater
-        return nil if cli_option(:no_wank)
+        return nil if conf.get(:no_wank)
         # set up progress bar
         progressbar = ProgressBar.create(
           title: t('cli.translate.translating'),

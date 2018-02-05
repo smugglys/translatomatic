@@ -33,7 +33,8 @@ module Translatomatic
         effective = effective_location(key, location)
         settings = @settings[effective]
         if for_file
-          data = settings.files[file.to_s] ||= {}
+          path = file(settings)
+          data = settings.files[path.to_s] ||= {}
           file_location_settings(settings, data)
         else
           settings
@@ -83,19 +84,23 @@ module Translatomatic
 
       def for_file_settings(settings)
         return nil unless for_file
-        data = merged_file_data(settings, file)
+        data = merged_file_data(settings)
         file_location_settings(settings, data)
       end
 
-      def file
-        file = Pathname.new(for_file)
-        file = file.relative_path_from(settings.path) unless file.relative?
-        file
+      def file(settings)
+        path = Pathname.new(for_file)
+        unless path.relative?
+          settings_path = Pathname.new(settings.path)
+          path = path.relative_path_from(settings_path)
+        end
+        path
       end
 
       # find matching file configurations
-      def merged_file_data(settings, file)
+      def merged_file_data(settings)
         merged_data = {}
+        file = file(settings)
         settings.files.keys.sort_by(&:length).each do |path|
           next unless path_match?(file, path)
           merged_data.merge!(settings.files[path])

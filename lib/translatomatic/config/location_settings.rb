@@ -13,7 +13,11 @@ module Translatomatic
               settings[option.name] = ENV[option.env_name]
             end
           end
-          new(settings, location: :env)
+          new(settings, location: :env, path: Dir.pwd)
+        end
+
+        def runtime(data = {})
+          new(data.deep_symbolize_keys, location: :runtime, path: Dir.pwd)
         end
       end
 
@@ -26,8 +30,8 @@ module Translatomatic
       def initialize(data = {}, options = {})
         @data = data
         @options = options || {}
-        @path = @options[:path]
         @location = @options[:location]
+        @path = @options[:path]
         @data[:files] ||= {}
       end
 

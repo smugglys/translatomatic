@@ -29,8 +29,7 @@ RSpec.describe Translatomatic::Config do
     it 'writes configuration to file' do
       config.set(KEY_LOCALES, 'de')
       expect(config.get(KEY_LOCALES)).to eq(['de'])
-      dump_config(:user, config.user_path)
-      dump_config(:project, config.project_path)
+      # dump_all_config
       config.send(:load)
       expect(config.get(KEY_LOCALES)).to eq(['de'])
     end
@@ -141,7 +140,6 @@ RSpec.describe Translatomatic::Config do
         for_file = 'path/file.txt'
         expect {
           config.set(KEY_BOOLEAN, 'true', for_file: for_file)
-          # dump_all_config
         }.to change {
           config.get(KEY_BOOLEAN, for_file: for_file)
         }.from(false).to(true)
@@ -179,7 +177,6 @@ RSpec.describe Translatomatic::Config do
           config.set(KEY_BOOLEAN, 'true', location: :user)
         }.to change {
           # file specific configuration should inherit from user config
-          puts "getting boolean"
           config.get(KEY_BOOLEAN, for_file: 'path/file.txt')
         }.from(false).to(true)
       end

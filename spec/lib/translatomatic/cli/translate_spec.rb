@@ -2,9 +2,14 @@ RSpec.describe Translatomatic::CLI::Translate do
   let(:config) { Translatomatic.config }
 
   before(:each) do
-    config.unset(:provider)
     @cli = Translatomatic::CLI::Translate.new
-    @cli.options = { database_env: 'test', source_locale: "en" }
+    @cli_options = {
+      database_env: 'test',
+      source_locale: 'en',
+    }
+    allow(@cli).to receive(:create_config) {
+      use_test_config(runtime: @cli_options)
+    }
   end
 
   context :help do
@@ -64,7 +69,7 @@ RSpec.describe Translatomatic::CLI::Translate do
     end
 
     it 'shares translations' do
-      skip 'not implmeneted yet'
+      skip 'not implemented yet'
       # translations are shared from database records
       skip if database_disabled?
 
@@ -89,7 +94,7 @@ RSpec.describe Translatomatic::CLI::Translate do
   private
 
   def add_cli_options(options = {})
-    @cli.options = @cli.options.merge(options)
+    @cli_options.merge!(options)
   end
 
   def test_provider(mapping = {})
