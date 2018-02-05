@@ -22,7 +22,7 @@ module Translatomatic
         else
           # location is set
           check_valid_location
-          location_settings(key, location)
+          location_settings_for_read(key, location)
         end
       end
 
@@ -30,7 +30,14 @@ module Translatomatic
       # @param key [Symbol] Option name
       # @return [LocationSettings] settings
       def settings_for_write(key)
-        location_settings(key, location || @default_location, true)
+        effective = effective_location(key, location)
+        settings = @settings[effective]
+        if for_file
+          data = settings.files[file.to_s] ||= {}
+          file_location_settings(settings, data)
+        else
+          settings
+        end
       end
 
       private
@@ -38,21 +45,25 @@ module Translatomatic
       include Translatomatic::TypeCast
 
       # valid location list in order of precedence
-      LOCATIONS = %i[project user env].freeze
+      LOCATIONS = %i[runtime project user env].freeze
 
       def settings_with_precedence(key)
         # find the first setting found by precedence
         LOCATIONS.each do |loc|
-          settings = location_settings(key, loc)
-          return settings if settings && settings.include?(key)
+          settings = location_settings_for_read(key, loc)
+          return settings if settings
         end
         nil
       end
 
-      def location_settings(key, loc, write = false)
+      def location_settings_for_read(key, loc)
         effective = effective_location(key, loc)
         settings = @settings[effective]
-        for_file ? for_file_settings(settings, write) : settings
+        file_settings = for_file_settings(settings)
+        [settings, file_settings].each do |i|
+          return i if i && i.include?(key)
+        end
+        return nil
       end
 
       def effective_location(key, loc)
@@ -70,19 +81,16 @@ module Translatomatic
         location.present? && LOCATIONS.include?(location.to_sym)
       end
 
-      def for_file_settings(settings, write = false)
-        file = Pathname.new(for_file)
-        file = file.relative_path_from(settings.path) unless file.relative?
-        data = for_file_data(settings, file, write)
+      def for_file_settings(settings)
+        return nil unless for_file
+        data = merged_file_data(settings, file)
         file_location_settings(settings, data)
       end
 
-      def for_file_data(settings, file, write = false)
-        if write
-          settings.files[file.to_s] ||= {}
-        else
-          merged_file_data(settings, file)
-        end
+      def file
+        file = Pathname.new(for_file)
+        file = file.relative_path_from(settings.path) unless file.relative?
+        file
       end
 
       # find matching file configurations
@@ -97,7 +105,7 @@ module Translatomatic
 
       # check if file is equal to or a child of the given path
       def path_match?(file, path)
-        file.to_s == path || file.to_s.start_with?(path)
+        file.to_s == path || file.to_s.start_with?(path.to_s)
       end
 
       def file_location_settings(settings, data)

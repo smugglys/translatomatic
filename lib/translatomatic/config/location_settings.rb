@@ -28,12 +28,12 @@ module Translatomatic
         @options = options || {}
         @path = @options[:path]
         @location = @options[:location]
-        @data[:files] = {}
+        @data[:files] ||= {}
       end
 
       # @return [String] Configuration as YAML
       def to_yaml
-        @data.to_yaml
+        data_for_save.to_yaml
       end
 
       # @return [Hash] Files data
@@ -93,6 +93,14 @@ module Translatomatic
 
       include Translatomatic::Util
       include Translatomatic::TypeCast
+
+      def data_for_save
+        data = @data.dup
+        files = data.delete(:files)
+        # put files at the bottom
+        data[:files] = files unless files.blank?
+        data
+      end
 
       def update_array(key, value, add)
         update(key) do |option|

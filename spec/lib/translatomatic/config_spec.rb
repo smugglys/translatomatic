@@ -136,41 +136,53 @@ RSpec.describe Translatomatic::Config do
       }.to change { config.get(KEY_BOOLEAN) }.from(false).to(true)
     end
 
-    it 'gets a configuration key for a matched file' do
-      for_file = 'path/file.txt'
-      expect {
-        config.set(KEY_BOOLEAN, 'true', for_file: for_file)
-        # dump_all_config
-      }.to change { 
-        config.get(KEY_BOOLEAN, for_file: for_file) 
-      }.from(false).to(true)
-    end
+    describe 'for_file' do
+      it 'gets a configuration key for a matched file' do
+        for_file = 'path/file.txt'
+        expect {
+          config.set(KEY_BOOLEAN, 'true', for_file: for_file)
+          # dump_all_config
+        }.to change {
+          config.get(KEY_BOOLEAN, for_file: for_file)
+        }.from(false).to(true)
+      end
 
-    it 'gets a configuration key for a matched parent file' do
-      for_file_parent = 'path'
-      for_file = 'path/file.txt'
-      expect {
-        config.set(KEY_BOOLEAN, 'true', for_file: for_file_parent)
-      }.to change {
-        config.get(KEY_BOOLEAN, for_file: for_file)
-      }.from(false).to(true)
-    end
+      it 'gets a configuration key for a matched parent file' do
+        for_file_parent = 'path'
+        for_file = 'path/file.txt'
+        expect {
+          config.set(KEY_BOOLEAN, 'true', for_file: for_file_parent)
+        }.to change {
+          config.get(KEY_BOOLEAN, for_file: for_file)
+        }.from(false).to(true)
+      end
 
-    it 'skips file configuration that is not a match' do
-      for_file = 'path/file.txt'
-      expect {
-        config.set(KEY_BOOLEAN, 'true', for_file: 'some/other/path')
-      }.to_not change {
-        config.get(KEY_BOOLEAN, for_file: for_file)
-      }
-    end
+      it 'skips file configuration that is not a match' do
+        for_file = 'path/file.txt'
+        expect {
+          config.set(KEY_BOOLEAN, 'true', for_file: 'some/other/path')
+        }.to_not change {
+          config.get(KEY_BOOLEAN, for_file: for_file)
+        }
+      end
 
-    it 'merges matching file configurations' do
-      for_file = 'path1/path2/file.txt'
-      config.set(KEY_BOOLEAN, 'true', for_file: 'path1')
-      config.set(KEY_LOCALES, 'de', for_file: 'path1/path2')
-      expect(config.get(KEY_BOOLEAN, for_file: for_file)).to be_truthy
-      expect(config.get(KEY_LOCALES, for_file: for_file)).to eq(['de'])
+      it 'merges matching file configurations' do
+        for_file = 'path1/path2/file.txt'
+        config.set(KEY_BOOLEAN, 'true', for_file: 'path1')
+        config.set(KEY_LOCALES, 'de', for_file: 'path1/path2')
+        expect(config.get(KEY_BOOLEAN, for_file: for_file)).to be_truthy
+        expect(config.get(KEY_LOCALES, for_file: for_file)).to eq(['de'])
+      end
+
+      it 'includes user configuration' do
+        expect {
+          config.set(KEY_BOOLEAN, 'true', location: :user)
+        }.to change {
+          # file specific configuration should inherit from user config
+          puts "getting boolean"
+          config.get(KEY_BOOLEAN, for_file: 'path/file.txt')
+        }.from(false).to(true)
+      end
     end
   end
 
