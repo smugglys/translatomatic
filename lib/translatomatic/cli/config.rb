@@ -79,7 +79,7 @@ module Translatomatic
       private
 
       def config_params
-        { location: config_location, for_file: options[:for_file] }
+        { location: config_location, for_file: options['for-file'] }
       end
 
       def config_location

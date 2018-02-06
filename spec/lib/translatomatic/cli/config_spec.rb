@@ -10,6 +10,7 @@ RSpec.describe Translatomatic::CLI::Config do
   before(:each) do
     reset_test_config
     @cli = Translatomatic::CLI::Config.new
+    @cli_options = {}
     allow(@cli).to receive(:create_config) {
       use_test_config(runtime: @cli_options, keep_config: true)
     }
@@ -22,15 +23,27 @@ RSpec.describe Translatomatic::CLI::Config do
   context :set do
     it 'sets a configuration option' do
       @cli.set(KEY_CLI_TEST, 'value')
-      dump_all_config
       expect(config.include?(KEY_CLI_TEST)).to be_truthy
     end
 
     it 'does not set an invalid configuration option' do
       key = 'invalid key'
-      expect do
+      expect {
         @cli.set(key, 'value')
-      end.to raise_error(t('config.invalid_key', key: key))
+      }.to raise_error(t('config.invalid_key', key: key))
+    end
+
+    it 'sets a configuration option for a file' do
+      expect {
+        add_cli_options('for-file' => 'filename')
+        @cli.set(KEY_CLI_TEST, 'value')
+      }.to change {
+        # should change the for file config
+        config.get(KEY_CLI_TEST, for_file: 'filename')
+      }.from([]).to(['value']).and not_change {
+        # should not change config without the for_file
+        config.get(KEY_CLI_TEST)
+      }
     end
   end
 
@@ -82,4 +95,12 @@ RSpec.describe Translatomatic::CLI::Config do
       @cli.describe
     end
   end
+
+  private
+
+  def add_cli_options(options = {})
+    @cli_options.merge!(options)
+    @cli.options = @cli_options
+  end
+
 end
