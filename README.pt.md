@@ -174,4 +174,4 @@ A gema está disponível como fonte aberta sob os termos do [Licença MIT](https
 
 Todo mundo que interagir com as bases de códigos do projeto Translatomatic, rastreadores de problemas, salas de bate-papo e listas de endereços deverá seguir a [Código de conduta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Criado por Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:42 +1030 https://github.com/smugglys/translatomatic_
+_Criado por Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:27 +1030 https://github.com/smugglys/translatomatic_

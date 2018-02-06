@@ -174,4 +174,4 @@ La gemme est disponible en open source selon les termes de la [MIT Licence](http
 
 Tout le monde qui interagit avec les bases de code du projet Translatomatic, les traqueurs de problèmes, les forums de discussion et les listes de diffusion devrait suivre [code de conduite](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Création par Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:41 +1030 https://github.com/smugglys/translatomatic_
+_Créé par Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:15 +1030 https://github.com/smugglys/translatomatic_

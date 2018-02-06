@@ -174,4 +174,4 @@ Pärlan är tillgänglig som öppen källkod enligt villkoren i [MIT-licens](htt
 
 Alla som interagerar med Translatomatic-projektets kodbaser, frågespårare, chattrum och e-postlistor förväntas följa [uppförandekod](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Skapad av Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:42 +1030 https://github.com/smugglys/translatomatic_
+_Skapat av Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:31 +1030 https://github.com/smugglys/translatomatic_

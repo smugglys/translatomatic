@@ -64,11 +64,11 @@ gem 'translatomatic'
 
 ＃＃ セットアップ
 
-使用可能な翻訳プロバイダとオプションが `providers` コマンド：
+利用可能な翻訳プロバイダとオプションが `providers` コマンド：
 
     $ translatomatic providers
 
-オプションは、コマンドライン、環境変数、または翻訳の設定ファイルで指定できます。 構成ファイルは、translatomaticの内部 `config` コマンド。 使用可能なすべての構成設定を一覧表示するには、以下を使用します。
+オプションは、コマンドライン、環境変数、または翻訳の設定ファイルで指定できます。 構成ファイルは、translatomaticの内部 `config` コマンド。 使用可能なすべての構成設定を一覧表示するには、
 
     $ translatomatic config list
     $ translatomatic config describe
@@ -79,7 +79,7 @@ gem 'translatomatic'
 
 ##ファイルの翻訳
 
-ファイルを翻訳するときは、 `translatomatic` 一度に1つの文または句を翻訳します。 ファイルが再翻訳されると、最後の翻訳後に変更された文のみが翻訳プロバイダに送られ、残りはローカルデータベースから供給されます。
+ファイルを翻訳するときは、 `translatomatic` 一度に1つの文または句を翻訳します。 ファイルが再翻訳されると、最後の翻訳後に変更された文のみが翻訳プロバイダに送信され、残りはローカルデータベースから供給されます。
 
 Googleプロバイダを使用してJavaプロパティファイルをドイツ語とフランス語に翻訳するには：
 
@@ -174,4 +174,4 @@ Translatomaticを使用して、ファイルをあるフォーマットから別
 
 Translatomaticプロジェクトのコードベース、課題トラッカー、チャットルーム、メーリングリストと対話するすべての人は、 [行動規範](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)。
 
-_によって作成された Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:42 +1030 https://github.com/smugglys/translatomatic_
+_作成された Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:20 +1030 https://github.com/smugglys/translatomatic_

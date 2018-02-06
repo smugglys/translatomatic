@@ -172,6 +172,6 @@ Permata ini tersedia sebagai sumber terbuka di bawah terma [Lesen MIT](https://o
 
 ## Tatakelakuan
 
-Semua orang berinteraksi dengan kod bahasa projek Translatomatic, mengeluarkan pelacak, bilik sembang dan senarai mel diharapkan akan mengikuti [kod tatalaku](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
+Semua orang yang berinteraksi dengan kod bahasa projek Translatomatic, mengeluarkan pelacak, bilik sembang dan senarai mel diharapkan akan mengikuti [kod tatalaku](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Dicipta oleh Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:42 +1030 https://github.com/smugglys/translatomatic_
+_Dibuat oleh Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:25 +1030 https://github.com/smugglys/translatomatic_

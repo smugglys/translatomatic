@@ -43,7 +43,7 @@ E poi eseguire:
 
     $ bundle
 
-Oppure installalo da solo come:
+Oppure installalo tu stesso come:
 
     $ gem install translatomatic
 
@@ -174,4 +174,4 @@ La gemma è disponibile come open source secondo i termini di [Licenza MIT](http
 
 Si prevede che tutti coloro che interagiscono con le basi di codice del progetto Translatomatic, gli inseguitori di problemi, le chat room e le mailing list seguano il [codice di condotta](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Creato da Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:41 +1030 https://github.com/smugglys/translatomatic_
+_Creato da Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:17 +1030 https://github.com/smugglys/translatomatic_

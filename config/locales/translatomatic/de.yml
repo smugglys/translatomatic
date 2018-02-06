@@ -1,4 +1,4 @@
-# Angelegt von Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:39 +1030 https://github.com/smugglys/translatomatic
+# Erstellt von Translatomatic 0.1.3 Tue, 06 Feb 2018 22:17:57 +1030 https://github.com/smugglys/translatomatic
 
 de:
   translatomatic:
@@ -32,7 +32,8 @@ de:
       display_sentences: Sätze anzeigen
       display_values: Zeigen Sie Werte aus einem Ressourcenpaket an
       display_version: Version anzeigen
-      dry_run: 'Trockenlauf: Dateien werden nicht übersetzt oder geschrieben'
+      dry_run: Drucken Sie Aktionen, ohne Übersetzungen auszuführen oder Dateien zu
+        schreiben.
       error: Ein Fehler ist aufgetreten
       extract_strings: Extrahieren Sie Zeichenfolgen aus Nicht-Ressourcen-Dateien
       file_source: 'Datei: %{file}'
@@ -60,6 +61,7 @@ de:
         string: Eine Zeichenfolge in Zielgebietsschemas übersetzen
         subcommand: Übersetzen Sie Dateien oder Zeichenfolgen
         translating: Übersetzen
+        translating_file: Übersetzen von %{source} (%{source_locale}) nach %{target_locale}
         using_provider: 'Verwenden des Anbieters: %{name}'
         using_providers: 'Verwenden von Anbietern: %{list}'
     config:
@@ -112,12 +114,7 @@ de:
       unknown_locale: Das Gebietsschema konnte nicht ermittelt werden
       unsupported: 'Nicht unterstützter Dateityp: %{file}'
     file_translator:
-      dry_run: Drucken Sie Aktionen, ohne Übersetzungen auszuführen oder Dateien zu
-        schreiben.
       in_place: Übersetzen Sie die Quelldatei direkt.
-      translating: Übersetzen von %{source} (%{source_locale}) nach %{target} (%{target_locale})
-      translating_in_place: Übersetzen von %{source} (%{source_locale}) an Ort und
-        Stelle (%{target_locale})
     provider:
       email_address: E-Mail-Addresse
       email_required: 'E-Mail-Adresse: (Pflichtfeld.'

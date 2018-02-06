@@ -1,4 +1,4 @@
-# Création par Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
+# Créé par Translatomatic 0.1.3 Tue, 06 Feb 2018 22:17:59 +1030 https://github.com/smugglys/translatomatic
 
 fr:
   translatomatic:
@@ -32,7 +32,8 @@ fr:
       display_sentences: Afficher les phrases
       display_values: Afficher les valeurs d&#39;un regroupement de ressources
       display_version: Afficher la version
-      dry_run: 'Course à vide: les fichiers ne seront pas traduits ou écrits'
+      dry_run: Imprimez des actions sans effectuer de traduction ou d&#39;écriture
+        de fichiers.
       error: Une erreur est survenue
       extract_strings: Extraire des chaînes à partir de fichiers non-ressources
       file_source: 'Fichier: %{file}'
@@ -60,6 +61,7 @@ fr:
         string: Traduire une chaîne pour cibler les locales
         subcommand: Traduire des fichiers ou des chaînes
         translating: Traduction en cours
+        translating_file: Traduire %{source} (%{source_locale}) en %{target_locale}
         using_provider: 'Utilisation du fournisseur: %{name}'
         using_providers: 'Utilisation de fournisseurs: %{list}'
     config:
@@ -109,11 +111,7 @@ fr:
       unknown_locale: Impossible de déterminer les paramètres régionaux
       unsupported: 'Type de fichier non pris en charge: %{file}'
     file_translator:
-      dry_run: Imprimez des actions sans effectuer de traduction ou d&#39;écriture
-        de fichiers.
       in_place: Traduire le fichier source sur place.
-      translating: Traduction de %{source} (%{source_locale}) en %{target} (%{target_locale})
-      translating_in_place: Traduire %{source} (%{source_locale}) en place (%{target_locale})
     provider:
       email_address: Adresse e-mail
       email_required: 'Adresse mail: (requis.'

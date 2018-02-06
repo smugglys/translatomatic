@@ -174,4 +174,4 @@ Translatomatic может использоваться для преобразо
 
 Ожидается, что все, кто взаимодействует с кодовыми базами проекта Translatomatic, будут выпускать трекеры, чаты и списки рассылки [нормы поведения](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md),
 
-_Созданная Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:42 +1030 https://github.com/smugglys/translatomatic_
+_Создано Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:29 +1030 https://github.com/smugglys/translatomatic_

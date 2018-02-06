@@ -1,4 +1,4 @@
-# Criado por Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
+# Criado por Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:04 +1030 https://github.com/smugglys/translatomatic
 
 pt:
   translatomatic:
@@ -31,7 +31,7 @@ pt:
       display_sentences: Exibir frases
       display_values: Exibir valores de um pacote de recursos
       display_version: Exibir versão
-      dry_run: 'Corte a seco: os arquivos não serão traduzidos ou escritos'
+      dry_run: Imprima ações sem realizar traduções ou escrever arquivos.
       error: ocorreu um erro
       extract_strings: Extraia strings de arquivos que não sejam de recursos
       file_source: 'Arquivo: %{file}'
@@ -59,6 +59,7 @@ pt:
         string: Traduzir uma string para locais de destino
         subcommand: Traduzir arquivos ou strings
         translating: Traduzindo
+        translating_file: Traduzindo %{source} (%{source_locale}) para %{target_locale}
         using_provider: 'Fornecedor de uso: %{name}'
         using_providers: 'Usando provedores: %{list}'
     config:
@@ -108,10 +109,7 @@ pt:
       unknown_locale: Não é possível determinar o local
       unsupported: 'Tipo de arquivo não suportado: %{file}'
     file_translator:
-      dry_run: Imprima ações sem realizar traduções ou escrever arquivos.
       in_place: Traduzir o arquivo de origem no local.
-      translating: Translating %{source} (%{source_locale}) para %{target} (%{target_locale})
-      translating_in_place: Traduzindo %{source} (%{source_locale}) no lugar (%{target_locale})
     provider:
       email_address: Endereço de e-mail
       email_required: 'E-mail: (Obrigatório.'

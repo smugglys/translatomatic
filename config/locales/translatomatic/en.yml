@@ -58,6 +58,7 @@ en:
         string: Translate a string to target locales
         subcommand: Translate files or strings
         translating: Translating
+        translating_file: Translating %{source} (%{source_locale}) to %{target_locale}
         using_provider: 'Using provider: %{name}'
         using_providers: 'Using providers: %{list}'
     config:
@@ -108,8 +109,6 @@ en:
       unsupported: 'Unsupported file type: %{file}'
     file_translator:
       in_place: Translate source file in-place.
-      translating: Translating %{source} (%{source_locale}) to %{target} (%{target_locale})
-      translating_in_place: Translating %{source} (%{source_locale}) in place (%{target_locale})
     provider:
       email_address: Email address
       email_required: Email address required.

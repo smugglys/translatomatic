@@ -174,4 +174,4 @@ Der Edelstein ist als Open Source unter den Bedingungen der [MIT-Lizenz](https:/
 
 Jeder, der mit den Codebasen des Translatomatic-Projekts, Issue-Trackern, Chat-Rooms und Mailinglisten interagiert, wird voraussichtlich den [Verhaltensregeln](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_Angelegt von Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:41 +1030 https://github.com/smugglys/translatomatic_
+_Erstellt von Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:10 +1030 https://github.com/smugglys/translatomatic_

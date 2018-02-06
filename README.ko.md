@@ -118,7 +118,7 @@ Translatomatic은 한 형식에서 다른 형식으로 파일을 변환하는 �
 
 구성 설정은 환경 변수, 사용자 구성 파일, 프로젝트 구성 파일 (있는 경우) 및 명령 행에서 읽습니다. 발견 된 마지막 값은 이전에 읽은 값보다 우선합니다.
 
-구성을 사용하여 `config set` 명령의 경우 새 값은 변환 구성 파일을 포함하는 프로젝트 내에서 실행될 때 프로젝트 구성 파일에 기록되거나 프로젝트 구성 파일이없는 경우 사용자 구성 파일에 기록됩니다.
+구성을 사용하여 `config set` 명령을 사용하면 새 값은 변환 구성 파일을 포함하는 프로젝트 내에서 실행될 때 프로젝트 구성 파일에 기록되거나 프로젝트 구성 파일이없는 경우 사용자 구성 파일에 기록됩니다.
 
 ### 역변환 구성 예제
 
@@ -174,4 +174,4 @@ GitHub (https://github.com/smugglys/translatomatic)에서 버그보고 및 요�
 
 Translatomatic 프로젝트의 코드베이스, 이슈 트래커, 대화방 및 메일 링리스트와 상호 작용하는 모든 사람들은 [행동 강령](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md).
 
-_만든 Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:42 +1030 https://github.com/smugglys/translatomatic_
+_Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:22 +1030 https://github.com/smugglys/translatomatic_

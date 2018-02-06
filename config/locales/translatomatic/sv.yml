@@ -1,4 +1,4 @@
-# Skapad av Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
+# Skapat av Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:06 +1030 https://github.com/smugglys/translatomatic
 
 sv:
   translatomatic:
@@ -31,7 +31,7 @@ sv:
       display_sentences: Visa meningar
       display_values: Visa värden från en resursbunt
       display_version: Visningsversion
-      dry_run: 'Torrkörning: Filerna kommer inte att översättas eller skrivas'
+      dry_run: Skriv ut åtgärder utan att översätta eller skriva filer.
       error: Ett fel har uppstått
       extract_strings: Extrahera strängar från icke-resursfiler
       file_source: 'Fil: %{file}'
@@ -59,6 +59,7 @@ sv:
         string: Översätt en sträng för att rikta platsen
         subcommand: Översätt filer eller strängar
         translating: Översätter
+        translating_file: Översätter %{source} (%{source_locale}) till %{target_locale}
         using_provider: 'Använda leverantör: %{name}'
         using_providers: 'Använda leverantörer: %{list}'
     config:
@@ -108,10 +109,7 @@ sv:
       unknown_locale: Det gick inte att bestämma språk
       unsupported: 'Ostödd filtyp: %{file}'
     file_translator:
-      dry_run: Skriv ut åtgärder utan att översätta eller skriva filer.
       in_place: Översätt källfilen på plats.
-      translating: Översätter %{source} (%{source_locale}) till %{target} (%{target_locale})
-      translating_in_place: Översätter %{source} (%{source_locale}) på plats (%{target_locale})
     provider:
       email_address: E-postadress
       email_required: E-postadress krävs.

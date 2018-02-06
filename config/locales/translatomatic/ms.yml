@@ -1,4 +1,4 @@
-# Dicipta oleh Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
+# Dibuat oleh Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:03 +1030 https://github.com/smugglys/translatomatic
 
 ms:
   translatomatic:
@@ -31,7 +31,7 @@ ms:
       display_sentences: Paparkan ayat
       display_values: Paparkan nilai dari bundle sumber
       display_version: Versi paparan
-      dry_run: 'Runut kering: fail tidak akan diterjemahkan atau ditulis'
+      dry_run: Cetak tindakan tanpa melakukan terjemahan atau menulis fail.
       error: Ralat telah berlaku
       extract_strings: Ekstrak rentetan daripada fail bukan sumber
       file_source: 'Fail: %{file}'
@@ -59,6 +59,7 @@ ms:
         string: Terjemah rentetan kepada sasaran tempat
         subcommand: Terjemah fail atau rentetan
         translating: Menterjemah
+        translating_file: Menterjemahkan %{source} (%{source_locale}) kepada %{target_locale}
         using_provider: 'Menggunakan penyedia: %{name}'
         using_providers: 'Menggunakan penyedia: %{list}'
     config:
@@ -108,11 +109,7 @@ ms:
       unknown_locale: Tidak dapat menentukan locale
       unsupported: 'Jenis fail yang tidak disokong: %{file}'
     file_translator:
-      dry_run: Cetak tindakan tanpa melakukan terjemahan atau menulis fail.
       in_place: Terjemah sumber fail di tempat.
-      translating: Menterjemahkan %{source} (%{source_locale}) kepada %{target} (%{target_locale})
-      translating_in_place: Menterjemahkan %{source} (%{source_locale}) di tempat
-        (%{target_locale})
     provider:
       email_address: Alamat emel
       email_required: Alamat e-mel diperlukan.

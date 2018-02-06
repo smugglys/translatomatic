@@ -174,4 +174,4 @@ Translatomatic可用于将文件从一种格式转换为另一种格式。 例�
 
 每个人都与Translatomatic项目的代码库，问题跟踪器，聊天室和邮件列表进行交互，预计将遵循 [行为守则](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)。
 
-_由 Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:43 +1030 创建https://github.com/smugglys/translatomatic_
+_由 Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:34 +1030 https://github.com/smugglys/translatomatic_

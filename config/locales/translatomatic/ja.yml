@@ -1,4 +1,4 @@
-# によって作成された Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
+# 作成された Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:01 +1030 https://github.com/smugglys/translatomatic
 
 ja:
   translatomatic:
@@ -31,7 +31,7 @@ ja:
       display_sentences: 文章を表示する
       display_values: リソースバンドルからの値の表示
       display_version: バージョン表示
-      dry_run: ドライラン：ファイルは翻訳されたり書かれたりしません
+      dry_run: 翻訳やファイルの書き込みを行わずにアクションを出力します。
       error: エラーが発生しました
       extract_strings: 非リソースファイルから文字列を抽出する
       file_source: ファイル： %{file}
@@ -59,6 +59,7 @@ ja:
         string: 文字列をターゲットロケールに変換する
         subcommand: ファイルまたは文字列を翻訳する
         translating: 翻訳
+        translating_file: " %{source} （%{source_locale}）を %{target_locale}"
         using_provider: プロバイダを使用： %{name}
         using_providers: プロバイダの使用： %{list}
     config:
@@ -108,11 +109,7 @@ ja:
       unknown_locale: ロケールを特定できません
       unsupported: サポートされていないファイルタイプ： %{file}
     file_translator:
-      dry_run: 翻訳やファイルの書き込みを行わずにアクションを出力します。
       in_place: ソースファイルをインプレースで翻訳します。
-      translating: "%{source} （ %{source_locale} ）を%{target} （ %{target_locale} ）に%{target_locale}"
-      translating_in_place: "%{source} （ %{source_locale} ）をその場所に%{target_locale}
-        （ %{target_locale} ）"
     provider:
       email_address: 電子メールアドレス
       email_required: 電子メールアドレスが必要です。

@@ -1,4 +1,4 @@
-# Созданная Translatomatic 0.1.3 Mon, 05 Feb 2018 08:35:40 +1030 https://github.com/smugglys/translatomatic
+# Создано Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:05 +1030 https://github.com/smugglys/translatomatic
 
 ru:
   translatomatic:
@@ -31,7 +31,7 @@ ru:
       display_sentences: Показать предложения
       display_values: Отображать значения из набора ресурсов
       display_version: Показать версию
-      dry_run: 'Сухой ход: файлы не будут переведены или записаны'
+      dry_run: Выполнять печать без выполнения перевода или записи файлов.
       error: произошла ошибка
       extract_strings: Извлечь строки из файлов без ресурсов
       file_source: 'Файл: %{file}'
@@ -59,6 +59,7 @@ ru:
         string: Перевести строку на целевые локали
         subcommand: Перевести файлы или строки
         translating: Идет перевод
+        translating_file: Перевод %{source} (%{source_locale}) в %{target_locale}
         using_provider: 'Использование поставщика: %{name}'
         using_providers: 'Использование поставщиков: %{list}'
     config:
@@ -108,10 +109,7 @@ ru:
       unknown_locale: Не удалось определить локаль
       unsupported: 'Неподдерживаемый тип файла: %{file}'
     file_translator:
-      dry_run: Выполнять печать без выполнения перевода или записи файлов.
       in_place: Перевести исходный файл на место.
-      translating: Перевод %{source} (%{source_locale}) в %{target} (%{target_locale})
-      translating_in_place: Перевод %{source} (%{source_locale}) на место (%{target_locale})
     provider:
       email_address: Адрес электронной почты
       email_required: Требуется адрес электронной почты.
