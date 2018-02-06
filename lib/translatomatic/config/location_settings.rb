@@ -32,7 +32,7 @@ module Translatomatic
         @options = options || {}
         @location = @options[:location]
         @path = @options[:path]
-        @data[:files] ||= {}
+        @data[:files] ||= {} unless options[:no_files]
       end
 
       # @return [String] Configuration as YAML

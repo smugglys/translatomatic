@@ -16,6 +16,8 @@ Dir[File.join(SPEC_DIR, 'support/**/*.rb')].sort.each { |f| require f }
 include Helpers
 include DatabaseHelpers
 
+RSpec::Matchers.define_negated_matcher :not_change, :change
+
 RSpec.configure do |config|
   config.include Translatomatic::Util
 

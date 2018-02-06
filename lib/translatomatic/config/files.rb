@@ -17,8 +17,9 @@ module Translatomatic
         # @return [void]
         def save(settings)
           return unless settings && settings.path
-          FileUtils.mkdir_p(File.dirname(settings.path))
-          File.write(settings.path, settings.to_yaml)
+          config_path = File.join(settings.path, CONFIG_PATH)
+          FileUtils.mkdir_p(File.dirname(config_path))
+          File.write(config_path, settings.to_yaml)
         end
 
         # load configuration from the yaml file at path.
@@ -26,8 +27,8 @@ module Translatomatic
         # @return [LocationSettings] Location settings object
         def load(path, options = {})
           return nil unless path
-          config_path = File.join(path, SETTINGS_PATH)
-          options = options.merge(path: config_path)
+          config_path = File.join(path, CONFIG_PATH)
+          options = options.merge(path: path)
           return new_settings({}, options) unless File.exist?(config_path)
           config = YAML.load_file(config_path) || {}
           new_settings(config, options)
@@ -39,16 +40,16 @@ module Translatomatic
           user_path = user_path.to_s
           Pathname.new(Dir.pwd).ascend do |v|
             return nil if v.to_s == user_path || user_path.start_with?(v.to_s)
-            settings_path = v + SETTINGS_DIR
-            return v if settings_path.directory?
+            config_path = v + CONFIG_DIR
+            return v if config_path.directory?
           end
           nil
         end
 
         private
 
-        SETTINGS_DIR = '.translatomatic'.freeze
-        SETTINGS_PATH = File.join(SETTINGS_DIR, 'config.yml').freeze
+        CONFIG_DIR = '.translatomatic'.freeze
+        CONFIG_PATH = File.join(CONFIG_DIR, 'config.yml').freeze
 
         def new_settings(config, options = {})
           LocationSettings.new(config.deep_symbolize_keys, options)

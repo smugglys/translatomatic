@@ -36,9 +36,9 @@ RSpec.describe Translatomatic::Config do
 
     it 'does not set an invalid configuration option' do
       key = 'invalid key'
-      expect do
+      expect {
         config.set(key, 'value ')
-      end.to raise_error(t('config.invalid_key', key: key))
+      }.to raise_error(t('config.invalid_key', key: key))
     end
 
     it 'chages project settings by default when within a project' do
@@ -60,6 +60,16 @@ RSpec.describe Translatomatic::Config do
       expect(config.get(KEY_LOCALES, location: :user)).to eq([])
       expect(config.get(KEY_LOCALES, location: :project)).to eq([])
       expect(config.get(KEY_LOCALES, location: :project, for_file: for_file)).to eq(['de'])
+    end
+
+    it 'keeps existing per-file settings' do
+      for_file = 'rah.txt'
+      config.set(KEY_LOCALES, 'de', for_file: for_file)
+      expect {
+        config.set(KEY_BOOLEAN, 'true', for_file: for_file)
+      }.to_not change {
+        config.get(KEY_LOCALES, for_file: for_file)
+      }
     end
   end
 
@@ -88,9 +98,9 @@ RSpec.describe Translatomatic::Config do
     end
 
     it 'fails on non-list types' do
-      expect do
+      expect {
         config.add(KEY_BOOLEAN, true)
-      end.to raise_error(t('config.non_array_key', key: KEY_BOOLEAN))
+      }.to raise_error(t('config.non_array_key', key: KEY_BOOLEAN))
     end
   end
 
@@ -102,9 +112,9 @@ RSpec.describe Translatomatic::Config do
     end
 
     it 'fails on non list types' do
-      expect do
+      expect {
         config.subtract(KEY_BOOLEAN, true)
-      end.to raise_error(t('config.non_array_key', key: KEY_BOOLEAN))
+      }.to raise_error(t('config.non_array_key', key: KEY_BOOLEAN))
     end
   end
 
