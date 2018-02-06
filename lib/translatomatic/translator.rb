@@ -29,7 +29,6 @@ module Translatomatic
       #   for texts that are untranslated, call the provider
       # return translations
 
-      update_listener_total(text_collection, to_locales)
       translation_collection = Translation::Collection.new
       text_collection.each_locale do |from_locale, list|
         next if list.blank?
@@ -58,12 +57,6 @@ module Translatomatic
 
     define_option :no_database, type: :boolean, default: false,
                                 desc: t('translator.no_database')
-
-    def update_listener_total(text_collection, to_locales)
-      return unless @listener
-      @listener.total = text_collection.count * @providers.length *
-                        to_locales.length
-    end
 
     # Combine translations of substrings of the original strings
     # @param tr_collection [Translatomatic::Translation::Collection]

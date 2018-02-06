@@ -12,12 +12,5 @@ module Translatomatic
     def update_progress(count)
       @progressbar.progress += count
     end
-
-    # @param total [Number] Set the total number of items that
-    #   will be processed.
-    def total=(total)
-      @progressbar.progress = 0
-      @progressbar.total = total
-    end
   end
 end

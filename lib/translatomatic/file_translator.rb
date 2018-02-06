@@ -26,8 +26,10 @@ module Translatomatic
       return file if file.locale.language == to_locale.language
 
       texts = texts_from_file(file)
-      collection = @translator.translate(texts, to_locale)
-      update_properties(file, to_locale, collection)
+      unless @dry_run
+        collection = @translator.translate(texts, to_locale)
+        update_properties(file, to_locale, collection)
+      end
       file
     end
 
@@ -38,28 +40,10 @@ module Translatomatic
     # @param to_locale [String] The target locale, e.g. "fr"
     # @return [ResourceFile] The translated resource file
     def translate_to_file(source, to_locale)
-      translated = translate_to_files(source, to_locale)
-      translated[0]
-    end
-
-    # Translates one or more source files to one or more locales and
-    # writes results to target resource files. The path of the target
-    # resource files are automatically determined.
-    # @param sources [Array<ResourceFile>] Source files to translate
-    # @param to_locales [Array<String>] Target locales
-    # @return [Array<ResourceFile>] Translated resource files
-    def translate_to_files(sources, to_locales)
-      sources = [sources] unless sources.is_a?(Array)
-      to_locales = [to_locales] unless to_locales.is_a?(Array)
-      texts = sources.collect { |i| texts_from_file(i) }.flatten
-      collection = @translator.translate(texts, to_locales)
-      translated = []
-      sources.each do |source|
-        to_locales.each do |to_locale|
-          translated << translate_file(source, to_locale, collection)
-        end
-      end
-      translated.compact
+      target = translation_target_file(source, to_locale)
+      return source unless target
+      translate(target, to_locale)
+      save_resource_file(target)
     end
 
     private
@@ -70,16 +54,6 @@ module Translatomatic
     define_option :in_place, type: :boolean, command_line_only: true,
                              default: false,
                              desc: t('file_translator.in_place')
-
-    # translates a resource file using the given translation collection
-    # saves to target
-    def translate_file(source, to_locale, collection)
-      to_locale = build_locale(to_locale)
-      target = translation_target_file(source, to_locale)
-      return source unless target
-      update_properties(target, to_locale, collection)
-      save_resource_file(target)
-    end
 
     # Update file properties from the given translation collection
     def update_properties(file, to_locale, collection)
@@ -101,31 +75,21 @@ module Translatomatic
       file
     end
 
-    # Determine the target file to write for the given source file
+    # Create a target file to write for the given source file.
     # @param source [ResourceFile] Source resource file
     # @param to_locale [Locale] Target locale
-    # @return [ResourceFile] Target resource file, or nil if no target
+    # @return [ResourceFile] Target file, or nil if we shouldn't translate
     def translation_target_file(source, to_locale)
       if @in_place
-        target = resource_file(source)
-        log.info(t('file_translator.translating_in_place',
-                   source: target, source_locale: target.locale,
-                   target_locale: to_locale))
+        source
       else
         target_path = source.locale_path(to_locale)
         # don't overwrite source unless using @in_place
         return nil if target_path == source.path
-
-        # make a copy of source and change the path
         target = resource_file(source.path, source.options)
-        target.locale = source.locale # updated by translate() later
         target.path = target_path
-
-        log.info(t('file_translator.translating',
-                   source: source, source_locale: source.locale,
-                   target: target, target_locale: to_locale))
+        target
       end
-      target
     end
 
     def texts_from_file(file)

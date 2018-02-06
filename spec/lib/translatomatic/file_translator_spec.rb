@@ -21,25 +21,6 @@ RSpec.describe Translatomatic::FileTranslator do
     end
   end
 
-  context '#translate_to_files' do
-    it 'translates a file to multiple target languages' do
-      provider = TestProvider.new(
-        'de' => { 'Beer' => 'Bier' },
-        'ja' => { 'Beer' => 'Beeru' }
-      )
-      path = create_tempfile('test.properties', 'key = Beer')
-      file = Translatomatic::ResourceFile.load(path, locale: "en")
-      t = create_file_translator(provider: provider)
-      targets = t.translate_to_files(file, ['de', 'ja'])
-      expect(targets.length).to eq(2)
-
-      expect_basename(targets[0], /_de$/)
-      expect_contents(targets[0], "key = Bier\n")
-      expect_basename(targets[1], /_ja$/)
-      expect_contents(targets[1], "key = Beeru\n")
-    end
-  end
-
   context '#translate_to_file' do
     it 'translates a properties file to a target language' do
       provider = TestProvider.new('Bier')
@@ -70,6 +51,15 @@ RSpec.describe Translatomatic::FileTranslator do
       expect(target.path).to eq(file.path)
       file = Translatomatic::ResourceFile.load(file.path, locale: "de")
       expect(file.get('key')).to eq('Bier')
+    end
+
+    it 'should not modify the source file' do
+      provider = TestProvider.new('Bier')
+      path = create_tempfile('test.properties', 'key = Beer')
+      source = Translatomatic::ResourceFile.load(path, locale: 'en')
+      t = create_file_translator(provider: provider)
+      target = t.translate_to_file(source, 'de-DE')
+      expect(source.locale.to_s).to eq('en')
     end
   end
 
@@ -249,7 +239,7 @@ RSpec.describe Translatomatic::FileTranslator do
     expect(file.path.basename.sub_ext('').to_s).to match(basename)
   end
 
-  def expect_contents(file, contents)          
+  def expect_contents(file, contents)
     expect(strip_comments(file.path.read)).to eq(contents)
   end
 
