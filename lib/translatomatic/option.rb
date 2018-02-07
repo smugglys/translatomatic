@@ -28,58 +28,81 @@ module Translatomatic
     # @return [boolean] True if this option can only be set on the command line
     attr_reader :command_line_only
 
-    # @return [boolean] True if this option can only be set in user context
-    attr_reader :user_context_only
+    # @return [boolean] True if this option can only be set in the
+    #   user configuration file
+    attr_reader :user_location_only
 
     # Create a new option
-    # @param data [Hash<Symbol,Object>] Attributes as above
+    # @param attributes [Hash<Symbol,Object>] Attributes as above
     # @return [Translatomatic::Option] A new option instance
-    def initialize(data = {})
-      @name = data[:name]
-      @required = data[:required]
-      @description = data[:desc]
-      @use_env = data[:use_env]
-      @hidden = data[:hidden]
-      @type = data[:type] || :string
-      @default = data[:default]
-      @aliases = data[:aliases]
-      @enum = data[:enum]
-      @user_context_only = data[:user_context_only]
-      @command_line_only = data[:command_line_only]
-      @env_name = data[:env_name] || (@use_env ? @name.to_s.upcase : nil)
+    def initialize(attributes = {})
+      attributes.each do |k, v|
+        raise "unrecognised attribute #{k}" unless constructor_option?(k)
+        instance_variable_set("@#{k}", v)
+      end
+      @description = @desc
+      @type ||= :string
+      raise "invalid type: #{@type}" unless VALID_TYPES.include?(@type)
+      @env_name ||= @use_env && @name ? @name.to_s.upcase : nil
+      @user_location_only = true if @name.to_s =~ /api_key/
     end
 
+    # Return sconfiguration for a thor command line option
+    # @return [Hash] Thor configuration
     def to_thor
-      # use internal ',' splitting for array types on command line
-      type = @type == :array ? :string : @type
-
-      { name: @name,
+      {
         required: @required,
-        type: type,
+        type: thor_type,
         desc: @description,
         default: @default,
         aliases: @aliases,
-        enum: @enum ? @enum.collect { |i| i.to_s } : nil
+        banner: @type == :boolean ? nil : type_name,
+        enum: @enum ? @enum.collect(&:to_s) : nil
       }
+    end
+
+    # Translate the type of this option
+    # @return [String] The translated type
+    def type_name
+      t("config.types.#{type}")
     end
 
     # Retrieve all options from an object or list of objects.
     # @param object [#options,Array<#options>] Options source
     # @return [Array<Translatomatic::Option>] options
     def self.options_from_object(object)
-      options = []
-      if object.respond_to?(:options)
-        options += options_from_object(object.options)
-      elsif object.kind_of?(Array)
-        object.each do |item|
-          if item.kind_of?(Translatomatic::Option)
-            options << item
-          elsif item.respond_to?(:options)
-            options += options_from_object(item.options)
-          end
-        end
+      if object.is_a?(Translatomatic::Option)
+        [object]
+      elsif object.respond_to?(:options)
+        options_from_object(object.options)
+      elsif object.is_a?(Array)
+        object.collect { |i| options_from_object(i) }.flatten
+      else
+        []
       end
-      options
+    end
+
+    private
+
+    include Util
+
+    CONSTRUCTOR_OPTIONS = %i[name required desc use_env hidden type default
+                             aliases enum user_location_only
+                             command_line_only env_name].freeze
+    VALID_TYPES = %i[array path_array string path boolean numeric].freeze
+
+    def constructor_option?(key)
+      CONSTRUCTOR_OPTIONS.include?(key)
+    end
+
+    def thor_type
+      case @type
+      when :array, :path_array, :string, :path
+        # use internal ',' splitting for array types on command line
+        :string
+      else
+        @type
+      end
     end
   end
 end

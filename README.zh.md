@@ -2,38 +2,38 @@
 
 # Translatomatic
 
-将文本文件从一种语言转换为另一种, 或从一种格式翻译成另一种。 当前支持以下文件格式:
+将文本文件从一种语言翻译成另一种语言，或从一种格式翻译成另一种格式。 目前支持以下文件格式：
 
 | 文件格式 | 扩展 |
 | --- | --- |
-| [性能](https://en.wikipedia.org/wiki/.properties) | `.properties` |
-| Windows 资源文件 | `.resw, .resx` |
-| [酒店名单](https://en.wikipedia.org/wiki/Property_list) (OS x plist) | `.plist` |
-| [PO 文件](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
-| [低字符串](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
-| [其](http://yaml.org/) | `.yaml` |
+| [属性](https://en.wikipedia.org/wiki/.properties) | `.properties` |
+| Windows资源文件 | `.resw, .resx` |
+| [属性列表](https://en.wikipedia.org/wiki/Property_list) （OSX plist） | `.plist` |
+| [PO文件](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [XCode字符串](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [YAML](http://yaml.org/) | `.yaml` |
 | 字幕 | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
 | XML | `.xml` |
 | [降价](https://en.wikipedia.org/wiki/Markdown) | `.md` |
-| 文本的文件 | `.txt` |
-| CSV 文件 | `.csv` |
+| 文本文件 | `.txt` |
+| CSV文件 | `.csv` |
 
-以下翻译 api 可与 Translatomatic 一起使用:
+以下译文提供方可与Translatomatic一起使用：
 
 - [谷歌](https://cloud.google.com/translate/)
-- [microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
-- [yandex](https://tech.yandex.com/translate/)
-- [MyMemory](https://mymemory.translated.net/doc/)
+- [微软](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
+- [Yandex的](https://tech.yandex.com/translate/)
+- [我的记忆](https://mymemory.translated.net/doc/)
 - [Frengly](http://www.frengly.com/api)
 
-翻译字符串都保存在一个数据库和重新使用。
+翻译后的字符串保存在数据库中并重新使用。
 
 * * *
 
-## 安装
+##安装
 
-添加这一行为应用程序 `Gemfile`:
+将此行添加到您的应用程序的 `Gemfile`：
 
 `ruby
 gem 'translatomatic'
@@ -43,104 +43,108 @@ gem 'translatomatic'
 
     $ bundle
 
-或者安装自己为：
+或者自己安装：
 
     $ gem install translatomatic
 
 * * *
 
-## 使用
+##用法
 
-这个宝石提供一个可执行的调用 `translatomatic`中。 的 `translatomatic` 命令有许多功能, 而不是所有这些函数都记录在这里。 有关可用命令和选项的帮助, 请执行以下操作:
+这个宝石提供了一个可执行文件 `translatomatic`。 该 `translatomatic` 命令有许多功能，并不是所有这些功能都记录在这里。 有关可用命令和选项的帮助，请执行：
 
     $ translatomatic help
 
-有关命令的帮助, 请执行以下操作:
+为了帮助一个命令，执行：
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
 * * *
 
-## 安装
+＃＃ 建立
 
-检查可用的翻译服务和选项。 `services` 命令:
+检查可用的翻译供应商和选项 `providers` 命令：
 
-    $ translatomatic services
+    $ translatomatic providers
 
-可以在命令行、环境变量或 translatomatic 的配置文件中指定选项。 配置文件可以使用 translatomatic 的内部 `config` 命令. 要列出所有可用的配置设置, 请使用:
+可以在命令行，环境变量或translatomatic的配置文件中指定选项。 配置文件可以使用translatomatic的内部进行修改 `config` 命令。 要列出所有可用的配置设置，请使用：
 
     $ translatomatic config list
     $ translatomatic config describe
 
-可以在用户级别或项目级别设置选项。 有关详细信息, 请参阅下面的配置部分。
+可以在用户级别或项目级别设置选项。 有关更多信息，另请参阅下面的配置部分。
 
 * * *
 
-# # 翻译文件
+##翻译文件
 
-翻译文件时, `translatomatic` 翻译文本的一句话或短语的时间。 如果文件是流传的, 则只会将自上次翻译以来已更改的句子发送到转换器, 其余的则来自本地数据库。
+翻译文件时， `translatomatic` 一次翻译文本一个句子或短语。 如果文件被重新翻译，那么只有自上次翻译以来发生了变化的句子才会被发送到翻译提供者，其余的来自本地数据库。
 
-使用 Google 翻译器将 Java 属性文件转换为德语和法语:
+要使用Google提供程序将Java属性文件翻译成德语和法语：
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
-这将创建(或复盖) `strings_de.properties` 和 `strings_fr.properties` 具有翻译的属性。
+这将创建（或覆盖） `strings_de.properties` 和 `strings_fr.properties` 与翻译的属性。
 
-### 显示串从资源束
+### 显示资源包中的字符串
 
-阅读和显示的 `store.description` 和 `store.name` 性能从当地资源文件中的英文、德文和法文：
+阅读并显示 `store.description` 和 `store.name` 英文，德文和法文本地资源文件的属性：
 
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
-### 提取串自源文件
+### 从源文件中提取字符串
 
-若要从源文件中提取字符串, 请使用 `strings` 命令, 例如
+从源文件中提取字符串，使用 `strings` 命令，例如
 
     $ translatomatic strings file.rb
 
 * * *
 
-## 转换文件
+##转换文件
 
-Translatomatic 可用于将文件从一种格式转换为另一种形式。 例如, 要将 Java 属性文件转换为 XCode 字符串文件:
+Translatomatic可用于将文件从一种格式转换为另一种格式。 例如，要将Java属性文件转换为XCode字符串文件：
 
     $ translatomatic convert strings.properties Localization.strings
 
 * * *
 
-## 配置
+##配置
 
-Translatomatic 的每个用户配置文件位于 `$HOME/.translatomatic/config.yml`, 还可以选择每个项目配置文件 `$PROJECT_DIR/.translatomatic/config.yml`中。 的e `translatomatic config set` 在包含 translatomatic 配置文件的项目中执行时, 命令对项目级别配置进行操作。则, 用户级别配置文件将被更改。 The `--context` 选项可用于指定 `user` 或 `project` 级别配置。 配置选项的有效值是通过从环境中读取、用户级别配置文件、项目级别配置文件 (如果存在) 以及命令行来确定的。 找到的最后一个值优先于先前读取的值。
+配置设置可以使用 `config get` 和 `config set` 命令。 Translatomatic使用一个用户配置文件 `$HOME/.translatomatic/config.yml`，以及可选的每个项目配置文件 `$PROJECT_DIR/.translatomatic/config.yml`。
 
-### Translatomatic 配置示例
+该 `--user` 和 `--project` 选项可以用来告诉命令读取或写入 `user` 要么 `project` 组态。
 
-要设置 `google_api_key` 在用户配置文件中, 使用:
+配置设置是从环境变量，用户配置文件，项目配置文件（如果存在）以及从命令行中读取的。 找到的最后一个值优先于先前读取的值。
 
-    $ translatomatic config set google_api_key value --context user
+在写入配置时使用 `config set` 命令，则在包含translatomatic配置文件的项目中执行时，将新值写入项目配置文件，如果没有项目配置文件，则将新值写入用户配置文件。
 
-要设置一个或多个要使用的翻译服务:
+### 翻译配置示例
 
-    $ translatomatic config set translator Microsoft,Yandex
+设置 `google_api_key` 在用户配置文件中，使用：
 
-只有当使用第一个选项时发生翻译错误时, 才能使用辅助翻译器。
+    $ translatomatic config set google_api_key value --user
 
-设置目标语言环境的默认列表:
+要设置一个或多个翻译服务使用：
+
+    $ translatomatic config set provider Microsoft,Yandex
+
+要设置目标区域设置的默认列表：
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
-与 `target_locales` 设置, 可以在不指定目标区域设置的情况下转换文件。 `translate file` 命令.
+同 `target_locales` 设置，可以在不指定目标语言环境的情况下转换文件 `translate file` 命令。
 
     $ translatomatic translate file resources/strings.properties
 
-要显示当前配置, 请执行
+要显示当前配置，请执行：
 
     $ translatomatic config list
 
 ### 数据库配置
 
-默认情况下， `translatomatic` 使用sqlite3数据库 `$HOME/.translatomatic/translatomatic.sqlite3` 到店已翻译的字符串。 若要将翻译存储在数据库中, 应安装适当的数据库适配器, 如 `sqlite3` 宝石. Translatomatic 不自动安装数据库适配器。 数据库配置可以通过创建 `database.yml` 文件下 `$HOME/.translatomatic/database.yml` 的 `production` 环境中的，例如
+默认， `translatomatic` 在中使用一个sqlite3数据库 `$HOME/.translatomatic/translatomatic.sqlite3` 存储翻译的字符串。 数据库配置可以通过创建一个 `database.yml` 文件下 `$HOME/.translatomatic/database.yml` 为了 `production` 环境，例如
 
     production:
       adapter: mysql2
@@ -148,25 +152,26 @@ Translatomatic 的每个用户配置文件位于 `$HOME/.translatomatic/config.y
       database: translatomatic
       pool: 5
       encoding: utf8
+      collation: utf8_bin
       username: username
       password: password
 
 * * *
 
-# # 贡献
+##贡献
 
-错误报告和拉要求，欢迎在审查在https://github.com/smugglys/translatomatic中。 这个项目的目的是成为一个安全、温馨的空间协作和捐助者都应遵守 [《公约》的贡献](http://contributor-covenant.org) 行为守则。
-
-* * *
-
-# # 许可证
-
-宝石可以作为开放源的条款 [麻省理工学院的许可](https://opensource.org/licenses/MIT)中。
+在https://github.com/smugglys/translatomatic的GitHub上欢迎Bug报告和请求。 这个项目的目的是成为一个安全的，欢迎的合作空间，贡献者有望坚持 [贡献者盟约](http://contributor-covenant.org) 行为守则。
 
 * * *
 
-行为准则
+＃＃ 执照
 
-每个人都相互作用的Translatomatic项目的代码库中，问题跟踪、聊天室和邮件列表，预计后续的 [行为守则](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)中。
+这个宝石可以按照开源的条款来使用 [MIT许可证](https://opensource.org/licenses/MIT)。
 
-_由Translatomatic0.1.2Sat, 06 Jan 2018 22:56:28 +1030 创建_
+* * *
+
+＃＃ 行为守则
+
+每个人都与Translatomatic项目的代码库，问题跟踪器，聊天室和邮件列表进行交互，预计将遵循 [行为守则](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)。
+
+_由 Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:34 +1030 https://github.com/smugglys/translatomatic_

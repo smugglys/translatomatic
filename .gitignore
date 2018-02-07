@@ -9,6 +9,10 @@
 /tmp/
 /bin/test
 
+# VS code
+/.vscode
+/.vs
+
 /Gemfile.lock
 
 # rspec failure tracking

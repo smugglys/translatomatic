@@ -1,112 +1,152 @@
-# Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:18 +1030에 의해 만들어진
+#  Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:02 +1030 https://github.com/smugglys/translatomatic
 
 ko:
   translatomatic:
     cli:
+      aborted: 중단 된
       config:
-        subcommand: 구성 명령
+        add: 목록에 구성 값 추가
         configuration: 구성
-        context_configuration: 컨텍스트 '%{context}'에 대 한 구성
-        no_config: 아니 구성 발견
-        set: 구성 설정 변경
-        remove: 구성 설정 제거
-        list: 현재 구성 설정 목록
         describe: 사용 가능한 구성 설정 설명
+        for_file: 파일 별 구성 설정 변경
+        list: 현재 구성 설정 나열
+        location_configuration: "&#39;%{location}&#39;파일 구성"
+        no_config: 구성을 찾지 못했습니다.
+        project: 프로젝트 구성 파일 사용
+        set: 구성 설정 변경
+        subcommand: 구성 명령
+        subtract: 목록에서 구성 값 제거
+        unset: 구성 설정 제거
+        user: 사용자 구성 파일 사용
+      convert: 소스 파일을 대상 파일 형식으로 변환
+      database:
+        drop: 데이터베이스 삭제
+        search: 지정된 문자열과 일치하는 텍스트를 데이터베이스에서 검색합니다.
+        subcommand: 데이터베이스 명령
+        info: 데이터베이스 정보
+        text_count: 데이터베이스에 %{count} 문자열이 있습니다.
+        delete_text: 텍스트 및 해당 번역 삭제
+        text_not_found: 텍스트 ID %{id} 을 (를) 찾을 수 없습니다.
+      debug: 디버깅 출력 사용
+      display_sentences: 문장 표시
+      display_values: 자원 번들의 값 표시
+      display_version: 버전 표시
+      dry_run: 번역이나 파일 작성없이 작업을 인쇄하십시오.
+      error: 오류가 발생했습니다
+      extract_strings: 비 - 리소스 파일에서 문자열 추출
+      file_source: '파일 : %{file}'
+      locales_required: 하나 이상의 대상 로캘이 필요합니다.
+      locales_to_display: 표시 할 로캘
+      no_wank: 번역 진행률 표시 줄 사용 중지
+      provider:
+        available: 유효한
+        available_no: 아니
+        available_yes: 예
+        description: 기술
+        env: 환경
+        name: 이름
+        option: 선택권
+      providers: 사용 가능한 번역 서비스 제공 업체 목록
+      sentences: '문장 :'
+      source_files: 번역 할 파일
+      source_locale: 소스 파일의 로케일
+      target_locales: 번역 할 로케일
+      translate:
+        file: 파일을 대상 로케일로 변환
+        no_providers: 번역 제공자가 없습니다.
+        provider: 사용할 공급자 구현
+        share: 공급자와 번역 공유
+        string: 문자열을 대상 로케일로 변환
+        subcommand: 파일 또는 문자열 번역
+        translating: 번역 중
+        translating_file: " %{source} (%{source_locale})을 %{target_locale})로 번역 중입니다."
+        using_provider: '제공자 사용 : %{name}'
+        using_providers: '제공자 사용 : %{list}'
+    config:
+      command_line_only: "&#39;%{key}&#39;설정을 저장할 수 없습니다"
+      context:
+        env: 환경
+        project: 계획
+        user: 사용자
+      heading:
+        desc: 기술
         name: 이름
         type: 유형
         value: 값
-        desc: 설명
-        context: 구성 컨텍스트
-      convert: 소스 파일을 대상 파일 형식으로 변환
-      translate:
-        subcommand: 파일 또는 문자열 번역
-        file: 대상 로케일 파일 번역
-        string: 대상 로케일 문자열 번역
-        translator: 번역기 사용 하 여 구현
-      source_locale: 소스 파일의 로캘
-      target_locales: 번역 하는 로캘
-      source_files: 번역 파일
-      debug: 디버깅 출력을 사용 하도록 설정
-      wank: 번역 진행률 표시줄 사용
-      share: 번역자와 번역을 공유
-      dry_run: '드라이 실행: 파일 또는 번역 될 하지 작성'
-      locales_required: 하나 이상의 대상 로케일 필요
-      using_translator: '번역기를 사용 하 여: %{name}'
-      display_values: 리소스 번들에서 표시 값
-      locales_to_display: 로캘을 표시합니다
-      display_sentences: 표시 문장
-      extract_strings: 아닌 리소스 파일에서 문자열을 추출
-      list_backends: 목록 사용 가능한 번역 서비스
-      display_version: 디스플레이 버전
-      uploading_tmx: "%{name} TMX 업로드"
-      translating: 번역 중
-      aborted: 중단
-      file_source: '파일: %{file}'
-      sentences: '문장:'
-      database:
-        subcommand: 데이터베이스 명령
-        search: 지정 된 문자열과 일치 하는 텍스트에 대 한 검색 데이터베이스입니다.
-    file:
-      not_found: '파일을 찾을 수 없습니다: %{file}'
-      unsupported: '지원 되지 않는 파일 형식: %{file}'
-      unknown_locale: 로케일을 확인할 수 없습니다
-      created_by: "%{app} %{version} %{date}에 의해 만들어진"
-      error: '오류: %{message}'
-      loading: "%{file} %{name}를 사용 하 여 로드 하려고"
-      directory: '파일은 디렉터리: %{file}'
-      invalid: '파일 유효 하지 않습니다: %{file}'
-    tmx:
-      multiple_origins: 텍스트에 여러 개의 기원입니다.
-      multiple_locales: 텍스트에 여러 소스 로캘
-    translator:
-      email_required: 이메일 주소는 필수입니다.
-      password_required: 암호 필요입니다.
-      google_key_required: 구글 API 키 필요입니다.
-      google_api_key: 구글 API 키
-      frengly_api_key: Frengly API 키
-      microsoft_api_key: 마이크로소프트 API 키
-      microsoft_key_required: 마이크로소프트 API 키 필요입니다.
-      mymemory_api_key: MyMemory API 키
-      email_address: 이메일 주소
-      share_response: '공유 응답: %{response}'
-      yandex_api_key: Yandex API 키
-      yandex_key_required: Yandex API 키 필요입니다.
-      required_option: "(필수)"
-      translators: '모든 번역자:'
-      configured: '구성된 변환기:'
-      unavailable: 번역기 %{name} 불가능합니다.
-      no_translators: 아니 변환기 구성 됩니다.
-      password: 암호
-    file_translator:
-      total_translations: 총 번역:%{total}(%{from_db}데이터베이스에서,%{from_translator}에서 번역,%{untranslated}맞)
-      untranslated: '번역 되지 않은 문자열:'
-      dry_run: 번역을 수행 하거나 파일을 작성 하지 않고 작업을 인쇄 합니다.
-      use_database: 저장 하 고 데이터베이스에서 번역을 검색 합니다.
-      database_disabled: 데이터베이스는 사용할 수 없습니다.
-      translator_required: 통역 필요입니다.
-      translating: 번역%{source}(%{source_locale})%{target}(%{target_locale})
-      stats: '번역 데이터베이스: %{from_db}, 번역기: %{from_translator}, 번역된: %{untranslated}'
-    database:
-      no_environment: 아니 환경 %{env}에서 ' %{file}'
-      migrated: 데이터베이스 마이그레이션.
-      created: 데이터베이스 생성입니다.
-      deleted: 데이터베이스 삭제입니다.
-      could_not_create: 데이터베이스를 만들 수 없습니다.
-      config_file: 데이터베이스 구성 파일의 경로를
-      env: 데이터베이스 환경
-    unicode:
-      invalid_byte: '잘못 된 UTF8 바이트: ''%{byte}'''
-    config:
-      invalid_context: '배우와 구성 컨텍스트: ''%{context}'''
-      invalid_key: '배우와 구성 키: ''%{key}'''
-      command_line_only: 구성 '%{key}' 저장할 수 없습니다.
+      invalid_context: '인식 할 수없는 구성 컨텍스트 : &#39;%{context}&#39;'
+      invalid_key: '인식 할 수없는 구성 키 : &#39;%{key}&#39;'
+      non_array_key: '구성이 배열 유형이 아닙니다 : &#39;%{key}&#39;'
+      one_at_a_time: 한 번에 하나의 설정 파일 만
       types:
-        string: 문자열
-        hash: 해시
-        array: 배열
-        numeric: 숫자
+        array: 정렬
         boolean: 부울
-      context:
-        env: 환경
-        project: 프로젝트
-        user: 사용자
+        hash: 해시시
+        numeric: 숫자
+        path: 통로
+        path_array: 경로 배열
+        string: 끈
+    database:
+      config_file: 데이터베이스 구성 파일의 경로
+      could_not_create: 데이터베이스를 만들 수 없습니다.
+      created: 데이터베이스가 생성되었습니다.
+      deleted: 데이터베이스가 삭제되었습니다.
+      env: 데이터베이스 환경
+      migrated: 마이그레이션 된 데이터베이스.
+      no_environment: "%{file}에 &#39; %{env}&#39;환경이 없습니다"
+    file:
+      created_by: " %{app} %{version} %{date} %{url}"
+      csv:
+        comment_column: 주석에 사용할 CSV 열 이름
+        headers: CSV 파일의 첫 번째 행을 헤더 행으로 취급하십시오.
+        key_column: 속성 키에 사용할 CSV 열 이름
+        translate_columns: 번역 할 CSV 열의 이름 또는 색인
+        value_column: 속성 값에 사용할 CSV 열 이름
+      directory: '파일은 디렉토리입니다 : %{file}'
+      error: '오류 : %{message}'
+      invalid: '파일이 잘못되었습니다 : %{file}'
+      loading: "%{name} 사용하여 %{name} %{file} 을 (를로드하려고했습니다."
+      not_found: '파일을 찾을 수 없음 : %{file}'
+      unknown_locale: 로켈을 확인할 수 없습니다.
+      unsupported: '지원되지 않는 파일 형식 : %{file}'
+    file_translator:
+      in_place: 소스 파일을 현재 위치에서 번역하십시오.
+    provider:
+      email_address: 이메일 주소
+      email_required: 이메일 주소가 필요합니다.
+      frengly:
+        api_key: Frengly API 키
+      google:
+        api_key: Google API 키
+        key_required: Google API 키가 필요합니다.
+        model: 번역 모델
+      invalid_response: 공급자로부터 예기치 않은 응답
+      microsoft:
+        api_key: Microsoft API 키
+        key_required: Microsoft API 키가 필요합니다.
+      mymemory:
+        api_key: MyMemory API 키
+      options: '공급자 옵션 :'
+      password: 암호
+      password_required: 비밀번호 필요.
+      required_option: "(필수)"
+      share_response: '응답 공유 : %{response}'
+      status: '제공 업체 상태 :'
+      unavailable: 공급자 %{name} ) 사용할 수 없습니다.
+      yandex:
+        api_key: Yandex API 키
+        key_required: Yandex API 키가 필요합니다.
+    sharer:
+      uploading_tmx: " %{name}TMX 업로드 중"
+    tmx:
+      multiple_locales: 텍스트의 여러 소스 로케일.
+      multiple_origins: 텍스트의 여러 기원.
+    translator:
+      database_disabled: 데이터베이스가 비활성화되었습니다.
+      no_database: 번역을 데이터베이스에 저장하지 마십시오.
+      provider_required: 제공자가 필요합니다.
+      total_translations: '전체 번역 : %{total} (%{from_db} 데이터베이스에서 %{from_provider}
+        공급자, %{untranslated} 번역되지 않은)'
+      untranslated: '번역되지 않은 문자열 :'
+      string_too_long: 문자열이 너무 길어서 번역 할 수 없습니다.
+    unicode:
+      invalid_byte: '유효하지 않은 UTF8 바이트 : &#39;%{byte}&#39;'

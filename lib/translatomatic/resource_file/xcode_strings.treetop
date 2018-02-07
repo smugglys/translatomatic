@@ -1,0 +1,85 @@
+grammar XCodeStrings
+  rule document
+    (whitespace / comment / definition)* {
+      def content
+        elements.collect { |i| i.content }.select { |i| i[0] != :whitespace }
+      end
+    }
+  end
+
+  rule comment
+    start_comment comment_content end_comment {
+      def content
+        [:comment, elements[1].text_value]
+      end
+    }
+  end
+
+  rule comment_content
+    (!end_comment character)+
+  end
+
+  rule definition
+    key assignment value end_definition {
+      def content
+        [:definition, elements[0].content, elements[2].content]
+      end
+    }
+  end
+
+  rule end_definition
+    whitespace* ';'
+  end
+
+  rule assignment
+    whitespace* '=' whitespace*
+  end
+
+  rule key
+    quoted_string
+  end
+
+  rule value
+    quoted_string
+  end
+
+  rule whitespace
+    [ \t\r\n] {
+      def content
+        [:whitespace, text_value]
+      end
+    }
+  end
+
+  rule start_comment
+    '/*'
+  end
+
+  rule end_comment
+    '*/'
+  end
+
+  rule character
+    .
+  end
+
+  rule string_content
+    (escaped_double_quote / !double_quote character)*
+  end
+
+  rule escaped_double_quote
+    '\\' double_quote
+  end
+
+  rule double_quote
+    '"'
+  end
+
+  rule quoted_string
+    double_quote string_content double_quote {
+      def content
+        elements[1].text_value
+      end
+    }
+  end
+end

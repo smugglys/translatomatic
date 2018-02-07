@@ -1,0 +1,6 @@
+
+msgid "property1"
+msgstr "saved value 1"
+
+msgid "property2"
+msgstr "saved value 2"

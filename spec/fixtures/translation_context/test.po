@@ -1,0 +1,7 @@
+#. tm.context: context 1
+msgid "property1"
+msgstr "value"
+
+#. tm.context: context 2
+msgid "property2"
+msgstr "value"

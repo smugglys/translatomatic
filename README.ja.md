@@ -1,146 +1,150 @@
 [![Documentation](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/gems/translatomatic)[![Gem Version](https://badge.fury.io/rb/translatomatic.svg)](https://badge.fury.io/rb/translatomatic)[![Build Status](https://travis-ci.org/smugglys/translatomatic.svg?branch=master)](https://travis-ci.org/smugglys/translatomatic)[![Code Climate](https://codeclimate.com/github/smugglys/translatomatic.svg)](https://codeclimate.com/github/smugglys/translatomatic)
 
-# Translatomatic
+# 翻訳者
 
-別に 1 つの言語または別の 1 つの形式からテキスト ファイルに変換します。 次のファイル形式がサポートされています。
+テキストファイルをある言語から別の言語に、ある形式から別の形式に翻訳します。 現在サポートされているファイル形式は次のとおりです。
 
-| ファイルの形式 | 拡張機能 |
+| ファイル形式 | 拡張機能 |
 | --- | --- |
-| [特性](https://en.wikipedia.org/wiki/.properties) | `.properties` |
-| Windows リソース ファイル | `.resw, .resx` |
-| [物件リスト](https://en.wikipedia.org/wiki/Property_list) (OSX plist) | `.plist` |
-| [PO ファイル](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
-| [XCodeの文字列](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
+| [プロパティ](https://en.wikipedia.org/wiki/.properties) | `.properties` |
+| Windowsリソースファイル | `.resw, .resx` |
+| [プロパティリスト](https://en.wikipedia.org/wiki/Property_list) （OSX plist） | `.plist` |
+| [POファイル](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) | `.po, .pot` |
+| [XCode文字列](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) | `.strings` |
 | [YAML](http://yaml.org/) | `.yaml` |
 | 字幕 | `.srt, .ass, .ssa` |
 | HTML | `.html, .htm, .shtml` |
 | XML | `.xml` |
-| [値下げ](https://en.wikipedia.org/wiki/Markdown) | `.md` |
+| [マークダウン](https://en.wikipedia.org/wiki/Markdown) | `.md` |
 | テキストファイル | `.txt` |
-| CSV ファイル | `.csv` |
+| CSVファイル | `.csv` |
 
-次の翻訳 Api は、Translatomatic で使用できます。
+Translatomaticでは、次の翻訳プロバイダを使用できます。
 
 - [Google](https://cloud.google.com/translate/)
 - [マイクロソフト](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
-- [Yandex](https://tech.yandex.com/translate/)
-- [MyMemory](https://mymemory.translated.net/doc/)
-- [Frengly](http://www.frengly.com/api)
+- [ヤンデックス](https://tech.yandex.com/translate/)
+- [私の思い出](https://mymemory.translated.net/doc/)
+- [強く](http://www.frengly.com/api)
 
-翻訳文字列に保存されたデータベースの再利用されます。
+翻訳された文字列はデータベースに保存され、再利用されます。
 
 * * *
 
-## インストール
+##インストール
 
-この機能を追加ラインの中から必要なものを選んで使用 `Gemfile`:
+この行をアプリケーションに追加する `Gemfile`：
 
 `ruby
 gem 'translatomatic'
 `
 
-そして実行す:
+そして、以下を実行します：
 
     $ bundle
 
-インストールで自分自身:
+または、自分でインストールしてください：
 
     $ gem install translatomatic
 
 * * *
 
-## の使用
+＃＃ 使用法
 
-この宝石と呼ばれる実行可能ファイルを提供します。 `translatomatic`ます。 、 `translatomatic` コマンドは、いくつかのここに記載されているすべての機能を持ちます。 利用可能なコマンドとオプションに関するヘルプを実行します。
+この宝石は、 `translatomatic`。 ザ `translatomatic` コマンドにはいくつかの機能がありますが、そのすべてがここに記載されているわけではありません。 使用可能なコマンドとオプションのヘルプについては、次のコマンドを実行してください。
 
     $ translatomatic help
 
-ヘルプ コマンドが実行します。
+コマンドのヘルプを表示するには、次のコマンドを実行します。
 
     $ translatomatic translate help
     $ translatomatic translate help file
 
 * * *
 
-## セットアップ
+＃＃ セットアップ
 
-利用可能な翻訳サービスとオプションを確認、 `services` コマンド:
+利用可能な翻訳プロバイダとオプションが `providers` コマンド：
 
-    $ translatomatic services
+    $ translatomatic providers
 
-オプションは、コマンドライン、環境変数、または translatomatic の構成ファイルで指定することができます。 Translatomatic を使用してファイルを変更することができます構成の内部 `config` コマンドです。 すべての利用可能な構成設定を一覧表示するには、使用します。
+オプションは、コマンドライン、環境変数、または翻訳の設定ファイルで指定できます。 構成ファイルは、translatomaticの内部 `config` コマンド。 使用可能なすべての構成設定を一覧表示するには、
 
     $ translatomatic config list
     $ translatomatic config describe
 
-オプションは、ユーザー レベルまたはプロジェクト レベルで設定することができます。 詳細については、後述の構成も参照してください。
+オプションは、ユーザーレベルまたはプロジェクトレベルで設定できます。 詳細については、以下の設定セクションも参照してください。
 
 * * *
 
-## ファイルの翻訳
+##ファイルの翻訳
 
-ファイルを変換するとき `translatomatic` 変換テキストの文章や言葉です。 ファイルが再翻訳された場合、最後の翻訳から変更されている唯一の文は翻訳者に送信され、残りの部分は、ローカル データベースから供給されます。
+ファイルを翻訳するときは、 `translatomatic` 一度に1つの文または句を翻訳します。 ファイルが再翻訳されると、最後の翻訳後に変更された文のみが翻訳プロバイダに送信され、残りはローカルデータベースから供給されます。
 
-ドイツ語とフランス語の Google 翻訳を使用して Java のプロパティ ファイルを翻訳。
+Googleプロバイダを使用してJavaプロパティファイルをドイツ語とフランス語に翻訳するには：
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
-こうした成(上書き) `strings_de.properties` - `strings_fr.properties` 変換のプロパティを実行します。
+これにより、 `strings_de.properties` そして `strings_fr.properties` 翻訳されたプロパティで。
 
-### 表示文字列からリソースバンドル
+### リソースバンドルからの文字列の表示
 
-読みを表示 `store.description` - `store.name` 物件からの現地リソースファイル、英語、ドイツ、フランス語：
+を読み、表示するには `store.description` そして `store.name` 英語、ドイツ語、フランス語のローカルリソースファイルのプロパティ：
 
     $ translatomatic display --locales=en,de,fr \
         resources/strings.properties store.description store.name
 
-### 抽出から文字列をソースファイル
+### ソースファイルからの文字列の抽出
 
-ソース ファイルから文字列を抽出するを使用、 `strings` コマンド例。
+ソースファイルから文字列を抽出するには、 `strings` コマンド、例えば
 
     $ translatomatic strings file.rb
 
 * * *
 
-## ファイルを変換します。
+##ファイルを変換する
 
-Translatomatic を使用して、1 つの形式から別のファイルを変換できます。 たとえば、Java に変換する、XCode をプロパティ ファイル文字列ファイル。
+Translatomaticを使用して、ファイルをあるフォーマットから別のフォーマットに変換することができます。 たとえば、JavaプロパティファイルをXCode文字列ファイルに変換するには、次のようにします。
 
     $ translatomatic convert strings.properties Localization.strings
 
 * * *
 
-## 構成
+##設定
 
-Translatomatic は、ユーザーごとの構成ファイル `$HOME/.translatomatic/config.yml`、および必要に応じて、プロジェクト構成ファイルあたり `$PROJECT_DIR/.translatomatic/config.yml`ます。 、e `translatomatic config set` コマンドは、プロジェクト レベルの構成 translatomatic 構成ファイルを含むプロジェクト内で実行されたときに動作します。うでなければユーザー レベルの構成ファイルが変更されます。 The `--context` 指定するオプションを使用できます。 `user` または `project` レベルの構成。 構成オプションの有効な値は、環境、ユーザー レベルの構成ファイル、プロジェクト レベルの構成ファイル (存在する場合)、およびコマンド ・ ラインからの読書によって決まります。 最後の値は、以前に読み取られた値よりも優先されます。
+設定を読み書きするには、 `config get` そして `config set` コマンド。 Translatomaticは、ユーザ設定ファイルを `$HOME/.translatomatic/config.yml`、オプションでプロジェクトごとの構成ファイル `$PROJECT_DIR/.translatomatic/config.yml`。
 
-### Translatomatic の設定例
+ザ `--user` そして `--project` オプションを使用すると、コマンドに読み取りまたは書き込みを指示することができます。 `user` または `project` 構成。
 
-設定するのには `google_api_key` ユーザー構成ファイル内で使用します。
+構成設定は、環境変数、ユーザー構成ファイル、プロジェクト構成ファイル（存在する場合）、およびコマンド行から読み取られます。 最後に見つかった値は、先に読み取った値よりも優先されます。
 
-    $ translatomatic config set google_api_key value --context user
+コンフィグレーションに `config set` 新しい値は、翻訳構成ファイルを含むプロジェクト内で実行された場合はプロジェクト構成ファイルに書き込まれ、プロジェクト構成ファイルが存在しない場合はユーザー構成ファイルに書き込まれます。
 
-使用する 1 つまたは複数の翻訳サービスを設定: する
+### トランスレーションの設定例
 
-    $ translatomatic config set translator Microsoft,Yandex
+設定するには `google_api_key` ユーザー構成ファイル内で、次のように使用します。
 
-二次翻訳者は、最初の選択肢を使用する場合、変換エラーが発生した場合にのみ使用されます。
+    $ translatomatic config set google_api_key value --user
 
-ターゲットのロケールの既定の一覧を設定: する
+使用する翻訳サービスを1つ以上設定するには：
+
+    $ translatomatic config set provider Microsoft,Yandex
+
+ターゲットロケールのデフォルトリストを設定するには：
 
     $ translatomatic config set target_locales en,de,es,fr,it
 
-と `target_locales` 設定すると、ファイルはターゲットのロケールを指定することがなく翻訳が可能、 `translate file` コマンドです。
+と `target_locales` 設定すると、ターゲットロケールを指定せずにファイルを翻訳することができます。 `translate file` コマンド。
 
     $ translatomatic translate file resources/strings.properties
 
-現在の構成を表示するには、を実行します。
+現在の設定を表示するには、次のコマンドを実行します。
 
     $ translatomatic config list
 
-### データベースの構成
+### データベース構成
 
-デフォルトでは、 `translatomatic` を使用してsqlite3データベース `$HOME/.translatomatic/translatomatic.sqlite3` 店舗の翻訳の文字列です。 翻訳をデータベースに格納するようにインストールされている適切なデータベース アダプターが必要、 `sqlite3` 逸品です。 Translatomatic では、データベース アダプターを自動的にインストールされません。 データベースの構成を作成することによって変更できます、 `database.yml` ファイル `$HOME/.translatomatic/database.yml` のための `production` 環境、例えば
+デフォルトでは、 `translatomatic` のsqlite3データベースを使用 `$HOME/.translatomatic/translatomatic.sqlite3` 翻訳された文字列を格納します。 データベース構成は、 `database.yml` 下のファイル `$HOME/.translatomatic/database.yml` のために `production` 環境、例えば
 
     production:
       adapter: mysql2
@@ -148,25 +152,26 @@ Translatomatic は、ユーザーごとの構成ファイル `$HOME/.translatoma
       database: translatomatic
       pool: 5
       encoding: utf8
+      collation: utf8_bin
       username: username
       password: password
 
 * * *
 
-## 貢献
+##寄稿
 
-バグ報告を引き要請を歓迎GitHubでhttps://github.com/smugglys/translatomaticます。 このプロジェクトなどに対応できるようになっても安全で快適なスペースのための協力者が付着し [執筆規約](http://contributor-covenant.org) 行動規範です。
-
-* * *
-
-## ライセンス
-
-の逸品をご用意してオープンソースの条件の下での [MITライセンス](https://opensource.org/licenses/MIT)ます。
+バグ報告とプルリクエストは、GitHub（https://github.com/smugglys/translatomatic）で歓迎します。 このプロジェクトは、共同作業のための安全で歓迎すべき空間であり、寄稿者は [貢献者規約](http://contributor-covenant.org) 行動規範。
 
 * * *
 
-## 行動規範
+##ライセンス
 
-皆様との交流のTranslatomaticプロジェクトのcodebases、ラッカー、チャットルームやメーリングリストで入力してください [行動規範](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)ます。
+この宝石は、オープンソースとしての [MITライセンス](https://opensource.org/licenses/MIT)。
 
-_Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:24 +1030 によって作成されました。_
+* * *
+
+＃＃ 行動規範
+
+Translatomaticプロジェクトのコードベース、課題トラッカー、チャットルーム、メーリングリストと対話するすべての人は、 [行動規範](https://github.com/smugglys/translatomatic/blob/master/CODE_OF_CONDUCT.md)。
+
+_作成された Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:20 +1030 https://github.com/smugglys/translatomatic_

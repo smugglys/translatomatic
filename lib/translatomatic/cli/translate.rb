@@ -1,181 +1,158 @@
 require 'ruby-progressbar'
 
-# Command line interface to translatomatic
-module Translatomatic::CLI
-  # Translation functions for the command line interface
-  class Translate < Base
+module Translatomatic
+  module CLI
+    # Translation functions for the command line interface
+    class Translate < Base
+      default_task :file
 
-    default_task :file
+      define_option :provider, type: :array, aliases: '-t',
+                               desc: t('cli.translate.provider'),
+                               enum: Translatomatic::Provider.names
+      define_option :source_locale, desc: t('cli.source_locale')
+      define_option :target_locales, desc: t('cli.target_locales'),
+                                     type: :array
+      define_option :source_files, desc: t('cli.source_files'),
+                                   type: :path_array
+      define_option :share, desc: t('cli.translate.share'), default: false
 
-    define_options(
-      { name: :translator, type: :array, aliases: "-t",
-        desc: t("cli.translate.translator"),
-        enum: Translatomatic::Translator.names
-      },
-      { name: :source_locale, desc: t("cli.source_locale") },
-      { name: :share, desc: t("cli.share"), default: false },
-      { name: :target_locales, desc: t("cli.target_locales"),
-        type: :array
-      },
-      { name: :source_files, desc: t("cli.source_files"),
-        type: :array
-      },
-      )
+      desc 'string text locale...', t('cli.translate.string')
+      thor_options(self, Translatomatic::CLI::CommonOptions)
+      thor_options(self, Translatomatic::CLI::Translate)
+      thor_options(self, Translatomatic::Provider.types)
+      # Translate a string to target locales
+      # @param text [String] String to translate
+      # @param locales [Array<String>] List of target locales, can also be set
+      #   with the --target-locales option
+      # @return [void]
+      def string(text, *locales)
+        run do
+          all_conf = conf.all
+          source_locale = conf.get(:source_locale) || Locale.default.to_s
+          target_locales = determine_target_locales(locales)
+          providers = Provider.resolve(conf.get(:provider), all_conf)
 
-    desc "string text locale...", t("cli.translate.string")
-    thor_options(self, Translatomatic::CLI::CommonOptions)
-    thor_options(self, Translatomatic::CLI::Translate)
-    thor_options(self, Translatomatic::Translator.modules)
-    # Translate a string to target locales
-    # @param text [String] String to translate
-    # @param locales [Array<String>] List of target locales, can also be set
-    #   with the --target-locales option
-    # @return [void]
-    def string(text, *locales)
-      run do
-        setup_translation
-        determine_target_locales(locales)
-
-        puts "(%s) %s" % [@source_locale, text]
-        @translators.each do |translator|
-          puts t("cli.using_translator", name: translator.name)
-          @target_locales.each do |target_locale|
-            result = translator.translate([text], @source_locale, target_locale)
-            puts "  -> (%s) %s" % [target_locale, result]
+          template = '(%<locale>s) %<text>s'
+          puts format(template, locale: source_locale, text: text)
+          providers.each do |provider|
+            puts t('cli.translate.using_provider', name: provider.name)
+            target_locales.each do |l|
+              translations = provider.translate([text], source_locale, l)
+              translations.each do |translation|
+                puts format('  -> ' + template, locale: l, text: translation)
+              end
+            end
+            puts
           end
-          puts
-        end
 
-        finish_log
+          finish_log
+        end
       end
-    end
 
-    desc "file filename locale...", t("cli.translate.file")
-    thor_options(self, Translatomatic::CLI::CommonOptions)
-    thor_options(self, Translatomatic::CLI::Translate)
-    thor_options(self, Translatomatic::FileTranslator)
-    thor_options(self, Translatomatic::Database)
-    thor_options(self, Translatomatic::Translator.modules)
-    # Translate files to target locales
-    # @param file [String] Resource file to translate, can also be set
-    #   with the --source-files option.
-    # @param locales [Array<String>] List of target locales, can also be set
-    #   with the --target-locales option
-    # @return [void]
-    def file(file = nil, *locales)
-      run do
-        setup_translation
-        determine_target_locales(locales)
+      desc 'file filename locale...', t('cli.translate.file')
+      thor_options(self, Translatomatic::CLI::CommonOptions)
+      thor_options(self, Translatomatic::CLI::Translate)
+      thor_options(self, Translatomatic::FileTranslator)
+      thor_options(self, Translatomatic::Database)
+      thor_options(self, Translatomatic::Provider.types)
+      thor_options(self, Translatomatic::ResourceFile.types)
+      # Translate files to target locales
+      # @param file [String] Resource file to translate, can also be set
+      #   with the --source-files option.
+      # @param locales [Array<String>] List of target locales, can also be set
+      #   with the --target-locales option
+      # @return [void]
+      def file(file = nil, *locales)
+        run do
+          # set up database and progress updater
+          Translatomatic::Database.new(conf.all)
+          stats = Translation::Stats.new
 
-        # check source file(s) exist and they can be loaded
-        source_files = parse_list(cli_option(:source_files), file)
-        source_files.each do |source_file|
-          path = source_path(source_file)
-          raise t("file.not_found", file: path) unless File.exist?(path)
-          source = Translatomatic::ResourceFile.load(path, @source_locale)
-          raise t("file.unsupported", file: path) unless source
+          # translate the files
+          source_files = load_source_files(file)
+          listener = progress_updater(source_files, locales)
+          source_files.each do |source|
+            stats += translate_file(source, locales, listener)
+          end
+          log.info stats
+          finish_log
         end
+      end
 
-        # set up database
-        Translatomatic::Database.new(options)
+      private
 
-        # set up file translatiln
-        translation_count = calculate_translation_count(source_files, @target_locales)
-        ft_options = options.merge(
-          translator: @translators,
-          listener: progress_updater(translation_count)
-        )
+      def translate_file(source, locales, listener)
+        file_opts = conf.all(for_file: source.path)
+        target_locales = determine_target_locales(locales, source)
+        ft_options = file_opts.merge(listener: listener)
         ft = Translatomatic::FileTranslator.new(ft_options)
+        stats = Translation::Stats.new
 
-        source_files.each do |path|
-          # read source file
-          source = Translatomatic::ResourceFile.load(path, @source_locale)
-
-          # convert source to locale(s) and write files
-          @target_locales.each do |i|
-            to_locale = locale(i)
-            next if to_locale.language == source.locale.language
-            ft.translate_to_file(source, to_locale)
-          end
+        target_locales.each do |target_locale|
+          log.info(t('cli.translate.translating_file',
+                     source: source, source_locale: source.locale,
+                     target_locale: target_locale))
+          ft.translate_to_file(source, target_locale)
+          stats += ft.translator.stats
         end
-
-        log.info ft.stats
-        finish_log
-
-        share_translations(ft) if cli_option(:share)
+        stats
       end
-    end
 
-    private
-
-    def setup_translation
-      @source_locale = determine_source_locale
-      # resolve translators
-      @translators = Translatomatic::Translator.resolve(
-        cli_option(:translator), options
-      )
-    end
-
-    def determine_target_locales(locales)
-      @target_locales = parse_list(locales, cli_option(:target_locales))
-      raise t("cli.locales_required") if @target_locales.empty?
-    end
-
-    def determine_source_locale
-      cli_option(:source_locale) || conf.default_locale
-    end
-
-    def calculate_translation_count(source_files, locales)
-      count = 0
-      source_files.each do |file|
-        source = Translatomatic::ResourceFile.load(file, @source_locale)
-        count += source.sentences.length * locales.length
-      end
-      count
-    end
-
-    def share_translations(ft)
-      return if ft.db_translations.empty?
-
-      tmx = Translatomatic::TMX::Document.from_texts(ft.db_translations)
-      available = Translatomatic::Translator.available(options)
-      available.each do |translator|
-        if translator.respond_to?(:upload)
-          log.info(t("cli.uploading_tmx", name: translator.name))
-          translator.upload(tmx)
+      # load the source file(s)
+      def load_source_files(file)
+        source_files = []
+        files = parse_list(file, conf.get(:source_files))
+        files.each do |path|
+          raise t('file.not_found', file: path) unless File.exist?(path)
+          source = resource_file(path)
+          raise t('file.unsupported', file: path) unless source
+          source_files << source
         end
+        source_files
       end
 
-      ActiveRecord::Base.transaction do
-        ft.db_translations.each do |text|
-          text.update(shared: true) if text.is_translated?
+      def resource_file(path)
+        Translatomatic::ResourceFile.load(path, conf.all(for_file: path))
+      end
+
+      # use list given on command line in preference to configuration
+      def determine_target_locales(locales, source = nil)
+        source_path = source ? source.path : nil
+        config_locales = conf.get(:target_locales, for_file: source_path)
+        target_locales = parse_list(locales, config_locales)
+        raise t('cli.locales_required') if target_locales.empty?
+        target_locales
+      end
+
+      def total_translations(source_files, locales)
+        total = 0
+        source_files.each do |source|
+          property_values = source.properties.values
+          texts = property_values.collect { |i| build_text(i, source.locale) }
+          providers = resolve_providers(source).length
+          to_locales = determine_target_locales(locales, source).length
+          total += TextCollection.new(texts).count * providers * to_locales
         end
+        total
+      end
+
+      def resolve_providers(source)
+        Provider.resolve(conf.get(:provider, for_file: source.path), conf.all)
+      end
+
+      # create a progress bar and progress updater
+      def progress_updater(source_files, locales)
+        return nil if conf.get(:no_wank)
+        # set up progress bar
+        progressbar = ProgressBar.create(
+          title: t('cli.translate.translating'),
+          format: '%t: |%B| %p%% ',
+          autofinish: false,
+          total: total_translations(source_files, locales)
+        )
+        log.progressbar = progressbar if log.respond_to?(:progressbar=)
+        Translatomatic::ProgressUpdater.new(progressbar)
       end
     end
-
-    # convert the given path to an absolute path if necessary, relative
-    # to project root.
-    def source_path(path)
-      if path.start_with?("~/")
-        # replace ~/ with home directory
-        path = path.sub(/\A~\//, Dir.home + "/")
-      end
-      File.absolute_path(path, conf.project_path)
-    end
-
-    # create a progress bar and progress updater
-    def progress_updater(translation_count)
-      return nil unless cli_option(:wank)
-      # set up progress bar
-      progressbar = ProgressBar.create(
-        title: t("cli.translating"),
-        format: "%t: |%B| %E ",
-        autofinish: false,
-        total: translation_count
-      )
-      conf.logger.progressbar = progressbar
-      Translatomatic::ProgressUpdater.new(progressbar)
-    end
-
-  end # class
-end   # module
+  end
+end

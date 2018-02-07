@@ -1,6 +1,6 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-git_source(:github) { |repo| "https://github.com/smugglys/translatomatic" }
+git_source(:github) { |_repo| 'https://github.com/smugglys/translatomatic' }
 
 def gem_installed?(args)
   name, *version = *args
@@ -10,14 +10,18 @@ def gem_installed?(args)
 end
 
 def optional_gem(*args)
-  gem *args if gem_installed?(args)
+  gem(*args) if gem_installed?(args)
 end
+
+# javascript runtimes
+optional_gem 'therubyracer', platform: :ruby
+optional_gem 'therubyrhino', platform: :jruby
 
 # database adapters
 optional_gem 'mysql2', platform: :ruby
 optional_gem 'postgresql', platform: :ruby
 optional_gem 'ruby-oci8', platform: :ruby
-gem "sqlite3", '~> 1.3', platform: :ruby
+gem 'sqlite3', '~> 1.3', platform: :ruby
 
 # bigdecimal required by crack-0.4.3 on cygwin
 optional_gem 'bigdecimal'

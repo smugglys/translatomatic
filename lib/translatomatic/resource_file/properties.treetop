@@ -1,0 +1,87 @@
+# https://en.wikipedia.org/wiki/.properties
+grammar Properties
+  rule document
+    (whitespace / comment / definition)* {
+      def content
+        elements.collect { |i| i.content }.select { |i| i[0] != :whitespace }
+      end
+    }
+  end
+
+  rule comment
+    start_comment comment_content end_comment {
+      def content
+        [:comment, elements[1].text_value, elements[0].text_value]
+      end
+    }
+  end
+
+  rule start_comment
+    '#' / '!'
+  end
+
+  rule eof
+    !character
+  end
+
+  rule end_comment
+    newline / eof
+  end
+
+  rule comment_content
+    (!end_comment character)+
+  end
+
+  rule definition
+    key assignment value? end_definition {
+      def content
+        [:definition, elements[0].text_value, elements[2] ? elements[2].text_value : nil]
+      end
+    }
+  end
+
+  rule end_definition
+    newline / eof
+  end
+
+  rule newline
+    "\n"
+  end
+
+  rule line_continuation
+    "\\" newline whitespace*
+  end
+
+  rule assignment
+    whitespace* ('=' / ':') whitespace*
+  end
+
+  rule character
+    .
+  end
+
+  rule key
+    ('\\ ' / !assignment character)+
+    #(!assignment word)+
+  end
+
+  rule value_character
+    line_continuation / character
+  end
+
+  rule word
+    ('\\ ' / !assignment character)+
+  end
+
+  rule value
+    (!newline value_character)+
+  end
+
+  rule whitespace
+    [ \t\r\n] {
+      def content
+        [:whitespace, text_value]
+      end
+    }
+  end
+end

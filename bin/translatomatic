@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "translatomatic"
+$LOAD_PATH.unshift File.join(__dir__, '..', 'lib')
+
+require 'bundler/setup'
+require 'translatomatic'
 
 Translatomatic::CLI::Main.start

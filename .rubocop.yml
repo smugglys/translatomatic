@@ -1,0 +1,28 @@
+
+AllCops:
+  Exclude:
+    - translatomatic.gemspec
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'spec/**/*'
+
+# Offense count: 5
+# Cop supports --auto-correct.
+# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
+# need to keep those parameters for documentation purposes
+Lint/UnusedMethodArgument:
+  Exclude:
+    - 'lib/translatomatic/resource_file/base.rb'
+    - 'lib/translatomatic/resource_file/csv.rb'
+    - 'lib/translatomatic/resource_file/text.rb'
+
+# these need to use kind_of?, not is_a?
+Style/ClassCheck:
+  Exclude:
+    - 'lib/translatomatic/http/client.rb'
+    - 'lib/translatomatic/retry_executor.rb'
+    - 'lib/translatomatic/file_translator.rb'
+
+Lint/DefEndAlignment:
+  Description: "Makes sure def/ends line up"
+  Enabled: true

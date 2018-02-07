@@ -1,107 +1,110 @@
-require 'translatomatic/translator/base'
-require 'translatomatic/translator/yandex'
-require 'translatomatic/translator/google'
-require 'translatomatic/translator/microsoft'
-require 'translatomatic/translator/frengly'
-require 'translatomatic/translator/my_memory'
+module Translatomatic
+  # Translates strings from one language to another
+  class Translator
+    attr_reader :stats
 
-# Provides methods to access and create instances of
-# interfaces to translation APIs.
-module Translatomatic::Translator
+    def initialize(options = {})
+      @listener = options[:listener]
+      @providers = resolve_providers(options)
+      raise t('translator.provider_required') if @providers.empty?
+      @providers.each { |i| i.listener = @listener } if @listener
 
-  class << self
-    include Translatomatic::Util
-  end
+      # use database by default if we're connected to a database
+      @use_db = !options[:no_database] && ActiveRecord::Base.connected?
+      log.debug(t('translator.database_disabled')) unless @use_db
 
-  # @return [Class] The translator class corresponding to the given name
-  def self.find(name)
-    name && !name.empty? ? self.const_get(name) : nil
-  end
+      @stats = Translatomatic::Translation::Stats.new
+    end
 
-  # Resolve the given list of translator names to a list of translators.
-  # If the list is empty, return all translators that are configured.
-  # @param list [Array<String>] Translator names or translators
-  # @param options [Hash<String,String>] Translator options
-  # @return [Array<Translatomatic::Translator::Base>] Translators
-  def self.resolve(list, options = {})
-    list = [list] unless list.kind_of?(Array)
-    list = list.compact.collect do |translator|
-      if translator.respond_to?(:translate)
-        translator
-      else
-        klass = Translatomatic::Translator.find(translator)
-        translator = klass.new(options)
+    # Translate texts to a target locale
+    # @param texts [Array<Translatomatic::Text>] Texts to translate
+    # @param to_locales [Array<Locale>] Target locale(s)
+    # @return [Array<Translatomatic::Translation>] Translations
+    def translate(texts, to_locales)
+      text_collection = TextCollection.new(texts)
+      to_locales = [to_locales] unless to_locales.is_a?(Array)
+
+      # for each provider
+      #   get translations for all texts from the database
+      #   for texts that are untranslated, call the provider
+      # return translations
+
+      translation_collection = Translation::Collection.new
+      text_collection.each_locale do |from_locale, list|
+        next if list.blank?
+        @providers.each do |provider|
+          to_locales.each do |to_locale|
+            fetcher = Translation::Fetcher.new(
+              provider: provider, texts: list, use_db: @use_db,
+              from_locale: from_locale, to_locale: to_locale,
+              listener: @listener
+            )
+            translations = fetcher.translations
+            translation_collection += translations
+            update_stats(translations)
+          end
+        end
       end
-      translator
+
+      combine_substrings(translation_collection, text_collection, to_locales)
+      translation_collection
     end
 
-    if list.empty?
-      # find all available translators that work with the given options
-      list = Translatomatic::Translator.available(options)
-      if list.empty?
-        raise t("cli.no_translators")
-      end
-    end
-    list
-  end
+    private
 
-  # @return [List<Class>] A list of all translator classes
-  def self.modules
-    self.constants.collect { |c| self.const_get(c) }.select do |klass|
-      klass.is_a?(Class) && klass != Translatomatic::Translator::Base
-    end
-  end
+    include Util
+    include DefineOptions
 
-  # @return [List<String>] A list of all translators
-  def self.names
-    modules.collect { |i| i.name.demodulize }
-  end
+    define_option :no_database, type: :boolean, default: false,
+                                desc: t('translator.no_database')
 
-  # Find all configured translators
-  # @param options [Hash<String,String>] Translator options
-  # @return [Array<#translate>] A list of translator instances
-  def self.available(options = {})
-    available = []
-    modules.each do |mod|
-      begin
-        translator = mod.new(options)
-        available << translator
-      rescue Exception
-        log.debug(t("translator.unavailable", name: mod.name.demodulize))
-      end
-    end
-    available
-  end
-
-  # @return [String] A description of all translators and options
-  def self.list
-    out = t("translator.translators") + "\n"
-    configured_options = {}
-    modules.each do |mod|
-      out += "\n" + mod.name.demodulize + ":\n"
-      opts = mod.options
-      opts.each do |opt|
-        configured_options[opt.name] = config.get(opt.name)
-        optname = opt.name.to_s.gsub("_", "-")
-        out += "  --%-18s  %18s  %10s  %15s\n" % [optname, opt.description,
-          opt.required ? t("translator.required_option") : "",
-          opt.env_name ? "ENV[#{opt.env_name}]" : ""]
+    # Combine translations of substrings of the original strings
+    # @param tr_collection [Translatomatic::Translation::Collection]
+    #   Translation collection
+    # @return [void]
+    def combine_substrings(tr_collection, text_collection, to_locales)
+      to_locales.each do |to_locale|
+        text_collection.originals.each do |parent|
+          combine_parent_substrings(tr_collection, parent, to_locale)
+        end
       end
     end
-    out += "\n"
-    out += t("translator.configured") + "\n"
-    configured = available(configured_options)
-    configured.each do |translator|
-      out += "  " + translator.name + "\n"
+
+    def combine_parent_substrings(tr_collection, parent, to_locale)
+      # get a list of substring translations for this parent string
+      list = tr_collection.sentences(parent, to_locale)
+      # skip if we have no substrings for this string
+      return if list.blank?
+      list = list.sort_by { |tr| -tr.original.offset }
+
+      translated_parent = build_text(parent.value.dup, to_locale)
+      list.each do |tr|
+        original = tr.original
+        translated = tr.result
+        translated_parent[original.offset, original.length] = translated.to_s
+      end
+
+      # add the translation that results from combining the translated
+      # substrings to the translation collection
+      new_translation = translation(parent, translated_parent)
+      tr_collection.add(new_translation)
     end
-    out += t("translator.no_translators") if configured.empty?
-    out + "\n"
+
+    def translation(original, result, provider = nil, options = {})
+      Translatomatic::Translation::Result.new(
+        original, result, provider, options
+      )
+    end
+
+    def resolve_providers(options)
+      Translatomatic::Provider.resolve(options[:provider], options)
+    end
+
+    def update_stats(tr_collection)
+      stats = Translatomatic::Translation::Stats.new(
+        tr_collection.translations
+      )
+      @stats += stats
+    end
   end
-
-  private
-
-  def self.config
-    Translatomatic.config
-  end
-
 end

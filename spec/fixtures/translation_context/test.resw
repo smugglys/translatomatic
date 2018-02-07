@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="property1">
+    <comment>tm.context: context 1</comment>
+    <value>value</value>
+  </data>
+  <data name="property2">
+    <comment>tm.context: context 2</comment>
+    <value>value</value>
+  </data>
+</root>

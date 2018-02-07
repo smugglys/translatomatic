@@ -1,0 +1,19 @@
+<ArrayOfGetTranslationsResponse xmlns="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+  <GetTranslationsResponse>
+    <From>en</From>
+    <Translations>
+      <TranslationMatch>
+        <Count>0</Count>
+        <MatchDegree>100</MatchDegree><MatchedOriginalText/>
+        <Rating>5</Rating>
+        <TranslatedText>result1</TranslatedText>
+      </TranslationMatch>
+      <TranslationMatch>
+        <Count>0</Count>
+        <MatchDegree>100</MatchDegree><MatchedOriginalText/>
+        <Rating>0</Rating>
+        <TranslatedText>result2</TranslatedText>
+      </TranslationMatch>
+    </Translations>
+  </GetTranslationsResponse>
+</ArrayOfGetTranslationsResponse>

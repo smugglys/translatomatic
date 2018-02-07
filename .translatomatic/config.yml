@@ -16,3 +16,7 @@
 :source_files:
 - config/locales/translatomatic/en.yml
 - README.md
+:share: 'false'
+:provider:
+- Google
+:files: {}

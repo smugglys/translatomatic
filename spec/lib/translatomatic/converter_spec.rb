@@ -1,7 +1,6 @@
 RSpec.describe Translatomatic::Converter do
-
   def self.sane_conversion?(source, target)
-    source != target && source.is_key_value? && target.is_key_value?
+    source != target && source.key_value? && target.key_value?
   end
 
   Translatomatic::ResourceFile.types.each do |source_type|
@@ -18,8 +17,8 @@ RSpec.describe Translatomatic::Converter do
 
         # test that the written properties match the expected output
         expected_output = test_resource_file(target_type)
-        puts "written output:"
-        puts target.read
+        # puts 'written output:'
+        # puts target.read
         output = Translatomatic::ResourceFile.load(target)
         expect(output.properties).to eq(expected_output.properties)
       end

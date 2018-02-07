@@ -1,113 +1,152 @@
-# 由Translatomatic0.1.2Sat, 06 Jan 2018 22:56:18 +1030 创建
+# 由 Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:08 +1030 https://github.com/smugglys/translatomatic
 
 zh:
   translatomatic:
     cli:
-      config:
-        subcommand: 配置命令
-        configuration: 配置
-        context_configuration: 上下文 "%{context}" 的配置
-        no_config: 找不到配置
-        set: 更改配置设置
-        remove: 删除配置设置
-        list: 列出当前配置设置
-        describe: 描述可用的配置设置
-        name: 名称
-        type: 类型
-        value: 值
-        desc: 描述
-        context: 配置上下文
-      convert: 将源文件转换为目标文件格式
-      translate:
-        subcommand: 翻译文件或字符串
-        file: 将文件转换为目标区域设置
-        string: 将字符串转换为目标区域设置
-        translator: 要使用的转换器实现
-      source_locale: 源文件的区域设置
-      target_locales: 要转换为的区域设置
-      source_files: 要翻译的文件
-      debug: 启用调试输出
-      wank: 启用翻译进度栏
-      share: 与翻译人员共享翻译
-      dry_run: '干运行: 文件不会被翻译或写入'
-      locales_required: 需要一个或多个目标区域设置
-      using_translator: 使用转换器:%{name}
-      display_values: 显示资源包中的值
-      locales_to_display: 要显示的区域设置
-      display_sentences: 显示句子
-      extract_strings: 从资源文件中提取字符串
-      list_backends: 列出可用的翻译服务
-      display_version: 显示版本
-      uploading_tmx: 正在将 TMX 上载到%{name}
-      translating: 正在翻译
       aborted: 中止
-      file_source: 文件:%{file}
-      sentences: '句子:'
+      config:
+        add: 将配置值添加到列表
+        configuration: 组态
+        describe: 描述可用的配置设置
+        for_file: 更改每个文件的配置设置
+        list: 列出当前的配置设置
+        location_configuration: 文件&#39;%{location}&#39;的配置
+        no_config: 未找到配置
+        project: 使用项目配置文件
+        set: 更改配置设置
+        subcommand: 配置命令
+        subtract: 从列表中删除配置值
+        unset: 删除配置设置
+        user: 使用用户配置文件
+      convert: 将源文件转换为目标文件格式
       database:
+        drop: 删除数据库
+        search: 搜索数据库中与给定字符串匹配的文本。
         subcommand: 数据库命令
-        search: 搜索与给定字符串匹配的文本的数据库。
-    file:
-      not_found: 找不到文件:%{file}
-      unsupported: 不支持的文件类型:%{file}
-      unknown_locale: 无法确定区域设置
-      created_by: 由%{app}%{version}%{date} 创建
-      error: 错误:%{message}
-      loading: 尝试使用%{file} 加载%{name}
-      directory: 文件是一个目录:%{file}
-      invalid: 文件无效:%{file}
-    tmx:
-      multiple_origins: 文本中的多个来源。
-      multiple_locales: 文本中的多个源区域设置。
-    translator:
-      email_required: 需要的电子邮件地址。
-      password_required: 需要密码。
-      google_key_required: 需要 Google API 密钥。
-      google_api_key: 谷歌 API 密钥
-      frengly_api_key: Frengly API 密钥
-      microsoft_api_key: 微软 API 密钥
-      microsoft_key_required: 需要使用 Microsoft API 密钥。
-      mymemory_api_key: MyMemory API 密钥
-      email_address: 电子邮件地址
-      share_response: 共享响应:%{response}
-      yandex_api_key: Yandex API 密钥
-      yandex_key_required: 需要 Yandex API 密钥。
-      required_option: 需要)
-      translators: '所有翻译人员:'
-      configured: '已配置的翻译人员:'
-      unavailable: 转换器%{name} 不可用。
-      no_translators: 未配置任何翻译器。
-      password: 密码
-    file_translator:
-      total_translations: 总翻译:%{total} (%{from_db} 来自数据库,%{from_translator} 来自翻译器,%{untranslated}
-        未翻译)
-      untranslated: '未翻译的字符串:'
-      dry_run: 在不执行翻译或写入文件的情况下打印操作。
-      use_database: 存储和检索数据库中的翻译。
-      database_disabled: 数据库被禁用。
-      translator_required: 需要翻译。
-      translating: 将%{source} (%{source_locale}) 转换为%{target} (%{target_locale})
-      stats: 数据库翻译:%{from_db}, 转换器:%{from_translator}, 未翻译:%{untranslated}
-    database:
-      no_environment: '%{env} 中没有环境 "%{file}"'
-      migrated: 数据库已迁移。
-      created: 数据库已创建。
-      deleted: 数据库已删除。
-      could_not_create: 无法创建数据库。
-      config_file: 数据库配置文件的路径
-      env: 数据库环境
-    unicode:
-      invalid_byte: '无效的 UTF8 字节: "%{byte}"'
+        info: 数据库信息
+        text_count: 数据库包含 %{count} 字符串。
+        delete_text: 删除文本及其翻译
+        text_not_found: 未找到文本ID %{id} 。
+      debug: 启用调试输出
+      display_sentences: 显示句子
+      display_values: 显示来自资源包的值
+      display_version: 显示版本
+      dry_run: 打印操作而不执行翻译或写入文件。
+      error: 发生了错误
+      extract_strings: 从非资源文件中提取字符串
+      file_source: 文件： %{file}
+      locales_required: 需要一个或多个目标语言环境
+      locales_to_display: 显示的语言环境
+      no_wank: 禁用翻译进度条
+      provider:
+        available: 可得到
+        available_no: 没有
+        available_yes: 是
+        description: 描述
+        env: 环境
+        name: 名称
+        option: 选项
+      providers: 列出可用的翻译供应商
+      sentences: 句子：
+      source_files: 要翻译的文件
+      source_locale: 源文件的语言环境
+      target_locales: 将语言环境转换为
+      translate:
+        file: 将文件翻译为目标语言环境
+        no_providers: 未找到翻译供应商
+        provider: 供应商实现使用
+        share: 与提供商共享翻译
+        string: 将字符串转换为目标语言环境
+        subcommand: 翻译文件或字符串
+        translating: 翻译
+        translating_file: 将 %{source} （%{source_locale}）翻译为 %{target_locale}
+        using_provider: 使用提供者： %{name}
+        using_providers: 使用提供者： %{list}
     config:
-      invalid_context: '未配置上下文: "%{context}"'
-      invalid_key: '未配置键: "%{key}"'
-      command_line_only: 无法保存配置 "%{key}"
-      types:
-        string: 字符串
-        hash: 哈希
-        array: 数组
-        numeric: 数值
-        boolean: 布尔
+      command_line_only: 配置“%{key}”无法保存
       context:
         env: 环境
         project: 项目
         user: 用户
+      heading:
+        desc: 描述
+        name: 名称
+        type: 类型
+        value: 值
+      invalid_context: 无法识别的配置上下文：&#39;%{context}&#39;
+      invalid_key: 无法识别的配置密钥：&#39;%{key}&#39;
+      non_array_key: 配置不是数组类型：&#39;%{key}&#39;
+      one_at_a_time: 一次只有一个配置文件
+      types:
+        array: 排列
+        boolean: 布尔
+        hash: 哈希
+        numeric: 数字
+        path: 路径
+        path_array: 路径数组
+        string: 串
+    database:
+      config_file: 数据库配置文件的路径
+      could_not_create: 数据库无法创建。
+      created: 数据库创建。
+      deleted: 删除数据库。
+      env: 数据库环境
+      migrated: 数据库已迁移。
+      no_environment: "%{file}没有环境“ %{env}”"
+    file:
+      created_by: 由 %{app} %{version} %{date} %{url}
+      csv:
+        comment_column: 用于评论的CSV列名称
+        headers: 将第一行CSV文件视为一行标题。
+        key_column: 要用于属性键的CSV列名称
+        translate_columns: 要翻译的CSV列的名称或索引
+        value_column: 要用于属性值的CSV列名称
+      directory: 文件是一个目录： %{file}
+      error: 错误： %{message}
+      invalid: 档案无效： %{file}
+      loading: 尝试使用%{name}加载%{file} %{name}
+      not_found: 未找到文件： %{file}
+      unknown_locale: 无法确定区域设置
+      unsupported: 不支持的文件类型： %{file}
+    file_translator:
+      in_place: 翻译源文件就地。
+    provider:
+      email_address: 电子邮件地址
+      email_required: 需要电子邮件地址
+      frengly:
+        api_key: Frengly API密钥
+      google:
+        api_key: Google API密钥
+        key_required: 需要Google API密钥。
+        model: 翻译模式
+      invalid_response: 来自提供商的意外回应
+      microsoft:
+        api_key: 微软API密钥
+        key_required: 需要Microsoft API密钥。
+      mymemory:
+        api_key: MyMemory API密钥
+      options: 提供者选项：
+      password: 密码
+      password_required: 要求输入密码。
+      required_option: "（需要）"
+      share_response: 分享回复： %{response}
+      status: 提供者状态：
+      unavailable: 提供者 %{name} 不可用。
+      yandex:
+        api_key: Yandex API密钥
+        key_required: 需要Yandex API密钥。
+    sharer:
+      uploading_tmx: 将TMX上传到 %{name}
+    tmx:
+      multiple_locales: 文本中的多个源语言环境。
+      multiple_origins: 文本中的多个起源。
+    translator:
+      database_disabled: 数据库被禁用。
+      no_database: 不要将翻译保存到数据库。
+      provider_required: 提供者需要。
+      total_translations: 总的翻译： %{total} （%{from_db} 从数据库， %{from_provider} 从提供商 %{untranslated}
+        非翻译）
+      untranslated: 未翻译的字符串：
+      string_too_long: 字符串太长，无法翻译
+    unicode:
+      invalid_byte: 无效的UTF8字节：&#39;%{byte}&#39;

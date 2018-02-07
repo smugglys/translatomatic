@@ -1,114 +1,152 @@
-# Созданная Translatomatic 0.1.2 Sat, 06 Jan 2018 22:56:18 +1030
+# Создано Translatomatic 0.1.3 Tue, 06 Feb 2018 22:18:05 +1030 https://github.com/smugglys/translatomatic
 
 ru:
   translatomatic:
     cli:
+      aborted: Отменено
       config:
+        add: Добавить значение конфигурации в список
+        configuration: конфигурация
+        describe: Описать доступные параметры конфигурации
+        for_file: Изменение настройки конфигурации для каждого файла
+        list: Список текущих настроек конфигурации
+        location_configuration: Конфигурация для файла &#39;%{location}&#39;
+        no_config: Конфигурация не найдена
+        project: Использовать файл конфигурации проекта
+        set: Изменение настройки конфигурации
         subcommand: Команды конфигурации
-        configuration: Конфигурация
-        context_configuration: Конфигурация для контекста «%{context}»
-        no_config: Конфигурация не найдены
-        set: Изменение параметра конфигурации
-        remove: Удаление параметра конфигурации
-        list: Список текущих параметров конфигурации
-        describe: Описать имеющиеся настройки
-        name: Имя
-        type: Тип
-        value: Значение
-        desc: Описание
-        context: Контекст конфигурации
-      convert: Преобразовать исходный файл в целевой формат файла
-      translate:
-        subcommand: Перевод файлов или строк
-        file: Перевести файл в целевой локали
-        string: Перевод строки к целевой локали
-        translator: Чтобы использовать переводчик реализации
-      source_locale: Языковой стандарт исходного файла
-      target_locales: Языки для перевода
-      source_files: Файлы для перевода
-      debug: Включение отладки вывода
-      wank: Включить индикатор выполнения перевода
-      share: Доля переводов с переводчиками
-      dry_run: 'Пробный прогон: файлы не будут переведены или письменные'
-      locales_required: Один или более целевых языков требуется
-      using_translator: 'С помощью переводчика: %{name}'
-      display_values: Отображение значения из набора ресурсов
-      locales_to_display: Языки для отображения
-      display_sentences: Показать предложения
-      extract_strings: Извлечение строк из файлов-ресурсов
-      list_backends: Список доступных переводческих услуг
-      display_version: Отображение версии
-      uploading_tmx: Загрузка TMX %{name}
-      translating: Выполняется перевод
-      aborted: Прервана
-      file_source: 'Файл: %{file}'
-      sentences: 'Предложения:'
+        subtract: Удалить значение конфигурации из списка
+        unset: Удалить настройку конфигурации
+        user: Использовать конфигурационный файл пользователя
+      convert: Преобразование исходного файла в целевой формат файла
       database:
+        drop: Отбросить базу данных
+        search: Поиск базы данных для текста, соответствующего данной строке.
         subcommand: Команды базы данных
-        search: База данных поиска для соответствия заданной строки текста.
-    file:
-      not_found: 'Файл не найден: %{file}'
-      unsupported: 'Неподдерживаемый тип файла: %{file}'
-      unknown_locale: Не удается определить язык
-      created_by: Созданная %{app} %{version} %{date}
-      error: 'Ошибка: %{message}'
-      loading: Попытка загрузить %{file}, используя %{name}
-      directory: 'Файл представляет собой каталог: %{file}'
-      invalid: 'Недопустимый файл: %{file}'
-    tmx:
-      multiple_origins: Несколько происхождение в текстах.
-      multiple_locales: Несколько исходных языков в текстах.
-    translator:
-      email_required: Требуется адрес электронной почты.
-      password_required: Требуется пароль.
-      google_key_required: Требуется ключ Google API.
-      google_api_key: Ключ Google API
-      frengly_api_key: Frengly API ключ
-      microsoft_api_key: Microsoft API ключ
-      microsoft_key_required: Требуется ключ Microsoft API.
-      mymemory_api_key: MyMemory API ключ
-      email_address: Адрес электронной почты
-      share_response: 'Доля ответов: %{response}'
-      yandex_api_key: Ключ API Яндекс
-      yandex_key_required: Яндекс API ключа требуется.
-      required_option: "(обязательно)"
-      translators: 'Все переводчики:'
-      configured: 'Настроенные переводчики:'
-      unavailable: Переводчик %{name} недоступна.
-      no_translators: Переводчики не настроены.
-      password: Пароль
-    file_translator:
-      total_translations: 'Всего переводы: %{total} (%{from_db} из базы данных, %{from_translator}
-        с переводчиком, %{untranslated} untranslated)'
-      untranslated: 'Непереведенные строки:'
-      dry_run: Печать действия без выполнения переводов или записи файлов.
-      use_database: Хранить и извлекать переводы из базы данных.
-      database_disabled: База данных отключена.
-      translator_required: Требуется переводчик.
-      translating: Перевод %{source} (%{source_locale}) %{target} (%{target_locale})
-      stats: 'Переводы из базы данных: %{from_db}, переводчик: %{from_translator},
-        untranslated: %{untranslated}'
-    database:
-      no_environment: Не окружающей среды «%{env}» %{file}
-      migrated: База данных миграции.
-      created: База данных, созданная.
-      deleted: База данных удалена.
-      could_not_create: База данных не может быть создан.
-      config_file: Путь к файлу конфигурации базы данных
-      env: Базы данных окружающей среды
-    unicode:
-      invalid_byte: 'Недопустимый UTF8 байт: «%{byte}»'
+        info: Информация о базе данных
+        text_count: База данных содержит строки %{count} .
+        delete_text: Удаление текста и его переводов
+        text_not_found: Текстовый идентификатор %{id} не найден.
+      debug: Включить вывод отладки
+      display_sentences: Показать предложения
+      display_values: Отображать значения из набора ресурсов
+      display_version: Показать версию
+      dry_run: Выполнять печать без выполнения перевода или записи файлов.
+      error: произошла ошибка
+      extract_strings: Извлечь строки из файлов без ресурсов
+      file_source: 'Файл: %{file}'
+      locales_required: Требуется одна или несколько целевых локалей
+      locales_to_display: Локали для отображения
+      no_wank: Отключить индикатор выполнения перевода
+      provider:
+        available: Доступный
+        available_no: нет
+        available_yes: да
+        description: Описание
+        env: Окружающая среда
+        name: имя
+        option: вариант
+      providers: Список доступных поставщиков перевода
+      sentences: 'Предложения:'
+      source_files: Файлы для перевода
+      source_locale: Локаль исходного файла
+      target_locales: Языкам перевести на
+      translate:
+        file: Перевести файл на целевые локали
+        no_providers: Поставщиков перевода не найдено
+        provider: Реализации поставщиков для использования
+        share: Доля переводов с поставщиками
+        string: Перевести строку на целевые локали
+        subcommand: Перевести файлы или строки
+        translating: Идет перевод
+        translating_file: Перевод %{source} (%{source_locale}) в %{target_locale}
+        using_provider: 'Использование поставщика: %{name}'
+        using_providers: 'Использование поставщиков: %{list}'
     config:
-      invalid_context: 'Контекст непризнанных конфигурации: «%{context}»'
-      invalid_key: 'Непризнанных конфигурационный ключ: «%{key}»'
-      command_line_only: Не удается сохранить конфигурации «%{key}»
-      types:
-        string: Строка
-        hash: Хэш
-        array: Массив
-        numeric: Цифровой
-        boolean: Логическое значение
+      command_line_only: Конфигурация &#39;%{key}&#39; не может быть сохранена
       context:
         env: Окружающая среда
-        project: Проект
-        user: Пользователь
+        project: проект
+        user: пользователь
+      heading:
+        desc: Описание
+        name: имя
+        type: Тип
+        value: Стоимость
+      invalid_context: 'Неопределенный контекст конфигурации: &#39;%{context}&#39;'
+      invalid_key: 'Непризнанный ключ конфигурации: &#39;%{key}&#39;'
+      non_array_key: 'Конфигурация не является типом массива: &#39;%{key}&#39;'
+      one_at_a_time: Только один файл конфигурации за раз
+      types:
+        array: массив
+        boolean: логический
+        hash: гашиш
+        numeric: числовой
+        path: Дорожка
+        path_array: Массив путей
+        string: строка
+    database:
+      config_file: Путь к файлу конфигурации базы данных
+      could_not_create: Не удалось создать базу данных.
+      created: Создана база данных.
+      deleted: Удалена база данных.
+      env: Среда базы данных
+      migrated: Миграция базы данных.
+      no_environment: Нет окружения &#39;%{env}&#39; в %{file}
+    file:
+      created_by: Создано %{app} %{version} %{date} %{url}
+      csv:
+        comment_column: Имя столбца CSV, которое будет использоваться для комментариев.
+        headers: Обработать первую строку CSV-файлов как строку заголовков.
+        key_column: Имя столбца CSV, которое должно использоваться для ключей свойств
+        translate_columns: Имена или индексы столбцов CSV для перевода
+        value_column: Имя столбца CSV, которое будет использоваться для значений свойств
+      directory: 'Файл - это каталог: %{file}'
+      error: 'Ошибка: %{message}'
+      invalid: 'Недопустимый файл: %{file}'
+      loading: Попытка загрузить %{file} с помощью %{name}
+      not_found: 'Файл не найден: %{file}'
+      unknown_locale: Не удалось определить локаль
+      unsupported: 'Неподдерживаемый тип файла: %{file}'
+    file_translator:
+      in_place: Перевести исходный файл на место.
+    provider:
+      email_address: Адрес электронной почты
+      email_required: Требуется адрес электронной почты.
+      frengly:
+        api_key: Эффективный ключ API
+      google:
+        api_key: Ключ API Google
+        key_required: Требуется ключ API Google.
+        model: Модель перевода
+      invalid_response: Неожиданный ответ от поставщика
+      microsoft:
+        api_key: Ключ API Microsoft
+        key_required: Требуется ключ Microsoft API.
+      mymemory:
+        api_key: Ключ API MyMemory
+      options: 'Варианты поставщика:'
+      password: пароль
+      password_required: Требуется пароль.
+      required_option: "(обязательный)"
+      share_response: 'Отправить ответ: %{response}'
+      status: 'Статус провайдера:'
+      unavailable: Поставщик %{name} недоступен.
+      yandex:
+        api_key: API API Яндекса
+        key_required: Требуется ключ API Yandex.
+    sharer:
+      uploading_tmx: Загрузка TMX в %{name}
+    tmx:
+      multiple_locales: Несколько исходных локалей в текстах.
+      multiple_origins: Несколько истоков в текстах.
+    translator:
+      database_disabled: База данных отключена.
+      no_database: Не сохраняйте переводы в базу данных.
+      provider_required: Требуется провайдер.
+      total_translations: 'Всего переводов: %{total} (%{from_db} из базы данных, %{from_provider}
+        из провайдера, %{untranslated} нетранслируемый)'
+      untranslated: 'Непереведенные строки:'
+      string_too_long: Строка слишком длинная для перевода
+    unicode:
+      invalid_byte: 'Недопустимый байт UTF8: &#39;%{byte}&#39;'

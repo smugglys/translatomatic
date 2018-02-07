@@ -22,7 +22,7 @@ Translates text files from one language to another, or from one format to anothe
 | Text files | `.txt` |
 | CSV files | `.csv` |
 
-The following translation APIs can be used with Translatomatic:
+The following translation providers can be used with Translatomatic:
 
 * [Google](https://cloud.google.com/translate/)
 * [Microsoft](https://www.microsoft.com/en-us/translator/translatorapi.aspx)
@@ -64,9 +64,9 @@ And for help on a command, execute:
 ---
 ## Setup
 
-Check for available translation services and options with the `services` command:
+Check for available translation providers and options with the `providers` command:
 
-    $ translatomatic services
+    $ translatomatic providers
 
 Options can be specified on the command line, in environment variables, or in translatomatic's configuration files. The configuration files can be modified using translatomatic's internal `config` command. To list all available configuration settings, use:
 
@@ -78,11 +78,11 @@ Options can be set at the user level or the project level. See also the Configur
 ---
 ## Translating files
 
-When translating files, `translatomatic` translates text one sentence or phrase at a time.  If a file is re-translated, only sentences that have changed since the last translation are sent to the translator, and the rest are sourced from the local database.
+When translating files, `translatomatic` translates text one sentence or phrase at a time.  If a file is re-translated, only sentences that have changed since the last translation are sent to the translation provider, and the rest are sourced from the local database.
 
-To translate a Java properties file to German and French using the Google translator:
+To translate a Java properties file to German and French using the Google provider:
 
-    $ translatomatic translate file --translator Google strings.properties de,fr
+    $ translatomatic translate file --provider Google strings.properties de,fr
 
 This would create (or overwrite) `strings_de.properties` and `strings_fr.properties` with translated properties.
 
@@ -110,19 +110,23 @@ For example, to convert a Java properties file to an XCode strings file:
 ---
 ## Configuration
 
-Translatomatic has a per-user configuration file at `$HOME/.translatomatic/config.yml`, and optionally a per project configuration file `$PROJECT_DIR/.translatomatic/config.yml`.  The `translatomatic config set` command operates on the project level configuration when executed within a project containing a translatomatic configuration file. Otherwise the user level configuration file is changed. The `--context` option can be used to specify `user` or `project` level configuration. The effective value of a configuration option is determined by reading from the environment, the user level configuration file, the project level configuration file (if present), and from the command line. The last value found takes precedence over values read earlier.
+Configuration settings can be read and written using the `config get` and `config set` commands. Translatomatic uses a user configuration file at `$HOME/.translatomatic/config.yml`, and optionally a per project configuration file `$PROJECT_DIR/.translatomatic/config.yml`.
+
+The `--user` and `--project` options can be used to tell the command to read or write to the `user` or `project` configuration.
+
+Configuration settings are read from environment variables, the user configuration file, the project configuration file (if present), and from the command line. The last value found takes precedence over values read earlier.
+
+When writing to the configuration with the `config set` command, the new value is written to the project configuration file when executed within a project containing a translatomatic configuration file, or the user configuration file if there is no project configuration file.
 
 ### Translatomatic configuration examples
 
 To set `google_api_key` within the user configuration file, use:
 
-    $ translatomatic config set google_api_key value --context user
+    $ translatomatic config set google_api_key value --user
 
 To set one or more translation services to use:
 
-    $ translatomatic config set translator Microsoft,Yandex
-
-Secondary translators will only be used if a translation error occurs when using the first choice.
+    $ translatomatic config set provider Microsoft,Yandex
 
 To set a default list of target locales:
 
@@ -132,14 +136,13 @@ With `target_locales` set, files can be translated without specifying target loc
 
     $ translatomatic translate file resources/strings.properties
 
-To display the current configuration, execute
+To display the current configuration, execute:
 
     $ translatomatic config list
 
 ### Database configuration
 
 By default, `translatomatic` uses an sqlite3 database in `$HOME/.translatomatic/translatomatic.sqlite3` to store translated strings.
-To store translations in a database, you should have an appropriate database adapter installed, such as the `sqlite3` gem. Translatomatic does not install database adapters automatically.
 The database configuration can be changed by creating a `database.yml` file under `$HOME/.translatomatic/database.yml` for the `production` environment, e.g.
 
     production:
@@ -148,6 +151,7 @@ The database configuration can be changed by creating a `database.yml` file unde
       database: translatomatic
       pool: 5
       encoding: utf8
+      collation: utf8_bin
       username: username
       password: password
 

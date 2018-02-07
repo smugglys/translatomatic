@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:tm="http://www.smugglys.com/2018/translatomatic">
+  <node tm:context="context 1">value</node>
+  <node tm:context="context 2">value</node>
+</root>
