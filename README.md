@@ -108,6 +108,18 @@ For example, to convert a Java properties file to an XCode strings file:
     $ translatomatic convert strings.properties Localization.strings
 
 ---
+## Translation context
+
+A context can be associated with strings using a `tm.context:` comment.  This helps translatomatic find the correct translation
+for words that can have multiple meanings, e.g. the word 'right' in English can have multiple meanings depending on context.
+
+    # tm.context: go right
+    property_name = right
+
+This associates the context `go right` with the property `property_name`.
+See the `spec/fixtures/translation_context` directory in this project for examples of formatting translation contexts for different file formats.
+
+---
 ## Configuration
 
 Configuration settings can be read and written using the `config get` and `config set` commands. Translatomatic uses a user configuration file at `$HOME/.translatomatic/config.yml`, and optionally a per project configuration file `$PROJECT_DIR/.translatomatic/config.yml`.

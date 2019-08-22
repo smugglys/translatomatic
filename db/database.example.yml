@@ -1,0 +1,9 @@
+production:
+  adapter: sqlite3
+  encoding: utf-8
+  database: $HOME/.translatomatic/translatomatic.sqlite3
+
+test:
+  adapter: sqlite3
+  encoding: utf-8
+  database: $GEM_ROOT/spec/tmp/translatomatic.sqlite3
