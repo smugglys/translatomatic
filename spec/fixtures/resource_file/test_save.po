@@ -1,4 +1,3 @@
-
 msgid "property1"
 msgstr "saved value 1"
 

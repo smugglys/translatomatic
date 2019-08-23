@@ -21,7 +21,7 @@ optional_gem 'therubyrhino', platform: :jruby
 optional_gem 'mysql2', platform: :ruby
 optional_gem 'postgresql', platform: :ruby
 optional_gem 'ruby-oci8', platform: :ruby
-gem 'sqlite3', '~> 1.3', platform: :ruby
+gem 'sqlite3', '~> 1.4', platform: :ruby
 
 # bigdecimal required by crack-0.4.3 on cygwin
 optional_gem 'bigdecimal'

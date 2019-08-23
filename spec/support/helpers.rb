@@ -1,9 +1,11 @@
+require "tempfile"
+
 module Helpers
-  TMP_PATH = File.join(__dir__, '..', 'tmp')
-  CONFIG_PATH = File.join('.translatomatic/config.yml')
+  TMP_PATH = File.join(__dir__, "..", "tmp")
+  CONFIG_PATH = File.join(".translatomatic/config.yml")
   TEST_USER_PATH = TMP_PATH
-  TEST_PROJ_PATH = File.join(TMP_PATH, 'project')
-  FIXTURES_PATH = File.join(__dir__, '..', 'fixtures')
+  TEST_PROJ_PATH = File.join(TMP_PATH, "project")
+  FIXTURES_PATH = File.join(__dir__, "..", "fixtures")
 
   def use_test_config(options = {})
     unless options && options[:keep_config]
@@ -14,7 +16,7 @@ module Helpers
     end
     params = {
       user_path: TEST_USER_PATH,
-      project_path: TEST_PROJ_PATH
+      project_path: TEST_PROJ_PATH,
     }.merge(options)
     Translatomatic.config = Translatomatic::Config::Settings.new(params)
 
@@ -39,7 +41,7 @@ module Helpers
     return path if File.exist?(path)
     f1 = File.join(FIXTURES_PATH, path)
     return f1 if File.exist?(f1)
-    f2 = File.join(FIXTURES_PATH, 'resource_file', path)
+    f2 = File.join(FIXTURES_PATH, "resource_file", path)
     return f2 if File.exist?(f2)
     raise "fixture #{path} not found" unless options[:allow_missing]
     nil
@@ -81,6 +83,6 @@ module Helpers
   end
 
   def remove_xml_whitespace(xml)
-    xml.gsub(/[\r\n\t]+/, ' ').gsub(/>\s*</, '><').strip
+    xml.gsub(/[\r\n\t]+/, " ").gsub(/>\s*</, "><").strip
   end
 end

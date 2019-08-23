@@ -1,4 +1,4 @@
-require 'active_record'
+require "active_record"
 
 module Translatomatic
   # Database functions
@@ -16,7 +16,7 @@ module Translatomatic
       @db_config = database_config(@env, options)
       env_config = @db_config
       unless env_config[@env]
-        raise t('database.no_environment', env: @env, file: db_config_path)
+        raise t("database.no_environment", env: @env, file: db_config_path)
       end
       @env_config = env_config[@env] || {}
       init_active_record
@@ -56,9 +56,10 @@ module Translatomatic
     # @return [void]
     def migrate
       return if @migrated
-      ActiveRecord::Migrator.migrate(MIGRATIONS_PATH)
+      migrator = ActiveRecord::MigrationContext.new(MIGRATIONS_PATH)
+      migrator.migrate
       ActiveRecord::Base.clear_cache!
-      log.debug t('database.migrated')
+      log.debug t("database.migrated")
       @migrated = true
     end
 
@@ -66,10 +67,10 @@ module Translatomatic
     # @return [boolean] True if the database was created
     def create
       ActiveRecord::Tasks::DatabaseTasks.create(@env_config)
-      log.debug t('database.created')
+      log.debug t("database.created")
       true
     rescue LoadError => e
-      log.debug t('database.could_not_create')
+      log.debug t("database.could_not_create")
       log.error e.message
       false
     end
@@ -79,7 +80,7 @@ module Translatomatic
     def drop
       disconnect
       ActiveRecord::Tasks::DatabaseTasks.drop(@env_config)
-      log.debug t('database.deleted')
+      log.debug t("database.deleted")
     end
 
     # Shortcut to text model class
@@ -116,26 +117,26 @@ module Translatomatic
     end
 
     def sqlite_database_exists?
-      @env_config['adapter'] == 'sqlite3' &&
-        File.exist?(@env_config['database'])
+      @env_config["adapter"] == "sqlite3" &&
+        File.exist?(@env_config["database"])
     end
 
-    DB_PATH = join_path(File.dirname(__FILE__), '..', '..', 'db')
-    INTERNAL_CONF = File.join(DB_PATH, 'database.yml')
-    CUSTOM_CONF = File.join(Dir.home, '.translatomatic', 'database.yml')
+    DB_PATH = join_path(File.dirname(__FILE__), "..", "..", "db")
+    INTERNAL_CONF = File.join(DB_PATH, "database.yml")
+    CUSTOM_CONF = File.join(Dir.home, ".translatomatic", "database.yml")
     DEFAULT_CONF = File.exist?(CUSTOM_CONF) ? CUSTOM_CONF : INTERNAL_CONF
-    MIGRATIONS_PATH = File.join(DB_PATH, 'migrate')
-    GEM_ROOT = join_path(File.dirname(__FILE__), '..', '..')
-    DEFAULT_ENV = 'production'.freeze
+    MIGRATIONS_PATH = File.join(DB_PATH, "migrate")
+    GEM_ROOT = join_path(File.dirname(__FILE__), "..", "..")
+    DEFAULT_ENV = "production".freeze
 
-    define_option :database_config, desc: t('database.config_file'),
+    define_option :database_config, desc: t("database.config_file"),
                                     default: DEFAULT_CONF, type: :path
-    define_option :database_env, desc: t('database.env'),
+    define_option :database_env, desc: t("database.env"),
                                  default: DEFAULT_ENV
 
     # return path to database config
     def database_config_path(options)
-      if options[:database_env] == 'test'
+      if options[:database_env] == "test"
         INTERNAL_CONF # used for rspec
       elsif options[:database_config]
         options[:database_config]
